@@ -1,0 +1,16 @@
+{
+    "references": [
+        {
+            "path": "./packages/client"
+        },
+        {
+            "path": "./packages/common"
+        }
+    ],
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@cryptify/*": ["packages/*"]
+        }
+    }
+}

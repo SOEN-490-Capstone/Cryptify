@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "preserveConstEnums": true,
+        "strictNullChecks": true,
+        "inlineSources": true,
+        "inlineSourceMap": true,
+        "sourceRoot": "./src",
+        "lib": ["ES2019"],
+        "module": "commonjs",
+        "target": "ES2019",
+        "outDir": "dist",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true
+    },
+    "include": ["./src"],
+    "exclude": ["node_modules", "src/**/*.spec.ts"]
+}

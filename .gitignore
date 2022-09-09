@@ -354,3 +354,21 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/node,intellij,visualstudiocode,macos,windows,linux
+
+.idea
+.vscode
+
+# Expo app
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# Yarn workspaces
+package-lock.json

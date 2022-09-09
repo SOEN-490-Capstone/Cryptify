@@ -4,6 +4,7 @@
         "lib": ["ESNext"],
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "outDir": "dist"
-    }
+        "outDir": "./dist"
+    },
+    "include": ["./src"]
 }

@@ -4,14 +4,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import { hello, User } from '@cryptify/common/src/user';
+import {ports} from "@cryptify/api/dist/common/src/ports";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  const user = hello() as User;
-  console.log(user);
+  console.log(ports.CLIENT)
+
   if (!isLoadingComplete) {
     return null;
   } else {

@@ -6,7 +6,7 @@ export class BaseController {
     constructor(private readonly baseService: BaseService) {}
 
     @Get("")
-    ok(): string {
-        return this.baseService.getOk();
+    find(): string {
+        return this.baseService.find();
     }
 }

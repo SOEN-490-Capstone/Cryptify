@@ -15,6 +15,6 @@ describe("BaseController", () => {
     });
 
     it("should be defined", () => {
-        expect(controller.ok()).toBe("ok");
+        expect(controller.find()).toBe("ok");
     });
 });

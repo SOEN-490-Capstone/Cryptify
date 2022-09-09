@@ -1,0 +1,11 @@
+{
+    "name": "@cryptify/common",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^4.7.4"
+    }
+}

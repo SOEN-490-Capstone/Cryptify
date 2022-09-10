@@ -1,6 +1,6 @@
 FROM node:16-slim AS base
 WORKDIR /code
-EXPOSE 8080
+EXPOSE 3000
 
 FROM base AS dependencies
 COPY package.json yarn.lock ./
@@ -11,7 +11,7 @@ RUN yarn install --prod
 FROM dependencies AS development
 COPY .eslintrc.js .prettierrc.js tsconfig.json ./
 RUN yarn install
+RUN yarn workspace @cryptify/api build
 
 FROM dependencies AS production
-RUN yarn workspace @cryptify/api build
 CMD ["yarn", "workspace", "@cryptify/api", "start:prod"]

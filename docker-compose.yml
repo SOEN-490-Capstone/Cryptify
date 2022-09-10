@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+    client:
+        image: cryptify-client
+        build:
+            context: .
+            dockerfile: packages/docker/client.Dockerfile
+            target: development
+        depends_on:
+            -   api
+        ports:
+            -   "3000:19006"
+        volumes:
+            - /code/node_modules
+            - /code/packages/client/node_modules
+            - /code/packages/common/node_modules
+            - ./packages/client:/code/packages/client
+            - ./packages/common:/code/packages/common
+            - ./tsconfig.json:/code/tsconfig.json
+            - ./package.json:/code/package.json
+            - ./yarn.lock:/code/yarn.lock
+            - ./.eslintrc.js:/code/.eslintrc.js
+            - ./.prettierrc.js:/code/.prettierrc.js
+        restart: always
+    api:
+        image: cryptify-api
+        build:
+            context: .
+            dockerfile: packages/docker/api.Dockerfile
+            target: development
+        depends_on:
+            -   api-db
+        ports:
+            -   "3001:80"
+        volumes:
+            - /code/node_modules
+            - /code/packages/api/node_modules
+            - /code/packages/common/node_modules
+            - ./packages/api:/code/packages/api
+            - ./packages/common:/code/packages/common
+            - ./tsconfig.json:/code/tsconfig.json
+            - ./package.json:/code/package.json
+            - ./yarn.lock:/code/yarn.lock
+            - ./.eslintrc.js:/code/.eslintrc.js
+            - ./.prettierrc.js:/code/.prettierrc.js
+        restart: always
+    api-db:
+        image: cryptify-api-db
+        build:
+            context: .
+            dockerfile: packages/docker/api-db.Dockerfile
+        volumes:
+            - ./pgdata/:/var/lib/postgresql/data/

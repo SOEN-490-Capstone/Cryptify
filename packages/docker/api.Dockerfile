@@ -1,6 +1,6 @@
 FROM node:16-slim AS base
 WORKDIR /code
-EXPOSE 3000
+EXPOSE 80
 
 FROM base AS dependencies
 COPY package.json yarn.lock ./

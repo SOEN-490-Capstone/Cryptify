@@ -9,13 +9,9 @@ COPY packages/api ./packages/api
 RUN yarn install --prod
 
 FROM dependencies AS development
+COPY .eslintrc.js .prettierrc.js tsconfig.json ./
 RUN yarn install
-RUN npm run build
 
-FROM base AS production
-
-COPY --from=dependencies /code/node_modules /code/node_modules
-COPY --from=development /code/build /code/build
-COPY --from=development /code/package.json /code
-COPY --from=development /code/.env /code
-CMD ["npm", "run", "start"]
+FROM dependencies AS production
+RUN yarn workspace @cryptify/api build
+CMD ["yarn", "workspace", "@cryptify/api", "start:prod"]

@@ -1,18 +1,18 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "outDir": "./dist"
-  },
-  "include": ["./src"]
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "incremental": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "outDir": "./dist"
+    },
+    "include": ["./src"]
 }

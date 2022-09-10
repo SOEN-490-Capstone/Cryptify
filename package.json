@@ -6,6 +6,11 @@
     "packages/*"
   ],
   "scripts": {
+    "client:web:dev": "yarn workspace @cryptify/client web",
+    "client:android:dev": "yarn workspace @cryptify/client android",
+    "client:ios:dev": "yarn workspace @cryptify/client ios",
+    "api:dev": "yarn workspace @cryptify/api start:dev",
+    "common:build": "yarn workspace @cryptify/common build",
     "lint:fix": "eslint '*/**/*.{js,ts,json}' --fix"
   },
   "devDependencies": {

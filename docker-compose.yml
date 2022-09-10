@@ -7,9 +7,9 @@ services:
             dockerfile: packages/docker/client.Dockerfile
             target: development
         depends_on:
-            -   api
+            - api
         ports:
-            -   "3000:19006"
+            - "3000:19006"
         volumes:
             - /code/node_modules
             - /code/packages/client/node_modules
@@ -21,7 +21,6 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
-        restart: always
     api:
         image: cryptify-api
         build:
@@ -29,9 +28,9 @@ services:
             dockerfile: packages/docker/api.Dockerfile
             target: development
         depends_on:
-            -   api-db
+            - api-db
         ports:
-            -   "3001:80"
+            - "3001:80"
         volumes:
             - /code/node_modules
             - /code/packages/api/node_modules
@@ -43,11 +42,12 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
-        restart: always
     api-db:
         image: cryptify-api-db
         build:
             context: .
             dockerfile: packages/docker/api-db.Dockerfile
+        ports:
+            - "5432:5432"
         volumes:
             - ./pgdata/:/var/lib/postgresql/data/

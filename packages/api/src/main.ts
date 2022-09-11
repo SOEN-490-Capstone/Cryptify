@@ -5,6 +5,6 @@ import { ports } from "@cryptify/common/src/ports";
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    await app.listen(ports.API);
+    await app.listen(ports.API, () => console.log(`Server starting on port ${ports.API}`));
 }
 bootstrap();

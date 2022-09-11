@@ -1,4 +1,4 @@
 export const ports = {
-    API: 3000,
+    API: 80,
     CLIENT: 3001,
 };

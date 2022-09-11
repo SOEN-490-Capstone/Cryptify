@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class BaseService {
+export class BaseRepository {
     find(): string {
         return "ok";
     }

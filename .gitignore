@@ -372,3 +372,6 @@ web-build/
 
 # Yarn workspaces
 package-lock.json
+
+# Postgres
+pgdata

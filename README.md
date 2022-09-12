@@ -99,7 +99,7 @@ https://google.github.io/styleguide/tsguide.html
 | Name                | StudentId  | GitHub Username | email                            |
 |---------------------|------------|-----------------|----------------------------------|
 | Jason Gerard        | 40079266   | jason-gerard    | jasongerard321@gmail.com         |
-| Andre Ibrahim       | 40132881   | Andreibr1       | andre.khaled.ibrahim@gmail.com   |
+| Andre Ibrahim       | 40132881   | Andre-Ibrahim   | andre.khaled.ibrahim@gmail.com   |
 | Domenic Seccareccia | 40063021   | domsec          | dom_seccareccia@hotmail.com      |
 | Alexandru Bara      | 40132235   | alexbara2000    | alexandrubara2000@gmail.com      |
 | Pola Farid          | 40125357   | PolaFarid       | polacris2@gmail.com              |

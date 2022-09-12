@@ -1,21 +1,25 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { BaseController } from "./base.controller";
 import { BaseService } from "../../services/base/base.service";
-import { BaseRepository } from "../../repositories/base/base.repository";
 
 describe("BaseController", () => {
-    let controller: BaseController;
+    let baseController: BaseController;
+    let baseService: BaseService;
+    const result = "test";
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [BaseController],
-            providers: [BaseService, BaseRepository],
+            providers: [BaseService],
         }).compile();
 
-        controller = module.get<BaseController>(BaseController);
+        baseController = module.get<BaseController>(BaseController);
+        baseService = module.get<BaseService>(BaseService);
+
+        jest.spyOn(baseService, "find").mockImplementation(() => result);
     });
 
     it("should be defined", () => {
-        expect(controller.find()).toBe("ok");
+        expect(baseController.find()).toBe(result);
     });
 });

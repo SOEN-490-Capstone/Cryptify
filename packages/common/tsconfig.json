@@ -1,6 +1,7 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "experimentalDecorators": true,
         "lib": ["ESNext"],
         "esModuleInterop": true,
         "skipLibCheck": true,

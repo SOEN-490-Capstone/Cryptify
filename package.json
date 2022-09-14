@@ -11,7 +11,8 @@
     "client:ios:dev": "yarn workspace @cryptify/client ios",
     "api:dev": "yarn workspace @cryptify/api start:dev",
     "common:build": "yarn workspace @cryptify/common build",
-    "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix"
+    "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix",
+    "diagrams:build": "yarn workspace @cryptify/diagrams build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.9.1",

@@ -1,16 +1,24 @@
-import { Controller, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { User } from "@cryptify/common/src/entities/user";
+import { signUpSchema } from "@cryptify/common/src/validations/user";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { AuthGuard } from "@nestjs/passport";
+import { UsersService } from "@cryptify/api/src/users/users.service";
 
 @Controller("auth")
 export class AuthenticationController {
-    constructor(private readonly authenticationService: AuthenticationService) {}
+    constructor(private readonly authService: AuthenticationService, private readonly userService: UsersService) {}
 
     @Post("signup")
-    async signUp(@Req() req, @Res() res): Promise<string> {
-        //await this.userService.create();
-        return "done";
+    async signUp(@Body() user: User): Promise<any> {
+        const { value, error } = signUpSchema.validate(user);
+
+        if (error) {
+            throw new BadRequestException();
+        }
+
+        return await this.authService.signup(user);
+        //res.send(req.body);
     }
 
     @UseGuards(AuthGuard("local"))

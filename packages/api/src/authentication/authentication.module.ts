@@ -4,10 +4,24 @@ import { AuthenticationController } from "./authentication.controller";
 import { LocalStrategy } from "@cryptify/api/src/authentication/local.strategy";
 import { UsersModule } from "@cryptify/api/src/users/users.module";
 import { PassportModule } from "@nestjs/passport";
+import { JwtModule } from "@nestjs/jwt";
+import { JwtStrategy } from "@cryptify/api/src/authentication/jwt.strategy";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
     controllers: [AuthenticationController],
-    imports: [UsersModule, PassportModule],
-    providers: [AuthenticationService, LocalStrategy],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: `.env.${process.env.NODE_ENV}`,
+        }),
+        UsersModule,
+        PassportModule,
+        JwtModule.register({
+            signOptions: { expiresIn: "2h" },
+            secretOrPrivateKey: process.env.JWT_SECRET,
+        }),
+    ],
+    providers: [AuthenticationService, JwtStrategy, LocalStrategy],
+    exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

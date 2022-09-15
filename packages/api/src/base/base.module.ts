@@ -6,10 +6,11 @@ import { User } from "@cryptify/common/src/entities/user";
 import { AuthenticationController } from "@cryptify/api/src/authentication/authentication.controller";
 import { UsersService } from "@cryptify/api/src/users/users.service";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
+import { JwtService } from "@nestjs/jwt";
 
 @Module({
     imports: [TypeOrmModule.forFeature([User])],
-    providers: [BaseService, UsersService, AuthenticationService],
+    providers: [BaseService, UsersService, AuthenticationService, JwtService],
     controllers: [BaseController, AuthenticationController],
 })
 export class BaseModule {}

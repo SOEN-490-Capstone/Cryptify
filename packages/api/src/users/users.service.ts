@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/entities/user";
 import { Repository } from "typeorm";
@@ -9,8 +9,12 @@ export class UsersService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
     ) {}
+
     async create(user: User): Promise<User> {
-        const createdUser: User = this.userRepository.create(user);
+        if (await this.findOne(user.email)) {
+            throw new BadRequestException();
+        }
+        const createdUser = await this.userRepository.create(user);
         return this.userRepository.save(createdUser);
     }
 

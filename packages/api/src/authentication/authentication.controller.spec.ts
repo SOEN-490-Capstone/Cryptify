@@ -46,14 +46,14 @@ describe("AuthenticationController::createUser", () => {
     });
 
     it("should return an access token if user data is valid", async () => {
-        expect(await controller.createUser(user)).toStrictEqual({ access_token: "token" });
+        expect(await controller.signUp(user)).toStrictEqual({ access_token: "token" });
     });
 
     it("should return status 400 if user data is invalid", async () => {
         user.email = "";
         let error;
         try {
-            await controller.createUser(user);
+            await controller.signUp(user);
         } catch (err) {
             error = err;
         }

@@ -9,7 +9,7 @@ export class AuthenticationController {
     constructor(private readonly authService: AuthenticationService) {}
 
     @Post("signup")
-    async createUser(@Body() user: User): Promise<any> {
+    async signUp(@Body() user: User): Promise<any> {
         const { error } = signUpSchema.validate(user);
 
         if (error) {
@@ -22,7 +22,7 @@ export class AuthenticationController {
     // To Do: re-write in sign in pr
     @UseGuards(AuthGuard("local"))
     @Post("signin")
-    async validateUser(@Req() req): Promise<User> {
+    async signIn(@Req() req): Promise<User> {
         return req.user;
     }
 }

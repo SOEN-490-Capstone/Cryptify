@@ -7,12 +7,14 @@ erDiagram
         string email
         string password
         bool is_pro
+        
     }
-    WALLETS }0--0{ TRANSACTIONS : contains
+    WALLETS }o--o{ TRANSACTIONS : contains
     WALLETS {
         string wallet_hash
         double amount
         string type
+        string name
     }
     TRANSACTIONS {
         string transaction_hash

@@ -10,7 +10,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace ReactNavigation {
-        // @ts-ignore
         type RootParamList = RootStackParamList;
     }
 }

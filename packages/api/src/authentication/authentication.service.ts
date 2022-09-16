@@ -6,12 +6,10 @@ import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private usersService: UsersService, private jwtService: JwtService) {}
+    constructor(private jwtService: JwtService, private usersService: UsersService) {}
 
-    async signup(user: User): Promise<any> {
+    async create(user: User): Promise<any> {
         user.password = await bcrypt.hash(user.password, 10);
-
-        console.log(this.jwtService);
 
         const createdUser = await this.usersService.create(user);
 
@@ -20,10 +18,11 @@ export class AuthenticationService {
         return { access_token: this.jwtService.sign(payload) };
     }
 
+    // To Do: clean in sign in pr
     async validateUser(email: string, pass: string): Promise<any> {
         const user = await this.usersService.findOne(email);
         if (user && user.password === pass) {
-            const { password, ...result } = user;
+            const { ...result } = user;
             return result;
         }
         return null;

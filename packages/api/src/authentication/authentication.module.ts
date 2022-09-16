@@ -15,13 +15,13 @@ import { ConfigModule } from "@nestjs/config";
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         UsersModule,
-        PassportModule,
+        PassportModule.register({ defaultStrategy: "jwt", session: false }),
         JwtModule.register({
             signOptions: { expiresIn: "2h" },
-            secretOrPrivateKey: process.env.JWT_SECRET,
+            secret: process.env.JWT_SECRET,
         }),
     ],
-    providers: [AuthenticationService, JwtStrategy, LocalStrategy],
+    providers: [AuthenticationService, LocalStrategy, JwtStrategy],
     exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

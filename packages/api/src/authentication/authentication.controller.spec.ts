@@ -4,7 +4,7 @@ import { AuthenticationService } from "@cryptify/api/src/authentication/authenti
 import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
 
-describe("AuthenticationController::createUser", () => {
+describe("AuthenticationController::signUp", () => {
     let controller: AuthenticationController;
     let fakeAuthService: Partial<AuthenticationService>;
     let fakeUsersService: Partial<UsersService>;
@@ -51,13 +51,6 @@ describe("AuthenticationController::createUser", () => {
 
     it("should return status 400 if user data is invalid", async () => {
         user.email = "";
-        let error;
-        try {
-            await controller.signUp(user);
-        } catch (err) {
-            error = err;
-        }
-
-        expect(error).toBeInstanceOf(BadRequestException);
+        await expect(controller.signUp(user)).rejects.toThrow(BadRequestException);
     });
 });

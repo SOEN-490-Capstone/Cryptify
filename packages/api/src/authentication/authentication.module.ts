@@ -15,9 +15,9 @@ import { ConfigModule } from "@nestjs/config";
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         UsersModule,
-        PassportModule.register({ defaultStrategy: "jwt", session: false }),
+        PassportModule,
         JwtModule.register({
-            signOptions: { expiresIn: "2h" },
+            signOptions: { expiresIn: "9999 years" },
             secret: process.env.JWT_SECRET,
         }),
     ],

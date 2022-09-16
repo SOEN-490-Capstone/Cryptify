@@ -3,17 +3,18 @@ import { UsersService } from "../users/users.service";
 import { User } from "@cryptify/common/src/entities/user";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
+import { Token } from "@cryptify/common/src/types/token";
 
 @Injectable()
 export class AuthenticationService {
     constructor(private jwtService: JwtService, private usersService: UsersService) {}
 
-    async create(user: User): Promise<any> {
-        user.password = await bcrypt.hash(user.password, 10);
+    async create(reqUser: User): Promise<Token> {
+        reqUser.password = await bcrypt.hash(reqUser.password, 10);
 
-        const createdUser = await this.usersService.create(user);
+        const user = await this.usersService.create(reqUser);
 
-        const payload = { email: createdUser.email, sub: createdUser.id };
+        const payload = { sub: user.id };
 
         return { access_token: this.jwtService.sign(payload) };
     }

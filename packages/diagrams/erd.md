@@ -7,6 +7,7 @@ erDiagram
         string email
         string password
         bool is_pro
+        date created_at
         
     }
     WALLETS }o--o{ TRANSACTIONS : contains

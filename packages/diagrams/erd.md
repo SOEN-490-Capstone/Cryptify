@@ -1,19 +1,26 @@
 ```mermaid
 erDiagram
-    CUSTOMER ||--o{ ORDER : places
-    CUSTOMER {
+    USERS ||--o{ WALLETS : has
+    USERS {
+        int user_id
         string name
-        string custNumber
-        string sector
+        string email
+        string password
+        bool is_pro
+        date created_at
+        
     }
-    ORDER ||--|{ LINE-ITEM : contains
-    ORDER {
-        int orderNumber
-        string deliveryAddress
+    WALLETS }o--o{ TRANSACTIONS : contains
+    WALLETS {
+        string wallet_hash
+        double amount
+        string type
+        string name
     }
-    LINE-ITEM {
-        string productCode
-        int quantity
-        float pricePerUnit
+    TRANSACTIONS {
+        string transaction_hash
+        string wallet_in_hash
+        string wallet_out_hash
+        double amount
     }
 ```

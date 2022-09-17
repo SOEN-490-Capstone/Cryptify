@@ -3,6 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/entities/user";
 import { BaseModule } from "@cryptify/api/src/base/base.module";
 import { ConfigModule } from "@nestjs/config";
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { UsersModule } from "./users/users.module";
 
 const entities = [User];
 
@@ -19,8 +21,11 @@ const entities = [User];
             password: process.env.PG_PASSWORD,
             database: process.env.PG_DATABASE,
             entities,
+            synchronize: true,
         }),
         BaseModule,
+        AuthenticationModule,
+        UsersModule,
     ],
 })
 export class AppModule {}

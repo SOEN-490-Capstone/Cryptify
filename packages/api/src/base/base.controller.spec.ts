@@ -4,19 +4,22 @@ import { BaseService } from "./base.service";
 
 describe("BaseController", () => {
     let baseController: BaseController;
-    let baseService: BaseService;
+    let baseService: Partial<BaseService>;
     const result = "test";
 
     beforeEach(async () => {
+        baseService = {
+            find: () => {
+                return result;
+            },
+        };
+
         const module: TestingModule = await Test.createTestingModule({
             controllers: [BaseController],
-            providers: [BaseService],
+            providers: [{ provide: BaseService, useValue: baseService }],
         }).compile();
 
         baseController = module.get<BaseController>(BaseController);
-        baseService = module.get<BaseService>(BaseService);
-
-        jest.spyOn(baseService, "find").mockImplementation(() => result);
     });
 
     it("should be defined", () => {

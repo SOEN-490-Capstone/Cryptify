@@ -26,6 +26,10 @@ export class AuthenticationService {
             const { ...result } = user;
             return result;
         }
-        return null;
+        return {user};
+    }
+
+    async validatePassword(password: string, storedPassword: string){
+        return bcrypt.compare(password, storedPassword);
     }
 }

@@ -21,9 +21,12 @@ export class AuthenticationController {
     }
 
     // To Do: re-write in sign in pr
-    @UseGuards(AuthGuard("local"))
     @Post("signin")
-    async signIn(@Req() req): Promise<User> {
-        return req.user;
+    async signIn(@Body() email: string, @Body() password:  string): Promise<User> {
+        const val = this.authService.validateUser(email, password);
+        if (val == null) {
+            throw new BadRequestException();
+        }
+        return val;
     }
 }

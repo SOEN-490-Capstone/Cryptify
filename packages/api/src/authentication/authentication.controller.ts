@@ -4,6 +4,7 @@ import { signUpSchema } from "@cryptify/common/src/validations/user";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Token } from "@cryptify/common/src/types/token";
+import { Console } from "console";
 
 @Controller("auth")
 export class AuthenticationController {
@@ -20,13 +21,9 @@ export class AuthenticationController {
         return await this.authService.create(value);
     }
 
-    // To Do: re-write in sign in pr
     @Post("signin")
-    async signIn(@Body() email: string, @Body() password:  string): Promise<User> {
-        const val = this.authService.validateUser(email, password);
-        if (val == null) {
-            throw new BadRequestException();
-        }
-        return val;
+    @UseGuards(AuthGuard("local"))
+    async signIn(@Req() req): Promise<Token> {
+        return this.authService.validateUser(req.body.email, req.body.password);
     }
 }

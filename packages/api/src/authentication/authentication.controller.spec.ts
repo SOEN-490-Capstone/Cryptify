@@ -3,6 +3,7 @@ import { AuthenticationController } from "./authentication.controller";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
+import { User } from "@cryptify/common/src/entities/user";
 
 describe("AuthenticationController::signUp", () => {
     let controller: AuthenticationController;
@@ -10,6 +11,7 @@ describe("AuthenticationController::signUp", () => {
     let fakeUsersService: Partial<UsersService>;
 
     let user: any;
+    let userSignIn: any;
     const result = { access_token: "token" };
 
     beforeEach(async () => {
@@ -17,6 +19,9 @@ describe("AuthenticationController::signUp", () => {
             create: async () => {
                 return result;
             },
+            validateUser:async () => {
+                return result;
+            }
         };
 
         fakeUsersService = {};
@@ -43,14 +48,30 @@ describe("AuthenticationController::signUp", () => {
             email: "andre@amazon.com",
             password: "A23456qwee!",
         };
+
+        userSignIn = {
+            email: "andre@amazon.com",
+            password: "A23456qwee!"
+        };
     });
 
     it("should return an access token if user data is valid", async () => {
-        expect(await controller.signUp(user)).toStrictEqual({ access_token: "token" });
+        expect(await controller.signUp(user)).toStrictEqual(result);
     });
 
     it("should return status 400 if user data is invalid", async () => {
         user.email = "";
         await expect(controller.signUp(user)).rejects.toThrow(BadRequestException);
+    });
+
+    it("Should return an access token if the user can sign in",  async () => {
+        //wont work cuase we expcet a req not a user
+        expect(await controller.signIn(userSignIn)).toStrictEqual(result);
+    });
+
+    it("Should returnstatus 400 if user can't sign in",  async () => {
+        //wont work cuase we expcet a req not a user
+        user.password = "wrong_password";
+        expect(await controller.signIn(userSignIn)).toStrictEqual({ access_token: "token" });
     });
 });

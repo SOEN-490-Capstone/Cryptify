@@ -3,7 +3,8 @@ erDiagram
     USERS ||--o{ WALLETS : has
     USERS {
         int user_id
-        string name
+        string first_name
+        string last_name
         string email
         string password
         bool is_pro

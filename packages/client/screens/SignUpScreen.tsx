@@ -15,6 +15,7 @@ import {
     Heading,
     Icon,
     Pressable,
+    HStack,
 } from "native-base";
 
 import EditScreenInfo from "../components/EditScreenInfo";
@@ -24,6 +25,7 @@ import { RootTabScreenProps } from "../types";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMugSaucer } from "@fortawesome/free-solid-svg-icons/faMugSaucer";
 import { MaterialIcons } from "@expo/vector-icons";
+import { faBluetooth } from "@fortawesome/free-brands-svg-icons";
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
@@ -115,12 +117,22 @@ function SignUpForm() {
         //     </Text>
         // </VStack>
 
-        <Center w="100%">
-            <Box safeArea p="2" w="90%" maxW="290" py="8">
+        <Center w="100%" >
+            <Box safeArea p="2" w="90%" maxW="290" py="8" style={styles.formContainer}>
                 <Box style={styles.formTitle}>
                     <Text style={styles.title}>Create your account</Text>
                 </Box>
                 <VStack space={3} mt="5">
+
+                  <HStack direction="row" space={3} width="48%" >  
+                    <FormControl>
+                    <Input placeholder="First Name"/>
+                    </FormControl>
+
+                    <FormControl>
+                    <Input placeholder="Last Name"/>
+                    </FormControl>
+                </HStack>
                     <FormControl>
                         
                         <Input placeholder="Email"/>
@@ -128,10 +140,7 @@ function SignUpForm() {
                     <FormControl>
                         
                         <Input
-                            w={{
-                                base: "75%",
-                                md: "25%",
-                            }}
+                            
                             type={showPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowPass(!showPassword)}>
@@ -149,10 +158,7 @@ function SignUpForm() {
                     <FormControl>
                         
                         <Input
-                            w={{
-                                base: "75%",
-                                md: "25%",
-                            }}
+                        
                             type={showConfirmPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
@@ -171,9 +177,14 @@ function SignUpForm() {
                             placeholder="Confirm Password"
                         />
                     </FormControl>
-                    <Button mt="2" colorScheme="darkBlue.500">
+                    <Button mt="2" backgroundColor={"#0077E6"}>
                         Sign up
                     </Button>
+                    <Box style={styles.formText}>
+                    <Text>
+                        Already have an account? <Link href="" >Sign in</Link>
+                    </Text>
+                    </Box>
                 </VStack>
             </Box>
         </Center>
@@ -249,4 +260,13 @@ const styles = StyleSheet.create({
     formSubmitButton: {
         borderRadius: 50,
     },
+    formText: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    formLink:{
+        color:"#0077E6",
+        textDecoration: 'none'
+    }
 });

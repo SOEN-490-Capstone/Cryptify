@@ -3,8 +3,8 @@ import { AuthenticationController } from "../../../src/authentication/authentica
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
-import { SignUpRequest } from "@cryptify/common/src/types/requests/signUpRequest";
-import { SignInRequest } from "@cryptify/common/src/types/requests/signInRequest";
+import { SignUpRequest } from "@cryptify/common/src/types/requests/sign_up_request";
+import { SignInRequest } from "@cryptify/common/src/types/requests/sign_in_request";
 
 describe("AuthenticationController", () => {
     let controller: AuthenticationController;
@@ -57,7 +57,7 @@ describe("AuthenticationController", () => {
             expect(await controller.signUp(userSignUp)).toStrictEqual(result);
         });
 
-        it("should return status 400 if user data is invalid", async () => {
+        it("should throw a BadRequestException if user data is invalid", async () => {
             userSignUp.email = "";
             await expect(controller.signUp(userSignUp)).rejects.toThrow(BadRequestException);
         });
@@ -76,7 +76,7 @@ describe("AuthenticationController", () => {
             expect(await controller.signIn(userSignIn)).toStrictEqual(result);
         });
 
-        it("Should returnstatus 400 if user can't sign in", async () => {
+        it("Should throw a BadRequestException if user can't sign in", async () => {
             userSignIn.password = "";
             await expect(controller.signIn(userSignIn)).rejects.toThrow(BadRequestException);
         });

@@ -2,8 +2,8 @@ import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { signInSchema, signUpSchema } from "@cryptify/common/src/validations/user";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { Token } from "@cryptify/common/src/types/token";
-import { SignInRequest } from "@cryptify/common/src/types/requests/signInRequest";
-import { SignUpRequest } from "@cryptify/common/src/types/requests/signUpRequest";
+import { SignInRequest } from "@cryptify/common/src/types/requests/sign_in_request";
+import { SignUpRequest } from "@cryptify/common/src/types/requests/sign_up_request";
 
 @Controller("auth")
 export class AuthenticationController {

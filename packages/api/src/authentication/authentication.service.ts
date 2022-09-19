@@ -16,7 +16,7 @@ export class AuthenticationService {
 
         const payload = { sub: user.id };
 
-        return { access_token: this.jwtService.sign(payload) };
+        return { accessToken: this.jwtService.sign(payload) };
     }
 
     async validateUser(email: string, password: string): Promise<Token> {
@@ -24,7 +24,7 @@ export class AuthenticationService {
         try {
             if (await bcrypt.compare(password, user?.password)) {
                 const payload = { sub: user.id };
-                return { access_token: this.jwtService.sign(payload) };
+                return { accessToken: this.jwtService.sign(payload) };
             }
             throw new ForbiddenException();
         } catch {

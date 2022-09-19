@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
-import { User } from "@cryptify/common/src/entities/user";
 
 // Will be used in sign in, ignore for now.
 @Injectable()

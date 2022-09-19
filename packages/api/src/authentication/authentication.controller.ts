@@ -5,7 +5,6 @@ import { AuthenticationService } from "@cryptify/api/src/authentication/authenti
 import { AuthGuard } from "@nestjs/passport";
 import { Token } from "@cryptify/common/src/types/token";
 import { UserCredential } from "@cryptify/common/src/types/UserCredential";
-import { Console } from "console";
 
 @Controller("auth")
 export class AuthenticationController {

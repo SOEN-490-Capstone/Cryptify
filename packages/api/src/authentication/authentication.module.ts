@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AuthenticationService } from "./authentication.service";
 import { AuthenticationController } from "./authentication.controller";
-import { LocalStrategy } from "@cryptify/api/src/authentication/local.strategy";
 import { UsersModule } from "@cryptify/api/src/users/users.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
@@ -21,7 +20,7 @@ import { ConfigModule } from "@nestjs/config";
             secret: process.env.JWT_SECRET,
         }),
     ],
-    providers: [AuthenticationService, LocalStrategy, JwtStrategy],
+    providers: [AuthenticationService, JwtStrategy],
     exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

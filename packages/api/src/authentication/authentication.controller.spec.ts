@@ -46,11 +46,60 @@ describe("AuthenticationController::signUp", () => {
     });
 
     it("should return an access token if user data is valid", async () => {
-        expect(await controller.signUp(user)).toStrictEqual({ access_token: "token" });
+        expect(await controller.signUp(user)).toStrictEqual(result);
     });
 
     it("should return status 400 if user data is invalid", async () => {
         user.email = "";
         await expect(controller.signUp(user)).rejects.toThrow(BadRequestException);
+    });
+});
+
+describe("AuthenticationController::signIn", () => {
+    let controller: AuthenticationController;
+    let fakeAuthService: Partial<AuthenticationService>;
+    let fakeUsersService: Partial<UsersService>;
+
+    let userSignIn: any;
+    const result = { access_token: "token" };
+
+    beforeEach(async () => {
+        fakeAuthService = {
+            validateUser: async () => {
+                return result;
+            },
+        };
+
+        fakeUsersService = {};
+
+        const module: TestingModule = await Test.createTestingModule({
+            controllers: [AuthenticationController],
+            providers: [
+                {
+                    provide: AuthenticationService,
+                    useValue: fakeAuthService,
+                },
+                {
+                    provide: UsersService,
+                    useValue: fakeUsersService,
+                },
+            ],
+        }).compile();
+
+        controller = module.get<AuthenticationController>(AuthenticationController);
+
+        userSignIn = {
+            email: "andre@amazon.com",
+            password: "A23456qwee!",
+        };
+    });
+
+    it("Should return an access token if the user can sign in", async () => {
+        expect(await controller.signIn(userSignIn)).toStrictEqual(result);
+    });
+
+    it("Should returnstatus 400 if user can't sign in", async () => {
+        userSignIn.password = "";
+        await expect(controller.signIn(userSignIn)).rejects.toThrow(BadRequestException);
     });
 });

@@ -1,9 +1,9 @@
-import { BadRequestException, Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { User } from "@cryptify/common/src/entities/user";
-import { signUpSchema } from "@cryptify/common/src/validations/user";
+import { signInSchema, signUpSchema } from "@cryptify/common/src/validations/user";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
-import { AuthGuard } from "@nestjs/passport";
 import { Token } from "@cryptify/common/src/types/token";
+import { SignInRequest } from "@cryptify/common/src/types/requests/SignInRequest";
 
 @Controller("auth")
 export class AuthenticationController {
@@ -20,10 +20,12 @@ export class AuthenticationController {
         return await this.authService.create(value);
     }
 
-    // To Do: re-write in sign in pr
-    @UseGuards(AuthGuard("local"))
     @Post("signin")
-    async signIn(@Req() req): Promise<User> {
-        return req.user;
+    async signIn(@Body() user: SignInRequest): Promise<Token> {
+        const { value, error } = signInSchema.validate(user);
+        if (error) {
+            throw new BadRequestException();
+        }
+        return await this.authService.validateUser(value.email, value.password);
     }
 }

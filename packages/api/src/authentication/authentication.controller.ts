@@ -1,5 +1,4 @@
 import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
-import { User } from "@cryptify/common/src/entities/user";
 import { signInSchema, signUpSchema } from "@cryptify/common/src/validations/user";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { Token } from "@cryptify/common/src/types/token";

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { BaseController } from "./base.controller";
-import { BaseService } from "./base.service";
+import { BaseController } from "../../../src/base/base.controller";
+import { BaseService } from "../../../src/base/base.service";
 
 describe("BaseController", () => {
     let baseController: BaseController;

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { User } from "@cryptify/common/src/entities/user";
 import * as bcrypt from "bcrypt";
@@ -21,10 +21,14 @@ export class AuthenticationService {
 
     async validateUser(email: string, password: string): Promise<Token> {
         const user = await this.usersService.findOne(email);
-        if (user && await bcrypt.compare(password, user.password)) {
-            const payload = { sub: user.id };
-            return { access_token: this.jwtService.sign(payload) };
+        try {
+            if (await bcrypt.compare(password, user?.password)) {
+                const payload = { sub: user.id };
+                return { access_token: this.jwtService.sign(payload) };
+            }
+            throw new ForbiddenException();
+        } catch {
+            throw new ForbiddenException();
         }
-        return null;
     }
 }

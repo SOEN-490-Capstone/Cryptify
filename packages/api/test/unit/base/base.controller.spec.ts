@@ -1,28 +1,29 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { BaseController } from "../../../src/base/base.controller";
-import { BaseService } from "../../../src/base/base.service";
 
 describe("BaseController", () => {
     let baseController: BaseController;
-    let baseService: Partial<BaseService>;
-    const result = "test";
 
     beforeEach(async () => {
-        baseService = {
-            find: () => {
-                return result;
-            },
-        };
-
         const module: TestingModule = await Test.createTestingModule({
             controllers: [BaseController],
-            providers: [{ provide: BaseService, useValue: baseService }],
         }).compile();
 
         baseController = module.get<BaseController>(BaseController);
     });
 
-    it("should be defined", () => {
-        expect(baseController.find()).toBe(result);
+    it("should return process details with all keys and correct types", () => {
+        expect(baseController.find()).toEqual(
+            expect.objectContaining({
+                appId: expect.any(String),
+                appVersion: expect.any(String),
+                uptime: expect.any(Number),
+                environment: expect.any(String),
+                nodeVersion: expect.any(String),
+                platform: expect.any(String),
+                memoryUsage: expect.any(Object),
+                cpuUsage: expect.any(Object),
+            }),
+        );
     });
 });

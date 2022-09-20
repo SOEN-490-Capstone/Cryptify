@@ -1,9 +1,9 @@
-import * as request from "supertest";
+import { agent } from "supertest";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { INestApplication } from "@nestjs/common";
 
-describe("BaseController (e2e)", () => {
+describe("BaseController", () => {
     let app: INestApplication;
 
     beforeAll(async () => {
@@ -15,7 +15,21 @@ describe("BaseController (e2e)", () => {
         await app.init();
     });
 
-    it("/ (GET)", () => {
-        return request(app.getHttpServer()).get("/").expect(200).expect("ok");
+    it("GET /", async () => {
+        const res = await agent(app.getHttpServer()).get("/");
+
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual(
+            expect.objectContaining({
+                appId: expect.any(String),
+                appVersion: expect.any(String),
+                uptime: expect.any(Number),
+                environment: expect.any(String),
+                nodeVersion: expect.any(String),
+                platform: expect.any(String),
+                memoryUsage: expect.any(Object),
+                cpuUsage: expect.any(Object),
+            }),
+        );
     });
 });

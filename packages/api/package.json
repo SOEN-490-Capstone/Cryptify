@@ -5,14 +5,10 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "nest build",
-        "start": "nest start",
         "start:dev": "nest start --watch",
-        "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/api/src/main.js",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:cov": "jest --coverage",
-        "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+        "test:unit": "jest",
+        "test:unit:coverage": "jest --coverage",
         "test:integration": "jest --config test/integration/jest-e2e.json"
     },
     "dependencies": {
@@ -27,7 +23,6 @@
         "bcrypt": "^5.0.1",
         "passport": "^0.6.0",
         "passport-jwt": "^4.0.0",
-        "passport-local": "^1.0.0",
         "pg": "^8.8.0",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
@@ -42,7 +37,6 @@
         "@types/jest": "^28.1.4",
         "@types/node": "^18.0.3",
         "@types/passport-jwt": "^3.0.6",
-        "@types/passport-local": "^1.0.34",
         "@types/supertest": "^2.0.12",
         "jest": "^28.1.2",
         "source-map-support": "^0.5.21",
@@ -65,9 +59,9 @@
             "^.+\\.(t|j)s$": "ts-jest"
         },
         "collectCoverageFrom": [
-            "**/*.(t|j)s"
+            "src/**/*.(t|j)s"
         ],
-        "coverageDirectory": "./coverage",
+        "coverageDirectory": "coverage",
         "testEnvironment": "node"
     }
 }

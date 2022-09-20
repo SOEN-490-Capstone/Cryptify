@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { AuthenticationService } from "./authentication.service";
 import { AuthenticationController } from "./authentication.controller";
-import { UsersModule } from "@cryptify/api/src/users/users.module";
+import { UsersModule } from "../users/users.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
-import { JwtStrategy } from "@cryptify/api/src/authentication/jwt.strategy";
+import { JwtStrategy } from "./strategies/jwt.strategy";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({

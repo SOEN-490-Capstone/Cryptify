@@ -3,8 +3,8 @@ import { AuthenticationController } from "../../../src/authentication/authentica
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
 import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
-import { SignUpRequest } from "@cryptify/common/src/types/requests/sign_up_request";
-import { SignInRequest } from "@cryptify/common/src/types/requests/sign_in_request";
+import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 
 describe("AuthenticationController", () => {
     let controller: AuthenticationController;

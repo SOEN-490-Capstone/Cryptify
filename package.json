@@ -9,7 +9,10 @@
     "client:web:dev": "yarn workspace @cryptify/client web",
     "client:android:dev": "yarn workspace @cryptify/client android",
     "client:ios:dev": "yarn workspace @cryptify/client ios",
+    "client:test:unit": "yarn workspace @cryptify/client test:unit",
     "api:dev": "yarn workspace @cryptify/api start:dev",
+    "api:test:unit": "yarn workspace @cryptify/api test:cov",
+    "api:test:integration": "yarn workspace @cryptify/api test:integration",
     "common:build": "yarn workspace @cryptify/common build",
     "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix",
     "diagrams:build": "yarn workspace @cryptify/diagrams build"

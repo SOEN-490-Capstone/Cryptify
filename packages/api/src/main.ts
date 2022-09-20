@@ -8,4 +8,5 @@ async function bootstrap() {
         console.log(`Server starting on port ${process.env.PORT} in the ${process.env.NODE_ENV} environment`),
     );
 }
+
 bootstrap();

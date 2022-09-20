@@ -8,8 +8,6 @@ import { Repository } from "typeorm";
 describe("UsersController", () => {
     let controller: UsersController;
     let fakeUsersService: Partial<UsersService>;
-    const user = { name: "andre" };
-    const result = { user };
     let fakeUserRepository: Partial<Repository<User>>;
 
     beforeEach(async () => {
@@ -27,7 +25,10 @@ describe("UsersController", () => {
         controller = module.get<UsersController>(UsersController);
     });
 
-    it("should be defined", () => {
+    it("should return user passed in parameters", () => {
+        const user = { name: "andre" };
+        const result = { user };
+
         expect(controller.getProfile(result)).toBe(user);
     });
 });

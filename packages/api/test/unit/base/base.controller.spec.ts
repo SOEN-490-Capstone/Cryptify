@@ -24,6 +24,6 @@ describe("BaseController", () => {
                 memoryUsage: expect.any(Object),
                 cpuUsage: expect.any(Object),
             }),
-);
+        );
     });
 });

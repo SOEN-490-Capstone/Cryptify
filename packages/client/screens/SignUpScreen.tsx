@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+
 
 import {
     Input,
@@ -22,12 +22,20 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMugSaucer } from "@fortawesome/free-solid-svg-icons/faMugSaucer";
+
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { faBluetooth } from "@fortawesome/free-brands-svg-icons";
 import { Formik } from "formik";
-import * as yup from "yup";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+    firstName: Yup.string().trim().min(2, 'Enter a valid first name'),
+    lastName: Yup.string().trim().min(2, 'Enter a valid last name'),
+    email: Yup.string().email('Enter a valid email.'),
+    password: Yup.string().trim().min(6, 'Enter a valid password'),
+    confirmPassword: Yup.string().equals([Yup.ref('password'), null], 'Password does not match')
+})
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
@@ -36,42 +44,31 @@ function SignUpForm() {
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPassword);
 
-    const isValidObjField = (obj: any) => {
-        return Object.values(userInfo).every((value) => value.trim());
-    };
 
     const [errors, setErrors] = React.useState({});
 
-    const [userInfo, setUserInfo] = React.useState({
+    const userInfo = {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
         confirmPassword: "",
-    });
-
-    const { firstName, lastName, email, password, confirmPassword } = userInfo;
-
-    const handleOnChangeText = (value: string, fieldName: string) => {
-        setUserInfo({ ...userInfo, [fieldName]: value });
     };
 
-    const isValidForm = () => {
-        if (!isValidObjField(userInfo)) return;
-    };
+    // const { firstName, lastName, email, password, confirmPassword } = userInfo;
+
+    // const handleOnChangeText = (value: string, fieldName: string) => {
+    //     setUserInfo({ ...userInfo, [fieldName]: value });
+    // };
 
     const submitForm = () => {
-        validate();
-        console.log(userInfo);
-    };
+        console.log(userInfo)
+    }
 
     const validate = () => {
-        if (userInfo.firstName === undefined) {
-            setErrors({ ...errors, [firstName]: "Enter a first name" });
-            return false;
-        }
-        return true;
-    };
+
+    }
+
 
     // const validate = () => {
     //     if (formDataFname.length == 0) {
@@ -88,46 +85,57 @@ function SignUpForm() {
 
     return (
         <Center w="100%">
-            <Box safeArea style={styles.formContainer}>
+            <Formik initialValues={userInfo} validationSchema={validationSchema} 
+            onSubmit={(values) => {
+                console.log("test");
+                console.log(values);
+            }}>
+
+                
+                {({values, errors, touched, handleChange, handleSubmit}) => (
+
+                    
+
+                    <Box safeArea style={styles.formContainer}>
                 <Box style={styles.formTitle}>
                     <Text style={styles.title}>Create your account</Text>
                 </Box>
 
                 <VStack space={3} mt="5">
                     <HStack direction="row" space={3} width="48%">
-                        <FormControl isInvalid={"lastName" in errors}>
+                        <FormControl isInvalid={(errors.firstName && touched.firstName) ? true : false }>
                             <Input
-                                value={firstName}
-                                onChangeText={(value) => handleOnChangeText(value, "firstName")}
+                                value={values.firstName}
+                                onChangeText={handleChange("firstName")}
                                 placeholder="First Name"
                             />
-                            {"firstNameError" in errors ? (
-                                <FormControl.ErrorMessage>Enter a first name</FormControl.ErrorMessage>
-                            ) : null}
+                            
+                         <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
+                            
                         </FormControl>
 
-                        <FormControl>
+                        <FormControl isInvalid={(errors.lastName && touched.lastName)  ? true : false }>
                             <Input
-                                value={lastName}
-                                onChangeText={(value) => handleOnChangeText(value, "lastName")}
+                                value={values.lastName}
+                                onChangeText={handleChange("lastName")}
                                 placeholder="Last Name"
                             />
-                            {"name" in errors ? (
-                                <FormControl.ErrorMessage>Enter a last name.</FormControl.ErrorMessage>
-                            ) : null}
+                            
+                                <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
+                            
                         </FormControl>
                     </HStack>
-                    <FormControl>
+                    <FormControl isInvalid={errors.email ? true : false }>
                         <Input
-                            value={email}
-                            onChangeText={(value) => handleOnChangeText(value, "email")}
+                            value={values.email}
+                            onChangeText={handleChange("email")}
                             placeholder="Email"
                         />
-                        <FormControl.ErrorMessage>Enter a valid email.</FormControl.ErrorMessage>
+                        <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                     </FormControl>
-                    <FormControl>
+                    <FormControl isInvalid={errors.password ? true : false }>
                         <Input
-                            value={password}
+                            value={values.password}
                             type={showPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowPass(!showPassword)}>
@@ -139,15 +147,16 @@ function SignUpForm() {
                                     />
                                 </Pressable>
                             }
-                            onChangeText={(value) => handleOnChangeText(value, "password")}
+                            onChangeText={handleChange("password")}
+                            
                             placeholder="Password (6+ characters)"
                         />
 
-                        <FormControl.ErrorMessage>Enter a valid password.</FormControl.ErrorMessage>
+                        <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                     </FormControl>
-                    <FormControl>
+                    <FormControl isInvalid={errors.confirmPassword ? true : false }>
                         <Input
-                            value={confirmPassword}
+                            value={values.confirmPassword}
                             type={showConfirmPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
@@ -163,26 +172,35 @@ function SignUpForm() {
                                     />
                                 </Pressable>
                             }
-                            onChangeText={(value) => handleOnChangeText(value, "confirmPassword")}
+                            
+                            onChangeText={handleChange("confirmPassword")}
                             placeholder="Confirm Password"
                         />
 
-                        <FormControl.ErrorMessage>Password did not match.</FormControl.ErrorMessage>
+                        <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
                     </FormControl>
 
-                    <Button style={styles.formButton} onPress={submitForm}>
+                    <Button style={styles.formButton} onPress={handleSubmit}>
                         Sign up
                     </Button>
+                    
                     <Box style={styles.formText}>
                         <Text>
                             Already have an account?
-                            <Link href="">
+                            <Link href="#">
                                 <Text style={styles.formLink}>Sign In</Text>
                             </Link>
                         </Text>
                     </Box>
                 </VStack>
             </Box>
+                    
+                 
+                )}
+
+
+            </Formik>
+            
         </Center>
     );
 }
@@ -242,6 +260,7 @@ const styles = StyleSheet.create({
         color: "#0077E6",
         textDecoration: "none",
         fontWeight: "bold",
+        marginLeft: 10,
     },
     formButton: {
         borderRadius: 100,

@@ -5,20 +5,24 @@ import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
+import { Token } from "@cryptify/common/src/types/token";
 
 describe("AuthenticationController", () => {
     let controller: AuthenticationController;
     let fakeAuthService: Partial<AuthenticationService>;
     let fakeUsersService: Partial<UsersService>;
-    const result = { accessToken: "token" };
+
+    let tokenResponse: Token;
 
     beforeEach(async () => {
+        tokenResponse = { accessToken: "token" };
+
         fakeAuthService = {
             create: async () => {
-                return result;
+                return tokenResponse;
             },
             validateUser: async () => {
-                return result;
+                return tokenResponse;
             },
         };
 
@@ -42,10 +46,10 @@ describe("AuthenticationController", () => {
     });
 
     describe("AuthenticationController::signUp", () => {
-        let userSignUp: SignUpRequest;
+        let signUpRequest: SignUpRequest;
 
         beforeEach(() => {
-            userSignUp = {
+            signUpRequest = {
                 email: "andre@amazon.com",
                 firstName: "Andre",
                 lastName: "ibra",
@@ -54,31 +58,32 @@ describe("AuthenticationController", () => {
         });
 
         it("should return an access token if user data is valid", async () => {
-            expect(await controller.signUp(userSignUp)).toStrictEqual(result);
+            expect(await controller.signUp(signUpRequest)).toStrictEqual(tokenResponse);
         });
 
-        it("should throw a BadRequestException if user data is invalid", async () => {
-            userSignUp.email = "";
-            await expect(controller.signUp(userSignUp)).rejects.toThrow(BadRequestException);
+        it("should throw a BadRequestException if email is missing from request body", async () => {
+            signUpRequest.email = "";
+            await expect(controller.signUp(signUpRequest)).rejects.toThrow(BadRequestException);
         });
     });
 
     describe("AuthenticationController::signIn", () => {
-        let userSignIn: SignInRequest;
+        let signInRequest: SignInRequest;
 
         beforeEach(() => {
-            userSignIn = {
+            signInRequest = {
                 email: "andre@amazon.com",
                 password: "A23456qwee!",
             };
         });
+
         it("Should return an access token if the user can sign in", async () => {
-            expect(await controller.signIn(userSignIn)).toStrictEqual(result);
+            expect(await controller.signIn(signInRequest)).toStrictEqual(tokenResponse);
         });
 
-        it("Should throw a BadRequestException if user can't sign in", async () => {
-            userSignIn.password = "";
-            await expect(controller.signIn(userSignIn)).rejects.toThrow(BadRequestException);
+        it("Should throw a BadRequestException if password is missing from request body", async () => {
+            signInRequest.password = "";
+            await expect(controller.signIn(signInRequest)).rejects.toThrow(BadRequestException);
         });
     });
 });

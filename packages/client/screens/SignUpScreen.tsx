@@ -1,51 +1,27 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-
-
-import {
-    Input,
-    Button,
-    Box,
-    Center,
-    NativeBaseProvider,
-    Checkbox,
-    Link,
-    VStack,
-    FormControl,
-    Heading,
-    Icon,
-    Pressable,
-    HStack,
-} from "native-base";
-
-import EditScreenInfo from "../components/EditScreenInfo";
+import { StyleSheet } from "react-native";
+import { Input, Button, Box, Center, Link, VStack, FormControl, Icon, Pressable, HStack } from "native-base";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
-
-
-
 import { MaterialIcons } from "@expo/vector-icons";
-import { faBluetooth } from "@fortawesome/free-brands-svg-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    firstName: Yup.string().trim().min(2, 'Enter a valid first name'),
-    lastName: Yup.string().trim().min(2, 'Enter a valid last name'),
-    email: Yup.string().email('Enter a valid email.'),
-    password: Yup.string().trim().min(6, 'Enter a valid password'),
-    confirmPassword: Yup.string().equals([Yup.ref('password'), null], 'Password does not match')
-})
+    firstName: Yup.string().trim().min(2, "Enter a valid first name").required("Enter a valid first name"),
+    lastName: Yup.string().trim().min(2, "Enter a valid last name").required("Enter a valid last name"),
+    email: Yup.string().email("Enter a valid email").required("Enter a valid email"),
+    password: Yup.string().trim().min(6, "Enter a valid password").required("Enter a valid password"),
+    confirmPassword: Yup.string()
+        .equals([Yup.ref("password"), null], "Password does not match")
+        .required("Password does not match"),
+});
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
-    const handleClickPass = () => setShowPass(!showPassword);
+    
 
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
-    const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPassword);
-
-
-    const [errors, setErrors] = React.useState({});
+    
 
     const userInfo = {
         firstName: "",
@@ -55,152 +31,124 @@ function SignUpForm() {
         confirmPassword: "",
     };
 
-    // const { firstName, lastName, email, password, confirmPassword } = userInfo;
-
-    // const handleOnChangeText = (value: string, fieldName: string) => {
-    //     setUserInfo({ ...userInfo, [fieldName]: value });
-    // };
-
-    const submitForm = () => {
-        console.log(userInfo)
-    }
-
-    const validate = () => {
-
-    }
-
-
-    // const validate = () => {
-    //     if (formDataFname.length == 0) {
-    //         setErrors({ ...errors, name: "Name is required" });
-    //         console.log("error");
-    //         return false;
-    //     }
-    //     return true;
-    // };
-
-    // const onSubmit = () => {
-    //     validate() ? console.log("Submitted") : console.log("Validation Failed");
-    // };
-
     return (
         <Center w="100%">
-            <Formik initialValues={userInfo} validationSchema={validationSchema} 
-            onSubmit={(values) => {
-                console.log("test");
-                console.log(values);
-            }}>
+            <Formik
+                initialValues={userInfo}
+                validationSchema={validationSchema}
+                onSubmit={(values) => {
+                    console.log(values);
 
-                
-                {({values, errors, touched, handleChange, handleSubmit}) => (
+                    fetch("", {
+                        method: "POST",
 
-                    
-
+                        body: JSON.stringify({
+                            firstName: values.firstName,
+                            lastName: values.lastName,
+                            email: values.email,
+                            password: values.password,
+                        }),
+                    });
+                }}
+            >
+                {({ values, errors, touched, handleChange, submitForm }) => (
                     <Box safeArea style={styles.formContainer}>
-                <Box style={styles.formTitle}>
-                    <Text style={styles.title}>Create your account</Text>
-                </Box>
+                        <Box style={styles.formTitle}>
+                            <Text style={styles.title}>Create your account</Text>
+                        </Box>
 
-                <VStack space={3} mt="5">
-                    <HStack direction="row" space={3} width="48%">
-                        <FormControl isInvalid={(errors.firstName && touched.firstName) ? true : false }>
-                            <Input
-                                value={values.firstName}
-                                onChangeText={handleChange("firstName")}
-                                placeholder="First Name"
-                            />
-                            
-                         <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
-                            
-                        </FormControl>
-
-                        <FormControl isInvalid={(errors.lastName && touched.lastName)  ? true : false }>
-                            <Input
-                                value={values.lastName}
-                                onChangeText={handleChange("lastName")}
-                                placeholder="Last Name"
-                            />
-                            
-                                <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
-                            
-                        </FormControl>
-                    </HStack>
-                    <FormControl isInvalid={errors.email ? true : false }>
-                        <Input
-                            value={values.email}
-                            onChangeText={handleChange("email")}
-                            placeholder="Email"
-                        />
-                        <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={errors.password ? true : false }>
-                        <Input
-                            value={values.password}
-                            type={showPassword ? "text" : "password"}
-                            InputRightElement={
-                                <Pressable onPress={() => setShowPass(!showPassword)}>
-                                    <Icon
-                                        as={<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />}
-                                        size={5}
-                                        mr="2"
-                                        color="muted.400"
+                        <VStack space={3} mt="5">
+                            <HStack direction="row" space={3} width="48%">
+                                <FormControl isInvalid={errors.firstName && touched.firstName ? true : false}>
+                                    <Input
+                                        value={values.firstName}
+                                        onChangeText={handleChange("firstName")}
+                                        placeholder="First Name"
+                                        _invalid={styles.formError}
                                     />
-                                </Pressable>
-                            }
-                            onChangeText={handleChange("password")}
-                            
-                            placeholder="Password (6+ characters)"
-                        />
 
-                        <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={errors.confirmPassword ? true : false }>
-                        <Input
-                            value={values.confirmPassword}
-                            type={showConfirmPassword ? "text" : "password"}
-                            InputRightElement={
-                                <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
-                                    <Icon
-                                        as={
-                                            <MaterialIcons
-                                                name={showConfirmPassword ? "visibility" : "visibility-off"}
+                                    <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
+                                </FormControl>
+
+                                <FormControl isInvalid={errors.lastName && touched.lastName ? true : false}>
+                                    <Input
+                                        value={values.lastName}
+                                        onChangeText={handleChange("lastName")}
+                                        placeholder="Last Name"
+                                    />
+
+                                    <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
+                                </FormControl>
+                            </HStack>
+                            <FormControl isInvalid={errors.email && touched.email ? true : false}>
+                                <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
+                                <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={errors.password && touched.password ? true : false}>
+                                <Input
+                                    value={values.password}
+                                    type={showPassword ? "text" : "password"}
+                                    InputRightElement={
+                                        <Pressable onPress={() => setShowPass(!showPassword)}>
+                                            <Icon
+                                                as={
+                                                    <MaterialIcons
+                                                        name={showPassword ? "visibility" : "visibility-off"}
+                                                    />
+                                                }
+                                                size={5}
+                                                mr="2"
+                                                color="muted.400"
                                             />
-                                        }
-                                        size={5}
-                                        mr="2"
-                                        color="muted.400"
-                                    />
-                                </Pressable>
-                            }
-                            
-                            onChangeText={handleChange("confirmPassword")}
-                            placeholder="Confirm Password"
-                        />
+                                        </Pressable>
+                                    }
+                                    onChangeText={handleChange("password")}
+                                    placeholder="Password (6+ characters)"
+                                />
 
-                        <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
-                    </FormControl>
+                                <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword ? true : false}>
+                                <Input
+                                    value={values.confirmPassword}
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    InputRightElement={
+                                        <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
+                                            <Icon
+                                                as={
+                                                    <MaterialIcons
+                                                        name={showConfirmPassword ? "visibility" : "visibility-off"}
+                                                    />
+                                                }
+                                                size={5}
+                                                mr="2"
+                                                color="muted.400"
+                                            />
+                                        </Pressable>
+                                    }
+                                    onChangeText={handleChange("confirmPassword")}
+                                    placeholder="Confirm Password"
+                                />
 
-                    <Button style={styles.formButton} onPress={handleSubmit}>
-                        Sign up
-                    </Button>
-                    
-                    <Box style={styles.formText}>
-                        <Text>
-                            Already have an account?
-                            <Link href="#">
-                                <Text style={styles.formLink}>Sign In</Text>
-                            </Link>
-                        </Text>
+                                <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
+                            </FormControl>
+
+                            <Button style={styles.formButton} onPress={submitForm}>
+                                Sign up
+                            </Button>
+
+                            <Box style={styles.formText}>
+                                <Text>
+                                    Already have an account?
+                                    <Link href="#">
+                                        <Text style={styles.formLink}>Sign In</Text>
+                                    </Link>
+                                </Text>
+                            </Box>
+                        </VStack>
                     </Box>
-                </VStack>
-            </Box>
-                    
-                 
                 )}
-
-
             </Formik>
-            
         </Center>
     );
 }
@@ -266,5 +214,9 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: "#0077E6",
         marginVertical: 10,
+    },
+    formError: {
+        backgroundColor: "#FFE4E6",
+        borderColor: "#DC2626",
     },
 });

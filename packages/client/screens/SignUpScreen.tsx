@@ -26,6 +26,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMugSaucer } from "@fortawesome/free-solid-svg-icons/faMugSaucer";
 import { MaterialIcons } from "@expo/vector-icons";
 import { faBluetooth } from "@fortawesome/free-brands-svg-icons";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
@@ -34,113 +36,98 @@ function SignUpForm() {
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPassword);
 
-    const [formDataFname, setDataFname] = React.useState("");
-
-    const [formDataLname, setDataLname] = React.useState({});
+    const isValidObjField = (obj: any) => {
+        return Object.values(userInfo).every((value) => value.trim());
+    };
 
     const [errors, setErrors] = React.useState({});
 
+    const [userInfo, setUserInfo] = React.useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const { firstName, lastName, email, password, confirmPassword } = userInfo;
+
+    const handleOnChangeText = (value: string, fieldName: string) => {
+        setUserInfo({ ...userInfo, [fieldName]: value });
+    };
+
+    const isValidForm = () => {
+        if (!isValidObjField(userInfo)) return;
+    };
+
+    const submitForm = () => {
+        validate();
+        console.log(userInfo);
+    };
+
     const validate = () => {
-        if (formDataFname.length == 0) {
-            setErrors({ ...errors, name: "Name is required" });
-            console.log("error");
+        if (userInfo.firstName === undefined) {
+            setErrors({ ...errors, [firstName]: "Enter a first name" });
             return false;
         }
         return true;
     };
 
-    const onSubmit = () => {
-        validate() ? console.log("Submitted") : console.log("Validation Failed");
-    };
+    // const validate = () => {
+    //     if (formDataFname.length == 0) {
+    //         setErrors({ ...errors, name: "Name is required" });
+    //         console.log("error");
+    //         return false;
+    //     }
+    //     return true;
+    // };
+
+    // const onSubmit = () => {
+    //     validate() ? console.log("Submitted") : console.log("Validation Failed");
+    // };
 
     return (
-        // <VStack style={styles.formContainer}>
-
-        //     <Box style={styles.formTitle}>
-        //         <Text style={styles.title}>Create your account</Text>
-        //     </Box>
-
-        //     <Box style={styles.formInputsContainer}>
-        //         <Box style={styles.formNameInputBox}>
-        //             <FormControl>
-        //                 <Input
-        //                     style={styles.formNameInput}
-        //                     placeholder="First name"
-        //                     onChangeText={(value) => setDataFname(value)}
-        //                 />
-        //                 <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
-        //             </FormControl>
-
-        //             <FormControl>
-        //                 <Input
-        //                     style={styles.formNameInput}
-        //                     placeholder="Last name"
-        //                     onChangeText={(value) => setDataLname({ ...formDataLname, name: value })}
-        //                 />
-        //             </FormControl>
-        //         </Box>
-
-        //         <Box style={styles.formColumnInputs}>
-        //             <FormControl>
-        //                 <Input style={styles.formInput} placeholder="Email" />
-        //             </FormControl>
-        //         </Box>
-
-        //         <Box style={styles.formColumnInputs}>
-        //             <FormControl>
-        //                 <Input
-        //                     style={styles.formInput}
-        //                     placeholder="Password (6+ characters)"
-        //                     type={showPassword ? "text" : "password"}
-        //                     InputRightElement={<Button onPress={handleClickPass}> </Button>}
-        //                 />
-        //             </FormControl>
-        //         </Box>
-
-        //         <Box style={styles.formColumnInputs}>
-        //             <FormControl>
-        //                 <Input
-        //                     style={styles.formInput}
-        //                     placeholder="Confirm Password"
-        //                     type={showConfirmPassword ? "text" : "password"}
-        //                     InputRightElement={<Button onPress={handleClickConfirmPass}> </Button>}
-        //                 />
-        //             </FormControl>
-        //         </Box>
-        //     </Box>
-
-        //     <Button style={styles.formSubmitButton} onPress={onSubmit}>
-        //         Sign Up
-        //     </Button>
-        //     <Text>
-        //         Already have an account? <Link href="">Sign in</Link>
-        //     </Text>
-        // </VStack>
-
-        <Center w="100%" >
-            <Box safeArea p="2" w="90%" maxW="290" py="8" style={styles.formContainer}>
+        <Center w="100%">
+            <Box safeArea style={styles.formContainer}>
                 <Box style={styles.formTitle}>
                     <Text style={styles.title}>Create your account</Text>
                 </Box>
+
                 <VStack space={3} mt="5">
+                    <HStack direction="row" space={3} width="48%">
+                        <FormControl isInvalid={"lastName" in errors}>
+                            <Input
+                                value={firstName}
+                                onChangeText={(value) => handleOnChangeText(value, "firstName")}
+                                placeholder="First Name"
+                            />
+                            {"firstNameError" in errors ? (
+                                <FormControl.ErrorMessage>Enter a first name</FormControl.ErrorMessage>
+                            ) : null}
+                        </FormControl>
 
-                  <HStack direction="row" space={3} width="48%" >  
+                        <FormControl>
+                            <Input
+                                value={lastName}
+                                onChangeText={(value) => handleOnChangeText(value, "lastName")}
+                                placeholder="Last Name"
+                            />
+                            {"name" in errors ? (
+                                <FormControl.ErrorMessage>Enter a last name.</FormControl.ErrorMessage>
+                            ) : null}
+                        </FormControl>
+                    </HStack>
                     <FormControl>
-                    <Input placeholder="First Name"/>
-                    </FormControl>
-
-                    <FormControl>
-                    <Input placeholder="Last Name"/>
-                    </FormControl>
-                </HStack>
-                    <FormControl>
-                        
-                        <Input placeholder="Email"/>
-                    </FormControl>
-                    <FormControl>
-                        
                         <Input
-                            
+                            value={email}
+                            onChangeText={(value) => handleOnChangeText(value, "email")}
+                            placeholder="Email"
+                        />
+                        <FormControl.ErrorMessage>Enter a valid email.</FormControl.ErrorMessage>
+                    </FormControl>
+                    <FormControl>
+                        <Input
+                            value={password}
                             type={showPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowPass(!showPassword)}>
@@ -152,13 +139,15 @@ function SignUpForm() {
                                     />
                                 </Pressable>
                             }
+                            onChangeText={(value) => handleOnChangeText(value, "password")}
                             placeholder="Password (6+ characters)"
                         />
+
+                        <FormControl.ErrorMessage>Enter a valid password.</FormControl.ErrorMessage>
                     </FormControl>
                     <FormControl>
-                        
                         <Input
-                        
+                            value={confirmPassword}
                             type={showConfirmPassword ? "text" : "password"}
                             InputRightElement={
                                 <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
@@ -174,16 +163,23 @@ function SignUpForm() {
                                     />
                                 </Pressable>
                             }
+                            onChangeText={(value) => handleOnChangeText(value, "confirmPassword")}
                             placeholder="Confirm Password"
                         />
+
+                        <FormControl.ErrorMessage>Password did not match.</FormControl.ErrorMessage>
                     </FormControl>
-                    <Button mt="2" backgroundColor={"#0077E6"}>
+
+                    <Button style={styles.formButton} onPress={submitForm}>
                         Sign up
                     </Button>
                     <Box style={styles.formText}>
-                    <Text>
-                        Already have an account? <Link href="" >Sign in</Link>
-                    </Text>
+                        <Text>
+                            Already have an account?
+                            <Link href="">
+                                <Text style={styles.formLink}>Sign In</Text>
+                            </Link>
+                        </Text>
                     </Box>
                 </VStack>
             </Box>
@@ -211,7 +207,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: "#E5E5E5",
         borderStyle: "solid",
-
+        p: "2",
+        w: "90%",
+        maxW: "290",
+        py: "8",
         paddingHorizontal: 40,
         paddingVertical: 50,
         flexDirection: "column",
@@ -220,53 +219,33 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: "bold",
     },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: "80%",
-    },
+
     formTitle: {
         paddingBottom: 10,
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
     },
-    formInputsContainer: {
-        padding: 10,
-    },
-    formNameInputBox: {
-        flex: 1,
-        width: "40%",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 10,
-        height: 46,
-        maxWidth: 100,
-        margin: "0 auto",
-    },
+
     formColumnInputs: {
-        marginBottom: 10,
-    },
-    formNameInput: {
-        height: 46,
-    },
-    formInput: {
-        height: 46,
         borderRadius: 10,
-    },
-    formSubmitButton: {
-        borderRadius: 50,
     },
     formText: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
     },
-    formLink:{
-        color:"#0077E6",
-        textDecoration: 'none'
-    }
+    formLink: {
+        color: "#0077E6",
+        textDecoration: "none",
+        fontWeight: "bold",
+    },
+    formButton: {
+        borderRadius: 100,
+        backgroundColor: "#0077E6",
+        marginVertical: 10,
+    },
 });

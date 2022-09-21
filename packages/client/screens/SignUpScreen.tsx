@@ -107,13 +107,13 @@ function SignUpForm() {
                                                 size={5}
                                                 mr="2"
                                                 color="muted.400"
-                                                style = {(errors.password && touched.password) ? styles.formError : null}
+                                                
                                             />
                                         </Pressable>
                                     }
                                     onChangeText={handleChange("password")}
                                     placeholder="Password (6+ characters)"
-                                    style = {(errors.password && touched.password) ? styles.formError : null}
+                                    
 
                                 />
 
@@ -123,7 +123,7 @@ function SignUpForm() {
                                 <Input
                                     value={values.confirmPassword}
                                     type={showConfirmPassword ? "text" : "password"}
-                                    style = {(errors.confirmPassword && touched.confirmPassword) ? styles.formError : null}
+                                    
                                     InputRightElement={
                                         <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
                                             

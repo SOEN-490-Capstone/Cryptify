@@ -5,4 +5,4 @@ import * as yup from "yup";
 export const passwordSchema = yup
     .string()
     .matches(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()?+=_]).{8,20}$"))
-    .required();
+    .required("Enter a valid password");

@@ -4,17 +4,7 @@ import { Input, Button, Box, Center, Link, VStack, FormControl, Icon, Pressable,
 import { Text, View } from "../components/Themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
-import * as Yup from "yup";
-
-const validationSchema = Yup.object().shape({
-    firstName: Yup.string().trim().min(2, "Enter a valid first name").required("Enter a valid first name"),
-    lastName: Yup.string().trim().min(2, "Enter a valid last name").required("Enter a valid last name"),
-    email: Yup.string().email("Enter a valid email").required("Enter a valid email"),
-    password: Yup.string().trim().min(6, "Enter a valid password").required("Enter a valid password"),
-    confirmPassword: Yup.string()
-        .equals([Yup.ref("password"), null], "Password does not match")
-        .required("Password does not match"),
-});
+import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
@@ -32,7 +22,7 @@ function SignUpForm() {
         <Center w="100%">
             <Formik
                 initialValues={userInfo}
-                validationSchema={validationSchema}
+                validationSchema={signUpSchema}
                 onSubmit={(values) => {
                     async () => {
                         try {

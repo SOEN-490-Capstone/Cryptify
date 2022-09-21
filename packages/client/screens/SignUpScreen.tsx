@@ -18,10 +18,7 @@ const validationSchema = Yup.object().shape({
 
 function SignUpForm() {
     const [showPassword, setShowPass] = React.useState(false);
-    
-
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
-    
 
     const userInfo = {
         firstName: "",
@@ -37,18 +34,23 @@ function SignUpForm() {
                 initialValues={userInfo}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
-                    console.log(values);
-
-                    fetch("", {
-                        method: "POST",
-
-                        body: JSON.stringify({
-                            firstName: values.firstName,
-                            lastName: values.lastName,
-                            email: values.email,
-                            password: values.password,
-                        }),
-                    });
+                    async () => {
+                        try {
+                            let response = await fetch("localhost:3001/auth/signup", {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    firstName: values.firstName,
+                                    lastName: values.lastName,
+                                    email: values.email,
+                                    password: values.password,
+                                }),
+                            });
+                            let json = await response.json();
+                            return json.values;
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    };
                 }}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
@@ -64,7 +66,7 @@ function SignUpForm() {
                                         value={values.firstName}
                                         onChangeText={handleChange("firstName")}
                                         placeholder="First Name"
-                                        _invalid={styles.formError}
+                                        style={errors.firstName && touched.firstName ? styles.formError : null}
                                     />
 
                                     <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
@@ -75,13 +77,19 @@ function SignUpForm() {
                                         value={values.lastName}
                                         onChangeText={handleChange("lastName")}
                                         placeholder="Last Name"
+                                        style={errors.lastName && touched.lastName ? styles.formError : null}
                                     />
 
                                     <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
                                 </FormControl>
                             </HStack>
                             <FormControl isInvalid={errors.email && touched.email ? true : false}>
-                                <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
+                                <Input
+                                    value={values.email}
+                                    onChangeText={handleChange("email")}
+                                    placeholder="Email"
+                                    style={errors.email && touched.email ? styles.formError : null}
+                                />
                                 <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                             </FormControl>
                             <FormControl isInvalid={errors.password && touched.password ? true : false}>
@@ -99,21 +107,26 @@ function SignUpForm() {
                                                 size={5}
                                                 mr="2"
                                                 color="muted.400"
+                                                style = {(errors.password && touched.password) ? styles.formError : null}
                                             />
                                         </Pressable>
                                     }
                                     onChangeText={handleChange("password")}
                                     placeholder="Password (6+ characters)"
+                                    style = {(errors.password && touched.password) ? styles.formError : null}
+
                                 />
 
                                 <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword ? true : false}>
+                            <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword ? true : false} >
                                 <Input
                                     value={values.confirmPassword}
                                     type={showConfirmPassword ? "text" : "password"}
+                                    style = {(errors.confirmPassword && touched.confirmPassword) ? styles.formError : null}
                                     InputRightElement={
                                         <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
+                                            
                                             <Icon
                                                 as={
                                                     <MaterialIcons
@@ -123,11 +136,15 @@ function SignUpForm() {
                                                 size={5}
                                                 mr="2"
                                                 color="muted.400"
+                                                
+                                                
                                             />
                                         </Pressable>
-                                    }
+                                    
+                                }
                                     onChangeText={handleChange("confirmPassword")}
                                     placeholder="Confirm Password"
+
                                 />
 
                                 <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
@@ -206,7 +223,7 @@ const styles = StyleSheet.create({
     },
     formLink: {
         color: "#0077E6",
-        textDecoration: "none",
+        textDecorationLine: "none",
         fontWeight: "bold",
         marginLeft: 10,
     },
@@ -217,6 +234,7 @@ const styles = StyleSheet.create({
     },
     formError: {
         backgroundColor: "#FFE4E6",
+        borderWidth: 0.5,
         borderColor: "#DC2626",
     },
 });

@@ -5,6 +5,7 @@ import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
+import { useValidate } from "@cryptify/api/src/hooks/use_validate";
 
 @Controller("auth")
 export class AuthenticationController {
@@ -12,14 +13,14 @@ export class AuthenticationController {
 
     @Post("signup")
     async signUp(@Body() body: SignUpRequest): Promise<Token> {
-        const signUpReq = await signUpSchema.validate(body);
+        const signUpReq = await useValidate(signUpSchema, body);
 
         return await this.authService.signUp(signUpReq);
     }
 
     @Post("signin")
     async signIn(@Body() body: SignInRequest): Promise<Token> {
-        const signInReq = await signInSchema.validate(body);
+        const signInReq = await useValidate(signInSchema, body);
 
         return await this.authService.signIn(signInReq);
     }

@@ -1,4 +1,4 @@
-import yup from "yup";
+import * as yup from "yup";
 
 // Password requires at least 1 upper case, 1 lower case letter, 1 number, 1 special character, and
 // has a minimum length of 8 characters

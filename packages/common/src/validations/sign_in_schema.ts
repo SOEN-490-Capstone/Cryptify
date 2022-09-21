@@ -1,4 +1,4 @@
-import yup from "yup";
+import * as yup from "yup";
 import { passwordSchema } from "@cryptify/common/src/validations/password_schema";
 
 export const signInSchema = yup

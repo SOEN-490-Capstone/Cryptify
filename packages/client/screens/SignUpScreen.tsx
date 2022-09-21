@@ -36,7 +36,7 @@ function SignUpForm() {
                 onSubmit={(values) => {
                     async () => {
                         try {
-                            let response = await fetch("localhost:3001/auth/signup", {
+                            const response = await fetch("localhost:3001/auth/signup", {
                                 method: "POST",
                                 body: JSON.stringify({
                                     firstName: values.firstName,
@@ -45,7 +45,7 @@ function SignUpForm() {
                                     password: values.password,
                                 }),
                             });
-                            let json = await response.json();
+                            const json = await response.json();
                             return json.values;
                         } catch (error) {
                             console.error(error);

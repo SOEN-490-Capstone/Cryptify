@@ -107,26 +107,21 @@ function SignUpForm() {
                                                 size={5}
                                                 mr="2"
                                                 color="muted.400"
-                                                
                                             />
                                         </Pressable>
                                     }
                                     onChangeText={handleChange("password")}
                                     placeholder="Password (6+ characters)"
-                                    
-
                                 />
 
                                 <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword ? true : false} >
+                            <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword ? true : false}>
                                 <Input
                                     value={values.confirmPassword}
                                     type={showConfirmPassword ? "text" : "password"}
-                                    
                                     InputRightElement={
                                         <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
-                                            
                                             <Icon
                                                 as={
                                                     <MaterialIcons
@@ -136,15 +131,11 @@ function SignUpForm() {
                                                 size={5}
                                                 mr="2"
                                                 color="muted.400"
-                                                
-                                                
                                             />
                                         </Pressable>
-                                    
-                                }
+                                    }
                                     onChangeText={handleChange("confirmPassword")}
                                     placeholder="Confirm Password"
-
                                 />
 
                                 <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>

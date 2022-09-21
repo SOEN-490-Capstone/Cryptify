@@ -4,8 +4,8 @@ import { User } from "@cryptify/common/src/entities/user";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { Token } from "@cryptify/common/src/types/token";
-import {SignUpRequest} from "@cryptify/common/src/requests/sign_up_request";
-import {SignInRequest} from "@cryptify/common/src/requests/sign_in_request";
+import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 
 @Injectable()
 export class AuthenticationService {

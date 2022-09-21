@@ -18,10 +18,10 @@ describe("AuthenticationController", () => {
         tokenResponse = { accessToken: "token" };
 
         fakeAuthService = {
-            create: async () => {
+            signUp: async () => {
                 return tokenResponse;
             },
-            validateUser: async () => {
+            signIn: async () => {
                 return tokenResponse;
             },
         };

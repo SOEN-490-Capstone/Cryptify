@@ -1,6 +1,6 @@
-import {SignUpRequest} from "@cryptify/common/src/requests/sign_up_request";
-import {JwtToken} from "@cryptify/common/src/types/jwt_token";
-import {request} from "./request";
+import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { JwtToken } from "@cryptify/common/src/types/jwt_token";
+import { request } from "./request";
 
 async function signUp(req: SignUpRequest): Promise<JwtToken> {
     const path = "auth/signup";
@@ -9,4 +9,4 @@ async function signUp(req: SignUpRequest): Promise<JwtToken> {
 
 export default {
     signUp,
-}
+};

@@ -1,18 +1,16 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, Box, Center, Link, VStack, FormControl, Icon, Pressable, HStack } from "native-base";
+import { Input, Button, Box, Center, VStack, FormControl, Pressable, HStack } from "native-base";
 import { Text, View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faEyeCustom} from "../components/icons/faEyeCustom";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
 import AuthGateway from "../gateways/auth_gateway";
-import {put} from "../services/storage_service";
-import {JwtToken} from "@cryptify/common/src/types/jwt_token";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {RootTabScreenProps} from "../types";
-import {SignUpRequest} from "@cryptify/common/src/requests/sign_up_request";
+import { put } from "../services/storage_service";
+import { RootTabScreenProps } from "../types";
+import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
@@ -33,8 +31,8 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
 
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'TabOne' }]
-            })
+                routes: [{ name: "HomeScreen" }],
+            });
         } catch (error) {
             console.error(error);
         }
@@ -43,11 +41,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
     return (
         <View style={styles.container}>
             <Center w="100%">
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={signUpSchema}
-                    onSubmit={onSubmitSignUp}
-                >
+                <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
                     {({ values, errors, touched, handleChange, submitForm }) => (
                         <Box safeArea style={styles.formContainer}>
                             <Box style={styles.formTitle}>
@@ -109,13 +103,16 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                         type={showConfirmPassword ? "text" : "password"}
                                         InputRightElement={
                                             <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
-                                                <FontAwesomeIcon icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom} />
-
+                                                <FontAwesomeIcon
+                                                    icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom}
+                                                />
                                             </Pressable>
                                         }
                                         onChangeText={handleChange("confirmPassword")}
                                         placeholder="Confirm Password"
-                                        style={errors.confirmPassword && touched.confirmPassword ? styles.formError : null}
+                                        style={
+                                            errors.confirmPassword && touched.confirmPassword ? styles.formError : null
+                                        }
                                     />
 
                                     <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>

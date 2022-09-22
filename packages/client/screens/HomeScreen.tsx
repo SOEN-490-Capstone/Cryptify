@@ -1,10 +1,9 @@
-import {JwtToken} from "@cryptify/common/src/types/jwt_token";
+import { JwtToken } from "@cryptify/common/src/types/jwt_token";
 import { Text } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
 import React from "react";
-import {get} from "../services/storage_service";
+import { get } from "../services/storage_service";
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<"HomeScreen">) {
+export default function HomeScreen() {
     const [token, setToken] = React.useState("");
 
     React.useEffect(() => {
@@ -14,9 +13,5 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"HomeScree
         })();
     }, []);
 
-    return (
-        <Text>
-            Token: {token}
-        </Text>
-    );
+    return <Text>Token: {token}</Text>;
 }

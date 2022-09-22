@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function put(key: string, value: any): Promise<void> {
+async function put(key: string, value: any): Promise<void> {
     const serializedValue = JSON.stringify(value);
     await AsyncStorage.setItem(key, serializedValue);
 }
 
-export async function get<T>(key: string): Promise<T> {
+async function get<T>(key: string): Promise<T> {
     const value = await AsyncStorage.getItem(key);
 
     if (value == null) {
@@ -13,3 +13,8 @@ export async function get<T>(key: string): Promise<T> {
     }
     return JSON.parse(value) as T;
 }
+
+export default {
+    put,
+    get,
+};

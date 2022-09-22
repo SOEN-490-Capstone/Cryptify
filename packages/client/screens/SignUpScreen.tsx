@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
 import AuthGateway from "../gateways/auth_gateway";
-import { put } from "../services/storage_service";
+import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 
@@ -27,7 +27,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
     async function onSubmitSignUp(values: SignUpRequest): Promise<void> {
         try {
             const token = await AuthGateway.signUp(values);
-            put("@jwt", token);
+            StorageService.put("@jwt", token);
 
             navigation.reset({
                 index: 0,
@@ -87,7 +87,10 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                         type={showPassword ? "text" : "password"}
                                         InputRightElement={
                                             <Pressable onPress={() => setShowPass(!showPassword)}>
-                                                <FontAwesomeIcon icon={showPassword ? faEyeCustom : faEyeSlashCustom} />
+                                                <FontAwesomeIcon
+                                                    icon={showPassword ? faEyeCustom : faEyeSlashCustom}
+                                                    style={styles.eyeIcon}
+                                                />
                                             </Pressable>
                                         }
                                         onChangeText={handleChange("password")}
@@ -105,6 +108,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                             <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
                                                 <FontAwesomeIcon
                                                     icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom}
+                                                    style={styles.eyeIcon}
                                                 />
                                             </Pressable>
                                         }
@@ -175,5 +179,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFE4E6",
         borderWidth: 0.5,
         borderColor: "#DC2626",
+    },
+
+    eyeIcon: {
+        color: "#404040",
+        width: 20,
+        height: 16,
+        marginRight: 12,
     },
 });

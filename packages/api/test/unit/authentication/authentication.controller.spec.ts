@@ -5,14 +5,14 @@ import { UsersService } from "@cryptify/api/src/users/users.service";
 import { BadRequestException } from "@nestjs/common";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
-import { Token } from "@cryptify/common/src/types/token";
+import { JwtToken } from "@cryptify/common/src/types/jwt_token";
 
 describe("AuthenticationController", () => {
     let controller: AuthenticationController;
     let fakeAuthService: Partial<AuthenticationService>;
     let fakeUsersService: Partial<UsersService>;
 
-    let tokenResponse: Token;
+    let tokenResponse: JwtToken;
 
     beforeEach(async () => {
         tokenResponse = { accessToken: "token" };

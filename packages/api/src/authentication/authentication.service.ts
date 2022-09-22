@@ -3,7 +3,7 @@ import { UsersService } from "../users/users.service";
 import { User } from "@cryptify/common/src/entities/user";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
-import { Token } from "@cryptify/common/src/types/token";
+import { JwtToken } from "@cryptify/common/src/types/jwt_token";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 
@@ -11,14 +11,14 @@ import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 export class AuthenticationService {
     constructor(private jwtService: JwtService, private usersService: UsersService) {}
 
-    async signUp(signUpReq: SignUpRequest): Promise<Token> {
+    async signUp(signUpReq: SignUpRequest): Promise<JwtToken> {
         signUpReq.password = await bcrypt.hash(signUpReq.password, 10);
         const user = await this.usersService.create(signUpReq);
 
         return this.signToken(user);
     }
 
-    async signIn(signInReq: SignInRequest): Promise<Token> {
+    async signIn(signInReq: SignInRequest): Promise<JwtToken> {
         const user = await this.usersService.findOne(signInReq.email);
         if (!user) {
             throw new ForbiddenException();
@@ -32,7 +32,7 @@ export class AuthenticationService {
         return this.signToken(user);
     }
 
-    private signToken(user: User): Token {
+    private signToken(user: User): JwtToken {
         const payload = { sub: user.id };
         return { accessToken: this.jwtService.sign(payload) };
     }

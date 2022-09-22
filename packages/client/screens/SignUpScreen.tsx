@@ -7,8 +7,14 @@ import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faEyeCustom} from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
+import AuthGateway from "../gateways/auth_gateway";
+import {put} from "../services/storage_service";
+import {JwtToken} from "@cryptify/common/src/types/jwt_token";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {RootTabScreenProps} from "../types";
+import {SignUpRequest} from "@cryptify/common/src/requests/sign_up_request";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 
@@ -20,31 +26,27 @@ export default function SignUpScreen() {
         confirmPassword: "",
     };
 
+    async function onSubmitSignUp(values: SignUpRequest): Promise<void> {
+        try {
+            const token = await AuthGateway.signUp(values);
+            put("@jwt", token);
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'TabOne' }]
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Center w="100%">
                 <Formik
                     initialValues={initialValues}
                     validationSchema={signUpSchema}
-                    onSubmit={async (values) => {
-                            try {
-                                console.log(values);
-                                const response = await fetch("http://localhost:3001/auth/signup", {
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        firstName: values.firstName,
-                                        lastName: values.lastName,
-                                        email: values.email,
-                                        password: values.password,
-                                    }),
-                                });
-                                const json = await response.json();
-                                console.log(json);
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        }
-                    }
+                    onSubmit={onSubmitSignUp}
                 >
                     {({ values, errors, touched, handleChange, submitForm }) => (
                         <Box safeArea style={styles.formContainer}>
@@ -176,8 +178,5 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFE4E6",
         borderWidth: 0.5,
         borderColor: "#DC2626",
-    },
-
-    eyeIcon: {
     },
 });

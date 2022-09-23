@@ -1698,6 +1698,7 @@ __metadata:
     react: 18.0.0
     react-dom: 18.0.0
     react-native: 0.69.5
+    react-native-dotenv: ^3.3.1
     react-native-get-random-values: ^1.8.0
     react-native-safe-area-context: 4.3.1
     react-native-screens: ~3.15.0
@@ -17928,6 +17929,15 @@ __metadata:
     jscodeshift: ^0.13.1
     nullthrows: ^1.1.1
   checksum: 73dc9464a90fde727a19ad4f002f3bc4ec948a948cd95b5f3bfbef24ff7cf2ca7282830fd99e6b1772804c1e0f172e64097190021b3a00ba27a1f9777e58cf77
+  languageName: node
+  linkType: hard
+
+"react-native-dotenv@npm:^3.3.1":
+  version: 3.4.0
+  resolution: "react-native-dotenv@npm:3.4.0"
+  dependencies:
+    dotenv: ^16.0.0
+  checksum: 3bc8ef4fc2acc930b754ff6b7ae5f5abdf38864e717bced7459902c6b3f8262db234001530ee296f40112a5db467635ba249ae64b954ec29ab84dc80c2c47312
   languageName: node
   linkType: hard
 

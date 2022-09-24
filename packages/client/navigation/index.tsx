@@ -16,6 +16,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import SignInScreen from "../screens/SignInScreen";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
@@ -69,6 +70,15 @@ function BottomTabNavigator() {
                 component={SignUpScreen}
                 options={{
                     title: "Sign Up",
+                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    headerShown: false,
+                }}
+            />
+            <BottomTab.Screen
+                name="SignInScreen"
+                component={SignInScreen}
+                options={{
+                    title: "Sign In",
                     tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                     headerShown: false,
                 }}

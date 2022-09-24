@@ -1,9 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, Box, Center, VStack, FormControl, Pressable, HStack } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable } from "native-base";
 import { Text, View } from "../components/Themed";
 import { Formik } from "formik";
-import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
@@ -11,8 +10,9 @@ import AuthGateway from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
+import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
 
-export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
+export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
 
     const initialValues = {
@@ -35,104 +35,72 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignInS
     }
 
     return (
-        <View style={styles.container}>
-            <Center w="100%">
-                <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignIn}>
-                    {({ values, errors, touched, handleChange, submitForm }) => (
-                        <Box safeArea style={styles.formContainer}>
-                            <Box style={styles.formTitle}>
-                                <Text style={styles.title}>Welcome back</Text>
-                            </Box>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+            <Text style={styles.title}>Welcome back</Text>
+            <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
+                {({ values, errors, touched, handleChange, submitForm }) => (
+                    <VStack space={3} style={{ marginHorizontal: 20, marginTop: 35 }}>
+                        <FormControl isInvalid={!!(errors.email && touched.email)}>
+                            <Input
+                                value={values.email}
+                                onChangeText={handleChange("email")}
+                                placeholder="Email"
+                                style={errors.email && touched.email ? styles.formError : null}
+                                borderRadius="10"
+                            />
+                            <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
+                        </FormControl>
+                        <FormControl isInvalid={!!(errors.password && touched.password)}>
+                            <Input
+                                value={values.password}
+                                type={showPassword ? "text" : "password"}
+                                InputRightElement={
+                                    <Pressable onPress={() => setShowPass(!showPassword)}>
+                                        <FontAwesomeIcon
+                                            icon={showPassword ? faEyeCustom : faEyeSlashCustom}
+                                            style={styles.eyeIcon}
+                                        />
+                                    </Pressable>
+                                }
+                                onChangeText={handleChange("password")}
+                                placeholder="Password (6+ characters)"
+                                style={errors.password && touched.password ? styles.formError : null}
+                                borderRadius="10"
+                            />
 
-                            <VStack space={3} mt="5">
-                                <FormControl isInvalid={!!(errors.email && touched.email)}>
-                                    <Input
-                                        value={values.email}
-                                        onChangeText={handleChange("email")}
-                                        placeholder="Email"
-                                        style={errors.email && touched.email ? styles.formError : null}
-                                    />
-                                    <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!(errors.password && touched.password)}>
-                                    <Input
-                                        value={values.password}
-                                        type={showPassword ? "text" : "password"}
-                                        InputRightElement={
-                                            <Pressable onPress={() => setShowPass(!showPassword)}>
-                                                <FontAwesomeIcon
-                                                    icon={showPassword ? faEyeCustom : faEyeSlashCustom}
-                                                    style={styles.eyeIcon}
-                                                />
-                                            </Pressable>
-                                        }
-                                        onChangeText={handleChange("password")}
-                                        placeholder="Password (6+ characters)"
-                                        style={errors.password && touched.password ? styles.formError : null}
-                                    />
-
-                                    <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
-                                </FormControl>
-
-                                <Button style={styles.formButton} onPress={submitForm}>
-                                    Sign in
-                                </Button>
-                            </VStack>
-                        </Box>
-                    )}
-                </Formik>
-            </Center>
+                            <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
+                        </FormControl>
+                        <Button
+                            style={styles.formButton}
+                            onPress={submitForm}
+                            mt={2}
+                            _text={{ fontWeight: 600, fontSize: 16 }}
+                        >
+                            Sign In
+                        </Button>
+                    </VStack>
+                )}
+            </Formik>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    formContainer: {
-        p: "2",
-        w: "90%",
-        maxW: "290",
-        py: "8",
-        paddingHorizontal: 40,
-        paddingVertical: 50,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
     title: {
         fontSize: 28,
         fontWeight: "bold",
+        textAlign: "center",
     },
-
-    formTitle: {
-        paddingBottom: 10,
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    formColumnInputs: {
-        borderRadius: 10,
-    },
-
     formButton: {
+        height: 44,
         borderRadius: 100,
         backgroundColor: "#0077E6",
-        marginVertical: 10,
     },
-
     formError: {
         backgroundColor: "#FFE4E6",
         borderWidth: 0.5,
         borderColor: "#DC2626",
     },
-
     eyeIcon: {
         color: "#404040",
         width: 20,

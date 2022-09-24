@@ -8,8 +8,11 @@ export default function HomeScreen() {
 
     React.useEffect(() => {
         (async () => {
-            const token = await StorageService.get<JwtToken>("@jwt").catch();
-            setToken(token.accessToken);
+            const token = await StorageService.get<JwtToken>("@jwt");
+
+            if (token != null) {
+                setToken(token.accessToken);
+            }
         })();
     }, []);
 

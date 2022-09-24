@@ -42,6 +42,32 @@ Ports:
 > - Server from `3001:80` to `<new-port>:80`
 > - Database from `5432:5432` to `<new-port>:5432`.
 
+#### Android Client
+
+#### First time setup
+
+1. Setup `adb` and enable USB debugging on your device by following these [steps](https://reactnative.dev/docs/running-on-device)
+2. Setup the environment variables required for your client app to talk to the backend api
+   1. Make a copy of the `.env.dev` file and rename it to `.env`
+   2. Find the ip address of your local machine and enter it on the line for `REACT_APP_API_URL=`
+3. Export the directory of your Android SDK and add it to your path, if your SDK is installed in the directory metro is expecting this step can be skipped
+
+#### Starting the app
+
+1. Install all dependencies
+    ```sh
+    $ cd Cryptify
+    $ yarn install
+    ```
+2. Start the server and database
+    ```sh
+    $ docker-compose up -d api
+    ```
+3. Start the app on your device in development mode
+    ```sh
+    $ `yarn run client:android:dev`
+    ```
+
 #### Web Client
 
 1. Install all dependencies

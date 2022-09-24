@@ -11,6 +11,7 @@ import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
+import { KEY_JWT } from "../constants/storage_keys";
 
 export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
@@ -23,7 +24,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
     async function onSubmitSignIn(values: SignInRequest): Promise<void> {
         try {
             const token = await AuthGateway.signIn(values);
-            StorageService.put("@jwt", token);
+            StorageService.put(KEY_JWT, token);
 
             navigation.reset({
                 index: 0,
@@ -47,6 +48,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                                 placeholder="Email"
                                 style={errors.email && touched.email ? styles.formError : null}
                                 borderRadius="10"
+                                height="46"
                             />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
@@ -66,6 +68,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                                 placeholder="Password (6+ characters)"
                                 style={errors.password && touched.password ? styles.formError : null}
                                 borderRadius="10"
+                                height="46"
                             />
 
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
@@ -76,7 +79,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                             mt={2}
                             _text={{ fontWeight: 600, fontSize: 16 }}
                         >
-                            Sign In
+                            Sign in
                         </Button>
                     </VStack>
                 )}

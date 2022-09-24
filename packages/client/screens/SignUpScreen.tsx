@@ -11,6 +11,7 @@ import AuthGateway from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { KEY_JWT } from "../constants/storage_keys";
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
@@ -27,7 +28,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
     async function onSubmitSignUp(values: SignUpRequest): Promise<void> {
         try {
             const token = await AuthGateway.signUp(values);
-            StorageService.put("@jwt", token);
+            StorageService.put(KEY_JWT, token);
 
             navigation.reset({
                 index: 0,

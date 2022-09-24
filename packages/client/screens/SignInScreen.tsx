@@ -1,33 +1,29 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, HStack } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable } from "native-base";
 import { Text, View } from "../components/Themed";
 import { Formik } from "formik";
-import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
 import AuthGateway from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
-import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
+import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
 import { KEY_JWT } from "../constants/storage_keys";
 
-export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
+export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 
     const initialValues = {
-        firstName: "",
-        lastName: "",
         email: "",
         password: "",
-        confirmPassword: "",
     };
 
-    async function onSubmitSignUp(values: SignUpRequest): Promise<void> {
+    async function onSubmitSignIn(values: SignInRequest): Promise<void> {
         try {
-            const token = await AuthGateway.signUp(values);
+            const token = await AuthGateway.signIn(values);
             StorageService.put(KEY_JWT, token);
 
             navigation.reset({
@@ -38,36 +34,13 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
             console.error(error);
         }
     }
+
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={styles.title}>Create an account</Text>
-            <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
+            <Text style={styles.title}>Welcome back</Text>
+            <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space={3} style={{ marginHorizontal: 20, marginTop: 35 }}>
-                        <HStack space={3} justifyContent="center">
-                            <FormControl isInvalid={!!(errors.firstName && touched.firstName)} style={{ flex: 1 }}>
-                                <Input
-                                    value={values.firstName}
-                                    onChangeText={handleChange("firstName")}
-                                    placeholder="First name"
-                                    style={errors.firstName && touched.firstName ? styles.formError : null}
-                                    borderRadius="10"
-                                />
-
-                                <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
-                            </FormControl>
-
-                            <FormControl isInvalid={!!(errors.lastName && touched.lastName)} style={{ flex: 1 }}>
-                                <Input
-                                    value={values.lastName}
-                                    onChangeText={handleChange("lastName")}
-                                    placeholder="Last name"
-                                    style={errors.lastName && touched.lastName ? styles.formError : null}
-                                    borderRadius="10"
-                                />
-                                <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
-                            </FormControl>
-                        </HStack>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -75,6 +48,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 placeholder="Email"
                                 style={errors.email && touched.email ? styles.formError : null}
                                 borderRadius="10"
+                                height="46"
                             />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
@@ -94,38 +68,18 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 placeholder="Password (6+ characters)"
                                 style={errors.password && touched.password ? styles.formError : null}
                                 borderRadius="10"
+                                height="46"
                             />
 
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isInvalid={!!(errors.confirmPassword && touched.confirmPassword)}>
-                            <Input
-                                value={values.confirmPassword}
-                                type={showConfirmPassword ? "text" : "password"}
-                                InputRightElement={
-                                    <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
-                                        <FontAwesomeIcon
-                                            icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom}
-                                            style={styles.eyeIcon}
-                                        />
-                                    </Pressable>
-                                }
-                                onChangeText={handleChange("confirmPassword")}
-                                placeholder="Confirm Password"
-                                style={errors.confirmPassword && touched.confirmPassword ? styles.formError : null}
-                                borderRadius="10"
-                            />
-
-                            <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
-                        </FormControl>
-
                         <Button
                             style={styles.formButton}
                             onPress={submitForm}
                             mt={2}
                             _text={{ fontWeight: 600, fontSize: 16 }}
                         >
-                            Sign up
+                            Sign in
                         </Button>
                     </VStack>
                 )}

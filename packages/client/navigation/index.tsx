@@ -70,6 +70,7 @@ function BottomTabNavigator() {
                 options={{
                     title: "Sign Up",
                     tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    headerShown: false,
                 }}
             />
         </BottomTab.Navigator>

@@ -5,11 +5,11 @@ async function put(key: string, value: any): Promise<void> {
     await AsyncStorage.setItem(key, serializedValue);
 }
 
-async function get<T>(key: string): Promise<T> {
+async function get<T>(key: string): Promise<T | null> {
     const value = await AsyncStorage.getItem(key);
 
     if (value == null) {
-        throw new Error(`No value found at ${key}`);
+        return null;
     }
     return JSON.parse(value) as T;
 }

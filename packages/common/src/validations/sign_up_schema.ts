@@ -15,7 +15,11 @@ export const signUpSchema = yup
             .min(0)
             .max(32, "Last name must be 32 characters or less.")
             .required("Enter a last name."),
-        email: yup.string().email("Email must be 50 characters or less.").required("Enter a valid email."),
+        email: yup
+            .string()
+            .email("Enter a valid email.")
+            .required("Enter a valid email.")
+            .max(50, "Email must be 50 characters or less."),
         password: passwordSchema,
         confirmPassword: yup
             .string()

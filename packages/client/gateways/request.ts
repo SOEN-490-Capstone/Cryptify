@@ -9,6 +9,11 @@ export async function request<T>(path: string, req: any): Promise<T> {
         },
         body: JSON.stringify(req),
     });
+    const body = await response.json();
 
-    return (await response.json()) as T;
+    if (response.status >= 300) {
+        throw new Error(body.message);
+    }
+
+    return body as T;
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/entities/user";
 import { Repository } from "typeorm";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { ERROR_EMAIL_IN_USE } from "@cryptify/common/src/errors/error_messages";
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
 
     async create(signUpReq: SignUpRequest): Promise<User> {
         if (await this.findOne(signUpReq.email)) {
-            throw new BadRequestException();
+            throw new BadRequestException(ERROR_EMAIL_IN_USE);
         }
 
         const createdUser = this.userRepository.create(signUpReq);

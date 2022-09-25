@@ -6,6 +6,7 @@ import { JwtService } from "@nestjs/jwt";
 import { JwtToken } from "@cryptify/common/src/types/jwt_token";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
+import { ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
 
 @Injectable()
 export class AuthenticationService {
@@ -21,12 +22,12 @@ export class AuthenticationService {
     async signIn(signInReq: SignInRequest): Promise<JwtToken> {
         const user = await this.usersService.findOne(signInReq.email);
         if (!user) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
         }
 
         const isMatch = await bcrypt.compare(signInReq.password, user.password);
         if (!isMatch) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
         }
 
         return this.signToken(user);

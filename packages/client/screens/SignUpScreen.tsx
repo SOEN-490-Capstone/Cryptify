@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, HStack, Text } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable, HStack, Text, Box } from "native-base";
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
@@ -12,6 +12,7 @@ import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { KEY_JWT } from "../constants/storage_keys";
+import { FormikHelpers } from "formik/dist/types";
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
     const [showPassword, setShowPass] = React.useState(false);
@@ -25,7 +26,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
         confirmPassword: "",
     };
 
-    async function onSubmitSignUp(values: SignUpRequest): Promise<void> {
+    async function onSubmitSignUp(values: SignUpRequest, formikHelpers: FormikHelpers<SignUpRequest>): Promise<void> {
         try {
             const token = await AuthGateway.signUp(values);
             StorageService.put(KEY_JWT, token);
@@ -35,12 +36,16 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                 routes: [{ name: "HomeScreen" }],
             });
         } catch (error) {
-            console.error(error);
+            if (error instanceof Error) {
+                formikHelpers.setFieldError("email", error.message);
+            }
         }
     }
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={styles.title}>Create an account</Text>
+            <Box safeArea>
+                <Text style={styles.title}>Create an account</Text>
+            </Box>
             <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
@@ -120,6 +125,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
 const styles = StyleSheet.create({
     title: {
         fontSize: 28,
+        lineHeight: 32,
         fontWeight: "bold",
         textAlign: "center",
     },

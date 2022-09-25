@@ -1,19 +1,27 @@
 const API_URI = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 
-export async function request<T>(path: string, req: any): Promise<T> {
+export async function request<T>(method: Method, path: string, body: any): Promise<T> {
     const response = await fetch(`${API_URI}/${path}`, {
-        method: "POST",
+        method: Method[method],
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(req),
+        body: JSON.stringify(body),
     });
-    const body = await response.json();
+    const resBody = await response.json();
 
     if (response.status >= 300) {
-        throw new Error(body.message);
+        throw new Error(resBody.message);
     }
 
-    return body as T;
+    return resBody as T;
+}
+
+export enum Method {
+    POST,
+    GET,
+    PUT,
+    PATCH,
+    DELETE,
 }

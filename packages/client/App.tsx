@@ -6,16 +6,18 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
+import extendTheme from "./theme/extendTheme";
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
     const colorScheme = useColorScheme();
+    const theme = extendTheme();
 
     if (!isLoadingComplete) {
         return null;
     } else {
         return (
-            <NativeBaseProvider>
+            <NativeBaseProvider theme={theme}>
                 <SafeAreaProvider>
                     <Navigation colorScheme={colorScheme} />
                     <StatusBar />

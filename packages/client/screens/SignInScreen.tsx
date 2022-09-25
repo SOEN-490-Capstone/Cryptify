@@ -54,6 +54,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                                         <FontAwesomeIcon
                                             icon={showPassword ? faEyeCustom : faEyeSlashCustom}
                                             style={styles.eyeIcon}
+                                            size={20}
                                         />
                                     </Pressable>
                                 }
@@ -80,8 +81,6 @@ const styles = StyleSheet.create({
     },
     eyeIcon: {
         color: "#404040",
-        width: 23,
-        height: 18,
         marginRight: 12,
     },
 });

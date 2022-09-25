@@ -77,6 +77,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                         <FontAwesomeIcon
                                             icon={showPassword ? faEyeCustom : faEyeSlashCustom}
                                             style={styles.eyeIcon}
+                                            size={20}
                                         />
                                     </Pressable>
                                 }
@@ -95,6 +96,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                         <FontAwesomeIcon
                                             icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom}
                                             style={styles.eyeIcon}
+                                            size={20}
                                         />
                                     </Pressable>
                                 }
@@ -123,8 +125,6 @@ const styles = StyleSheet.create({
     },
     eyeIcon: {
         color: "#404040",
-        width: 23,
-        height: 18,
         marginRight: 12,
     },
 });

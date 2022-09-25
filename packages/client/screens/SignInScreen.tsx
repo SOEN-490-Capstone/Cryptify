@@ -42,11 +42,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input
-                                value={values.email}
-                                onChangeText={handleChange("email")}
-                                placeholder="Email"
-                            />
+                            <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
@@ -66,7 +62,9 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                             />
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Button style={{ marginTop: 7 }} onPress={submitForm}>Sign in</Button>
+                        <Button style={{ marginTop: 7 }} onPress={submitForm}>
+                            Sign in
+                        </Button>
                     </VStack>
                 )}
             </Formik>

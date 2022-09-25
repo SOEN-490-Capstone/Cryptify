@@ -1,4 +1,4 @@
-import { extendTheme } from 'native-base';
+import { extendTheme } from "native-base";
 import { text } from "./components/text";
 import { button } from "./components/button";
 import { input } from "./components/input";
@@ -8,9 +8,9 @@ export default function () {
     return extendTheme({
         components: {
             Text: text,
-            Button : button,
+            Button: button,
             Input: input,
             FormControlErrorMessage: formControlErrorMessage,
-        }
+        },
     });
 }

@@ -1,5 +1,5 @@
 export const text = {
     baseStyle: {
-        color: 'text.700',
-    }
-}
+        color: "text.700",
+    },
+};

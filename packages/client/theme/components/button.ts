@@ -1,32 +1,32 @@
 export const button = {
     baseStyle: {
-        borderRadius: '100',
-        height: '50',
+        borderRadius: "100",
+        height: "50",
         _text: {
-            fontWeight: 'semibold',
+            fontWeight: "semibold",
         },
         _loading: {
-            opacity: '60',
+            opacity: "60",
         },
     },
     variants: {
         solid: {
-            bg: 'darkBlue.500',
+            bg: "darkBlue.500",
             _text: {
-                color: 'white',
+                color: "white",
             },
             _hover: {
-                bg: 'darkBlue.500',
-                opacity: '60',
+                bg: "darkBlue.500",
+                opacity: "60",
             },
             _pressed: {
-                bg: 'darkBlue.500',
-                opacity: '60',
+                bg: "darkBlue.500",
+                opacity: "60",
             },
         },
     },
     defaultProps: {
-        variant: 'solid',
-        size: 'lg',
+        variant: "solid",
+        size: "lg",
     },
 };

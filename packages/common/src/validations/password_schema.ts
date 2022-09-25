@@ -4,7 +4,7 @@ import * as yup from "yup";
 // has a minimum length of 8 characters
 export const passwordSchema = yup
     .string()
-    .min(6)
+    .min(6, "Password must be between 6 and 20 characters.")
     .max(20, "Password must be between 6 and 20 characters.")
     .matches(
         new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()?+=_]).{6,20}$"),

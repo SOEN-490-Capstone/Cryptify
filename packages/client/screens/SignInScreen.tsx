@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable } from "native-base";
-import { Text, View } from "../components/Themed";
+import { Input, Button, VStack, FormControl, Pressable, Text } from "native-base";
+import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
@@ -40,16 +40,9 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
             <Text style={styles.title}>Welcome back</Text>
             <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={3} style={{ marginHorizontal: 20, marginTop: 35 }}>
+                    <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input
-                                value={values.email}
-                                onChangeText={handleChange("email")}
-                                placeholder="Email"
-                                style={errors.email && touched.email ? styles.formError : null}
-                                borderRadius="10"
-                                height="46"
-                            />
+                            <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
@@ -65,20 +58,11 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
                                     </Pressable>
                                 }
                                 onChangeText={handleChange("password")}
-                                placeholder="Password (6+ characters)"
-                                style={errors.password && touched.password ? styles.formError : null}
-                                borderRadius="10"
-                                height="46"
+                                placeholder="Password"
                             />
-
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Button
-                            style={styles.formButton}
-                            onPress={submitForm}
-                            mt={2}
-                            _text={{ fontWeight: 600, fontSize: 16 }}
-                        >
+                        <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign in
                         </Button>
                     </VStack>
@@ -94,20 +78,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
     },
-    formButton: {
-        height: 44,
-        borderRadius: 100,
-        backgroundColor: "#0077E6",
-    },
-    formError: {
-        backgroundColor: "#FFE4E6",
-        borderWidth: 0.5,
-        borderColor: "#DC2626",
-    },
     eyeIcon: {
         color: "#404040",
-        width: 20,
-        height: 16,
+        width: 23,
+        height: 18,
         marginRight: 12,
     },
 });

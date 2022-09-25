@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, HStack } from "native-base";
-import { Text, View } from "../components/Themed";
+import { Input, Button, VStack, FormControl, Pressable, HStack, Text } from "native-base";
+import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -43,15 +43,13 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
             <Text style={styles.title}>Create an account</Text>
             <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={3} style={{ marginHorizontal: 20, marginTop: 35 }}>
-                        <HStack space={3} justifyContent="center">
+                    <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
+                        <HStack space="13" justifyContent="center">
                             <FormControl isInvalid={!!(errors.firstName && touched.firstName)} style={{ flex: 1 }}>
                                 <Input
                                     value={values.firstName}
                                     onChangeText={handleChange("firstName")}
                                     placeholder="First name"
-                                    style={errors.firstName && touched.firstName ? styles.formError : null}
-                                    borderRadius="10"
                                 />
 
                                 <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
@@ -62,20 +60,12 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                     value={values.lastName}
                                     onChangeText={handleChange("lastName")}
                                     placeholder="Last name"
-                                    style={errors.lastName && touched.lastName ? styles.formError : null}
-                                    borderRadius="10"
                                 />
                                 <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
                             </FormControl>
                         </HStack>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input
-                                value={values.email}
-                                onChangeText={handleChange("email")}
-                                placeholder="Email"
-                                style={errors.email && touched.email ? styles.formError : null}
-                                borderRadius="10"
-                            />
+                            <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
@@ -92,8 +82,6 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 }
                                 onChangeText={handleChange("password")}
                                 placeholder="Password (6+ characters)"
-                                style={errors.password && touched.password ? styles.formError : null}
-                                borderRadius="10"
                             />
 
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
@@ -112,19 +100,12 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 }
                                 onChangeText={handleChange("confirmPassword")}
                                 placeholder="Confirm Password"
-                                style={errors.confirmPassword && touched.confirmPassword ? styles.formError : null}
-                                borderRadius="10"
                             />
 
                             <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
                         </FormControl>
 
-                        <Button
-                            style={styles.formButton}
-                            onPress={submitForm}
-                            mt={2}
-                            _text={{ fontWeight: 600, fontSize: 16 }}
-                        >
+                        <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign up
                         </Button>
                     </VStack>
@@ -140,20 +121,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
     },
-    formButton: {
-        height: 44,
-        borderRadius: 100,
-        backgroundColor: "#0077E6",
-    },
-    formError: {
-        backgroundColor: "#FFE4E6",
-        borderWidth: 0.5,
-        borderColor: "#DC2626",
-    },
     eyeIcon: {
         color: "#404040",
-        width: 20,
-        height: 16,
+        width: 23,
+        height: 18,
         marginRight: 12,
     },
 });

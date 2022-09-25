@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, HStack, Text, Box } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable, HStack, Text } from "native-base";
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";

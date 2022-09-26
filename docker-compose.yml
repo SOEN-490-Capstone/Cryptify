@@ -29,6 +29,7 @@ services:
             target: development
         depends_on:
             - api-db
+            - eth-edge
         ports:
             - "3001:80"
         volumes:
@@ -42,6 +43,28 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+    eth-edge:
+        image: cryptify-eth-edge
+        build:
+            context: .
+            dockerfile: packages/docker/eth-edge.Dockerfile
+            target: development
+        depends_on:
+            - api-db
+        ports:
+            - "3002:80"
+        volumes:
+            - /code/node_modules
+            - /code/packages/eth-edge/node_modules
+            - /code/packages/common/node_modules
+            - ./packages/eth-edge:/code/packages/eth-edge
+            - ./packages/common:/code/packages/common
+            - ./tsconfig.json:/code/tsconfig.json
+            - ./package.json:/code/package.json
+            - ./yarn.lock:/code/yarn.lock
+            - ./.eslintrc.js:/code/.eslintrc.js
+            - ./.prettierrc.js:/code/.prettierrc.js
+
     api-db:
         image: cryptify-api-db
         build:

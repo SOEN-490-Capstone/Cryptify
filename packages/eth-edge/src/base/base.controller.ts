@@ -1,12 +1,19 @@
 import { Controller, Get } from "@nestjs/common";
-import { AppService } from "../app.service";
+import { ProcessDetails } from "@cryptify/common/src/types/process_details";
 
-@Controller()
+@Controller("")
 export class BaseController {
-    constructor(private readonly appService: AppService) {}
-
-    @Get()
-    getHello(): string {
-        return this.appService.getHello();
+    @Get("/")
+    find(): ProcessDetails {
+        return {
+            appId: "cryptify-eth-edge",
+            appVersion: `v${process.env.npm_package_version}`,
+            uptime: process.uptime(),
+            environment: process.env.NODE_ENV,
+            nodeVersion: process.version,
+            platform: process.platform,
+            memoryUsage: process.memoryUsage(),
+            cpuUsage: process.cpuUsage(),
+        };
     }
 }

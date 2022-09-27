@@ -7,9 +7,9 @@
         "build": "nest build",
         "start:dev": "nest start --watch",
         "start:prod": "node dist/api/src/main.js",
-        "test:unit": "jest",
-        "test:unit:coverage": "jest --coverage",
-        "test:integration": "jest --config test/integration/jest-e2e.json"
+        "test:unit": "NODE_ENV=test jest",
+        "test:unit:coverage": "NODE_ENV=test jest --coverage",
+        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json"
     },
     "dependencies": {
         "@cryptify/common": "^1.0.0",

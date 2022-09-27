@@ -28,7 +28,7 @@ services:
             dockerfile: packages/docker/api.Dockerfile
             target: development
         depends_on:
-            - api-db
+            - db
             - eth-edge
         ports:
             - "3001:80"
@@ -50,7 +50,7 @@ services:
             dockerfile: packages/docker/eth-edge.Dockerfile
             target: development
         depends_on:
-            - api-db
+            - db
         ports:
             - "3002:80"
         volumes:
@@ -64,13 +64,19 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
-
-    api-db:
-        image: cryptify-api-db
+    db:
+        image: cryptify-db
         build:
             context: .
-            dockerfile: packages/docker/api-db.Dockerfile
+            dockerfile: packages/docker/db.Dockerfile
         ports:
             - "5432:5432"
         volumes:
             - /var/lib/postgresql/data/
+    test-db:
+        image: cryptify-test-db
+        build:
+            context: .
+            dockerfile: packages/docker/test-db.Dockerfile
+        ports:
+            - "5433:5432"

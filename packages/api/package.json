@@ -7,9 +7,9 @@
         "build": "nest build",
         "start:dev": "nest start --watch",
         "start:prod": "node dist/api/src/main.js",
-        "test:unit": "NODE_ENV=test jest",
-        "test:unit:coverage": "NODE_ENV=test jest --coverage",
-        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json"
+        "test:unit": "NODE_ENV=test jest --verbose",
+        "test:unit:coverage": "NODE_ENV=test jest --coverage --verbose",
+        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json --verbose"
     },
     "dependencies": {
         "@cryptify/common": "^1.0.0",
@@ -54,7 +54,7 @@
             "json",
             "ts"
         ],
-        "rootDir": "test",
+        "rootDir": "test/unit",
         "testRegex": ".*\\.spec\\.ts$",
         "transform": {
             "^.+\\.(t|j)s$": "ts-jest"

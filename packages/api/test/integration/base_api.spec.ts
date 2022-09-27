@@ -3,7 +3,7 @@ import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { INestApplication } from "@nestjs/common";
 
-describe("BaseController", () => {
+describe("Base", () => {
     let app: INestApplication;
 
     beforeAll(async () => {

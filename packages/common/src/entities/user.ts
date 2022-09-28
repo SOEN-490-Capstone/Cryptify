@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Wallet } from "@cryptify/common/src/entities/wallet";
 
 @Entity()
 export class User {
@@ -19,4 +20,7 @@ export class User {
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
+
+    @OneToMany(() => Wallet, (wallet) => wallet.user)
+    wallet: Wallet[];
 }

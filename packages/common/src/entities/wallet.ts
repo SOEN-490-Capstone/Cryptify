@@ -7,7 +7,9 @@ export class Wallet {
     walletAddress: string;
 
     @PrimaryColumn()
-    @ManyToOne(() => User)
-    @JoinColumn()
+    userId: number;
+
+    @ManyToOne(() => User, (user) => user.id)
+    @JoinColumn({ name: "userId" })
     user: User;
 }

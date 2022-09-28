@@ -86,6 +86,32 @@ Ports:
 
 You can now access the client at http://localhost:3000
 
+### Running the Tests
+
+#### Backend unit tests
+1. Start the api docker container
+    ```sh
+    $ docker-compose up -d api
+    ```
+2. Run all tests with the following command
+    ```sh
+    $ docker-compose exec api yarn api:test:unit
+    ```
+
+#### Backend integration tests
+1. Start the api docker container
+    ```sh
+    $ docker-compose up -d api
+    ```
+2. Start the test db docker container
+    ```sh
+    $ docker-compose up -d test-db
+    ```
+3. Run all tests with the following command
+    ```sh
+    $ docker-compose exec api yarn api:test:integration
+    ```
+
 ### Linting and Formatting
 
 Run linter and formatter with the following command in the root workspace `Cryptify` directory

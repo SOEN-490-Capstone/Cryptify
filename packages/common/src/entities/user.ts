@@ -22,5 +22,5 @@ export class User {
     createdAt: Date;
 
     @OneToMany(() => Wallet, (wallet) => wallet.user)
-    wallet: Wallet[];
+    wallets: Wallet[];
 }

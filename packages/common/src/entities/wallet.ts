@@ -9,7 +9,7 @@ export class Wallet {
     @PrimaryColumn()
     userId: number;
 
-    @ManyToOne(() => User, (user) => user.id)
-    @JoinColumn({ name: "userId" })
+    @ManyToOne(() => User, (user) => user.wallets)
+    @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 }

@@ -2,7 +2,7 @@ import { agent } from "supertest";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { INestApplication } from "@nestjs/common";
-import { clearDB } from "@cryptify/api/test/integration/db_helpers/clear_db";
+import { clearDB } from "@cryptify/common/src/db/clear_db";
 import { ERROR_EMAIL_IN_USE, ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
 
 describe("Authentication", () => {

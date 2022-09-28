@@ -8,7 +8,8 @@
         "start:dev": "nest start --watch",
         "start:prod": "node dist/eth-edge/src/main.js",
         "test:unit": "NODE_ENV=test jest --verbose",
-        "test:unit:coverage": "NODE_ENV=test jest --coverage --verbose"
+        "test:unit:coverage": "NODE_ENV=test jest --coverage --verbose",
+        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json --verbose"
     },
     "dependencies": {
         "@cryptify/common": "^1.0.0",

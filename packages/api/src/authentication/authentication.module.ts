@@ -5,19 +5,19 @@ import { UsersModule } from "../users/users.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "./strategies/jwt.strategy";
-import { ConfigModule } from "@nestjs/config";
+import {ConfigService} from "@nestjs/config";
 
 @Module({
     controllers: [AuthenticationController],
     imports: [
-        ConfigModule.forRoot({
-            envFilePath: `.env.${process.env.NODE_ENV}`,
-        }),
         UsersModule,
         PassportModule,
-        JwtModule.register({
-            signOptions: { expiresIn: "9999 years" },
-            secret: process.env.JWT_SECRET,
+        JwtModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                secret: config.get<string>("JWT_SECRET"),
+                signOptions: { expiresIn: "9999 years" },
+            }),
         }),
     ],
     providers: [AuthenticationService, JwtStrategy],

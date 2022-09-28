@@ -1751,6 +1751,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cryptify/eth-edge@workspace:packages/eth-edge"
   dependencies:
+    "@cryptify/common": ^1.0.0
     "@nestjs/cli": ^9.0.0
     "@nestjs/common": ^9.0.0
     "@nestjs/config": ^2.2.0

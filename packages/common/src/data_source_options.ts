@@ -3,7 +3,7 @@ import { User } from "@cryptify/common/src/entities/user";
 
 const entities = [User];
 
-export const dbOptions: DataSourceOptions = {
+export const dataSourceOptions: DataSourceOptions = {
     type: "postgres",
     host: process.env.PG_HOST,
     port: +process.env.PG_PORT,

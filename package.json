@@ -13,6 +13,8 @@
     "api:dev": "yarn workspace @cryptify/api start:dev",
     "api:test:unit": "yarn workspace @cryptify/api test:unit",
     "api:test:integration": "yarn workspace @cryptify/api test:integration",
+    "eth-edge:dev": "yarn workspace @cryptify/eth-edge start:dev",
+    "eth-edge:test:unit": "yarn workspace @cryptify/eth-edge test:unit",
     "common:build": "yarn workspace @cryptify/common build",
     "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix",
     "diagrams:build": "yarn workspace @cryptify/diagrams build"

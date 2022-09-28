@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm";
-import { dbOptions } from "@cryptify/api/src/db_options";
+import { dataSourceOptions } from "@cryptify/common/src/data_source_options";
 
 export async function clearDB() {
-    const dataSource = await new DataSource(dbOptions).initialize();
+    const dataSource = await new DataSource(dataSourceOptions).initialize();
 
     await Promise.all(
         dataSource.entityMetadatas.map(async (entity) => {

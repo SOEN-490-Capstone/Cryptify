@@ -4,7 +4,7 @@ import { BaseModule } from "@cryptify/api/src/base/base.module";
 import { ConfigModule } from "@nestjs/config";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UsersModule } from "./users/users.module";
-import { dbOptions } from "@cryptify/api/src/db_options";
+import { dataSourceOptions } from "@cryptify/common/src/data_source_options";
 
 @Module({
     imports: [
@@ -12,7 +12,7 @@ import { dbOptions } from "@cryptify/api/src/db_options";
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRoot({
-            ...dbOptions,
+            ...dataSourceOptions,
             synchronize: true,
         }),
         BaseModule,

@@ -10,14 +10,12 @@ import {dataSourceOptionsConfig} from "@cryptify/common/src/db/data_source_optio
             envFilePath: `.env.${process.env.NODE_ENV}`,
             isGlobal: true,
         }),
-        TypeOrmModule.forRoot({
-            type: "postgres",
-            host: "test-db",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "cryptify_test_db",
-            synchronize: true,
+        TypeOrmModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                ...dataSourceOptionsConfig(config),
+                synchronize: true,
+            }),
         }),
         BaseModule,
     ],

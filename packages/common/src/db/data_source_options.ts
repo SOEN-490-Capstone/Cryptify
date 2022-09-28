@@ -1,18 +1,8 @@
 import { DataSourceOptions } from "typeorm/data-source/DataSourceOptions";
 import { User } from "@cryptify/common/src/entities/user";
-import {ConfigService} from "@nestjs/config";
+ import {ConfigService} from "@nestjs/config";
 
 const entities = [User];
-
-// export const dataSourceOptions: DataSourceOptions = {
-//     type: "postgres",
-//     host: (() => {console.log(process.env.PG_HOST, process.env.NODE_ENV); return process.env.PG_HOST})(),
-//     port: +process.env.PG_PORT,
-//     username: process.env.PG_USER,
-//     password: process.env.PG_PASSWORD,
-//     database: process.env.PG_DATABASE,
-//     entities,
-// };
 
 export function dataSourceOptionsProcess(process: NodeJS.Process): DataSourceOptions {
     return dataSourceOptionsTemplateMethod(<T>(key: string) => process.env[key] as T);

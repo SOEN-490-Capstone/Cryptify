@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/eth-edge/src/base/base.module";
 import { ConfigModule } from "@nestjs/config";
+import { dataSourceOptions } from "@cryptify/common/src/db/data_source_options";
 
 @Module({
     imports: [
@@ -9,12 +10,7 @@ import { ConfigModule } from "@nestjs/config";
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRoot({
-            type: "postgres",
-            host: process.env.PG_HOST,
-            port: +process.env.PG_PORT,
-            username: process.env.PG_USER,
-            password: process.env.PG_PASSWORD,
-            database: process.env.PG_DATABASE,
+            ...dataSourceOptions,
             synchronize: true,
         }),
         BaseModule,

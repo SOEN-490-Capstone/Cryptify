@@ -2,6 +2,6 @@ FROM postgres
 
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres
-ENV POSTGRES_DB cryptify_api_db
+ENV POSTGRES_DB cryptify_db
 
 EXPOSE 5432

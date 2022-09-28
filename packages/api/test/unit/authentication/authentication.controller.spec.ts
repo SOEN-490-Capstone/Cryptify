@@ -54,6 +54,7 @@ describe("AuthenticationController", () => {
                 firstName: "Andre",
                 lastName: "ibra",
                 password: "A23456qwee!",
+                confirmPassword: "A23456qwee!",
             };
         });
 

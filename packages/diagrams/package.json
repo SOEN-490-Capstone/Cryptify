@@ -7,6 +7,6 @@
     },
     "devDependencies": {
         "@mermaid-js/mermaid-cli": "^9.1.6",
-        "ts-node": "^10.9.1"
+        "ts-node": "^10.8.2"
     }
 }

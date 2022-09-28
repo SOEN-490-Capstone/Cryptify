@@ -1,12 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "@cryptify/common/src/entities/user";
 import { BaseModule } from "@cryptify/api/src/base/base.module";
 import { ConfigModule } from "@nestjs/config";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UsersModule } from "./users/users.module";
-
-const entities = [User];
+import { dataSourceOptions } from "@cryptify/common/src/db/data_source_options";
 
 @Module({
     imports: [
@@ -14,13 +12,7 @@ const entities = [User];
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRoot({
-            type: "postgres",
-            host: process.env.PG_HOST,
-            port: +process.env.PG_PORT,
-            username: process.env.PG_USER,
-            password: process.env.PG_PASSWORD,
-            database: process.env.PG_DATABASE,
-            entities,
+            ...dataSourceOptions,
             synchronize: true,
         }),
         BaseModule,

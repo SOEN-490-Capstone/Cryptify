@@ -63,6 +63,6 @@ jobs:
             - name: Bring up containers
               run: sudo docker-compose up -d api && sudo docker-compose up -d eth-edge && sudo docker-compose up -d test-db
             - name: Integration test api
-              run: docker-compose exec api yarn run api:test:integration
+              run: docker-compose exec -T api yarn run api:test:integration
             - name: Integration test eth-edge
-              run: docker-compose exec eth-edge yarn run eth-edge:test:integration
+              run: docker-compose exec -T eth-edge yarn run eth-edge:test:integration

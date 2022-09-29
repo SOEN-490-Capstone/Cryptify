@@ -54,15 +54,15 @@ jobs:
               uses: docker run --entrypoint yarn cryptify-eth-edge lint:check
             - name: Unit test
               uses: docker run --entrypoint yarn cryptify-eth-edge eth-edge:test:unit
-    integration-tests:
-        name: Integration Tests
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Bring up containers
-              uses: docker-compose up -d api && docker-compose up -d eth-edge && docker-compose up -d test-db
-            - name: Integration test api
-              uses: docker-compose exec api yarn run api:test:integration
-            - name: Integration test eth-edge
-              uses: docker-compose exec eth-edge yarn run eth-edge:test:integration
+#    integration-tests:
+#        name: Integration Tests
+#        runs-on: ubuntu-latest
+#        steps:
+#            - name: Checkout
+#              uses: actions/checkout@v2
+#            - name: Bring up containers
+#              uses: docker-compose up -d api && docker-compose up -d eth-edge && docker-compose up -d test-db
+#            - name: Integration test api
+#              uses: docker-compose exec api yarn run api:test:integration
+#            - name: Integration test eth-edge
+#              uses: docker-compose exec eth-edge yarn run eth-edge:test:integration

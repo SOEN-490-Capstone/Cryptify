@@ -5,6 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UsersModule } from "./users/users.module";
 import { dataSourceOptions } from "@cryptify/common/src/db/data_source_options";
+import { WalletsModule } from "./wallets/wallets.module";
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { dataSourceOptions } from "@cryptify/common/src/db/data_source_options";
         BaseModule,
         AuthenticationModule,
         UsersModule,
+        WalletsModule,
     ],
 })
 export class AppModule {}

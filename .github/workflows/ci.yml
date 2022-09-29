@@ -61,7 +61,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Create database volume
-              uses: mkdir pgdata
+              run: mkdir pgdata
             - name: Bring up containers
               run: docker-compose up -d api && docker-compose up -d eth-edge && docker-compose up -d test-db
             - name: Integration test api

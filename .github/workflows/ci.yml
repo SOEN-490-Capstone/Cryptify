@@ -1,0 +1,68 @@
+name: CI
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    client:
+        name: Client
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-client -f packages/docker/client.Dockerfile --target development .
+            - name: Lint and format
+              run: docker run --entrypoint yarn cryptify-client lint:check
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-client client:test:unit
+    api:
+        name: Api
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-api -f packages/docker/api.Dockerfile --target development .
+            - name: Lint and format
+              run: docker run --entrypoint yarn cryptify-api lint:check
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-api api:test:unit
+    eth-edge:
+        name: EthEdge
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-eth-edge -f packages/docker/eth-edge.Dockerfile --target development .
+            - name: Lint and format
+              run: docker run --entrypoint yarn cryptify-eth-edge lint:check
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-eth-edge eth-edge:test:unit
+    common:
+        name: Common
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-eth-edge -f packages/docker/eth-edge.Dockerfile --target development .
+            - name: Lint and format
+              run: docker run --entrypoint yarn cryptify-eth-edge lint:check
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-eth-edge eth-edge:test:unit
+    integration-tests:
+        name: Integration Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Bring up containers
+              run: sudo docker-compose up -d api && sudo docker-compose up -d eth-edge && sudo docker-compose up -d test-db
+            - name: Integration test api
+              run: docker-compose exec -T api yarn run api:test:integration
+            - name: Integration test eth-edge
+              run: docker-compose exec -T eth-edge yarn run eth-edge:test:integration

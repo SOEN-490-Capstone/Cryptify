@@ -10,7 +10,7 @@ export class WalletsService {
         private walletRepository: Repository<Wallet>,
     ) {}
 
-    async create(userId: number, walletAddress: string, walletName: string): Promise<InsertResult> {
-        return this.walletRepository.insert({ userId, walletAddress, walletName });
+    async create(userId: number, address: string, name: string): Promise<InsertResult> {
+        return this.walletRepository.insert({ userId, address, name });
     }
 }

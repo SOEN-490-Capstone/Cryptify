@@ -9,6 +9,6 @@ export class WalletsController {
 
     @Post()
     async create(@Body() body: Wallet): Promise<InsertResult> {
-        return this.walletsService.create(body.userId, body.walletAddress, body.walletName);
+        return this.walletsService.create(body.userId, body.address, body.name);
     }
 }

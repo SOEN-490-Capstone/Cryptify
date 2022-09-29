@@ -1,6 +1,6 @@
 import { DataSourceOptions } from "typeorm/data-source/DataSourceOptions";
 import { User } from "@cryptify/common/src/entities/user";
- import {ConfigService} from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 
 const entities = [User];
 
@@ -21,5 +21,5 @@ function dataSourceOptionsTemplateMethod(config: <T>(string) => T): DataSourceOp
         password: config<string>("PG_PASSWORD"),
         database: config<string>("PG_DATABASE"),
         entities,
-    }
+    };
 }

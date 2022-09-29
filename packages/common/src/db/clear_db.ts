@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import {dataSourceOptionsProcess} from "@cryptify/common/src/db/data_source_options";
+import { dataSourceOptionsProcess } from "@cryptify/common/src/db/data_source_options";
 
 export async function clearDB() {
     const dataSource = await new DataSource(dataSourceOptionsProcess(process)).initialize();

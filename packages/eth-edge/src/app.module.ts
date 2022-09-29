@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/eth-edge/src/base/base.module";
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import {dataSourceOptionsConfig} from "@cryptify/common/src/db/data_source_options";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
 
 @Module({
     imports: [

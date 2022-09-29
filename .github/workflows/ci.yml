@@ -1,7 +1,23 @@
 name: CI
-on: [push]
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
 
 jobs:
+    client:
+        name: Client
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              uses: docker build -t cryptify-client -f packages/docker/client.Dockerfile --target development .
+            - name: Lint and format
+              uses: docker run --entrypoint yarn cryptify-client lint:check
+            - name: Unit test
+              uses: docker run --entrypoint yarn cryptify-client client:test:unit
     api:
         name: Api
         runs-on: ubuntu-latest
@@ -48,3 +64,5 @@ jobs:
               uses: docker-compose up -d api && docker-compose up -d eth-edge && docker-compose up -d test-db
             - name: Integration test api
               uses: docker-compose exec api yarn run api:test:integration
+            - name: Integration test eth-edge
+              uses: docker-compose exec eth-edge yarn run eth-edge:test:integration

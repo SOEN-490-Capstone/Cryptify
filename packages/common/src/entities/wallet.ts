@@ -4,13 +4,13 @@ import { User } from "@cryptify/common/src/entities/user";
 @Entity()
 export class Wallet {
     @PrimaryColumn()
-    walletAddress: string;
+    address: string;
 
     @PrimaryColumn()
     userId: number;
 
     @Column()
-    walletName: string;
+    name: string;
 
     @ManyToOne(() => User, (user) => user.wallets)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })

@@ -3,8 +3,8 @@ import { JwtAuthGuard } from "../authentication/gaurds/jwt-auth.guard";
 
 @Controller("users")
 export class UsersController {
-    @UseGuards(JwtAuthGuard)
     @Get("profile")
+    @UseGuards(JwtAuthGuard)
     getProfile(@Request() req) {
         return req.user;
     }

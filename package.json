@@ -17,6 +17,7 @@
     "eth-edge:test:unit": "yarn workspace @cryptify/eth-edge test:unit",
     "eth-edge:test:integration": "yarn workspace @cryptify/eth-edge test:integration",
     "common:build": "yarn workspace @cryptify/common build",
+    "lint:check": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --max-warnings=0",
     "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix",
     "diagrams:build": "yarn workspace @cryptify/diagrams build"
   },

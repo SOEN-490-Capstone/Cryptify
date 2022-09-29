@@ -17,6 +17,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
@@ -62,6 +63,20 @@ function BottomTabNavigator() {
                 component={HomeScreen}
                 options={{
                     title: "Home",
+                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                }}
+            />
+            <BottomTab.Screen
+                name="SettingsScreen"
+                component={SettingsScreen}
+                options={{
+                    title: "Settings",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 28,
+                        lineHeight: 37,
+                        fontWeight: "600",
+                    },
                     tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                 }}
             />

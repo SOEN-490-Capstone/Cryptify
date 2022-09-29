@@ -13,11 +13,11 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Build image
-              uses: docker build -t cryptify-client -f packages/docker/client.Dockerfile --target development .
+              run: docker build -t cryptify-client -f packages/docker/client.Dockerfile --target development .
             - name: Lint and format
-              uses: docker run --entrypoint yarn cryptify-client lint:check
+              run: docker run --entrypoint yarn cryptify-client lint:check
             - name: Unit test
-              uses: docker run --entrypoint yarn cryptify-client client:test:unit
+              run: docker run --entrypoint yarn cryptify-client client:test:unit
     api:
         name: Api
         runs-on: ubuntu-latest

@@ -26,6 +26,8 @@ describe("Wallets", () => {
             })
         ).body.accessToken;
 
+        console.log(token);
+
         const res = await agent(app.getHttpServer())
             .post("/wallets")
             .set("Authorization", `bearer ${token}`)

@@ -2,6 +2,7 @@ import { agent } from "supertest";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { INestApplication } from "@nestjs/common";
+import { clearDB } from "@cryptify/common/src/db/clear_db";
 
 describe("Wallets", () => {
     let app: INestApplication;
@@ -15,16 +16,18 @@ describe("Wallets", () => {
         await app.init();
     });
 
+    beforeEach(async () => {
+        await clearDB();
+    });
+
     it("POST /wallets", async () => {
-        const token = (
-            await agent(app.getHttpServer()).post("/auth/signup").send({
-                firstName: "fname",
-                lastName: "lname",
-                email: "test@test.com",
-                password: "Test123!",
-                confirmPassword: "Test123!",
-            })
-        ).body.accessToken;
+        const token = await agent(app.getHttpServer()).post("/auth/signup").send({
+            firstName: "fname",
+            lastName: "lname",
+            email: "test@test.com",
+            password: "Test123!",
+            confirmPassword: "Test123!",
+        });
 
         console.log(token);
 

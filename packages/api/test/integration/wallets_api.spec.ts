@@ -21,7 +21,7 @@ describe("Wallets", () => {
     });
 
     it("POST /wallets", async () => {
-        const token = await agent(app.getHttpServer()).post("/auth/signup").send({
+        const loginRes = await agent(app.getHttpServer()).post("/auth/signup").send({
             firstName: "fname",
             lastName: "lname",
             email: "test@test.com",
@@ -29,11 +29,11 @@ describe("Wallets", () => {
             confirmPassword: "Test123!",
         });
 
-        console.log(token.body.accessToken);
+        const cookies = loginRes.header("set-cookie");
 
         const res = await agent(app.getHttpServer())
             .post("/wallets")
-            .set("Authorization", `bearer ${token}`)
+            .set("Cookie", cookies)
             .send({ address: "Test", name: "test" });
 
         expect(res.status).toEqual(201);

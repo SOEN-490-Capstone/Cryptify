@@ -1,0 +1,46 @@
+@startuml
+skinparam linetype polyline
+title Cryptify Component Diagram
+
+actor User
+
+package Frontend {
+    [iOS App]
+    [Android App]
+}
+
+component API {
+}
+
+database PostgresDB {
+}
+
+interface JDBC
+
+package EthEdge {
+    [Alchemy Ethereum Node]
+    [EthEdge Webhook]
+    [EthEdge API]
+}
+
+package BtcEdge {
+    [BTC Node]
+    [BtcEdge API]
+}
+
+User -right-> Frontend
+Frontend #-(0-# API : REST API
+
+API #-(0-# [EthEdge API] : EthService
+API #-(0-# [BtcEdge API] : BtcService
+[EthEdge API] #-up(0-# [Alchemy Ethereum Node] : EthereumAPI
+[Alchemy Ethereum Node] #-(0-# [EthEdge Webhook] : Webhook\nPOST /transaction
+[BtcEdge API] #-(0-# [BTC Node]: BitcoinAPI
+
+JDBC --# PostgresDB
+[EthEdge API] #--( JDBC
+[EthEdge Webhook] #-( JDBC
+[BtcEdge API] #-( JDBC
+API #--( JDBC
+
+@enduml

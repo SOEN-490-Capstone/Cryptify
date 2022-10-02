@@ -16,6 +16,12 @@ sequenceDiagram
     EthEdge->>+Alchemy Eth Node: getBalance(address)
     Alchemy Eth Node-->>EthEdge: walletBalance
     
+    break when error inserting wallet
+        EthEdge-->>API: error
+        API-->>Client: error
+        Client-->>User: Show error screen
+    end
+    
     EthEdge-->>API: wallet
     API-->>-Client: wallet
     Client-->>-User: Show success screen

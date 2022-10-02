@@ -6,7 +6,7 @@
         "build": "ts-node generate_diagrams.ts"
     },
     "devDependencies": {
-        "@mermaid-js/mermaid-cli": "^9.1.6",
+        "node-plantuml": "^0.9.0",
         "ts-node": "^10.8.2"
     }
 }

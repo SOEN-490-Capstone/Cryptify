@@ -13,7 +13,7 @@ export class Wallet {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ type: "enum", enum: CurrencyTypeEnum, default: CurrencyTypeEnum.Eth })
     currencyType: CurrencyTypeEnum;
 
     @ManyToOne(() => User, (user) => user.wallets)

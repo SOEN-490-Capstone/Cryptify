@@ -14,9 +14,8 @@ export class AuthenticationService {
 
     async signUp(signUpReq: SignUpRequest): Promise<JwtToken> {
         signUpReq.password = await bcrypt.hash(signUpReq.password, 10);
-        const user = await this.usersService.create(signUpReq);
-
-        return this.signToken(user);
+        const userId = (await this.usersService.create(signUpReq)).identifiers[0].id;
+        return this.signToken(userId);
     }
 
     async signIn(signInReq: SignInRequest): Promise<JwtToken> {
@@ -30,11 +29,11 @@ export class AuthenticationService {
             throw new ForbiddenException(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
         }
 
-        return this.signToken(user);
+        return this.signToken(user.id);
     }
 
-    private signToken(user: User): JwtToken {
-        const payload = { sub: user.id };
+    private signToken(userId: number): JwtToken {
+        const payload = { sub: userId };
         return { accessToken: this.jwtService.sign(payload) };
     }
 }

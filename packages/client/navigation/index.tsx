@@ -56,6 +56,13 @@ function BottomTabNavigator() {
             initialRouteName="HomeScreen"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tint,
+                headerTintColor: "#404040",
+                headerTitleStyle: {
+                    fontSize: 28,
+                    lineHeight: 37,
+                    fontWeight: "600",
+                },
+                headerShadowVisible: false,
             }}
         >
             <BottomTab.Screen
@@ -71,12 +78,6 @@ function BottomTabNavigator() {
                 component={SettingsScreen}
                 options={{
                     title: "Settings",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 28,
-                        lineHeight: 37,
-                        fontWeight: "600",
-                    },
                     tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                 }}
             />

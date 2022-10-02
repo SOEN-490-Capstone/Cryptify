@@ -29,7 +29,7 @@ describe("Wallets", () => {
             confirmPassword: "Test123!",
         });
 
-        console.log(token.body);
+        console.log(token.body.accessToken);
 
         const res = await agent(app.getHttpServer())
             .post("/wallets")

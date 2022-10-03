@@ -1,0 +1,23 @@
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Wallet } from "@cryptify/common/src/entities/wallet";
+
+@Entity()
+export class Transaction {
+    @PrimaryColumn()
+    transaction_address: string;
+
+    @Column({ nullable: false })
+    wallet_in: string;
+
+    @Column({ nullable: false })
+    wallet_out: string;
+
+    @Column({ nullable: false })
+    amount: number;
+
+    @Column({ nullable: false })
+    password: string;
+
+    @CreateDateColumn({ type: "timestamp" })
+    createdAt: Date;
+}

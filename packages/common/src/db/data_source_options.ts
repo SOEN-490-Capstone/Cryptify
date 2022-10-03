@@ -1,9 +1,10 @@
 import { DataSourceOptions } from "typeorm/data-source/DataSourceOptions";
 import { User } from "@cryptify/common/src/entities/user";
 import { Wallet } from "@cryptify/common/src/entities/wallet";
+import { Transaction } from "@cryptify/common/src/entities/transaction";
 import { ConfigService } from "@nestjs/config";
 
-const entities = [User, Wallet];
+const entities = [User, Wallet, Transaction];
 
 export function dataSourceOptionsProcess(process: NodeJS.Process): DataSourceOptions {
     return dataSourceOptionsTemplateMethod(<T>(key: string) => process.env[key] as T);

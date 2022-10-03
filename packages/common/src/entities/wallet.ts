@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "@cryptify/common/src/entities/user";
-import { CurrencyTypeEnum } from "@cryptify/common/src/enums/currency_type_enum";
+import { CurrencyType } from "@cryptify/common/src/enums/currency_type_enum";
 
 @Entity()
 export class Wallet {
@@ -13,8 +13,8 @@ export class Wallet {
     @Column()
     name: string;
 
-    @Column({ type: "enum", enum: CurrencyTypeEnum, default: CurrencyTypeEnum.Eth })
-    currencyType: CurrencyTypeEnum;
+    @Column({ type: "enum", enum: CurrencyType })
+    currencyType: CurrencyType;
 
     @ManyToOne(() => User, (user) => user.wallets)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })

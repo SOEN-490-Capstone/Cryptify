@@ -9,6 +9,7 @@
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^2.2.0",
         "@nestjs/core": "^9.0.0",
+        "node-fetch": "^3.2.10",
         "typeorm": "^0.3.9",
         "yup": "^0.32.11"
     },

@@ -1,4 +1,4 @@
-export enum CurrencyTypeEnum {
-    Eth = "ETH",
-    Btc = "BTC",
+export enum CurrencyType {
+    ETHEREUM = "ETHEREUM",
+    BITCOIN = "BITCOIN",
 }

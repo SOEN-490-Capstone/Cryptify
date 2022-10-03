@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/eth-edge/src/base/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
+import { WalletsModule } from "@cryptify/eth-edge/src/wallets/wallets.module";
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_opt
             }),
         }),
         BaseModule,
+        WalletsModule,
     ],
 })
 export class AppModule {}

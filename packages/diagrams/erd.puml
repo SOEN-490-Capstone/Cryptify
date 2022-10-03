@@ -1,0 +1,61 @@
+@startuml
+title Cryptify ER Diagram
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity User {
+  *id : integer <<PK>>
+  --
+  *first_name : string
+  --
+  *last_name : string
+  --
+  *email : string
+  --
+  *password : string
+  --
+  *role : string
+  --
+  *created_at : timestamp <<generated>>
+}
+
+entity WalletTag {
+  *wallet_address : string <<CPK>>
+  --
+  *user_id : string <<CPK, FK>>
+  --
+  *name : string
+}
+note "A wallet tag is a reading friendly\ncustom name a user can give\nto any other wallet" as N1
+N1 .. WalletTag
+
+entity Wallet {
+  *wallet_address : string <<CPK>>
+  --
+  *user_id : string <<CPK, FK>>
+  --
+  *name : string
+  --
+  *currency_type : string
+}
+
+entity Transaction {
+  *transaction_address : string <<PK>>
+  --
+  *wallet_in_address : string
+  --
+  *wallet_out_address : string
+  --
+  *amount : integer
+  --
+  *created_at : timestamp <<generated>>
+}
+
+User ||--o{ Wallet : has
+User ||--o{ WalletTag : assigns
+Wallet }|--o{ Transaction : associated to
+@enduml

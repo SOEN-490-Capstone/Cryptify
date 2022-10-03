@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "@cryptify/common/src/entities/user";
-import { Transaction } from "@cryptify/common/src/entities/Transaction";
+import { Transaction } from "@cryptify/common/src/entities/transaction";
 
 @Entity()
 export class Wallet {

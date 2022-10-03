@@ -1,5 +1,4 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Wallet } from "@cryptify/common/src/entities/wallet";
 
 @Entity()
 export class Transaction {

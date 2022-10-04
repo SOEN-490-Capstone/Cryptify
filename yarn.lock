@@ -1728,6 +1728,7 @@ __metadata:
   resolution: "@cryptify/diagrams@workspace:packages/diagrams"
   dependencies:
     node-plantuml: ^0.9.0
+    tplant: ^3.1.0
     ts-node: ^10.8.2
   languageName: unknown
   linkType: soft
@@ -7995,6 +7996,13 @@ __metadata:
   version: 5.1.0
   resolution: "commander@npm:5.1.0"
   checksum: 0b7fec1712fbcc6230fcb161d8d73b4730fa91a21dc089515489402ad78810547683f058e2a9835929c212fead1d6a6ade70db28bbb03edbc2829a9ab7d69447
+  languageName: node
+  linkType: hard
+
+"commander@npm:^6.1.0":
+  version: 6.2.1
+  resolution: "commander@npm:6.2.1"
+  checksum: d7090410c0de6bc5c67d3ca41c41760d6d268f3c799e530aafb73b7437d1826bbf0d2a3edac33f8b57cc9887b4a986dce307fa5557e109be40eadb7c43b21742
   languageName: node
   linkType: hard
 
@@ -16841,7 +16849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"plantuml-encoder@npm:^1.2.5":
+"plantuml-encoder@npm:^1.2.5, plantuml-encoder@npm:^1.4.0":
   version: 1.4.0
   resolution: "plantuml-encoder@npm:1.4.0"
   checksum: d0ad77d960a8b092d8cfe9bdefc7a482ec073ecc686a92e482a8cbe35183d42433e79efd61fe24859ebd3219859d7fe022d49aaeec8827d46fde2ae4e7dba461
@@ -20298,6 +20306,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tplant@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "tplant@npm:3.1.0"
+  dependencies:
+    commander: ^6.1.0
+    glob: ^7.1.6
+    plantuml-encoder: ^1.4.0
+    typescript: ^4.0.3
+  bin:
+    tplant: dist/index.js
+  checksum: 3143f34e7827fcbbe013ad2e028f4ab70c4e46ba9cf4e4e4917e0926a55fb4febc1f7f1c999a8ae2349ede2dc763b6981f4deaa63aad20fb99592718b217e7ee
+  languageName: node
+  linkType: hard
+
 "tr46@npm:^2.1.0":
   version: 2.1.0
   resolution: "tr46@npm:2.1.0"
@@ -20686,7 +20708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.7.4":
+"typescript@npm:^4.0.3, typescript@npm:^4.7.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -20716,7 +20738,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.0.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=a1c5e5"
   bin:

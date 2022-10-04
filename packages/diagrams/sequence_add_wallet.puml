@@ -15,6 +15,7 @@ activate User
 activate Client
 Client -> API: POST /users/:id/wallets
 activate API
+Client --> User: Show progress screen
 alt waletType == Ethereum
     API -> EthEdge: POST /users/:id/wallets
     activate EthEdge

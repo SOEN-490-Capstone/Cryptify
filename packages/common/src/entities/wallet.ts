@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { User } from "@cryptify/common/src/entities/user";
 import { Transaction } from "./transaction";
 
@@ -17,6 +17,6 @@ export class Wallet {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    @ManyToMany(() => Transaction, (transaction) => transaction.wallet_in || transaction.wallet_out)
+    @OneToMany(() => Transaction, (transaction) => transaction.walletIn || transaction.walletOut)
     transactions: Transaction[];
 }

@@ -2,15 +2,18 @@ import { Injectable } from "@nestjs/common";
 import { Wallet } from "@cryptify/common/src/entities/wallet";
 import { InjectRepository } from "@nestjs/typeorm";
 import { InsertResult, Repository } from "typeorm";
+import { EthEdgeRequest } from "@cryptify/api/src/gateways/eth_edge_request";
+import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 
 @Injectable()
 export class WalletsService {
     constructor(
         @InjectRepository(Wallet)
-        private walletRepository: Repository<Wallet>,
+        private readonly walletRepository: Repository<Wallet>,
+        private readonly ethEdgeRequest: EthEdgeRequest,
     ) {}
 
-    async create(userId: number, address: string, name: string): Promise<InsertResult> {
-        return this.walletRepository.insert({ userId, address, name });
+    async create(req: CreateWalletRequest): Promise<InsertResult> {
+        return this.ethEdgeRequest.createWallet(req);
     }
 }

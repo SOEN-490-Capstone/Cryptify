@@ -1,4 +1,4 @@
-import { request, Method } from "@cryptify/common/src/helpers/ApiRequest";
+import { request, Method } from "@cryptify/common/src/helpers/request";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

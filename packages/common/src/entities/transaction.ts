@@ -14,9 +14,6 @@ export class Transaction {
     @Column({ nullable: false })
     amount: number;
 
-    @Column({ nullable: false })
-    password: string;
-
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 }

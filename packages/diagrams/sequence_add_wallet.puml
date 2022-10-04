@@ -1,10 +1,12 @@
 @startuml
+
 title Add Wallet
 
 actor User
 participant Client
 participant API
 participant EthEdge
+participant BtcEdge
 participant "Postgres DB"
 participant "Alchemy Eth Node"
 
@@ -13,38 +15,50 @@ activate User
 activate Client
 Client -> API: POST /users/:id/wallets
 activate API
-API -> EthEdge: POST /users/:id/wallets
-activate EthEdge
-EthEdge -> "Postgres DB": insert wallet
-activate "Postgres DB"
+Client --> User: Show progress screen
+alt waletType == Ethereum
+    API -> EthEdge: POST /users/:id/wallets
+    activate EthEdge
+    EthEdge -> "Postgres DB": insert wallet
+    activate "Postgres DB"
 
-EthEdge -> "Alchemy Eth Node": getBalance(address)
-activate "Alchemy Eth Node"
-"Alchemy Eth Node" --> EthEdge: walletBalance
+    par
+        EthEdge -> "Alchemy Eth Node": getBalance(address)
+        activate "Alchemy Eth Node"
+        "Alchemy Eth Node" --> EthEdge: walletBalance
+    else
+        EthEdge -> "Alchemy Eth Node": getAssetTransfers
+        "Alchemy Eth Node" --> EthEdge: transaction[]
+        EthEdge ->> "Postgres DB": insert transactions
+    else
+        EthEdge ->> "Alchemy Eth Node": updateWebhookAddresses(address)
+        "Alchemy Eth Node" -> EthEdge: POST /transactions
+        deactivate "Alchemy Eth Node"
+        EthEdge -->> "Postgres DB": insert transaction
+    end
 
-break when error inserting wallet or getting balance
-    EthEdge --> API: error
+    EthEdge --> API: ethWallet
+    deactivate EthEdge
+else walletType == Bitcoin
+    API -> BtcEdge: POST /users/:id/wallets
+    activate BtcEdge
+    BtcEdge -> "Postgres DB": insert wallet
+    deactivate "Postgres DB"
+    note left: The architecture of BtcEdge\nis a WIP and other functions\nmay be added in the future
+
+    BtcEdge --> API: btcWallet
+    deactivate BtcEdge
+end
+
+break when error processing new wallet
     API --> Client: error
     Client --> User: Show error screen
 end
 
-EthEdge --> API: wallet
 API --> Client: wallet
 deactivate API
 Client --> User: Show success screen
 deactivate Client
 deactivate User
 
-par
-    EthEdge -> "Alchemy Eth Node": getAssetTransfers
-    "Alchemy Eth Node" --> EthEdge: transaction[]
-    EthEdge ->> "Postgres DB": insert transactions
-else
-    EthEdge ->> "Alchemy Eth Node": updateWebhookAddresses(address)
-    "Alchemy Eth Node" -> EthEdge: POST /transactions
-    deactivate "Alchemy Eth Node"
-    EthEdge -->> "Postgres DB": insert transaction
-    deactivate "Postgres DB"
-    deactivate EthEdge
-end
 @enduml

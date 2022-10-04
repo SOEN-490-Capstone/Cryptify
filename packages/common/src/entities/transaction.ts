@@ -3,13 +3,13 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 @Entity()
 export class Transaction {
     @PrimaryColumn()
-    transaction_address: string;
+    transactionAddress: string;
 
     @Column({ nullable: false })
-    wallet_in: string;
+    walletIn: string;
 
     @Column({ nullable: false })
-    wallet_out: string;
+    walletOut: string;
 
     @Column({ nullable: false })
     amount: number;

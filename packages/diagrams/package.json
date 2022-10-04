@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "build": "ts-node generate_diagrams.ts"
+        "build": "ts-node generate_diagrams.ts",
+        "gen:class-diagram": "tplant --input packages/(api|common|eth-edge)/src/**/*.ts --output class_diagram.puml --associations"
     },
     "devDependencies": {
         "node-plantuml": "^0.9.0",

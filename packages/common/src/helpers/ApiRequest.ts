@@ -2,9 +2,9 @@ import fetch from "node-fetch";
 
 export function request(apiUrl: string, apiPort: string) {
     const apiUri = `http://${apiUrl}:${apiPort}`;
-
+    console.log(apiUri);
     return async <T>(method: Method, path: string, body: any): Promise<any> => {
-        const response = await fetch(`${this.apiUri}/${path}`, {
+        const response = await fetch(`${apiUri}/${path}`, {
             method: Method[method],
             headers: {
                 Accept: "application/json",

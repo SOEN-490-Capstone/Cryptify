@@ -12,13 +12,13 @@ export class WalletsService {
     constructor(
         @InjectRepository(Wallet)
         private readonly walletRepository: Repository<Wallet>,
-        private readonly ethEdgeRequest: EthEdgeGateway,
+        private readonly ethEdgeGateway: EthEdgeGateway,
     ) {}
 
     async create(req: CreateWalletRequest): Promise<InsertResult> {
         if (req.currencyType != getCurrencyType(req.address))
             throw new BadRequestException(ERROR_WALLET_ADDRESS_FOR_CURRENCY);
 
-        return this.ethEdgeRequest.createWallet(req);
+        return this.ethEdgeGateway.createWallet(req);
     }
 }

@@ -50,7 +50,7 @@ describe("Wallets", () => {
             );
         });
 
-        it("should return a 400 status code if id in params isn't the current user", async () => {
+        it("should return a 401 status code if id in params isn't the current user", async () => {
             const res = await agent(app.getHttpServer())
                 .post("/user/2/wallet")
                 .set("Authorization", `Bearer ${resSignUp.body.accessToken}`)

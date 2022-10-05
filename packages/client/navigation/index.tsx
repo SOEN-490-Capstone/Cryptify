@@ -18,6 +18,8 @@ import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { houseNav } from "../components/icons/houseNav";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
@@ -56,6 +58,23 @@ function BottomTabNavigator() {
             initialRouteName="HomeScreen"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tint,
+                tabBarLabelPosition: "below-icon",
+                tabBarInactiveTintColor: "#404040",
+
+                tabBarStyle: {
+                    height: 78,
+                    paddingTop: 8,
+                    paddingHorizontal: 8,
+                },
+
+                tabBarLabelStyle: {
+                    height: 34,
+                    lineHeight: 16,
+                    fontSize: 12,
+                    fontWeight: "400",
+                    letterSpacing: 0.5,
+                },
+
                 headerTintColor: "#404040",
                 headerTitleStyle: {
                     fontSize: 28,
@@ -70,7 +89,8 @@ function BottomTabNavigator() {
                 component={HomeScreen}
                 options={{
                     title: "Home",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    // Note: Trying out the home button icon imported from FontAwesome
+                    tabBarIcon: ({ color }) => <FontAwesomeIcon icon={houseNav} color={color} size={30} />,
                 }}
             />
             <BottomTab.Screen
@@ -78,7 +98,7 @@ function BottomTabNavigator() {
                 component={SettingsScreen}
                 options={{
                     title: "Settings",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
                 }}
             />
             <BottomTab.Screen

@@ -1674,6 +1674,7 @@ __metadata:
     "@expo/vector-icons": ^13.0.0
     "@expo/webpack-config": ^0.17.2
     "@fortawesome/fontawesome-svg-core": ^6.2.0
+    "@fortawesome/free-brands-svg-icons": ^6.2.0
     "@fortawesome/react-native-fontawesome": ^0.3.0
     "@react-native-async-storage/async-storage": ^1.17.10
     "@react-navigation/bottom-tabs": ^6.0.5
@@ -2471,6 +2472,15 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": 6.2.0
   checksum: 3bae680cba4098bc3a6aee04e655e0c6b6bab2d78e6709dc0a44d106f57a09bc2fd979310108777a373df301273a2a276739056f8984cd8bc5a50d37338c5380
+  languageName: node
+  linkType: hard
+
+"@fortawesome/free-brands-svg-icons@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "@fortawesome/free-brands-svg-icons@npm:6.2.0"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.2.0
+  checksum: 402b4e102bec60b234169c878b08ab1280feededf91d54c9c080bfcae2a2b0c52e05ab3fb9192293ed5d488501335e656c726e7ba3926876277bdf8e31d34026
   languageName: node
   linkType: hard
 

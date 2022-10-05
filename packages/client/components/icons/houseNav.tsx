@@ -2,10 +2,10 @@ import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-s
 
 export const houseNav: IconDefinition = {
     icon: [
-      // SVG viewbox width (in pixels)
-      576,
-      // SVG viewbox height (in pixels)
-      512,
+        // SVG viewbox width (in pixels)
+        576,
+        // SVG viewbox height (in pixels)
+        512,
         // Aliases (not needed)
         [],
         // Unicode as hex value (not needed)

@@ -1,6 +1,6 @@
 import { agent } from "supertest";
 import { Test } from "@nestjs/testing";
-import { AppModule } from "../../src/app.module";
+import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { clearDB } from "@cryptify/common/src/db/clear_db";
 

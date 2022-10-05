@@ -31,8 +31,6 @@ describe("Wallets", () => {
 
     describe("POST /user/:id/wallet", () => {
         it("should return a wallet entity if post is successful", async () => {
-            console.log(process.env.NODE_ENV);
-
             const res = await agent(app.getHttpServer())
                 .post("/user/1/wallet")
                 .set("Authorization", `Bearer ${resSignUp.body.accessToken}`)

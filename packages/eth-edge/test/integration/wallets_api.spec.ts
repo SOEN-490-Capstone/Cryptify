@@ -6,7 +6,6 @@ import { clearDB } from "@cryptify/common/src/db/clear_db";
 
 describe("Wallets", () => {
     let app: INestApplication;
-    let resSignUp;
 
     beforeAll(async () => {
         const moduleFixture = await Test.createTestingModule({

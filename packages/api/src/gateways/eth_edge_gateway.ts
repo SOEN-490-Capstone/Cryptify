@@ -4,18 +4,15 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class EthEdgeRequest {
+export class EthEdgeGateway {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ethEdgeRequest: <T>(method: Method, path: string, body: any) => Promise<any>;
+    request: <T>(method: Method, path: string, body: any) => Promise<T>;
     constructor(private configService: ConfigService) {
-        this.ethEdgeRequest = request(
-            configService.get<string>("ETH_EDGE_HOST"),
-            configService.get<string>("ETH_EDGE_PORT"),
-        );
+        this.request = request(configService.get<string>("ETH_EDGE_HOST"), configService.get<string>("ETH_EDGE_PORT"));
     }
 
     async createWallet(req: CreateWalletRequest): Promise<any> {
         const path = `user/${req.userId}/wallet`;
-        return this.ethEdgeRequest<any>(Method.POST, path, req);
+        return this.request<any>(Method.POST, path, req);
     }
 }

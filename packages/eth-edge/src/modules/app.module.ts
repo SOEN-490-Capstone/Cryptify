@@ -13,10 +13,13 @@ import { WalletsModule } from "./wallets.module";
         }),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
-            useFactory: (config: ConfigService) => ({
-                ...dataSourceOptionsConfig(config),
-                synchronize: true,
-            }),
+            useFactory: (config: ConfigService) => {
+                console.log(config);
+                return {
+                    ...dataSourceOptionsConfig(config),
+                    synchronize: true,
+                };
+            },
         }),
         BaseModule,
         WalletsModule,

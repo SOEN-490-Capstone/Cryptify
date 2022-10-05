@@ -1,6 +1,6 @@
-import { Body, Controller, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
-import { useValidate } from "@cryptify/api/src/hooks/use_validate";
+import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { createWalletSchema } from "@cryptify/common/src/validations/create_wallet_schema";
 import { JwtAuthGuard } from "@cryptify/api/src/authentication/gaurds/jwt-auth.guard";
 import { WalletsService } from "@cryptify/api/src/wallets/wallets.service";
@@ -12,8 +12,8 @@ export class WalletsController {
 
     @Post("/user/:id/wallet")
     @UseGuards(JwtAuthGuard, AuthorizationGuard)
-    async create(@Body() body: CreateWalletRequest, @Param() params): Promise<any> {
-        const createWalletReq = await useValidate(createWalletSchema, { ...body, userId: params.id });
+    async create(@Body() body: CreateWalletRequest): Promise<any> {
+        const createWalletReq = await useValidate(createWalletSchema, body);
         return this.walletsService.create(createWalletReq);
     }
 }

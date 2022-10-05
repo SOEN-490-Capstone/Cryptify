@@ -1,7 +1,7 @@
 import { DataSourceOptions } from "typeorm/data-source/DataSourceOptions";
-import { User } from "@cryptify/common/src/entities/user";
-import { Wallet } from "@cryptify/common/src/entities/wallet";
-import { Transaction } from "../entities/transaction";
+import { User } from "@cryptify/common/src/domain/entities/user";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
+import { Transaction } from "../domain/entities/transaction";
 import { ConfigService } from "@nestjs/config";
 
 const entities = [User, Wallet, Transaction];

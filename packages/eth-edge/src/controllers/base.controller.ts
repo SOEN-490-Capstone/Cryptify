@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { ProcessDetails } from "@cryptify/common/src/types/process_details";
+import { ProcessDetails } from "@cryptify/common/src/domain/process_details";
 
 @Controller("")
 export class BaseController {

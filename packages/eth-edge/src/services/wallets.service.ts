@@ -2,10 +2,10 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
-import { Wallet } from "@cryptify/common/src/entities/wallet";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
-import { walletWithBalance } from "@cryptify/common/src/types/wallet_with_balance";
+import { walletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 @Injectable()
 export class WalletsService {

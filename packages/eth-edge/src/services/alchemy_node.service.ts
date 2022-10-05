@@ -1,13 +1,14 @@
 import { Network, Alchemy } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
-import { BigNumber } from "@ethersproject/bignumber";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class AlchemyNodeService {
     private alchemy: Alchemy;
 
     constructor(private configService: ConfigService) {
         this.alchemy = new Alchemy({
-            apiKey: this.configService.get<string>("ALCHEMY_API_KEY"),
+            apiKey: configService.get<string>("ALCHEMY_API_KEY"),
             network: Network.ETH_MAINNET,
         });
     }

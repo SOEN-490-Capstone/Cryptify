@@ -9,7 +9,7 @@ export class EthEdgeRequest {
     ethEdgeRequest: <T>(method: Method, path: string, body: any) => Promise<any>;
     constructor(private configService: ConfigService) {
         this.ethEdgeRequest = request(
-            configService.get<string>("ETH_EDGE_URL"),
+            configService.get<string>("ETH_EDGE_HOST"),
             configService.get<string>("ETH_EDGE_PORT"),
         );
     }

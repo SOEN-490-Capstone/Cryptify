@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "../components/Themed";
 import { Button } from "native-base";
-import { Alert } from "react-native";
+import {Alert, StyleSheet} from "react-native";
 import { StackActions, useNavigation } from "@react-navigation/native";
 
 export default function SettingsScreen() {
@@ -26,9 +26,22 @@ export default function SettingsScreen() {
     };
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Button style={{ marginTop: 7 }} onPress={() => doUserLogOut()}>
+            <Button size="lg" variant="outline" colorScheme="red">
                 Sign out
             </Button>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    title: {
+        fontSize: 28,
+        lineHeight: 32,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    eyeIcon: {
+        color: "#404040",
+        marginRight: 12,
+    },
+});

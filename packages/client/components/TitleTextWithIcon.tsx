@@ -10,12 +10,13 @@ type Props = {
     iconStyles: FontAwesomeIconStyle;
     iconSize: number;
     textStyles: StyleProp<TextStyle>;
+    space: number;
     children: string;
 };
 
-export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, children }: Props) {
+export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, space, children }: Props) {
     return (
-        <VStack alignItems="center">
+        <VStack space={`${space}px`} alignItems="center">
             <FontAwesomeIcon icon={icon} style={iconStyles} size={iconSize} />
             <Text style={[styles.title, textStyles]}>{children}</Text>
         </VStack>

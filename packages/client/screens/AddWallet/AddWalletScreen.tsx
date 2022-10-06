@@ -12,41 +12,23 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
-
-type CryptoCurrencies = {
-    name: CurrencyType;
-    icon: IconDefinition;
-    style: "bitcoinIcon" | "ethereumIcon";
-};
+import {currenciesDisplayData} from "../../constants/CurrenciesDisplayData";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 
 export default function AddWalletScreen({ navigation }: Props) {
-    const cryptoCurrencies: CryptoCurrencies[] = [
-        {
-            name: CurrencyType.BITCOIN,
-            icon: faBitcoinCustom,
-            style: "bitcoinIcon",
-        },
-        {
-            name: CurrencyType.ETHEREUM,
-            icon: faEthereumCustom,
-            style: "ethereumIcon",
-        },
-    ];
-
     return (
         <View style={styles.view}>
             <TitleText>Add a Wallet</TitleText>
             <VStack style={styles.currencyTypeStack}>
-                {cryptoCurrencies.map((currency, i) => (
+                {currenciesDisplayData.map((currency, i) => (
                     <Pressable
-                        onPress={() => navigation.navigate("AddWalletFormScreen", { currencyType: currency.name })}
+                        onPress={() => navigation.navigate("AddWalletFormScreen", { currencyType: currency.type })}
                         key={i}
                     >
                         <HStack height="50" alignItems="center">
                             <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
-                            <Text style={styles.currencyTypeText}>{titleCase(currency.name)}</Text>
+                            <Text style={styles.currencyTypeText}>{titleCase(currency.type)}</Text>
                             <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
                         </HStack>
                     </Pressable>

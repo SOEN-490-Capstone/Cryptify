@@ -17,6 +17,7 @@ declare global {
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletScreen: undefined;
+    AddWalletFormScreen: undefined;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =

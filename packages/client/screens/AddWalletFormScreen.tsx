@@ -11,47 +11,9 @@ import {faChevronRightCustom} from "../components/icons/faChevronRightCustom";
 import {faEthereumCustom} from "../components/icons/faEthereumCustom";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
-type CryptoCurrencies = {
-    name: string;
-    icon: IconDefinition,
-    style: "bitcoinIcon" | "ethereumIcon"
-}
-
-export default function AddWalletScreen() {
-    const cryptoCurrencies: CryptoCurrencies[] = [
-        {
-            name: "Bitcoin",
-            icon: faBitcoinCustom,
-            style: "bitcoinIcon",
-        },
-        {
-            name: "Ethereum",
-            icon: faEthereumCustom,
-            style: "ethereumIcon",
-        }
-    ]
-
+export default function AddWalletFormScreen() {
     return <View style={styles.view}>
-        <TitleText>Add a Wallet</TitleText>
-        <VStack style={styles.currencyTypeStack}>
-            {cryptoCurrencies.map((currency) => (
-                <HStack height="50" alignItems="center">
-                    <FontAwesomeIcon
-                        icon={currency.icon}
-                        style={styles[currency.style]}
-                        size={26}
-                    />
-                    <Text style={styles.currencyTypeText}>
-                        {currency.name}
-                    </Text>
-                    <FontAwesomeIcon
-                        icon={faChevronRightCustom}
-                        style={styles.chevronRightIcon}
-                        size={16}
-                    />
-                </HStack>
-            ))}
-        </VStack>
+        <TitleText>Add a BitWallet</TitleText>
     </View>;
 }
 

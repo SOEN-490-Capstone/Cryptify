@@ -18,6 +18,7 @@ import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
 import AddWalletScreen from "../screens/AddWalletScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
+import AddWalletFormScreen from "../screens/AddWalletFormScreen";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -42,6 +43,11 @@ function HomeStackScreen() {
                 },
                 headerShadowVisible: false,
                 headerTitleAlign: "center",
+            }}/>
+            <HomeStack.Screen name="AddWalletFormScreen" component={AddWalletFormScreen} options={{
+                headerShown: false,
+                headerTintColor: "#404040",
+                headerShadowVisible: false,
             }}/>
         </HomeStack.Navigator>
     );

@@ -20,10 +20,12 @@ export class WalletsService {
             throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT);
         }
 
-        const wallet = this.walletRepository.create(createWalletReq);
-        await this.walletRepository.insert(wallet);
+        const reqWallet = this.walletRepository.create(createWalletReq);
+        await this.walletRepository.insert(reqWallet);
+
         const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
-        return { ...(await this.findOne(createWalletReq.address, createWalletReq.userId)), balance };
+        const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
+        return { ...wallet, balance };
     }
 
     async findOne(address: string, userId: number): Promise<Wallet> {

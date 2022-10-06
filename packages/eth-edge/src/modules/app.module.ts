@@ -14,7 +14,6 @@ import { WalletsModule } from "./wallets.module";
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => {
-                console.log(config);
                 return {
                     ...dataSourceOptionsConfig(config),
                     synchronize: true,

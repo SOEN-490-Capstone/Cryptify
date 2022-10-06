@@ -17,9 +17,10 @@ export class WalletsService {
     ) {}
 
     async create(req: CreateWalletRequest): Promise<WalletWithBalance> {
-        if (req.currencyType != getCurrencyType(req.address))
-            throw new BadRequestException(ERROR_WALLET_ADDRESS_FOR_CURRENCY);
+        if (req.currencyType != getCurrencyType(req.address)) {
+            throw new BadRequestException(ERROR_WALLET_ADDRESS_FOR_CURRENCY(req.currencyType));
+        }
 
-        return this.ethEdgeGateway.createWallet<WalletWithBalance>(req);
+        return this.ethEdgeGateway.createWallet(req);
     }
 }

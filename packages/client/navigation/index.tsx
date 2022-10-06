@@ -45,7 +45,7 @@ function HomeStackScreen() {
                 headerTitleAlign: "center",
             }}/>
             <HomeStack.Screen name="AddWalletFormScreen" component={AddWalletFormScreen} options={{
-                headerShown: false,
+                title: "",
                 headerTintColor: "#404040",
                 headerShadowVisible: false,
             }}/>
@@ -86,6 +86,11 @@ function SettingsStackScreen() {
                 },
                 headerShadowVisible: false,
                 headerTitleAlign: "center",
+            }}/>
+            <SettingsStack.Screen name="AddWalletFormScreen" component={AddWalletFormScreen} options={{
+                title: "",
+                headerTintColor: "#404040",
+                headerShadowVisible: false,
             }}/>
         </SettingsStack.Navigator>
     );

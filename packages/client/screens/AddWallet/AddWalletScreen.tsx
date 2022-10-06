@@ -10,22 +10,28 @@ import {faBitcoinCustom} from "../../components/icons/faBitcoinCustom";
 import {faChevronRightCustom} from "../../components/icons/faChevronRightCustom";
 import {faEthereumCustom} from "../../components/icons/faEthereumCustom";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import {titleCase} from "@cryptify/common/src/helpers/string_utils";
+import {HomeStackScreenProps, SettingsStackScreenProps} from "../../types";
+import {CompositeScreenProps} from "@react-navigation/native";
 
 type CryptoCurrencies = {
-    name: string;
+    name: CurrencyType;
     icon: IconDefinition,
     style: "bitcoinIcon" | "ethereumIcon"
 }
 
-export default function AddWalletScreen() {
+type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
+
+export default function AddWalletScreen({ navigation }: Props) {
     const cryptoCurrencies: CryptoCurrencies[] = [
         {
-            name: "Bitcoin",
+            name: CurrencyType.BITCOIN,
             icon: faBitcoinCustom,
             style: "bitcoinIcon",
         },
         {
-            name: "Ethereum",
+            name: CurrencyType.ETHEREUM,
             icon: faEthereumCustom,
             style: "ethereumIcon",
         }
@@ -35,7 +41,7 @@ export default function AddWalletScreen() {
         <TitleText>Add a Wallet</TitleText>
         <VStack style={styles.currencyTypeStack}>
             {cryptoCurrencies.map((currency, i) => (
-                <Pressable onPress={() => console.log("I'm Pressed")} key={i}>
+                <Pressable onPress={() => navigation.navigate("AddWalletFormScreen", { currencyType: currency.name })} key={i}>
                     <HStack height="50" alignItems="center">
                         <FontAwesomeIcon
                             icon={currency.icon}
@@ -43,7 +49,7 @@ export default function AddWalletScreen() {
                             size={26}
                         />
                         <Text style={styles.currencyTypeText}>
-                            {currency.name}
+                            {titleCase(currency.name)}
                         </Text>
                         <FontAwesomeIcon
                             icon={faChevronRightCustom}
@@ -61,6 +67,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
+        paddingTop: 10,
     },
     currencyTypeStack: {
         marginHorizontal: 10,

@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { EthEdgeGateway } from "@cryptify/api/src/gateways/eth_edge_gateway";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
-import { getCurrencyType } from "@cryptify/common/src/helpers/getCurrencyType";
+import { getCurrencyType } from "@cryptify/common/src/helpers/currency_utils";
 import { ERROR_WALLET_ADDRESS_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";

@@ -1,5 +1,5 @@
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
-import { JwtToken } from "@cryptify/common/src/types/jwt_token";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { Method, request } from "./request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 

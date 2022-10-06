@@ -18,6 +18,5 @@ const styles = StyleSheet.create({
         fontSize: 28,
         lineHeight: 37,
         fontWeight: "600",
-        paddingTop: 10,
     },
 });

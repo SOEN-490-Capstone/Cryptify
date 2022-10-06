@@ -1,4 +1,4 @@
-import { JwtToken } from "@cryptify/common/src/types/jwt_token";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { Text, View } from "../components/Themed";
 import React from "react";
 import StorageService from "../services/storage_service";

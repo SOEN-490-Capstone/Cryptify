@@ -1,6 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {NavigationContainer, DefaultTheme, DarkTheme, NavigatorScreenParams} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -9,7 +9,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import {HomeStackParamList, RootStackParamList, RootTabParamList, SettingsStackParamList} from "../types";
+import { HomeStackParamList, RootStackParamList, RootTabParamList, SettingsStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
@@ -25,30 +25,42 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 function HomeStackScreen() {
     return (
         <HomeStack.Navigator>
-            <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{
-                title: "Home",
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 28,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
-            }}/>
-            <HomeStack.Screen name="AddWalletScreen" component={AddWalletScreen} options={{
-                title: "Wallets",
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 17,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
-                headerTitleAlign: "center",
-            }}/>
-            <HomeStack.Screen name="AddWalletFormScreen" component={AddWalletFormScreen} options={{
-                title: "",
-                headerTintColor: "#404040",
-                headerShadowVisible: false,
-            }}/>
+            <HomeStack.Screen
+                name="HomeScreen"
+                component={HomeScreen}
+                options={{
+                    title: "Home",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 28,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                }}
+            />
+            <HomeStack.Screen
+                name="AddWalletScreen"
+                component={AddWalletScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="AddWalletFormScreen"
+                component={AddWalletFormScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
         </HomeStack.Navigator>
     );
 }
@@ -58,40 +70,56 @@ const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 function SettingsStackScreen() {
     return (
         <SettingsStack.Navigator>
-            <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} options={{
-                title: "Settings",
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 28,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
-            }}/>
-            <SettingsStack.Screen name="ViewWalletsScreen" component={ViewWalletsScreen} options={{
-                title: "Wallets",
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 17,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
-                headerTitleAlign: "center",
-            }}/>
-            <SettingsStack.Screen name="AddWalletScreen" component={AddWalletScreen} options={{
-                title: "Wallets",
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 17,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
-                headerTitleAlign: "center",
-            }}/>
-            <SettingsStack.Screen name="AddWalletFormScreen" component={AddWalletFormScreen} options={{
-                title: "",
-                headerTintColor: "#404040",
-                headerShadowVisible: false,
-            }}/>
+            <SettingsStack.Screen
+                name="SettingsScreen"
+                component={SettingsScreen}
+                options={{
+                    title: "Settings",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 28,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                }}
+            />
+            <SettingsStack.Screen
+                name="ViewWalletsScreen"
+                component={ViewWalletsScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddWalletScreen"
+                component={AddWalletScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddWalletFormScreen"
+                component={AddWalletFormScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
         </SettingsStack.Navigator>
     );
 }
@@ -142,7 +170,7 @@ function BottomTabNavigator() {
                 component={SignUpScreen}
                 options={{
                     title: "Sign Up",
-                    tabBarIcon: ({color}) => <TabBarIcon name="code" color={color}/>,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                 }}
             />
             <BottomTab.Screen
@@ -150,7 +178,7 @@ function BottomTabNavigator() {
                 component={SignInScreen}
                 options={{
                     title: "Sign In",
-                    tabBarIcon: ({color}) => <TabBarIcon name="code" color={color}/>,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                 }}
             />
         </BottomTab.Navigator>

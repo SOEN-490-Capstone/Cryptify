@@ -6,7 +6,7 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -17,7 +17,7 @@ declare global {
 
 type AddWalletFormScreenProps = {
     currencyType: CurrencyType;
-}
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;
@@ -25,11 +25,10 @@ export type HomeStackParamList = {
     AddWalletFormScreen: AddWalletFormScreenProps;
 };
 
-export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
-    CompositeScreenProps<
-        BottomTabScreenProps<HomeStackParamList, T>,
-        RootStackScreenProps<keyof RootStackParamList>
-        >;
+export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+>;
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
@@ -38,11 +37,10 @@ export type SettingsStackParamList = {
     AddWalletFormScreen: AddWalletFormScreenProps;
 };
 
-export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> =
-    CompositeScreenProps<
-        BottomTabScreenProps<SettingsStackParamList, T>,
-        RootStackScreenProps<keyof RootStackParamList>
-        >;
+export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<
+    BottomTabScreenProps<SettingsStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+>;
 
 export type RootTabParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList> | undefined;
@@ -54,7 +52,7 @@ export type RootTabParamList = {
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
-    >;
+>;
 
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
@@ -65,4 +63,3 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
     RootStackParamList,
     Screen
 >;
-

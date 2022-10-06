@@ -16,9 +16,9 @@ import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
-import AddWalletScreen from "../screens/AddWalletScreen";
+import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
-import AddWalletFormScreen from "../screens/AddWalletFormScreen";
+import AddWalletFormScreen from "../screens/AddWallet/AddWalletFormScreen";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 

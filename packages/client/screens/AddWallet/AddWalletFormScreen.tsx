@@ -1,14 +1,14 @@
 import React from "react";
-import { View } from "../components/Themed";
-import {TitleText} from "../components/TitleText";
+import { View } from "../../components/Themed";
+import {TitleText} from "../../components/TitleText";
 import {StyleSheet} from "react-native";
 import {Center, Container, VStack, Text, HStack} from "native-base";
-import {faEyeCustom} from "../components/icons/faEyeCustom";
-import {faEyeSlashCustom} from "../components/icons/faEyeSlashCustom";
+import {faEyeCustom} from "../../components/icons/faEyeCustom";
+import {faEyeSlashCustom} from "../../components/icons/faEyeSlashCustom";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faBitcoinCustom} from "../components/icons/faBitcoinCustom";
-import {faChevronRightCustom} from "../components/icons/faChevronRightCustom";
-import {faEthereumCustom} from "../components/icons/faEthereumCustom";
+import {faBitcoinCustom} from "../../components/icons/faBitcoinCustom";
+import {faChevronRightCustom} from "../../components/icons/faChevronRightCustom";
+import {faEthereumCustom} from "../../components/icons/faEthereumCustom";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
 export default function AddWalletFormScreen() {

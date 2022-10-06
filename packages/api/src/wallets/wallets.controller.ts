@@ -5,6 +5,7 @@ import { createWalletSchema } from "@cryptify/common/src/validations/create_wall
 import { JwtAuthGuard } from "@cryptify/api/src/authentication/gaurds/jwt-auth.guard";
 import { WalletsService } from "@cryptify/api/src/wallets/wallets.service";
 import { AuthorizationGuard } from "@cryptify/api/src/wallets/guards/authorization.guard";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 @Controller()
 export class WalletsController {
@@ -12,7 +13,7 @@ export class WalletsController {
 
     @Post("/user/:id/wallet")
     @UseGuards(JwtAuthGuard, AuthorizationGuard)
-    async create(@Body() body: CreateWalletRequest): Promise<any> {
+    async create(@Body() body: CreateWalletRequest): Promise<WalletWithBalance> {
         const createWalletReq = await useValidate(createWalletSchema, body);
         return this.walletsService.create(createWalletReq);
     }

@@ -12,6 +12,6 @@ export class EthEdgeGateway {
 
     async createWallet<T>(req: CreateWalletRequest): Promise<T> {
         const path = `user/${req.userId}/wallet`;
-        return this.request<any>(Method.POST, path, req);
+        return this.request<T>(Method.POST, path, req);
     }
 }

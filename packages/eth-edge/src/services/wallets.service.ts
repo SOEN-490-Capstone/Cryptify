@@ -5,7 +5,7 @@ import { ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/erro
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
-import { walletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 @Injectable()
 export class WalletsService {
@@ -15,7 +15,7 @@ export class WalletsService {
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
-    async create(createWalletReq: CreateWalletRequest): Promise<walletWithBalance> {
+    async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
         if (await this.findOne(createWalletReq.address, createWalletReq.userId)) {
             throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT);
         }

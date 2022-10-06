@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { InjectRepository } from "@nestjs/typeorm";
-import { InsertResult, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { EthEdgeGateway } from "@cryptify/api/src/gateways/eth_edge_gateway";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { getCurrencyType } from "@cryptify/common/src/helpers/getCurrencyType";

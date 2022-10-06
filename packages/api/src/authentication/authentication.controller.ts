@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
-import { JwtToken } from "@cryptify/common/src/types/jwt_token";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
-import { useValidate } from "@cryptify/api/src/hooks/use_validate";
+import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 
 @Controller("auth")
 export class AuthenticationController {

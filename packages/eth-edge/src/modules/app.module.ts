@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { BaseModule } from "@cryptify/eth-edge/src/base/base.module";
+import { BaseModule } from "@cryptify/eth-edge/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
-import { WalletsModule } from "./wallets/wallets.module";
+import { WalletsModule } from "./wallets.module";
 
 @Module({
     imports: [
@@ -13,10 +13,12 @@ import { WalletsModule } from "./wallets/wallets.module";
         }),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
-            useFactory: (config: ConfigService) => ({
-                ...dataSourceOptionsConfig(config),
-                synchronize: true,
-            }),
+            useFactory: (config: ConfigService) => {
+                return {
+                    ...dataSourceOptionsConfig(config),
+                    synchronize: true,
+                };
+            },
         }),
         BaseModule,
         WalletsModule,

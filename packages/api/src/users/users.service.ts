@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "@cryptify/common/src/entities/user";
+import { User } from "@cryptify/common/src/domain/entities/user";
 import { Repository } from "typeorm";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { ERROR_EMAIL_IN_USE } from "@cryptify/common/src/errors/error_messages";

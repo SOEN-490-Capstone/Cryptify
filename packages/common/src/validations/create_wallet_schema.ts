@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { CurrencyType } from "@cryptify/common/src/enums/currency_type_enum";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 export const createWalletSchema = yup.object({
     userId: yup.number().required(),

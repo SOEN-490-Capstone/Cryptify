@@ -2,8 +2,10 @@ import { JwtToken } from "@cryptify/common/src/types/jwt_token";
 import { Text, View } from "../components/Themed";
 import React from "react";
 import StorageService from "../services/storage_service";
+import {Button} from "native-base";
+import {HomeStackScreenProps, RootTabScreenProps} from "../types";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScreen">) {
     const [token, setToken] = React.useState("");
 
     React.useEffect(() => {
@@ -19,6 +21,9 @@ export default function HomeScreen() {
     return (
         <View>
             <Text>Token: {token}</Text>
+            <Button
+                onPress={() => navigation.navigate("AddWalletScreen")}
+            >Add a wallet</Button>
         </View>
     );
 }

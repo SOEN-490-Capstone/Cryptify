@@ -1,11 +1,6 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import {NavigationContainer, DefaultTheme, DarkTheme, NavigatorScreenParams} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -14,41 +9,39 @@ import useColorScheme from "../hooks/useColorScheme";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import { RootStackParamList, RootTabParamList } from "../types";
+import {HomeStackParamList, RootStackParamList, RootTabParamList, SettingsStackParamList} from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
+import AddWalletScreen from "../screens/AddWalletScreen";
+import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+
+function HomeStackScreen() {
     return (
-        <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <RootNavigator />
-        </NavigationContainer>
+        <HomeStack.Navigator>
+            <HomeStack.Screen name="HomeScreen" component={HomeScreen}/>
+            <HomeStack.Screen name="AddWalletScreen" component={AddWalletScreen}/>
+        </HomeStack.Navigator>
     );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
-function RootNavigator() {
+function SettingsStackScreen() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-        </Stack.Navigator>
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen}/>
+            <SettingsStack.Screen name="ViewWalletsScreen" component={ViewWalletsScreen}/>
+            <SettingsStack.Screen name="AddWalletScreen" component={AddWalletScreen}/>
+        </SettingsStack.Navigator>
     );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
@@ -56,16 +49,14 @@ function BottomTabNavigator() {
 
     return (
         <BottomTab.Navigator
-            initialRouteName="HomeScreen"
+            initialRouteName="HomeStack"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tabIconSelected,
                 tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
                 tabBarLabelPosition: "below-icon",
-
                 tabBarStyle: {
                     paddingBottom: 2,
                 },
-
                 headerTintColor: "#404040",
                 headerTitleStyle: {
                     fontSize: 28,
@@ -73,19 +64,20 @@ function BottomTabNavigator() {
                     fontWeight: "600",
                 },
                 headerShadowVisible: false,
+                headerShown: false,
             }}
         >
             <BottomTab.Screen
-                name="HomeScreen"
-                component={HomeScreen}
+                name="HomeStack"
+                component={HomeStackScreen}
                 options={{
                     title: "Home",
                     tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faHouseCustom} color={color} size={28} />,
                 }}
             />
             <BottomTab.Screen
-                name="SettingsScreen"
-                component={SettingsScreen}
+                name="SettingsStack"
+                component={SettingsStackScreen}
                 options={{
                     title: "Settings",
                     tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faBarsCustom} color={color} size={28} />,
@@ -96,8 +88,7 @@ function BottomTabNavigator() {
                 component={SignUpScreen}
                 options={{
                     title: "Sign Up",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-                    headerShown: false,
+                    tabBarIcon: ({color}) => <TabBarIcon name="code" color={color}/>,
                 }}
             />
             <BottomTab.Screen
@@ -105,11 +96,23 @@ function BottomTabNavigator() {
                 component={SignInScreen}
                 options={{
                     title: "Sign In",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-                    headerShown: false,
+                    tabBarIcon: ({color}) => <TabBarIcon name="code" color={color}/>,
                 }}
             />
         </BottomTab.Navigator>
+    );
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+    return (
+        <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+            <Stack.Navigator>
+                <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+                <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 

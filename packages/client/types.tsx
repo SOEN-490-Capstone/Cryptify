@@ -14,9 +14,43 @@ declare global {
     }
 }
 
+export type HomeStackParamList = {
+    HomeScreen: undefined;
+    AddWalletScreen: undefined;
+};
+
+export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
+    CompositeScreenProps<
+        BottomTabScreenProps<HomeStackParamList, T>,
+        RootStackScreenProps<keyof RootStackParamList>
+        >;
+
+export type SettingsStackParamList = {
+    SettingsScreen: undefined;
+    ViewWalletsScreen: undefined;
+    AddWalletScreen: undefined;
+};
+
+export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> =
+    CompositeScreenProps<
+        BottomTabScreenProps<SettingsStackParamList, T>,
+        RootStackScreenProps<keyof RootStackParamList>
+        >;
+
+export type RootTabParamList = {
+    HomeStack: NavigatorScreenParams<HomeStackParamList> | undefined;
+    SettingsStack: NavigatorScreenParams<SettingsStackParamList> | undefined;
+    SignUpScreen: undefined;
+    SignInScreen: undefined;
+};
+
+export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
+    BottomTabScreenProps<RootTabParamList, Screen>,
+    NativeStackScreenProps<RootStackParamList>
+    >;
+
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
-    Modal: undefined;
     NotFound: undefined;
 };
 
@@ -25,14 +59,3 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
     Screen
 >;
 
-export type RootTabParamList = {
-    HomeScreen: undefined;
-    SettingsScreen: undefined;
-    SignUpScreen: undefined;
-    SignInScreen: undefined;
-};
-
-export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-    BottomTabScreenProps<RootTabParamList, Screen>,
-    NativeStackScreenProps<RootStackParamList>
->;

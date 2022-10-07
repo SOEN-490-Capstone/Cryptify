@@ -8,7 +8,8 @@ async function createWallet(req: CreateWalletRequest, token: JwtToken): Promise<
     const headers = {
         Authorization: `Bearer ${token.accessToken}`,
     };
-    return request<WalletWithBalance>(Method.POST, {}, path, req);
+
+    return request<WalletWithBalance>(Method.POST, headers, path, req);
 }
 
 export default {

@@ -14,6 +14,14 @@ import StorageService from "../../services/storage_service";
 import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 import WalletsGateway from "../../gateways/wallets_gateway";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
+import UsersGateway from "../../gateways/users_gateway";
+
+enum AddingWalletStatus {
+    READY,
+    LOADING,
+    SUCCESS,
+    ERROR,
+}
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"AddWalletFormScreen">,
@@ -35,15 +43,24 @@ export default function AddWalletFormScreen({ route }: Props) {
         formikHelpers: FormikHelpers<CreateWalletRequest>,
     ): Promise<void> {
         try {
+            // TODO display loading screen
             const token = await StorageService.get<JwtToken>("@jwt");
-            const wallet = await WalletsGateway.createWallet(values, token!);
-            console.log(wallet);
+            const user = await UsersGateway.whoami(token!);
+            const wallet = await WalletsGateway.createWallet(
+                {
+                    ...values,
+                    userId: user.id,
+                },
+                token!,
+            );
 
+            // TODO if successful display success screen and clear input
             // navigation.reset({
             //     index: 0,
             //     routes: [{ name: "HomeStack" }],
             // });
         } catch (error) {
+            // TODO if error display error screen and don't clear input
             console.log(error);
         }
     }

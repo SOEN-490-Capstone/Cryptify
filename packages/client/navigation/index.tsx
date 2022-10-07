@@ -1,4 +1,3 @@
-import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -21,7 +20,7 @@ import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletFormScreen from "../screens/AddWallet/AddWalletFormScreen";
 import { Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -152,7 +151,10 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
-    const tabBarIcon = (icon: IconDefinition) => ({ color }: { color: string; }) => <FontAwesomeIcon icon={icon} color={color} size={22} />;
+    const tabBarIcon =
+        (icon: IconDefinition) =>
+        ({ color }: { color: string }) =>
+            <FontAwesomeIcon icon={icon} color={color} size={22} />;
 
     return (
         <BottomTab.Navigator

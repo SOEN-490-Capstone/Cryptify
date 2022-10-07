@@ -1,4 +1,4 @@
-const API_URI = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
+const API_URI = `http://192.168.0.14:${process.env.REACT_APP_API_PORT}`;
 
 export async function request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
     const response = await fetch(`${API_URI}/${path}`, {
@@ -8,7 +8,7 @@ export async function request<T>(method: Method, headers: Headers, path: string,
             "Content-Type": "application/json",
             ...headers,
         },
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : null,
     });
     const resBody = await response.json();
 

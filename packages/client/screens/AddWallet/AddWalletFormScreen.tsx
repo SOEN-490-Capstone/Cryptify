@@ -1,9 +1,7 @@
 import React from "react";
 import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { TitleTextWithIcon } from "../../components/TitleTextWithIcon";
 import { Formik } from "formik";
 import { Button, FormControl, Input, VStack } from "native-base";
@@ -15,15 +13,15 @@ import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 import WalletsGateway from "../../gateways/wallets_gateway";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import UsersGateway from "../../gateways/users_gateway";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {AddWalletStatus} from "./add_wallet_status";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { AddWalletStatus } from "./add_wallet_status";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     currencyType: CurrencyType;
     setStatus: React.Dispatch<React.SetStateAction<AddWalletStatus>>;
     setWallet: React.Dispatch<React.SetStateAction<WalletWithBalance | null>>;
-}
+};
 
 export default function AddWalletFormScreen({ currencyType, setStatus, setWallet }: Props) {
     const initialValues: CreateWalletRequest = {
@@ -41,7 +39,7 @@ export default function AddWalletFormScreen({ currencyType, setStatus, setWallet
             setStatus(AddWalletStatus.LOADING);
             // Artificial delay before processing actually happens, what has
             // the world come too :(
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 2000));
 
             const token = await StorageService.get<JwtToken>("@jwt");
             const user = await UsersGateway.whoami(token!);

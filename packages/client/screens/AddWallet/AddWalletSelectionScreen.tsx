@@ -10,7 +10,10 @@ import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 
-type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletSelectionScreen">, SettingsStackScreenProps<"AddWalletSelectionScreen">>;
+type Props = CompositeScreenProps<
+    HomeStackScreenProps<"AddWalletSelectionScreen">,
+    SettingsStackScreenProps<"AddWalletSelectionScreen">
+>;
 
 export default function AddWalletSelectionScreen({ navigation }: Props) {
     return (

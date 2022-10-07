@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -28,10 +28,10 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 function HomeStackScreen({ navigation, route }) {
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen"];
-        if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)){
-            navigation.setOptions({tabBarStyle: {display: 'none'}});
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)) {
+            navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
-            navigation.setOptions({tabBarStyle: {display: 'flex'}});
+            navigation.setOptions({ tabBarStyle: { display: "flex" } });
         }
     }, [navigation, route]);
 
@@ -93,10 +93,10 @@ const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 function SettingsStackScreen({ navigation, route }) {
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
-        if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)){
-            navigation.setOptions({tabBarStyle: {display: 'none'}});
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)) {
+            navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
-            navigation.setOptions({tabBarStyle: {display: 'flex'}});
+            navigation.setOptions({ tabBarStyle: { display: "flex" } });
         }
     }, [navigation, route]);
     return (

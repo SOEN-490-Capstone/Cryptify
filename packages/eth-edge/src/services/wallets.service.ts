@@ -18,7 +18,7 @@ export class WalletsService {
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
         if (await this.findOne(createWalletReq.address, createWalletReq.userId)) {
-            throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT);
+            throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(createWalletReq.currencyType));
         }
 
         const reqWallet = this.walletRepository.create(createWalletReq);

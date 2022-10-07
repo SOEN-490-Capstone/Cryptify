@@ -8,6 +8,7 @@ import AddWalletSuccessScreen from "./add-wallet-states/AddWalletSuccessScreen";
 import AddWalletFailureScreen from "./add-wallet-states/AddWalletFailureScreen";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import NotFoundScreen from "../NotFoundScreen";
+import {FormikErrors} from "formik";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 
@@ -22,6 +23,7 @@ export default function AddWalletScreen({ route, navigation }: Props) {
         name: "",
         currencyType,
     });
+    const [initialError, setInitialErrors] = React.useState<FormikErrors<any>>({});
 
     React.useLayoutEffect(() => {
         const headerShown = state == AddWalletState.FORM;
@@ -36,6 +38,8 @@ export default function AddWalletScreen({ route, navigation }: Props) {
                 setWalletName={setWalletName}
                 initialValues={initialValues}
                 setInitialValues={setInitialValues}
+                initialErrors={initialError}
+                setInitialErrors={setInitialErrors}
             />
         );
     }

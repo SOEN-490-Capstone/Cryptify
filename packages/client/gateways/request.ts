@@ -1,3 +1,5 @@
+import {HttpError} from "@cryptify/common/src/errors/http_error";
+
 const API_URI = `http://192.168.0.14:${process.env.REACT_APP_API_PORT}`;
 
 export async function request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
@@ -13,7 +15,7 @@ export async function request<T>(method: Method, headers: Headers, path: string,
     const resBody = await response.json();
 
     if (response.status >= 300) {
-        throw new Error(resBody.message);
+        throw new HttpError(resBody.message, response.status);
     }
 
     return resBody as T;

@@ -35,6 +35,7 @@ describe("Wallets", () => {
                 .post("/users/2/wallets")
                 .set("Authorization", `Bearer ${resSignUp.body.accessToken}`)
                 .send({
+                    userId: 1,
                     name: "test",
                     address: "test",
                     currencyType: "BITCOIN",

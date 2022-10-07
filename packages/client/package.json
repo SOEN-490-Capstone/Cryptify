@@ -8,7 +8,7 @@
         "android": "expo start --android",
         "ios": "expo start --ios",
         "web": "expo start --web",
-        "test:unit": "jest",
+        "test:unit": "jest --passWithNoTests",
         "postinstall": "expo-yarn-workspaces postinstall"
     },
     "jest": {

@@ -8,7 +8,7 @@ export const createWalletSchema = yup.object({
         .string()
         .min(0)
         .max(32, "Name must be 32 characters or less.")
-        .matches(/^.[a-zA-Z0-9]+$/, "Name must only contain alphanumeric characters")
+        .matches(/^[\w\-\s]+$/, "Name must only contain alphanumeric characters and spaces")
         .required("Enter a name."),
     currencyType: yup.mixed<CurrencyType>().oneOf(Object.values(CurrencyType)).required(),
 });

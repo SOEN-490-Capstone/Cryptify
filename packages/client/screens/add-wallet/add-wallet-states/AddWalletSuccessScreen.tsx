@@ -1,49 +1,54 @@
 import React from "react";
-import { View } from "../../components/Themed";
+import { View } from "../../../components/Themed";
 import { StyleSheet } from "react-native";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
-import { TitleTextWithIcon } from "../../components/TitleTextWithIcon";
+import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Box, Button, Center } from "native-base";
-import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { AddWalletStatus } from "./add_wallet_status";
-import { faCircleCheckCustom } from "../../components/icons/faCircleCheckCustom";
-import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import {CompositeNavigationProp} from "@react-navigation/native";
-import {faCircleXMarkCustom} from "../../components/icons/faCircleXMarkCustom";
+import { AddWalletState } from "./add_wallet_state";
+import { faCircleCheckCustom } from "../../../components/icons/faCircleCheckCustom";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     currencyType: CurrencyType;
-    setStatus: React.Dispatch<React.SetStateAction<AddWalletStatus>>;
+    setState: React.Dispatch<React.SetStateAction<AddWalletState>>;
     walletName: string;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export default function AddWalletFailureScreen({ currencyType, setStatus, walletName, navigation }: Props) {
-    const displayData = currenciesDisplayData.find((currency) => currency.type == currencyType)!;
+export default function AddWalletSuccessScreen({ currencyType, setState, walletName, navigation }: Props) {
+    const buttonText = `Add another ${titleCase(currencyType)} wallet`;
 
     return (
         <View style={styles.view}>
             <Box paddingTop="130px"></Box>
             <TitleTextWithIcon
-                icon={faCircleXMarkCustom}
+                icon={faCircleCheckCustom}
                 iconSize={96}
                 iconStyles={styles.successIcon}
                 textStyles={styles.title}
                 space={30}
             >
-                Could Not Add {titleCase(currencyType)} Wallet
+                Added {titleCase(currencyType)} Wallet
                 {"\n"}
                 {walletName}
             </TitleTextWithIcon>
             <Center style={{ flex: 1 }}></Center>
-            <Button style={styles.successButton} _text={styles.successButtonText} onPress={() => setStatus(AddWalletStatus.FORM)}>
-                Try again
+            <Button
+                style={styles.successButton}
+                _text={styles.successButtonText}
+                onPress={() => setState(AddWalletState.FORM)}
+            >
+                {buttonText}
             </Button>
-            <Button style={styles.backButton} _text={styles.backButtonText} onPress={() => {
-                navigation.goBack()
-                navigation.goBack()
-            }}>
+            <Button
+                style={styles.backButton}
+                _text={styles.backButtonText}
+                onPress={() => {
+                    navigation.goBack();
+                    navigation.goBack();
+                }}
+            >
                 Back to wallets
             </Button>
             <Box paddingTop="20px"></Box>
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        backgroundColor: "#FEF2F2",
+        backgroundColor: "#F0FDF4",
     },
     title: {
         fontSize: 20,
@@ -63,12 +68,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     successIcon: {
-        color: "#EF4444",
+        color: "#22C55E",
         fontWeight: "300",
     },
     successButton: {
         marginTop: 7,
-        backgroundColor: "#EF4444",
+        backgroundColor: "#22C55E",
     },
     successButtonText: {
         fontSize: 17,
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
     },
     backButtonText: {
-        color: "#EF4444",
+        color: "#22C55E",
         fontSize: 17,
         lineHeight: 23,
     },

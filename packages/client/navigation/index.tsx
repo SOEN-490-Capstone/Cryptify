@@ -15,20 +15,20 @@ import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
-import AddWalletSelectionScreen from "../screens/AddWallet/AddWalletSelectionScreen";
+import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
-import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
+import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
 import { Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { RouteProp } from "@react-navigation/core/src/types";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
-// @ts-ignore
-function HomeStackScreen({ navigation, route }) {
+function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen"];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)) {
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
             navigation.setOptions({ tabBarStyle: { display: "flex" } });
@@ -89,11 +89,10 @@ function HomeStackScreen({ navigation, route }) {
 
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
-// @ts-ignore
-function SettingsStackScreen({ navigation, route }) {
+function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)) {
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
             navigation.setOptions({ tabBarStyle: { display: "flex" } });

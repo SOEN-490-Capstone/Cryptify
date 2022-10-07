@@ -1,4 +1,4 @@
-export enum AddWalletStatus {
+export enum AddWalletState {
     FORM,
     LOADING,
     SUCCESS,

@@ -11,6 +11,7 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace ReactNavigation {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         type RootParamList = RootStackParamList;
     }

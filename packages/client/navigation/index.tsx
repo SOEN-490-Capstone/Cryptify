@@ -20,8 +20,8 @@ import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletFormScreen from "../screens/AddWallet/AddWalletFormScreen";
 import { Pressable } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
+import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -152,6 +152,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
+    const tabBarIcon = (icon: IconDefinition) => ({ color }: { color: string; }) => <FontAwesomeIcon icon={icon} color={color} size={22} />;
+
     return (
         <BottomTab.Navigator
             initialRouteName="HomeStack"
@@ -162,13 +164,9 @@ function BottomTabNavigator() {
                 tabBarStyle: {
                     paddingBottom: 2,
                 },
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 28,
-                    lineHeight: 37,
-                    fontWeight: "600",
+                tabBarLabelStyle: {
+                    fontSize: 12,
                 },
-                headerShadowVisible: false,
                 headerShown: false,
             }}
         >
@@ -177,7 +175,7 @@ function BottomTabNavigator() {
                 component={HomeStackScreen}
                 options={{
                     title: "Home",
-                    tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faHouseCustom} color={color} size={28} />,
+                    tabBarIcon: tabBarIcon(faHouseCustom),
                 }}
             />
             <BottomTab.Screen
@@ -185,7 +183,7 @@ function BottomTabNavigator() {
                 component={SettingsStackScreen}
                 options={{
                     title: "Settings",
-                    tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faBarsCustom} color={color} size={28} />,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
             <BottomTab.Screen
@@ -193,7 +191,7 @@ function BottomTabNavigator() {
                 component={SignUpScreen}
                 options={{
                     title: "Sign Up",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
             <BottomTab.Screen
@@ -201,7 +199,7 @@ function BottomTabNavigator() {
                 component={SignInScreen}
                 options={{
                     title: "Sign In",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
         </BottomTab.Navigator>
@@ -219,11 +217,4 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
             </Stack.Navigator>
         </NavigationContainer>
     );
-}
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["name"]; color: string }) {
-    return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }

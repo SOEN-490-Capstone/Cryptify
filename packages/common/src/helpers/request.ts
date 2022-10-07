@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
-import {HttpError} from "@cryptify/common/src/errors/http_error";
-import {BadRequestException} from "@nestjs/common";
+import { HttpError } from "@cryptify/common/src/errors/http_error";
+import { BadRequestException } from "@nestjs/common";
 
 export function request(apiUrl: string, apiPort: string) {
     const apiUri = `http://${apiUrl}:${apiPort}`;

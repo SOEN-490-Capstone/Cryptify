@@ -3,7 +3,7 @@ import { View } from "../../../components/Themed";
 import { StyleSheet } from "react-native";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
-import {Formik, FormikErrors} from "formik";
+import { Formik, FormikErrors } from "formik";
 import { Button, FormControl, Input, VStack } from "native-base";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { createWalletSchema } from "@cryptify/common/src/validations/create_wallet_schema";
@@ -16,7 +16,7 @@ import UsersGateway from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
-import {HttpError} from "@cryptify/common/src/errors/http_error";
+import { HttpError } from "@cryptify/common/src/errors/http_error";
 
 type Props = {
     currencyType: CurrencyType;
@@ -74,7 +74,7 @@ export default function AddWalletFormScreen({
                 address: "",
                 name: "",
                 currencyType,
-            })
+            });
             formikHelpers.resetForm();
             setState(AddWalletState.SUCCESS);
         } catch (error) {
@@ -84,7 +84,7 @@ export default function AddWalletFormScreen({
             if (error instanceof HttpError && error.status == 400) {
                 setInitialErrors({
                     address: error.message,
-                })
+                });
                 setState(AddWalletState.FORM);
                 return;
             }
@@ -124,7 +124,9 @@ export default function AddWalletFormScreen({
                                 <Input value={values.name} onChangeText={handleChange("name")} placeholder="Name" />
                                 <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={!!(errors.address && (touched.address || initialValues.address != ""))}>
+                            <FormControl
+                                isInvalid={!!(errors.address && (touched.address || initialValues.address != ""))}
+                            >
                                 <Input
                                     value={values.address}
                                     onChangeText={handleChange("address")}

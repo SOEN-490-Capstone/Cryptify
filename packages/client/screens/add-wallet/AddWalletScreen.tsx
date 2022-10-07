@@ -8,7 +8,7 @@ import AddWalletSuccessScreen from "./add-wallet-states/AddWalletSuccessScreen";
 import AddWalletFailureScreen from "./add-wallet-states/AddWalletFailureScreen";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import NotFoundScreen from "../NotFoundScreen";
-import {FormikErrors} from "formik";
+import { FormikErrors } from "formik";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 

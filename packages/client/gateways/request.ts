@@ -1,4 +1,4 @@
-import {HttpError} from "@cryptify/common/src/errors/http_error";
+import { HttpError } from "@cryptify/common/src/errors/http_error";
 
 const API_URI = `http://192.168.0.14:${process.env.REACT_APP_API_PORT}`;
 

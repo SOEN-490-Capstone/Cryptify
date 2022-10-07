@@ -9,6 +9,7 @@ type CurrencyDisplayData = {
     style: "bitcoinIcon" | "ethereumIcon";
     title: string;
     addressInput: string;
+    loadingTitle: string;
 };
 
 export const currenciesDisplayData: CurrencyDisplayData[] = [
@@ -18,6 +19,7 @@ export const currenciesDisplayData: CurrencyDisplayData[] = [
         style: "bitcoinIcon",
         title: "Add a Bitcoin Wallet",
         addressInput: "Wallet address (Begins with 1, 3, or bc1)",
+        loadingTitle: "Adding Bitcoin Wallet",
     },
     {
         type: CurrencyType.ETHEREUM,
@@ -25,5 +27,6 @@ export const currenciesDisplayData: CurrencyDisplayData[] = [
         style: "ethereumIcon",
         title: "Add an Ethereum Wallet",
         addressInput: "Wallet address (Begins with 0x)",
+        loadingTitle: "Adding Ethereum Wallet",
     },
 ];

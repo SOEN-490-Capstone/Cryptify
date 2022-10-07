@@ -11,7 +11,7 @@ type Props = {
     iconSize: number;
     textStyles: StyleProp<TextStyle>;
     space: number;
-    children: string;
+    children: React.ReactNode;
 };
 
 export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, space, children }: Props) {

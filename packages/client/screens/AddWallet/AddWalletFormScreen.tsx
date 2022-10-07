@@ -15,22 +15,17 @@ import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 import WalletsGateway from "../../gateways/wallets_gateway";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import UsersGateway from "../../gateways/users_gateway";
+import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import {AddWalletStatus} from "./add_wallet_status";
+import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
 
-enum AddingWalletStatus {
-    READY,
-    LOADING,
-    SUCCESS,
-    ERROR,
+type Props = {
+    currencyType: CurrencyType;
+    setStatus: React.Dispatch<React.SetStateAction<AddWalletStatus>>;
+    setWallet: React.Dispatch<React.SetStateAction<WalletWithBalance | null>>;
 }
 
-type Props = CompositeScreenProps<
-    HomeStackScreenProps<"AddWalletFormScreen">,
-    SettingsStackScreenProps<"AddWalletFormScreen">
->;
-
-export default function AddWalletFormScreen({ route }: Props) {
-    const currencyType = route.params.currencyType;
-
+export default function AddWalletFormScreen({ currencyType, setStatus, setWallet }: Props) {
     const initialValues: CreateWalletRequest = {
         userId: 0,
         address: "",
@@ -43,7 +38,11 @@ export default function AddWalletFormScreen({ route }: Props) {
         formikHelpers: FormikHelpers<CreateWalletRequest>,
     ): Promise<void> {
         try {
-            // TODO display loading screen
+            setStatus(AddWalletStatus.LOADING);
+            // Artificial delay before processing actually happens, what has
+            // the world come too :(
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             const token = await StorageService.get<JwtToken>("@jwt");
             const user = await UsersGateway.whoami(token!);
             const wallet = await WalletsGateway.createWallet(
@@ -53,15 +52,13 @@ export default function AddWalletFormScreen({ route }: Props) {
                 },
                 token!,
             );
+            setWallet(wallet);
 
-            // TODO if successful display success screen and clear input
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: "HomeStack" }],
-            // });
+            formikHelpers.resetForm();
+            setStatus(AddWalletStatus.SUCCESS);
         } catch (error) {
-            // TODO if error display error screen and don't clear input
             console.log(error);
+            setStatus(AddWalletStatus.ERROR);
         }
     }
 

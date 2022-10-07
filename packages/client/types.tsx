@@ -11,18 +11,19 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace ReactNavigation {
+        // @ts-ignore
         type RootParamList = RootStackParamList;
     }
 }
 
-type AddWalletFormScreenProps = {
+type AddWalletScreenProps = {
     currencyType: CurrencyType;
 };
 
 export type HomeStackParamList = {
     HomeScreen: undefined;
-    AddWalletScreen: undefined;
-    AddWalletFormScreen: AddWalletFormScreenProps;
+    AddWalletSelectionScreen: undefined;
+    AddWalletScreen: AddWalletScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -33,8 +34,8 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
     ViewWalletsScreen: undefined;
-    AddWalletScreen: undefined;
-    AddWalletFormScreen: AddWalletFormScreenProps;
+    AddWalletSelectionScreen: undefined;
+    AddWalletScreen: AddWalletScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

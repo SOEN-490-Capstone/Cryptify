@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
     return (
         <View>
             <Text>Token: {token}</Text>
-            <Button onPress={() => navigation.navigate("AddWalletScreen")}>Add a wallet</Button>
+            <Button onPress={() => navigation.navigate("AddWalletSelectionScreen")}>Add a wallet</Button>
         </View>
     );
 }

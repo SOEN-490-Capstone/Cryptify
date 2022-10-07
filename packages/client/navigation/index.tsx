@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import {NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -15,16 +15,26 @@ import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
-import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
+import AddWalletSelectionScreen from "../screens/AddWallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
-import AddWalletFormScreen from "../screens/AddWallet/AddWalletFormScreen";
+import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
 import { Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
-function HomeStackScreen() {
+// @ts-ignore
+function HomeStackScreen({ navigation, route }) {
+    React.useLayoutEffect(() => {
+        const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen"];
+        if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)){
+            navigation.setOptions({tabBarStyle: {display: 'none'}});
+        } else {
+            navigation.setOptions({tabBarStyle: {display: 'flex'}});
+        }
+    }, [navigation, route]);
+
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen
@@ -41,8 +51,8 @@ function HomeStackScreen() {
                 }}
             />
             <HomeStack.Screen
-                name="AddWalletScreen"
-                component={AddWalletScreen}
+                name="AddWalletSelectionScreen"
+                component={AddWalletSelectionScreen}
                 options={{
                     title: "Wallets",
                     headerTintColor: "#404040",
@@ -55,8 +65,8 @@ function HomeStackScreen() {
                 }}
             />
             <HomeStack.Screen
-                name="AddWalletFormScreen"
-                component={AddWalletFormScreen}
+                name="AddWalletScreen"
+                component={AddWalletScreen}
                 options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
@@ -79,7 +89,16 @@ function HomeStackScreen() {
 
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
-function SettingsStackScreen() {
+// @ts-ignore
+function SettingsStackScreen({ navigation, route }) {
+    React.useLayoutEffect(() => {
+        const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
+        if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route)!)){
+            navigation.setOptions({tabBarStyle: {display: 'none'}});
+        } else {
+            navigation.setOptions({tabBarStyle: {display: 'flex'}});
+        }
+    }, [navigation, route]);
     return (
         <SettingsStack.Navigator>
             <SettingsStack.Screen
@@ -110,8 +129,8 @@ function SettingsStackScreen() {
                 }}
             />
             <SettingsStack.Screen
-                name="AddWalletScreen"
-                component={AddWalletScreen}
+                name="AddWalletSelectionScreen"
+                component={AddWalletSelectionScreen}
                 options={{
                     title: "Wallets",
                     headerTintColor: "#404040",
@@ -124,8 +143,8 @@ function SettingsStackScreen() {
                 }}
             />
             <SettingsStack.Screen
-                name="AddWalletFormScreen"
-                component={AddWalletFormScreen}
+                name="AddWalletScreen"
+                component={AddWalletScreen}
                 options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",

@@ -1,7 +1,7 @@
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {faBitcoinCustom} from "../components/icons/faBitcoinCustom";
-import {faEthereumCustom} from "../components/icons/faEthereumCustom";
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { faBitcoinCustom } from "../components/icons/faBitcoinCustom";
+import { faEthereumCustom } from "../components/icons/faEthereumCustom";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 type CurrencyDisplayData = {
     type: CurrencyType;

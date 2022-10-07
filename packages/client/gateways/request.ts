@@ -1,11 +1,12 @@
 const API_URI = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 
-export async function request<T>(method: Method, path: string, body: any): Promise<T> {
+export async function request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
     const response = await fetch(`${API_URI}/${path}`, {
         method: Method[method],
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            ...headers,
         },
         body: JSON.stringify(body),
     });
@@ -17,6 +18,10 @@ export async function request<T>(method: Method, path: string, body: any): Promi
 
     return resBody as T;
 }
+
+type Headers = {
+    [key: string]: string;
+};
 
 export enum Method {
     POST,

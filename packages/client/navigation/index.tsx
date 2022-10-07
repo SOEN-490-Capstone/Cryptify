@@ -19,9 +19,9 @@ import { faBarsCustom } from "../components/icons/faBarsCustom";
 import AddWalletScreen from "../screens/AddWallet/AddWalletScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletFormScreen from "../screens/AddWallet/AddWalletFormScreen";
-import {Button, Pressable} from "native-base";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faXMarkCustom} from "../components/icons/faXMarkCustom";
+import { Pressable } from "native-base";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -63,13 +63,15 @@ function HomeStackScreen() {
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
                     headerRight: () => (
-                        <Pressable onPress={() => {
-                            navigation.goBack();
-                            navigation.goBack();
-                        }}>
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
                             <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
                         </Pressable>
-                    )
+                    ),
                 })}
             />
         </HomeStack.Navigator>
@@ -130,13 +132,15 @@ function SettingsStackScreen() {
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
                     headerRight: () => (
-                        <Pressable onPress={() => {
-                            navigation.goBack();
-                            navigation.goBack();
-                        }}>
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
                             <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
                         </Pressable>
-                    )
+                    ),
                 })}
             />
         </SettingsStack.Navigator>

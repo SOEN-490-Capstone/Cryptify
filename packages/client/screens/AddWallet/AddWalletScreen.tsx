@@ -4,15 +4,11 @@ import { TitleText } from "../../components/TitleText";
 import { StyleSheet } from "react-native";
 import { VStack, Text, HStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBitcoinCustom } from "../../components/icons/faBitcoinCustom";
 import { faChevronRightCustom } from "../../components/icons/faChevronRightCustom";
-import { faEthereumCustom } from "../../components/icons/faEthereumCustom";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
-import {currenciesDisplayData} from "../../constants/CurrenciesDisplayData";
+import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 

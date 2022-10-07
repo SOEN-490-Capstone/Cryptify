@@ -5,12 +5,12 @@ import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 
 async function signUp(req: SignUpRequest): Promise<JwtToken> {
     const path = "auth/signup";
-    return request<JwtToken>(Method.POST, path, req);
+    return request<JwtToken>(Method.POST, {}, path, req);
 }
 
 async function signIn(req: SignInRequest): Promise<JwtToken> {
     const path = "auth/signin";
-    return request<JwtToken>(Method.POST, path, req);
+    return request<JwtToken>(Method.POST, {}, path, req);
 }
 
 export default {

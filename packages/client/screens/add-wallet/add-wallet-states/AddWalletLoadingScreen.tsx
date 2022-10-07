@@ -5,6 +5,7 @@ import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Box, Center, Spinner } from "native-base";
 import { currenciesDisplayData } from "../../../constants/CurrenciesDisplayData";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import NotFoundScreen from "../../NotFoundScreen";
 
 type Props = {
     currencyType: CurrencyType;
@@ -12,25 +13,26 @@ type Props = {
 
 export default function AddWalletLoadingScreen({ currencyType }: Props) {
     const displayData = currenciesDisplayData.find((currency) => currency.type == currencyType);
+    if (!displayData) {
+        return <NotFoundScreen />;
+    }
 
     return (
-        displayData && (
-            <View style={styles.view}>
-                <Box paddingTop="80px"></Box>
-                <TitleTextWithIcon
-                    icon={displayData.icon}
-                    iconSize={48}
-                    iconStyles={styles[displayData.style]}
-                    textStyles={styles.title}
-                    space={20}
-                >
-                    {displayData.loadingTitle}
-                </TitleTextWithIcon>
-                <Center style={{ flex: 1, marginBottom: 100 }}>
-                    <Spinner size={146} color="#0077E6" />
-                </Center>
-            </View>
-        )
+        <View style={styles.view}>
+            <Box paddingTop="80px"></Box>
+            <TitleTextWithIcon
+                icon={displayData.icon}
+                iconSize={48}
+                iconStyles={styles[displayData.style]}
+                textStyles={styles.title}
+                space={20}
+            >
+                {displayData.loadingTitle}
+            </TitleTextWithIcon>
+            <Center style={{ flex: 1, marginBottom: 100 }}>
+                <Spinner size={146} color="#0077E6" />
+            </Center>
+        </View>
     );
 }
 

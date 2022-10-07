@@ -15,6 +15,7 @@ import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import UsersGateway from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
+import NotFoundScreen from "../../NotFoundScreen";
 
 type Props = {
     currencyType: CurrencyType;
@@ -67,6 +68,10 @@ export default function AddWalletFormScreen({
     }
 
     const displayData = currenciesDisplayData.find((currency) => currency.type == currencyType);
+    if (!displayData) {
+        return <NotFoundScreen />;
+    }
+
     const buttonText = `Add ${titleCase(currencyType)} Wallet`;
 
     return (

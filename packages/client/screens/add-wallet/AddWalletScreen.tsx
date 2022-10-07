@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "../../components/Themed";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import AddWalletFormScreen from "./add-wallet-states/AddWalletFormScreen";
@@ -8,6 +7,7 @@ import { AddWalletState } from "./add-wallet-states/add_wallet_state";
 import AddWalletSuccessScreen from "./add-wallet-states/AddWalletSuccessScreen";
 import AddWalletFailureScreen from "./add-wallet-states/AddWalletFailureScreen";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
+import NotFoundScreen from "../NotFoundScreen";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 
@@ -63,5 +63,5 @@ export default function AddWalletScreen({ route, navigation }: Props) {
         );
     }
 
-    return <View style={{ flex: 1 }}></View>;
+    return <NotFoundScreen />;
 }

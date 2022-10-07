@@ -1,6 +1,6 @@
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 
-const API_URI = `http://192.168.0.14:${process.env.REACT_APP_API_PORT}`;
+const API_URI = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 
 export async function request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
     const response = await fetch(`${API_URI}/${path}`, {

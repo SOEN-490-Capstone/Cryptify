@@ -23,6 +23,10 @@ import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 
+// TODO refactor this file to reduce code duplication and see if
+// there is a way to centralize some of the styling between
+// navigation stacks
+
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {

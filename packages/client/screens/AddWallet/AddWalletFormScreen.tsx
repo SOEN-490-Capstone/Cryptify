@@ -20,10 +20,10 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 type Props = {
     currencyType: CurrencyType;
     setStatus: React.Dispatch<React.SetStateAction<AddWalletStatus>>;
-    setWallet: React.Dispatch<React.SetStateAction<WalletWithBalance | null>>;
+    setWalletName: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function AddWalletFormScreen({ currencyType, setStatus, setWallet }: Props) {
+export default function AddWalletFormScreen({ currencyType, setStatus, setWalletName }: Props) {
     const initialValues: CreateWalletRequest = {
         userId: 0,
         address: "",
@@ -37,20 +37,20 @@ export default function AddWalletFormScreen({ currencyType, setStatus, setWallet
     ): Promise<void> {
         try {
             setStatus(AddWalletStatus.LOADING);
+            setWalletName(values.name);
             // Artificial delay before processing actually happens, what has
             // the world come too :(
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
             const token = await StorageService.get<JwtToken>("@jwt");
             const user = await UsersGateway.whoami(token!);
-            const wallet = await WalletsGateway.createWallet(
+            await WalletsGateway.createWallet(
                 {
                     ...values,
                     userId: user.id,
                 },
                 token!,
             );
-            setWallet(wallet);
 
             formikHelpers.resetForm();
             setStatus(AddWalletStatus.SUCCESS);

@@ -8,12 +8,13 @@ import AddWalletLoadingScreen from "./AddWalletLoadingScreen";
 import { AddWalletStatus } from "./add_wallet_status";
 import AddWalletSuccessScreen from "./AddWalletSuccessScreen";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import AddWalletFailureScreen from "./AddWalletFailureScreen";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 
 export default function AddWalletScreen({ route, navigation }: Props) {
-    const [status, setStatus] = React.useState(AddWalletStatus.SUCCESS);
-    const [wallet, setWallet] = React.useState<WalletWithBalance | null>(null);
+    const [status, setStatus] = React.useState(AddWalletStatus.FORM);
+    const [walletName, setWalletName] = React.useState<string>("");
 
     const currencyType = route.params.currencyType;
     React.useLayoutEffect(() => {
@@ -22,16 +23,16 @@ export default function AddWalletScreen({ route, navigation }: Props) {
     }, [status, navigation, route]);
 
     if (status == AddWalletStatus.FORM) {
-        return <AddWalletFormScreen currencyType={currencyType} setStatus={setStatus} setWallet={setWallet} />;
+        return <AddWalletFormScreen currencyType={currencyType} setStatus={setStatus} setWalletName={setWalletName} />;
     }
     if (status == AddWalletStatus.LOADING) {
         return <AddWalletLoadingScreen currencyType={currencyType} />;
     }
     if (status == AddWalletStatus.SUCCESS) {
-        return <AddWalletSuccessScreen currencyType={currencyType} setStatus={setStatus} wallet={wallet} />;
+        return <AddWalletSuccessScreen currencyType={currencyType} setStatus={setStatus} walletName={walletName} navigation={navigation} />;
     }
     if (status == AddWalletStatus.ERROR) {
-        return <Text>error</Text>;
+        return <AddWalletFailureScreen currencyType={currencyType} setStatus={setStatus} walletName={walletName} navigation={navigation} />;
     }
 
     return <View style={{ flex: 1 }}></View>;

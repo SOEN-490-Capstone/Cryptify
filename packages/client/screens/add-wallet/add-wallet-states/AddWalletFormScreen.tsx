@@ -17,6 +17,8 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
+import { getCurrencyType } from "@cryptify/common/src/helpers/currency_utils";
+import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 
 type Props = {
     currencyType: CurrencyType;
@@ -42,6 +44,15 @@ export default function AddWalletFormScreen({
         formikHelpers: FormikHelpers<CreateWalletRequest>,
     ): Promise<void> {
         try {
+            const isAddressValid = values.currencyType === getCurrencyType(values.address);
+            if (!isAddressValid) {
+                const [field, message] = ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(
+                    titleCase(values.currencyType),
+                ).split(":");
+                formikHelpers.setFieldError(field, message);
+                return;
+            }
+
             // On submit set the initial values so that if the form is re-rendered on an error
             // the previously inputted values are there
             setInitialValues(values);
@@ -67,7 +78,7 @@ export default function AddWalletFormScreen({
 
             // Reset the initial errors to empty in case the user had an error before
             // and goes to add a new wallet, this won't be covered by resetting the form
-            // since the error state is managed outside of formik
+            // since the error state is managed outside formik
             setInitialErrors({});
             setInitialValues({
                 userId: 0,
@@ -82,8 +93,9 @@ export default function AddWalletFormScreen({
             // and update the state to re-render the form with the previous
             // values and errors
             if (error instanceof HttpError && error.status == 400) {
+                const [field, message] = error.message.split(":");
                 setInitialErrors({
-                    address: error.message,
+                    [field]: message,
                 });
                 setState(AddWalletState.FORM);
                 return;

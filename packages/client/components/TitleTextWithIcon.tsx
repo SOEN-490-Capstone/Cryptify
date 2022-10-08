@@ -25,7 +25,6 @@ export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, spac
 
 const styles = StyleSheet.create({
     title: {
-        color: "#404040",
         fontWeight: "600",
     },
 });

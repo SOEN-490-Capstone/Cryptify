@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
+import {
+    ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
+    ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
+} from "@cryptify/common/src/errors/error_messages";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
@@ -24,6 +27,10 @@ export class WalletsService {
             );
         }
 
+        if (await this.findOneByName(createWalletReq.name, createWalletReq.userId)) {
+            throw new BadRequestException(ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT);
+        }
+
         const reqWallet = this.walletRepository.create(createWalletReq);
         await this.walletRepository.insert(reqWallet);
 
@@ -37,6 +44,10 @@ export class WalletsService {
     }
 
     async findAll(userId: number): Promise<Wallet[]> {
-        return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
+        return this.walletRepository.find({where: {currencyType: CurrencyType.ETHEREUM, userId}});
+    }
+
+    async findOneByName(name: string, userId: number): Promise<Wallet> {
+        return this.walletRepository.findOne({ where: { name, userId } });
     }
 }

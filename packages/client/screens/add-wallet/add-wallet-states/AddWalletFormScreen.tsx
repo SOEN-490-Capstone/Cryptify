@@ -153,14 +153,14 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
+        paddingTop: 15,
     },
     title: {
         fontSize: 20,
         lineHeight: 27,
     },
     addWalletForm: {
-        marginTop: 30,
+        marginTop: 35,
     },
     addWalletFormButton: {
         marginTop: 7,

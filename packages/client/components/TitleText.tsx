@@ -12,7 +12,6 @@ export function TitleText({ children }: Props) {
 
 const styles = StyleSheet.create({
     title: {
-        color: "#404040",
         fontSize: 28,
         lineHeight: 37,
         fontWeight: "600",

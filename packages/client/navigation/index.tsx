@@ -185,11 +185,8 @@ function BottomTabNavigator() {
                 tabBarActiveTintColor: Colors[colorScheme].tabIconSelected,
                 tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
                 tabBarLabelPosition: "below-icon",
-                tabBarStyle: {
-                    paddingBottom: 2,
-                },
                 tabBarLabelStyle: {
-                    fontSize: 12,
+                    paddingBottom: 2,
                 },
                 headerShown: false,
             }}

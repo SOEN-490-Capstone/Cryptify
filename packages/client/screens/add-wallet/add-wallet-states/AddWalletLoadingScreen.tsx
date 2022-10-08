@@ -29,7 +29,7 @@ export default function AddWalletLoadingScreen({ currencyType }: Props) {
             >
                 {displayData.loadingTitle}
             </TitleTextWithIcon>
-            <Center style={{ flex: 1, marginBottom: 100 }}>
+            <Center style={{ flex: 1 }}>
                 <Spinner size={146} color="#0077E6" />
             </Center>
         </View>

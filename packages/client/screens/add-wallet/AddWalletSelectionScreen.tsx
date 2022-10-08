@@ -19,13 +19,17 @@ export default function AddWalletSelectionScreen({ navigation }: Props) {
     return (
         <View style={styles.view}>
             <TitleText>Add a Wallet</TitleText>
-            <VStack style={styles.currencyTypeStack}>
+            <VStack style={styles.currencyTypeStack} space="2px">
                 {currenciesDisplayData.map((currency, i) => (
                     <Pressable
                         onPress={() => navigation.navigate("AddWalletScreen", { currencyType: currency.type })}
                         key={i}
+                        style={styles.currencyTypeItem}
+                        _pressed={{
+                            background: "text.200",
+                        }}
                     >
-                        <HStack height="50" alignItems="center">
+                        <HStack height="50px" alignItems="center">
                             <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                             <Text style={styles.currencyTypeText}>{titleCase(currency.type)}</Text>
                             <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
@@ -44,12 +48,13 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     currencyTypeStack: {
-        marginHorizontal: 10,
         marginTop: 20,
     },
+    currencyTypeItem: {
+        paddingHorizontal: 10,
+        borderRadius: 10,
+    },
     currencyTypeText: {
-        color: "#404040",
-        fontWeight: "400",
         fontSize: 17,
         lineHeight: 23,
         marginLeft: 15,

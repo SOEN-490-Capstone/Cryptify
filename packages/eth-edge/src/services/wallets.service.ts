@@ -9,8 +9,12 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+<<<<<<< HEAD
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+=======
+import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
+>>>>>>> 7ada270 (Added transaction module and service)
 
 @Injectable()
 export class WalletsService {
@@ -18,6 +22,7 @@ export class WalletsService {
         @InjectRepository(Wallet)
         private walletRepository: Repository<Wallet>,
         private alchemyNodeService: AlchemyNodeService,
+        private transactionsService: TransactionsService
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
@@ -36,41 +41,8 @@ export class WalletsService {
 
         const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
+        this.transactionsService.backfill(wallet.address);
         return { ...wallet, balance };
-    }
-
-    async backfill(wallet: string){
-        const inTransactions = await this.alchemyNodeService.getInTransactions(wallet);
-
-        for (var i = 0; i<inTransactions.transfers.length; i++){
-            let currTrans = inTransactions.transfers[i];
-            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
-            let timestamp = new Date(block.timestamp * 1000);
-            let transaction = {
-                "transactionAddress": currTrans.hash,
-                "walletIn": currTrans.from,
-                "walletOut": currTrans.to,
-                "amount": currTrans.value,
-                "createdAt": timestamp
-            }
-            console.log(transaction);
-        }
-
-        const outTransactions = await this.alchemyNodeService.getOutTransactions(wallet);
-
-        for (var i = 0; i<outTransactions.transfers.length; i++){
-            let currTrans = outTransactions.transfers[i];
-            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
-            let timestamp = new Date(block.timestamp * 1000);
-            let transaction = {
-                "transactionAddress": currTrans.hash,
-                "walletIn": currTrans.from,
-                "walletOut": currTrans.to,
-                "amount": currTrans.value,
-                "createdAt": timestamp
-            }
-            console.log(transaction);
-        }
     }
 
     async findOne(address: string, userId: number): Promise<Wallet> {

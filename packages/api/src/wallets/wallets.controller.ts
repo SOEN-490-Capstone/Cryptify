@@ -9,7 +9,7 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
-import {CanAccessResourceGuard} from "@cryptify/api/src/wallets/guards/can_access_resource.guard";
+import { CanAccessResourceGuard } from "@cryptify/api/src/wallets/guards/can_access_resource.guard";
 
 @Controller()
 export class WalletsController {

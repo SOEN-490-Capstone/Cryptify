@@ -44,7 +44,7 @@ export class WalletsService {
     }
 
     async findAll(userId: number): Promise<Wallet[]> {
-        return this.walletRepository.find({where: {currencyType: CurrencyType.ETHEREUM, userId}});
+        return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
     }
 
     async findOneByName(name: string, userId: number): Promise<Wallet> {

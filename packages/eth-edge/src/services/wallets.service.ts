@@ -6,6 +6,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Injectable()
 export class WalletsService {
@@ -30,5 +31,9 @@ export class WalletsService {
 
     async findOne(address: string, userId: number): Promise<Wallet> {
         return this.walletRepository.findOne({ where: { address, userId } });
+    }
+
+    async findAll(userId: number): Promise<Wallet[]> {
+        return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
     }
 }

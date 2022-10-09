@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { WalletsService } from "@cryptify/eth-edge/src/services/wallets.service";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
@@ -18,7 +18,7 @@ export class WalletsController {
         return this.walletsService.create(createWalletReq);
     }
 
-    @Post("user/:id/wallet")
+    @Get("users/:id/wallets")
     async findAll(@Param() params: GetWalletsRequest): Promise<Wallet[]> {
         const getWalletReq = await useValidate(getWalletsSchema, params);
         return this.walletsService.findAll(getWalletReq.id);

@@ -4,10 +4,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { WalletsService } from "@cryptify/eth-edge/src/services/wallets.service";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
-import { TransactionModule } from "./transactions.module";
+import { TransactionsModule } from "./transactions.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Wallet]), TransactionModule],
+    imports: [TypeOrmModule.forFeature([Wallet]), TransactionsModule],
     controllers: [WalletsController],
     providers: [WalletsService, AlchemyNodeService],
 })

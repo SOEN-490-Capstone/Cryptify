@@ -3,12 +3,14 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
+import { AssetTransfersCategory } from "alchemy-sdk";
 
 @Injectable()
 export class TransactionsService {
     constructor(
         @InjectRepository(Transaction)
-        private transactionRepository: Repository<Transaction>,
+        private transactionsRepository: Repository<Transaction>,
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
@@ -41,7 +43,30 @@ export class TransactionsService {
             };
             transArr.push(transaction);
         }
-        const reqtransaction = this.transactionRepository.create(transArr);
-        await this.transactionRepository.save(reqtransaction);
+        const reqtransaction = this.transactionsRepository.create(transArr);
+        await this.transactionsRepository.save(reqtransaction);
+    }
+
+    async handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void> {
+        // Filter out non-external activities because external activities are the transactions
+        // and convert the resulting activities into transaction entities
+        const transactions = addressActivityEvent.event.activity
+            .filter((activity) => activity.category === AssetTransfersCategory.EXTERNAL)
+            .map((activity) =>
+                this.transactionsRepository.create({
+                    transactionAddress: activity.hash,
+                    walletIn: activity.toAddress,
+                    walletOut: activity.fromAddress,
+                    amount: activity.value.toString(),
+                    createdAt: new Date(addressActivityEvent.createdAt),
+                }),
+            );
+
+        // Save is being used here since it returns the array of inserted entities
+        // which saves us all the querying cost of getting those entities after,
+        // and it allows us to do a bulk insert without throwing an error on duplicate
+        // transactions which can occur if the other wallet involved in a transaction
+        // has already been processed by the system
+        await this.transactionsRepository.save(transactions);
     }
 }

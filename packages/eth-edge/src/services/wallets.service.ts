@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
+import {
+    ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
+    ERROR_WALLET_DOES_NOT_EXIST,
+} from "@cryptify/common/src/errors/error_messages";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
@@ -22,9 +25,14 @@ export class WalletsService {
         }
 
         const reqWallet = this.walletRepository.create(createWalletReq);
-        await this.walletRepository.insert(reqWallet);
+        let balance;
+        try {
+            balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
+        } catch (error) {
+            throw new BadRequestException(ERROR_WALLET_DOES_NOT_EXIST(CurrencyType.ETHEREUM));
+        }
 
-        const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
+        await this.walletRepository.insert(reqWallet);
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
         return { ...wallet, balance };
     }

@@ -21,7 +21,6 @@ export class WalletsService {
         if (req.currencyType != getCurrencyType(req.address)) {
             throw new BadRequestException(ERROR_WALLET_ADDRESS_FOR_CURRENCY(req.currencyType));
         }
-
         return this.ethEdgeGateway.createWallet(req);
     }
 
@@ -29,7 +28,7 @@ export class WalletsService {
         const wallets = [];
 
         // all crypto edge gateways should call their own getWallets method here
-        wallets.push(this.ethEdgeGateway.getWallets(req));
+        wallets.push(...(await this.ethEdgeGateway.getWallets(req)));
 
         return wallets;
     }

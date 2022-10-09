@@ -21,6 +21,6 @@ export class WalletsController {
     @Get("users/:id/wallets")
     async findAll(@Param() params: GetWalletsRequest): Promise<Wallet[]> {
         const getWalletReq = await useValidate(getWalletsSchema, params);
-        return await this.walletsService.findAll(getWalletReq.id);
+        return this.walletsService.findAll(getWalletReq.id);
     }
 }

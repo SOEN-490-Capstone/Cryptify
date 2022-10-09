@@ -3,13 +3,14 @@ import fetch from "node-fetch";
 export function request(apiUrl: string, apiPort: string) {
     const apiUri = `http://${apiUrl}:${apiPort}`;
     return async <T>(method: Method, path: string, body: any): Promise<any> => {
+        const hasBody = !(method == Method.GET || method == Method.DELETE);
         const response = await fetch(`${apiUri}/${path}`, {
             method: Method[method],
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(body),
+            ...(hasBody ? body : JSON.stringify(body)),
         });
         const resBody: any = await response.json();
 

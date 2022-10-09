@@ -7,6 +7,7 @@ import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet
 import { getCurrencyType } from "@cryptify/common/src/helpers/getCurrencyType";
 import { ERROR_WALLET_ADDRESS_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 
 @Injectable()
 export class WalletsService {
@@ -22,5 +23,14 @@ export class WalletsService {
         }
 
         return this.ethEdgeGateway.createWallet(req);
+    }
+
+    async findAll(req: GetWalletsRequest): Promise<Wallet[]> {
+        const wallets = [];
+
+        // all crypto edge gateways should call their own getWallets method here
+        wallets.push(this.ethEdgeGateway.getWallets(req));
+
+        return wallets;
     }
 }

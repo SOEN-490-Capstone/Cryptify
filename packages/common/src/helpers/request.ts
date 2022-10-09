@@ -4,13 +4,15 @@ export function request(apiUrl: string, apiPort: string) {
     const apiUri = `http://${apiUrl}:${apiPort}`;
     return async <T>(method: Method, path: string, body: any): Promise<any> => {
         const hasBody = !(method == Method.GET || method == Method.DELETE);
+        const conditionalBody = hasBody && { body: JSON.stringify(body) };
+
         const response = await fetch(`${apiUri}/${path}`, {
             method: Method[method],
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            ...(hasBody ? body : JSON.stringify(body)),
+            ...conditionalBody,
         });
         const resBody: any = await response.json();
 

@@ -21,6 +21,7 @@ export class WalletsService {
         if (req.currencyType != getCurrencyType(req.address)) {
             throw new BadRequestException(ERROR_WALLET_ADDRESS_FOR_CURRENCY(req.currencyType));
         }
+
         return this.ethEdgeGateway.createWallet(req);
     }
 

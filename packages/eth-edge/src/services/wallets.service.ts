@@ -39,6 +39,40 @@ export class WalletsService {
         return { ...wallet, balance };
     }
 
+    async backfill(wallet: string){
+        const inTransactions = await this.alchemyNodeService.getInTransactions(wallet);
+
+        for (var i = 0; i<inTransactions.transfers.length; i++){
+            let currTrans = inTransactions.transfers[i];
+            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
+            let timestamp = new Date(block.timestamp * 1000);
+            let transaction = {
+                "transactionAddress": currTrans.hash,
+                "walletIn": currTrans.from,
+                "walletOut": currTrans.to,
+                "amount": currTrans.value,
+                "createdAt": timestamp
+            }
+            console.log(transaction);
+        }
+
+        const outTransactions = await this.alchemyNodeService.getOutTransactions(wallet);
+
+        for (var i = 0; i<outTransactions.transfers.length; i++){
+            let currTrans = outTransactions.transfers[i];
+            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
+            let timestamp = new Date(block.timestamp * 1000);
+            let transaction = {
+                "transactionAddress": currTrans.hash,
+                "walletIn": currTrans.from,
+                "walletOut": currTrans.to,
+                "amount": currTrans.value,
+                "createdAt": timestamp
+            }
+            console.log(transaction);
+        }
+    }
+
     async findOne(address: string, userId: number): Promise<Wallet> {
         return this.walletRepository.findOne({ where: { address, userId } });
     }

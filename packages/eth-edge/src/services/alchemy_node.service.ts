@@ -1,4 +1,4 @@
-import { Network, Alchemy } from "alchemy-sdk";
+import { Network, Alchemy, AssetTransfersCategory, AssetTransfersResponse } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 
@@ -26,5 +26,27 @@ export class AlchemyNodeService {
             // it doesn't have any previous transactions
             return "0";
         }
+    }
+
+    async getInTransactions(wallet: string): Promise<AssetTransfersResponse>{
+        return await this.alchemy.core.getAssetTransfers({
+            fromBlock: "0x0",
+            toAddress: wallet,
+            excludeZeroValue: true,
+            category: [AssetTransfersCategory.EXTERNAL],
+            });
+    }
+
+    async getOutTransactions(wallet: string): Promise<AssetTransfersResponse>{
+        return await this.alchemy.core.getAssetTransfers({
+            fromBlock: "0x0",
+            fromAddress: wallet,
+            excludeZeroValue: true,
+            category: [AssetTransfersCategory.EXTERNAL],
+            });
+    }
+
+    async getBlock(blockNum: string) {
+        return await this.alchemy.core.getBlock(blockNum);
     }
 }

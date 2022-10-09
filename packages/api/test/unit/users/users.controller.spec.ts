@@ -10,8 +10,25 @@ describe("UsersController", () => {
     let fakeUsersService: Partial<UsersService>;
     let fakeUserRepository: Partial<Repository<User>>;
 
+    const user = {
+        id: 1,
+        firstName: "fname",
+        lastName: "lname",
+        email: "email@email.com",
+        password: "",
+        createdAt: new Date(),
+        wallets: [],
+    };
+
     beforeEach(async () => {
-        fakeUsersService = {};
+        fakeUsersService = {
+            findOneById: async (id: number) => {
+                return {
+                    ...user,
+                    id,
+                };
+            },
+        };
         fakeUserRepository = {};
 
         const module: TestingModule = await Test.createTestingModule({
@@ -25,10 +42,13 @@ describe("UsersController", () => {
         controller = module.get<UsersController>(UsersController);
     });
 
-    it("should return user passed in parameters", () => {
-        const user = { name: "andre" };
-        const result = { user };
+    it("should return user found by id in token", async () => {
+        const req = {
+            user: {
+                id: 1,
+            },
+        };
 
-        expect(controller.getProfile(result)).toBe(user);
+        expect(await controller.whoami(req)).toEqual(user);
     });
 });

@@ -33,7 +33,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
 
             navigation.reset({
                 index: 0,
-                routes: [{ name: "HomeScreen" }],
+                routes: [{ name: "HomeStack" }],
             });
         } catch (error) {
             if (error instanceof Error) {

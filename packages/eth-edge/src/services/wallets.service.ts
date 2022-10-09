@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
+import {
+    ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
+    ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
+} from "@cryptify/common/src/errors/error_messages";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 
 @Injectable()
 export class WalletsService {
@@ -18,7 +22,13 @@ export class WalletsService {
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
         if (await this.findOne(createWalletReq.address, createWalletReq.userId)) {
-            throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT);
+            throw new BadRequestException(
+                ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(createWalletReq.currencyType)),
+            );
+        }
+
+        if (await this.findOneByName(createWalletReq.name, createWalletReq.userId)) {
+            throw new BadRequestException(ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
         const reqWallet = this.walletRepository.create(createWalletReq);
@@ -35,5 +45,9 @@ export class WalletsService {
 
     async findAll(userId: number): Promise<Wallet[]> {
         return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
+    }
+
+    async findOneByName(name: string, userId: number): Promise<Wallet> {
+        return this.walletRepository.findOne({ where: { name, userId } });
     }
 }

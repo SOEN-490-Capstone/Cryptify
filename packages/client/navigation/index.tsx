@@ -1,11 +1,5 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
-import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -14,81 +8,203 @@ import useColorScheme from "../hooks/useColorScheme";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import { RootStackParamList, RootTabParamList } from "../types";
+import { HomeStackParamList, RootStackParamList, RootTabParamList, SettingsStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHouseCustom } from "../components/icons/faHouseCustom";
 import { faBarsCustom } from "../components/icons/faBarsCustom";
+import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
+import ViewWalletsScreen from "../screens/ViewWalletsScreen";
+import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
+import { Pressable } from "native-base";
+import { faXMarkCustom } from "../components/icons/faXMarkCustom";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { RouteProp } from "@react-navigation/core/src/types";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+// TODO refactor this file to reduce code duplication and see if
+// there is a way to centralize some of the styling between
+// navigation stacks
+
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+
+function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
+    React.useLayoutEffect(() => {
+        const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen"];
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
+            navigation.setOptions({ tabBarStyle: { display: "none" } });
+        } else {
+            navigation.setOptions({ tabBarStyle: { display: "flex" } });
+        }
+    }, [navigation, route]);
+
     return (
-        <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <RootNavigator />
-        </NavigationContainer>
+        <HomeStack.Navigator>
+            <HomeStack.Screen
+                name="HomeScreen"
+                component={HomeScreen}
+                options={{
+                    title: "Home",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 28,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                }}
+            />
+            <HomeStack.Screen
+                name="AddWalletSelectionScreen"
+                component={AddWalletSelectionScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="AddWalletScreen"
+                component={AddWalletScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+        </HomeStack.Navigator>
     );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
-function RootNavigator() {
+function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
+    React.useLayoutEffect(() => {
+        const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
+        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
+            navigation.setOptions({ tabBarStyle: { display: "none" } });
+        } else {
+            navigation.setOptions({ tabBarStyle: { display: "flex" } });
+        }
+    }, [navigation, route]);
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-        </Stack.Navigator>
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen
+                name="SettingsScreen"
+                component={SettingsScreen}
+                options={{
+                    title: "Settings",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 28,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                }}
+            />
+            <SettingsStack.Screen
+                name="ViewWalletsScreen"
+                component={ViewWalletsScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddWalletSelectionScreen"
+                component={AddWalletSelectionScreen}
+                options={{
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddWalletScreen"
+                component={AddWalletScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+        </SettingsStack.Navigator>
     );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
+    const tabBarIcon =
+        (icon: IconDefinition) =>
+        ({ color }: { color: string }) =>
+            <FontAwesomeIcon icon={icon} color={color} size={22} />;
+
     return (
         <BottomTab.Navigator
-            initialRouteName="HomeScreen"
+            initialRouteName="HomeStack"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme].tabIconSelected,
                 tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
                 tabBarLabelPosition: "below-icon",
-
-                tabBarStyle: {
+                tabBarLabelStyle: {
                     paddingBottom: 2,
                 },
-
-                headerTintColor: "#404040",
-                headerTitleStyle: {
-                    fontSize: 28,
-                    lineHeight: 37,
-                    fontWeight: "600",
-                },
-                headerShadowVisible: false,
+                headerShown: false,
             }}
         >
             <BottomTab.Screen
-                name="HomeScreen"
-                component={HomeScreen}
+                name="HomeStack"
+                component={HomeStackScreen}
                 options={{
                     title: "Home",
-                    tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faHouseCustom} color={color} size={28} />,
+                    tabBarIcon: tabBarIcon(faHouseCustom),
                 }}
             />
             <BottomTab.Screen
-                name="SettingsScreen"
-                component={SettingsScreen}
+                name="SettingsStack"
+                component={SettingsStackScreen}
                 options={{
                     title: "Settings",
-                    tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faBarsCustom} color={color} size={28} />,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
             <BottomTab.Screen
@@ -96,8 +212,7 @@ function BottomTabNavigator() {
                 component={SignUpScreen}
                 options={{
                     title: "Sign Up",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-                    headerShown: false,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
             <BottomTab.Screen
@@ -105,17 +220,22 @@ function BottomTabNavigator() {
                 component={SignInScreen}
                 options={{
                     title: "Sign In",
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-                    headerShown: false,
+                    tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
         </BottomTab.Navigator>
     );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["name"]; color: string }) {
-    return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+    return (
+        <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+            <Stack.Navigator>
+                <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+                <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }

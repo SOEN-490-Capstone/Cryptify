@@ -29,12 +29,13 @@ describe("Wallets", () => {
         });
     });
 
-    describe("POST /user/:id/wallet", () => {
+    describe("POST /users/:id/wallets", () => {
         it("should return a 401 status code if id in params isn't the current user", async () => {
             const res = await agent(app.getHttpServer())
-                .post("/user/2/wallet")
+                .post("/users/2/wallets")
                 .set("Authorization", `Bearer ${resSignUp.body.accessToken}`)
                 .send({
+                    userId: 1,
                     name: "test",
                     address: "test",
                     currencyType: "BITCOIN",

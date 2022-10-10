@@ -12,31 +12,34 @@ export class TransactionsService {
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
-    async backfill(wallet: string){
+    async backfill(wallet: string) {
         const inTransactions = await this.alchemyNodeService.getInTransactions(wallet);
-        let transArr = [];
-        for (var i = 0; i<inTransactions.transfers.length; i++){
-            let currTrans = inTransactions.transfers[i];
-            let transaction = {
-                "transactionAddress": currTrans.hash,
-                "walletIn": currTrans.from,
-                "walletOut": currTrans.to,
-                "amount": currTrans.value,
-                "createdAt": currTrans.metadata.blockTimestamp
-            }
-            transArr.push(transaction) 
+        const transArr = [];
+        let currTrans;
+        let transaction;
+
+        for (let i = 0; i < inTransactions.transfers.length; i++) {
+            currTrans = inTransactions.transfers[i];
+            transaction = {
+                transactionAddress: currTrans.hash,
+                walletIn: currTrans.from,
+                walletOut: currTrans.to,
+                amount: currTrans.value,
+                createdAt: currTrans.metadata.blockTimestamp,
+            };
+            transArr.push(transaction);
         }
         const outTransactions = await this.alchemyNodeService.getOutTransactions(wallet);
-        for (var i = 0; i<outTransactions.transfers.length; i++){
-            let currTrans = outTransactions.transfers[i];
-            let transaction = {
-                "transactionAddress": currTrans.hash,
-                "walletIn": currTrans.from,
-                "walletOut": currTrans.to,
-                "amount": currTrans.value,
-                "createdAt": currTrans.metadata.blockTimestamp
-            }
-            transArr.push(transaction) 
+        for (let i = 0; i < outTransactions.transfers.length; i++) {
+            currTrans = outTransactions.transfers[i];
+            transaction = {
+                transactionAddress: currTrans.hash,
+                walletIn: currTrans.from,
+                walletOut: currTrans.to,
+                amount: currTrans.value,
+                createdAt: currTrans.metadata.blockTimestamp,
+            };
+            transArr.push(transaction);
         }
         const reqtransaction = this.transactionRepository.create(transArr);
         await this.transactionRepository.save(reqtransaction);

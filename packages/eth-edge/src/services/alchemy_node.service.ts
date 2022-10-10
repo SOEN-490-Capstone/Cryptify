@@ -29,24 +29,24 @@ export class AlchemyNodeService {
     }
 
     //To do: Refactor to include pagination
-    async getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>{
+    async getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse> {
         return await this.alchemy.core.getAssetTransfers({
             fromBlock: "0x0",
             toAddress: wallet,
             excludeZeroValue: true,
             category: [AssetTransfersCategory.EXTERNAL],
-            withMetadata: true
-            });
+            withMetadata: true,
+        });
     }
 
     //To do: Refactor to include pagination
-    async getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>{
+    async getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse> {
         return await this.alchemy.core.getAssetTransfers({
             fromBlock: "0x0",
             fromAddress: wallet,
             excludeZeroValue: true,
             category: [AssetTransfersCategory.EXTERNAL],
-            withMetadata: true
-            });
+            withMetadata: true,
+        });
     }
 }

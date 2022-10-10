@@ -19,7 +19,7 @@ export class WalletsService {
         @InjectRepository(Wallet)
         private walletRepository: Repository<Wallet>,
         private alchemyNodeService: AlchemyNodeService,
-        private transactionsService: TransactionsService
+        private transactionsService: TransactionsService,
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {

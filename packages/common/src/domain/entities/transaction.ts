@@ -11,7 +11,7 @@ export class Transaction {
     @Column({ nullable: false })
     walletOut: string;
 
-    @Column({ nullable: false})
+    @Column({ nullable: false })
     amount: string;
 
     @CreateDateColumn({ type: "timestamp" })

@@ -1,15 +1,23 @@
-import React from "react";
+import React, { Component } from "react";
 import { View } from "../components/Themed";
-import { Text, HStack, Pressable, FlatList, Box, VStack } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faWalletCustom } from "../components/icons/faWalletCustom";
+import { Box } from "native-base";
+
 import { StyleSheet } from "react-native";
+import AccordionView from "../components/WalletViewAccordian";
+
 
 export default function ViewWalletsScreen() {
     return (
-        <View style={styles.view}>
-            
-            {/* <Box>
+        <View>
+            <Box style={{paddingBottom:20}}>
+               <AccordionView/>
+            </Box>
+            <Box>
+               <AccordionView/>
+            </Box>
+
+            {/* <Box style={styles.view}>
+
                 <VStack height="94px" alignItems="center">
                     <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={56} />
                     <Text style={styles.settingsListText}>You do not have any wallets.</Text>
@@ -31,4 +39,5 @@ const styles = StyleSheet.create({
     walletIcon: {
         color: "#404040",
     },
+
 });

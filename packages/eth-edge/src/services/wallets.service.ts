@@ -38,7 +38,7 @@ export class WalletsService {
 
         const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
-        this.transactionsService.backfill(wallet.address);
+        await this.transactionsService.backfill(wallet.address);
         return { ...wallet, balance };
     }
 

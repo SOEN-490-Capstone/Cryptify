@@ -11,7 +11,6 @@ import { TransactionModule } from "./transactions.module";
 @Module({
     imports: [TypeOrmModule.forFeature([Wallet]), TransactionModule],
     controllers: [WalletsController],
-    exports: [WalletsService],
     providers: [WalletsService, AlchemyNodeService],
 })
 export class WalletsModule {}

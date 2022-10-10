@@ -11,8 +11,8 @@ export class Transaction {
     @Column({ nullable: false })
     walletOut: string;
 
-    @Column({ nullable: false, type: "double precision" })
-    amount: number;
+    @Column({ nullable: false})
+    amount: string;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

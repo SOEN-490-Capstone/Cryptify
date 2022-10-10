@@ -49,8 +49,4 @@ export class AlchemyNodeService {
             withMetadata: true
             });
     }
-
-    async getBlock(blockNum: string) {
-        return await this.alchemy.core.getBlock(blockNum);
-    }
 }

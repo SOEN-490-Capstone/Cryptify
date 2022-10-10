@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { ERROR_TRANSACTION_ALREADY_ADDED } from "@cryptify/common/src/errors/error_messages";
 
 @Injectable()
 export class TransactionsService {
@@ -12,41 +13,39 @@ export class TransactionsService {
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
-    async backfill(wallet: string){
+    async backfil(wallet: string){
         const inTransactions = await this.alchemyNodeService.getInTransactions(wallet);
-
+        let transArr = [];
         for (var i = 0; i<inTransactions.transfers.length; i++){
             let currTrans = inTransactions.transfers[i];
-            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
-            let timestamp = new Date(block.timestamp * 1000);
             let transaction = {
                 "transactionAddress": currTrans.hash,
                 "walletIn": currTrans.from,
                 "walletOut": currTrans.to,
                 "amount": currTrans.value,
-                "createdAt": timestamp
+                "createdAt": currTrans.metadata.blockTimestamp
             }
-            const reqtransaction = this.transactionRepository.create(transaction);
-            await this.transactionRepository.insert(reqtransaction);
-            console.log(transaction);
+            transArr.push(transaction) 
         }
-
         const outTransactions = await this.alchemyNodeService.getOutTransactions(wallet);
-
         for (var i = 0; i<outTransactions.transfers.length; i++){
             let currTrans = outTransactions.transfers[i];
-            let block = await this.alchemyNodeService.getBlock(currTrans.blockNum);
-            let timestamp = new Date(block.timestamp * 1000);
             let transaction = {
                 "transactionAddress": currTrans.hash,
                 "walletIn": currTrans.from,
                 "walletOut": currTrans.to,
                 "amount": currTrans.value,
-                "createdAt": timestamp
+                "createdAt": currTrans.metadata.blockTimestamp
             }
-            const reqtransaction = this.transactionRepository.create(transaction);
-            await this.transactionRepository.insert(reqtransaction);
-            console.log(transaction);
+            transArr.push(transaction) 
         }
+        try{
+            const reqtransaction = this.transactionRepository.create(transArr);
+            await this.transactionRepository.insert(reqtransaction);
+        }
+        catch{
+            throw new BadRequestException(ERROR_TRANSACTION_ALREADY_ADDED);
+        }
+
     }
 }

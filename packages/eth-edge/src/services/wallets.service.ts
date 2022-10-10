@@ -9,12 +9,9 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-<<<<<<< HEAD
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
-=======
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
->>>>>>> 7ada270 (Added transaction module and service)
 
 @Injectable()
 export class WalletsService {

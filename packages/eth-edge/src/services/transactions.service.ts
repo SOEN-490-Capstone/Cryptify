@@ -48,10 +48,10 @@ export class TransactionsService {
     }
 
     async handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void> {
-        // Filter out non-external activities because external activities are the transactions
-        // and convert the resulting activities into transaction entities
+        // Filter for only external and ETH activities because those are the transactions
+        // then convert the remaining activities into transaction entities
         const transactions = addressActivityEvent.event.activity
-            .filter((activity) => activity.category === AssetTransfersCategory.EXTERNAL)
+            .filter((activity) => activity.category === AssetTransfersCategory.EXTERNAL && activity.asset === "ETH")
             .map((activity) =>
                 this.transactionsRepository.create({
                     transactionAddress: activity.hash,

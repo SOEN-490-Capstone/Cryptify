@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "../components/Themed";
-import {VStack, Text, Center} from "native-base";
+import { Text, Center, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { WalletsListAccordion } from "../components/WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
@@ -30,7 +30,9 @@ export default function ViewWalletsScreen() {
     return (
         <View style={styles.view}>
             {wallets ? (
-                <WalletsListAccordion wallets={wallets} />
+                <ScrollView style={styles.scrollView}>
+                    <WalletsListAccordion wallets={wallets} />
+                </ScrollView>
             ) : (
                 <Center alignItems="center" marginY="auto">
                     <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={56} />
@@ -44,6 +46,8 @@ export default function ViewWalletsScreen() {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+    },
+    scrollView: {
         paddingHorizontal: 15,
         paddingTop: 10,
     },

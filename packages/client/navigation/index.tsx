@@ -22,6 +22,7 @@ import { Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
+import { faPlusCustom } from "../components/icons/faPlusCustom";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -120,7 +121,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="ViewWalletsScreen"
                 component={ViewWalletsScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "Wallets",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -129,7 +130,12 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                }}
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
+                            <FontAwesomeIcon icon={faPlusCustom} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
             <SettingsStack.Screen
                 name="AddWalletSelectionScreen"

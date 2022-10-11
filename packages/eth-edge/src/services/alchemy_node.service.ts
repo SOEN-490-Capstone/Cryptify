@@ -1,6 +1,7 @@
 import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResponse } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
+import Web3 from "web3";
 
 @Injectable()
 export class AlchemyNodeService {
@@ -18,14 +19,14 @@ export class AlchemyNodeService {
             const balance = await this.alchemy.core.getBalance(address);
             // Serializing the BigNumber as a string so we can easily transport it
             // over HTTP, this shouldn't cause any issues because we won't be doing
-            // any calculations with the balance
-            // TODO: use a library here to convert WEI to ETHER
-            return balance.toString();
+            // any calculations with the balance, we will also convert the WEI value
+            // to ETHER since that is standard for EthEdge
+            return Web3.utils.fromWei(balance.toString(), "ether");
         } catch (error) {
             // If there is any error, mainly if the wallet is not found return a balance of 0
             // this is done because we can't verify that the wallet doesn't exist just because
             // it doesn't have any previous transactions
-            return "0";
+            return "0.000000000000000000";
         }
     }
 

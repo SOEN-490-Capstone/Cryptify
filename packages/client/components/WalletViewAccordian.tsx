@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { View } from "./Themed";
-import { Text, HStack, Pressable, FlatList, Box, VStack } from "native-base";
+import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "./icons/faChevronRightCustom";
 import { faChevronDownCustom } from "./icons/faChevronDownCustom";
 import { faBitcoinCustom } from "./icons/faBitcoinCustom";
-import { faEthereumCustom } from "./icons/faEthereumCustom";
 import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 

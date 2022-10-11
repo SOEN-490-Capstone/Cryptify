@@ -5,7 +5,7 @@ import SignOutButton from "../components/SignOutButton";
 import {Text, HStack, Pressable, FlatList, Box } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../components/icons/faChevronRightCustom";
-import {SettingsStackScreenProps } from "../types";
+import { SettingsStackScreenProps } from "../types";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"ViewWalletsScreen">) {

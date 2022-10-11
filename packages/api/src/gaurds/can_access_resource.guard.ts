@@ -10,7 +10,6 @@ export class CanAccessResourceGuard implements CanActivate {
      */
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const { params, user } = context.switchToHttp().getRequest();
-        console.log("her122223")
 
         if (params.id != user.id) {
             throw new UnauthorizedException();

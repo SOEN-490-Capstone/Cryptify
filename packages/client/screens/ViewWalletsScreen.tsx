@@ -1,13 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import { View } from "../components/Themed";
-import { Box } from "native-base";
+import { VStack, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import AccordionView from "../components/WalletViewAccordian";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import StorageService from "../services/storage_service";
-import {JwtToken} from "@cryptify/common/src/domain/jwt_token";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import WalletsGateway from "../gateways/wallets_gateway";
 import UsersGateway from "../gateways/users_gateway";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faWalletCustom } from "../components/icons/faWalletCustom";
 
 export default function ViewWalletsScreen() {
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
@@ -28,16 +30,17 @@ export default function ViewWalletsScreen() {
 
     return (
         <View style={styles.view}>
-            <AccordionView/>
-            <AccordionView/>
-
-            {/* <Box style={styles.view}>
-
+            {wallets ? (
+                <>
+                    <AccordionView />
+                    <AccordionView />
+                </>
+            ) : (
                 <VStack height="94px" alignItems="center">
                     <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={56} />
                     <Text style={styles.settingsListText}>You do not have any wallets.</Text>
                 </VStack>
-            </Box> */}
+            )}
         </View>
     );
 }

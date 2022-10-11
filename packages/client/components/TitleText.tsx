@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Text } from "./Themed";
+import { Text } from "native-base";
 import React from "react";
 
 type Props = {

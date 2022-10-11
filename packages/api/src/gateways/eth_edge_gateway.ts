@@ -3,7 +3,6 @@ import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 
 @Injectable()

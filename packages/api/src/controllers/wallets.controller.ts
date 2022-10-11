@@ -6,7 +6,6 @@ import { JwtAuthGuard } from "@cryptify/api/src/gaurds/jwt-auth.guard";
 import { WalletsService } from "@cryptify/api/src/services/wallets.service";
 import { CanMutateResourceGuard } from "@cryptify/api/src/gaurds/can_mutate_resource.guard";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
 import { CanAccessResourceGuard } from "@cryptify/api/src/gaurds/can_access_resource.guard";

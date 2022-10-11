@@ -3,7 +3,7 @@ import { faBitcoinCustom } from "../components/icons/faBitcoinCustom";
 import { faEthereumCustom } from "../components/icons/faEthereumCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-type CurrencyDisplayData = {
+export type CurrencyDisplayData = {
     type: CurrencyType;
     icon: IconDefinition;
     style: "bitcoinIcon" | "ethereumIcon";

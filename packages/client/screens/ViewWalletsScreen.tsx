@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { VStack, Text } from "native-base";
+import {VStack, Text, Center} from "native-base";
 import { StyleSheet } from "react-native";
-import AccordionView from "../components/WalletViewAccordian";
+import { WalletsListAccordion } from "../components/WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import StorageService from "../services/storage_service";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
@@ -23,7 +23,6 @@ export default function ViewWalletsScreen() {
 
             const { id } = await UsersGateway.whoami(token);
             const wallets = await WalletsGateway.findAllWallets({ id }, token);
-            console.log(wallets);
             setWallets(wallets);
         })();
     }, []);
@@ -31,15 +30,12 @@ export default function ViewWalletsScreen() {
     return (
         <View style={styles.view}>
             {wallets ? (
-                <>
-                    <AccordionView />
-                    <AccordionView />
-                </>
+                <WalletsListAccordion wallets={wallets} />
             ) : (
-                <VStack height="94px" alignItems="center">
+                <Center alignItems="center" marginY="auto">
                     <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={56} />
-                    <Text style={styles.settingsListText}>You do not have any wallets.</Text>
-                </VStack>
+                    <Text style={styles.noWalletsText}>You do not have any wallets.</Text>
+                </Center>
             )}
         </View>
     );
@@ -51,8 +47,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 10,
     },
-    settingsListText: {
+    noWalletsText: {
         fontSize: 17,
+        lineHeight: 23,
         marginTop: 15,
     },
     walletIcon: {

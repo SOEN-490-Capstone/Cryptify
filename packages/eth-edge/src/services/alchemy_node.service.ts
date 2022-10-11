@@ -18,9 +18,9 @@ export class AlchemyNodeService {
             const balance = await this.alchemy.core.getBalance(address);
             // Serializing the BigNumber as a string so we can easily transport it
             // over HTTP, this shouldn't cause any issues because we won't be doing
-            // any calculations with the balance, we also go ahead and convert the
-            // value into standard ETH by dividing by 1 * 10 ^ 18
-            return (balance.toNumber() / 1000000000000000000).toString();
+            // any calculations with the balance
+            // TODO: use a library here to convert WEI to ETHER
+            return balance.toString();
         } catch (error) {
             // If there is any error, mainly if the wallet is not found return a balance of 0
             // this is done because we can't verify that the wallet doesn't exist just because

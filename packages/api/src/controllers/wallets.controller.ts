@@ -24,7 +24,7 @@ export class WalletsController {
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("/users/:id/wallets")
-    async findAll(@Param() params: GetWalletsRequest): Promise<Wallet[]> {
+    async findAll(@Param() params: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const getWalletsReq = await useValidate(getWalletsSchema, params);
 
         return this.walletsService.findAll(getWalletsReq);

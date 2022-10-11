@@ -17,12 +17,12 @@ export class EthEdgeGateway {
     }
 
     async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {
-        const path = `user/${req.userId}/wallet`;
+        const path = `users/${req.userId}/wallets`;
         return this.request<WalletWithBalance>(Method.POST, {}, path, req);
     }
 
-    async getWallets(req: GetWalletsRequest): Promise<Wallet[]> {
+    async getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const path = `users/${req.id}/wallets`;
-        return this.request<Wallet[]>(Method.GET, {}, path, null);
+        return this.request<WalletWithBalance[]>(Method.GET, {}, path, null);
     }
 }

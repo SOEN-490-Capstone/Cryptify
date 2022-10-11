@@ -26,7 +26,7 @@ export class WalletsService {
         return this.ethEdgeGateway.createWallet(req);
     }
 
-    async findAll(req: GetWalletsRequest): Promise<Wallet[]> {
+    async findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const wallets = [];
 
         // all crypto edge gateways should call their own getWallets method here

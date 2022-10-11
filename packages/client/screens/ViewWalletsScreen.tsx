@@ -1,20 +1,35 @@
 import React, { Component } from "react";
 import { View } from "../components/Themed";
 import { Box } from "native-base";
-
 import { StyleSheet } from "react-native";
 import AccordionView from "../components/WalletViewAccordian";
-
+import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import StorageService from "../services/storage_service";
+import {JwtToken} from "@cryptify/common/src/domain/jwt_token";
+import WalletsGateway from "../gateways/wallets_gateway";
+import UsersGateway from "../gateways/users_gateway";
 
 export default function ViewWalletsScreen() {
+    const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
+
+    React.useEffect(() => {
+        (async () => {
+            const token = await StorageService.get<JwtToken>("@jwt");
+            if (!token) {
+                return;
+            }
+
+            const { id } = await UsersGateway.whoami(token);
+            const wallets = await WalletsGateway.findAllWallets({ id }, token);
+            console.log(wallets);
+            setWallets(wallets);
+        })();
+    }, []);
+
     return (
-        <View>
-            <Box style={{paddingBottom:20}}>
-               <AccordionView/>
-            </Box>
-            <Box>
-               <AccordionView/>
-            </Box>
+        <View style={styles.view}>
+            <AccordionView/>
+            <AccordionView/>
 
             {/* <Box style={styles.view}>
 
@@ -30,7 +45,8 @@ export default function ViewWalletsScreen() {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        justifyContent: "center",
+        paddingHorizontal: 15,
+        paddingTop: 10,
     },
     settingsListText: {
         fontSize: 17,
@@ -39,5 +55,4 @@ const styles = StyleSheet.create({
     walletIcon: {
         color: "#404040",
     },
-
 });

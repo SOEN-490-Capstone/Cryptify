@@ -39,6 +39,19 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                 )}
                 keyExtractor={(item) => item.id}
             />
+            <Pressable
+                onPress={() => navigation.navigate("ViewWalletsScreen")}
+                style={styles.settingsListItem}
+                _pressed={{
+                    background: "text.200",
+                }}
+            >
+                <HStack height="50px" alignItems="center">
+                    <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />
+                    <Text style={styles.settingsListText}>Wallets</Text>
+                    <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
         </View>
     );
 }

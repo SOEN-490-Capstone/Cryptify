@@ -16,7 +16,7 @@ type Props = {
 
 export function WalletsListAccordion({ wallets }: Props) {
     const walletsByType = {
-        [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
+        [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
     };
 

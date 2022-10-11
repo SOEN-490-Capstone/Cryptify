@@ -1,4 +1,4 @@
-import { request, Method } from "@cryptify/common/src/helpers/request";
+import { request, Method, RequestFunc } from "@cryptify/common/src/helpers/request";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -8,18 +8,21 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 
 @Injectable()
 export class EthEdgeGateway {
-    request: <T>(method: Method, path: string, body: any) => Promise<T>;
+    request: RequestFunc;
+
     constructor(private configService: ConfigService) {
-        this.request = request(configService.get<string>("ETH_EDGE_HOST"), configService.get<string>("ETH_EDGE_PORT"));
+        const host = configService.get<string>("ETH_EDGE_HOST");
+        const port = configService.get<string>("ETH_EDGE_PORT");
+        this.request = request(`http://${host}:${port}`);
     }
 
     async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {
         const path = `user/${req.userId}/wallet`;
-        return this.request<WalletWithBalance>(Method.POST, path, req);
+        return this.request<WalletWithBalance>(Method.POST, {}, path, req);
     }
 
     async getWallets(req: GetWalletsRequest): Promise<Wallet[]> {
         const path = `users/${req.id}/wallets`;
-        return this.request<Wallet[]>(Method.GET, path, null);
+        return this.request<Wallet[]>(Method.GET, {}, path, null);
     }
 }

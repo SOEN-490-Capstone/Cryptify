@@ -2,14 +2,14 @@ import fetch from "node-fetch";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 import { BadRequestException } from "@nestjs/common";
 
-export function request(apiUrl: string, apiPort: string) {
-    const apiUri = `http://${apiUrl}:${apiPort}`;
-    return async <T>(method: Method, path: string, body: any): Promise<any> => {
-        const response = await fetch(`${apiUri}/${path}`, {
+export function request(uri: string) {
+    return async <T>(method: Method, headers: Headers, path: string, body: any): Promise<any> => {
+        const response = await fetch(`${uri}/${path}`, {
             method: Method[method],
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                ...headers,
             },
             body: body ? JSON.stringify(body) : null,
         });
@@ -29,6 +29,12 @@ export function request(apiUrl: string, apiPort: string) {
         return resBody as T;
     };
 }
+
+export type RequestFunc = <T>(method: Method, headers: Headers, path: string, body: any) => Promise<T>;
+
+type Headers = {
+    [key: string]: string;
+};
 
 export enum Method {
     POST,

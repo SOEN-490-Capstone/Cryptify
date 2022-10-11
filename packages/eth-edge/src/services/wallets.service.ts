@@ -12,6 +12,7 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
+import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
 
 @Injectable()
 export class WalletsService {
@@ -20,6 +21,7 @@ export class WalletsService {
         private walletRepository: Repository<Wallet>,
         private alchemyNodeService: AlchemyNodeService,
         private transactionsService: TransactionsService,
+        private alchemyNodeGateway: AlchemyNodeGateway,
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
@@ -29,16 +31,24 @@ export class WalletsService {
             );
         }
 
-        if (await this.findOneByName(createWalletReq.name, createWalletReq.userId)) {
+        if (await this.walletRepository.findOneBy({ name: createWalletReq.name, userId: createWalletReq.userId })) {
             throw new BadRequestException(ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
         const reqWallet = this.walletRepository.create(createWalletReq);
         await this.walletRepository.insert(reqWallet);
 
-        const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
+        // Parallelizing the promises here are fine since there are no shared resources between them
+        // ideally there is some kind of rollback mechanism in place such that if any of these fail
+        // everything will be reset to before the request started including removing the wallet that
+        // was just inserted
+        const [balance] = await Promise.all([
+            this.alchemyNodeService.getBalance(reqWallet.address),
+            this.transactionsService.backfillTransactions(reqWallet.address),
+            this.alchemyNodeGateway.updateWebhookAddresses([reqWallet.address], []),
+        ]);
+
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
-        await this.transactionsService.backfill(wallet.address);
         return { ...wallet, balance };
     }
 
@@ -48,9 +58,5 @@ export class WalletsService {
 
     async findAll(userId: number): Promise<Wallet[]> {
         return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
-    }
-
-    async findOneByName(name: string, userId: number): Promise<Wallet> {
-        return this.walletRepository.findOne({ where: { name, userId } });
     }
 }

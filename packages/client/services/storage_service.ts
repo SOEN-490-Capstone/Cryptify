@@ -14,7 +14,12 @@ async function get<T>(key: string): Promise<T | null> {
     return JSON.parse(value) as T;
 }
 
+async function remove(key: string): Promise<void> {
+    await AsyncStorage.removeItem(key);
+}
+
 export default {
     put,
     get,
+    remove,
 };

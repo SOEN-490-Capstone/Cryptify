@@ -14,7 +14,7 @@ export class TransactionsService {
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
-    async backfillTransactions(address: string) {
+    async backfillTransactions(address: string): Promise<void> {
         const inTransactions = await this.alchemyNodeService.getInTransactions(address);
         const transArr = [];
         let currTrans;

@@ -11,6 +11,7 @@ import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
 
 @Injectable()
 export class WalletsService {
@@ -18,6 +19,7 @@ export class WalletsService {
         @InjectRepository(Wallet)
         private walletRepository: Repository<Wallet>,
         private alchemyNodeService: AlchemyNodeService,
+        private transactionsService: TransactionsService,
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
@@ -36,6 +38,7 @@ export class WalletsService {
 
         const balance = await this.alchemyNodeService.getBalance(createWalletReq.address);
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
+        await this.transactionsService.backfill(wallet.address);
         return { ...wallet, balance };
     }
 

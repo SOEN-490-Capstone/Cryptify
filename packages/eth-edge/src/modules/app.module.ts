@@ -4,6 +4,7 @@ import { BaseModule } from "@cryptify/eth-edge/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
 import { WalletsModule } from "./wallets.module";
+import { TransactionModule } from "./transactions.module";
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { WalletsModule } from "./wallets.module";
         }),
         BaseModule,
         WalletsModule,
+        TransactionModule,
     ],
 })
 export class AppModule {}

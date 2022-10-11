@@ -12,7 +12,7 @@ export class Transaction {
     walletOut: string;
 
     @Column({ nullable: false })
-    amount: number;
+    amount: string;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

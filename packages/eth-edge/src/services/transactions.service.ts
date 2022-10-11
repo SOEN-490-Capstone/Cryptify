@@ -14,8 +14,8 @@ export class TransactionsService {
         private alchemyNodeService: AlchemyNodeService,
     ) {}
 
-    async backfill(wallet: string) {
-        const inTransactions = await this.alchemyNodeService.getInTransactions(wallet);
+    async backfillTransactions(address: string) {
+        const inTransactions = await this.alchemyNodeService.getInTransactions(address);
         const transArr = [];
         let currTrans;
         let transaction;
@@ -31,7 +31,7 @@ export class TransactionsService {
             };
             transArr.push(transaction);
         }
-        const outTransactions = await this.alchemyNodeService.getOutTransactions(wallet);
+        const outTransactions = await this.alchemyNodeService.getOutTransactions(address);
         for (let i = 0; i < outTransactions.transfers.length; i++) {
             currTrans = outTransactions.transfers[i];
             transaction = {

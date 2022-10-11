@@ -43,12 +43,12 @@ export class WalletsService {
         // everything will be reset to before the request started including removing the wallet that
         // was just inserted
         const [balance] = await Promise.all([
-            this.alchemyNodeService.getBalance(createWalletReq.address),
+            this.alchemyNodeService.getBalance(reqWallet.address),
+            this.transactionsService.backfillTransactions(reqWallet.address),
             this.alchemyNodeGateway.updateWebhookAddresses([reqWallet.address], []),
         ]);
 
         const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
-        await this.transactionsService.backfill(wallet.address);
         return { ...wallet, balance };
     }
 

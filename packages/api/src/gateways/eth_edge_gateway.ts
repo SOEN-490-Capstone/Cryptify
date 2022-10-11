@@ -9,11 +9,11 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 @Injectable()
 export class EthEdgeGateway {
     request: RequestFunc;
+
     constructor(private configService: ConfigService) {
-        const uri = `http://${configService.get<string>("ETH_EDGE_HOST")}:${configService.get<string>(
-            "ETH_EDGE_PORT",
-        )}`;
-        this.request = request(uri);
+        const host = configService.get<string>("ETH_EDGE_HOST");
+        const port = configService.get<string>("ETH_EDGE_PORT");
+        this.request = request(`http://${host}:${port}`);
     }
 
     async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {

@@ -1,57 +1,32 @@
 import React from "react";
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import SignOutButton from "../components/SignOutButton";
-import {Text, HStack, Pressable, FlatList, Box } from "native-base";
+import {Text, HStack, Pressable, VStack} from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../components/icons/faChevronRightCustom";
 import { SettingsStackScreenProps } from "../types";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
+import SignOutButton from "../components/SignOutButton";
 
-export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"ViewWalletsScreen">) {
-    const data = [
-        {
-            id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-            listItemTitle: "Wallets",
-        },
-    ];
+export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (
         <View style={styles.view}>
-            <SignOutButton />
-            <FlatList
-                data={data}
-                renderItem={({ item }) => (
-                    <Box >
-                        <Pressable
-                            onPress={() => navigation.navigate("ViewWalletsScreen")}
-                            style={styles.settingsListItem}
-                            _pressed={{
-                                background: "text.200",
-                            }}
-                        >
-                            <HStack height="50px" alignItems="center">
-                                <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />
-                                <Text style={styles.settingsListText} >{item.listItemTitle}</Text>
-                                <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
-                            </HStack>
-                        </Pressable>
-                    </Box>
-                )}
-                keyExtractor={(item) => item.id}
-            />
-            <Pressable
-                onPress={() => navigation.navigate("ViewWalletsScreen")}
-                style={styles.settingsListItem}
-                _pressed={{
-                    background: "text.200",
-                }}
-            >
-                <HStack height="50px" alignItems="center">
-                    <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />
-                    <Text style={styles.settingsListText}>Wallets</Text>
-                    <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
-                </HStack>
-            </Pressable>
+            <VStack space="15px">
+                <Pressable
+                    onPress={() => navigation.navigate("ViewWalletsScreen")}
+                    style={styles.viewWalletsButton}
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                >
+                    <HStack height="50px" alignItems="center">
+                        <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />
+                        <Text style={styles.viewWalletsButtonText}>Wallets</Text>
+                        <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <SignOutButton />
+            </VStack>
         </View>
     );
 }
@@ -62,11 +37,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 10,
     },
-    settingsListItem: {
+    viewWalletsButton: {
         paddingHorizontal: 10,
         borderRadius: 10,
     },
-    settingsListText: {
+    viewWalletsButtonText: {
         fontSize: 17,
         lineHeight: 23,
         marginLeft: 15,

@@ -3,7 +3,6 @@ import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 
 @Injectable()
@@ -17,12 +16,12 @@ export class EthEdgeGateway {
     }
 
     async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {
-        const path = `user/${req.userId}/wallet`;
+        const path = `users/${req.userId}/wallets`;
         return this.request<WalletWithBalance>(Method.POST, {}, path, req);
     }
 
-    async getWallets(req: GetWalletsRequest): Promise<Wallet[]> {
+    async getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const path = `users/${req.id}/wallets`;
-        return this.request<Wallet[]>(Method.GET, {}, path, null);
+        return this.request<WalletWithBalance[]>(Method.GET, {}, path, null);
     }
 }

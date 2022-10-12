@@ -7,5 +7,5 @@ export function getCurrencyType(address: string): CurrencyType {
     if (address.includes("0x")) return CurrencyType.ETHEREUM;
     if (/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address)) return CurrencyType.BITCOIN;
 
-    return CurrencyType.UNKNOWN;
+    throw new Error("Currency type not supported");
 }

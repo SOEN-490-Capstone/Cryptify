@@ -28,7 +28,7 @@ export const button = {
             bg: "white",
             borderColor: "text.200",
             _text: {
-                color: "error.500",
+                color: "darkBlue.500",
             },
             _hover: {
                 bg: "text.200",

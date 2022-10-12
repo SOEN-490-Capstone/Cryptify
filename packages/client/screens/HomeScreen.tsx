@@ -1,8 +1,8 @@
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 import React from "react";
 import StorageService from "../services/storage_service";
-import { Button } from "native-base";
+import { Button, Text } from "native-base";
 import { HomeStackScreenProps } from "../types";
 import { useIsFocused } from "@react-navigation/native";
 import { KEY_JWT } from "../constants/storage_keys";

@@ -1,9 +1,8 @@
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
-import { Text } from "./Themed";
 import React from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon, FontAwesomeIconStyle } from "@fortawesome/react-native-fontawesome";
-import { VStack } from "native-base";
+import { VStack, Text } from "native-base";
 
 type Props = {
     icon: IconDefinition;

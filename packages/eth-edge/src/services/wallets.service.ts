@@ -13,6 +13,7 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/helpers/string_utils";
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
 import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
+import { zip } from "@cryptify/common/src/helpers/function_utils";
 
 @Injectable()
 export class WalletsService {
@@ -56,7 +57,19 @@ export class WalletsService {
         return this.walletRepository.findOne({ where: { address, userId } });
     }
 
-    async findAll(userId: number): Promise<Wallet[]> {
-        return this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
+    async findAll(userId: number): Promise<WalletWithBalance[]> {
+        const wallets = await this.walletRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
+        // For each wallet owned by the user get the wallets balance from Alchemy, we can parallelize these requests
+        // to speed up the processing time
+        const balances = await Promise.all(
+            wallets.map(async (wallet) => this.alchemyNodeService.getBalance(wallet.address)),
+        );
+        // Once all the balances have been retrieved zip the lists together and map through them to construct the final
+        // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
+        // will line up when we zip them
+        return zip(wallets, balances).map(([wallet, balance]) => ({
+            ...wallet,
+            balance,
+        }));
     }
 }

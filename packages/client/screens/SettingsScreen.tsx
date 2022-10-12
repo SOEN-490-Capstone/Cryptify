@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import {Text, HStack, Pressable, VStack} from "native-base";
+import { Text, HStack, Pressable, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../components/icons/faChevronRightCustom";
 import { SettingsStackScreenProps } from "../types";

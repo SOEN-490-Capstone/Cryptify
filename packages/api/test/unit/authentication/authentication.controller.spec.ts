@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AuthenticationController } from "../../../src/authentication/authentication.controller";
-import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
-import { UsersService } from "@cryptify/api/src/users/users.service";
+import { AuthenticationController } from "../../../src/controllers/authentication.controller";
+import { AuthenticationService } from "@cryptify/api/src/services/authentication.service";
+import { UsersService } from "@cryptify/api/src/services/users.service";
 import { BadRequestException } from "@nestjs/common";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";

@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
-import { UsersService } from "../users/users.service";
+import { UsersService } from "./users.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";

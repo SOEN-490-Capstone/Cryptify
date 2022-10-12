@@ -24,6 +24,19 @@ export const button = {
                 opacity: "60",
             },
         },
+        outline: {
+            bg: "white",
+            borderColor: "text.200",
+            _text: {
+                color: "error.500",
+            },
+            _hover: {
+                bg: "text.200",
+            },
+            _pressed: {
+                bg: "text.200",
+            },
+        },
     },
     defaultProps: {
         variant: "solid",

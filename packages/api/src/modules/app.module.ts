@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { BaseModule } from "@cryptify/api/src/base/base.module";
+import { BaseModule } from "@cryptify/api/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { AuthenticationModule } from "./authentication/authentication.module";
-import { UsersModule } from "./users/users.module";
-import { WalletsModule } from "./wallets/wallets.module";
+import { AuthenticationModule } from "./authentication.module";
+import { UsersModule } from "./users.module";
+import { WalletsModule } from "./wallets.module";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
 
 @Module({

@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { AuthenticationService } from "@cryptify/api/src/authentication/authentication.service";
+import { AuthenticationService } from "@cryptify/api/src/services/authentication.service";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";

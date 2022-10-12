@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { UsersController } from "../../../src/users/users.controller";
-import { UsersService } from "@cryptify/api/src/users/users.service";
+import { UsersController } from "../../../src/controllers/users.controller";
+import { UsersService } from "@cryptify/api/src/services/users.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Repository } from "typeorm";

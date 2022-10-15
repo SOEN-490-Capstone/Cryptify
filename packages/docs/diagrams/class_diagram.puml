@@ -1,0 +1,62 @@
+@startuml
+class BaseController {
+    +find(): ProcessDetails
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+}
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+}
+class UsersService {
+    -userRepository: Repository<User>
+    +create(signUpReq: SignUpRequest): Promise<User>
+    +findOne(email: string): Promise<User>
+}
+class AuthenticationService {
+    -jwtService: JwtService
+    -usersService: UsersService
+    +signUp(signUpReq: SignUpRequest)): Promise<JwtToken>
+    +signIn(signInReq: SignInRequest): Promise<JwtToken>
+    -signToken(user: User): JwtToken
+}
+class AuthenticationController {
+    -authService: AuthenticationService
+    +signUp(body: SignUpRequest): Promise<JwtToken>
+    +signIn(body: SignInRequest): Promise<JwtToken>
+}
+class JwtAuthGuard
+class UsersController {
+    +getProfile(req: any): any
+}
+class JwtStrategy {
+    -configService: ConfigService<Record<string, unknown>, false>
+    +validate(payload: any): Promise<{ id: any; email: any; }>
+}
+class WalletsService {
+    -walletRepository: Repository<Wallet>
+    +create(userId: number, address: string, name: string): Promise<InsertResult>
+}
+class WalletsController {
+    -walletsService: WalletsService
+    +create(body: Wallet): Promise<InsertResult>
+}
+Wallet --> "1" User
+User --> "*" Wallet
+UsersService --> "1" User
+AuthenticationService --> "1" UsersService
+AuthenticationService --> "1" User
+AuthenticationController --> "1" AuthenticationService
+WalletsService --> "1" Wallet
+WalletsController --> "1" WalletsService
+WalletsController --> "1" Wallet
+@enduml

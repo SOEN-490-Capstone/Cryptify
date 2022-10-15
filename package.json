@@ -19,7 +19,7 @@
     "common:build": "yarn workspace @cryptify/common build",
     "lint:check": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --max-warnings=0",
     "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix",
-    "diagrams:build": "yarn workspace @cryptify/diagrams build"
+    "docs:diagrams:build": "yarn workspace @cryptify/docs diagrams:build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.9.1",

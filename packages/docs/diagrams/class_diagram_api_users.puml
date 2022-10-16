@@ -1,0 +1,50 @@
+@startuml
+class JwtAuthGuard
+class Transaction {
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+}
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+}
+interface SignUpRequest extends InferType
+class UsersService {
+    -userRepository: Repository<User>
+    +create(signUpReq: SignUpRequest): Promise<User>
+    +findOne(email: string): Promise<User>
+    +findOneById(id: number): Promise<User>
+}
+class UsersController {
+    -usersService: UsersService
+    +whoami(req: any): Promise<User>
+}
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+User --> "*" Wallet
+UsersService --> "1" User
+UsersService --> "1" SignUpRequest
+UsersController --> "1" UsersService
+UsersController --> "1" User
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+class AlchemyNodeService {
+    -alchemy: Alchemy
+    -configService: ConfigService<Record<string, unknown>, false>
+    +getBalance(address: string): Promise<string>
+    +getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
+    +getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
+}
+class Transaction {
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+}
+class TransactionsService {
+    -transactionsRepository: Repository<Transaction>
+    -alchemyNodeService: AlchemyNodeService
+    +backfillTransactions(address: string): Promise<void>
+    +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
+}
+class TransactionsController {
+    -transactionsService: TransactionsService
+    +create(body: AddressActivityEvent): Promise<void>
+}
+TransactionsService --> "1" Transaction
+TransactionsService --> "1" AlchemyNodeService
+TransactionsController --> "1" TransactionsService
+@enduml

@@ -1,0 +1,89 @@
+@startuml
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+interface CreateWalletRequest extends InferType
+class JwtAuthGuard
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+}
+class Transaction {
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+interface GetWalletsRequest extends InferType
+class EthEdgeGateway {
+    +request: RequestFunc
+    -configService: ConfigService<Record<string, unknown>, false>
+    +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+}
+class WalletsService {
+    -walletRepository: Repository<Wallet>
+    -ethEdgeGateway: EthEdgeGateway
+    +create(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+}
+class CanMutateResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
+class CanAccessResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
+class WalletsController {
+    -walletsService: WalletsService
+    +create(body: CreateWalletRequest): Promise<WalletWithBalance>
+    +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
+}
+User --> "*" Wallet
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+EthEdgeGateway --> "1" CreateWalletRequest
+EthEdgeGateway --> "1" WalletWithBalance
+EthEdgeGateway --> "1" GetWalletsRequest
+EthEdgeGateway --> "*" WalletWithBalance
+WalletsService --> "1" Wallet
+WalletsService --> "1" EthEdgeGateway
+WalletsService --> "1" CreateWalletRequest
+WalletsService --> "1" WalletWithBalance
+WalletsService --> "1" GetWalletsRequest
+WalletsService --> "*" WalletWithBalance
+WalletsController --> "1" WalletsService
+WalletsController --> "1" CreateWalletRequest
+WalletsController --> "1" WalletWithBalance
+WalletsController --> "1" GetWalletsRequest
+WalletsController --> "*" WalletWithBalance
+@enduml

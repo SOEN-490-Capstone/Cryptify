@@ -1,9 +1,9 @@
-const dir = "./diagrams";
 import * as fs from "fs";
 import { exec } from "node:child_process";
 
-console.log("Diagram generation starting...");
+console.log("Diagram build starting...");
 
+const dir = "./diagrams";
 fs.readdirSync(dir).forEach((file) => {
     if (file.endsWith(".puml")) {
         const inputFilePath = `${dir}/${file}`;
@@ -22,4 +22,4 @@ fs.readdirSync(dir).forEach((file) => {
     }
 });
 
-console.log("Diagram generation done...");
+console.log("Diagram build done...");

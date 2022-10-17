@@ -1,0 +1,96 @@
+@startuml
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+interface CreateWalletRequest extends InferType
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+}
+class Transaction {
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+class AlchemyNodeService {
+    -alchemy: Alchemy
+    -configService: ConfigService<Record<string, unknown>, false>
+    +getBalance(address: string): Promise<string>
+    +getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
+    +getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
+}
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+class TransactionsService {
+    -transactionsRepository: Repository<Transaction>
+    -alchemyNodeService: AlchemyNodeService
+    +backfillTransactions(address: string): Promise<void>
+    +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class AlchemyNodeGateway {
+    +request: RequestFunc
+    -configService: ConfigService<Record<string, unknown>, false>
+    +updateWebhookAddresses(addressesToAdd: string[], addressesToRemove: string[]): Promise<void>
+}
+class WalletsService {
+    -walletRepository: Repository<Wallet>
+    -alchemyNodeService: AlchemyNodeService
+    -transactionsService: TransactionsService
+    -alchemyNodeGateway: AlchemyNodeGateway
+    +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
+    +findOne(address: string, userId: number): Promise<Wallet>
+    +findAll(userId: number): Promise<WalletWithBalance[]>
+}
+interface GetWalletsRequest extends InferType
+class WalletsController {
+    -walletsService: WalletsService
+    +create(body: CreateWalletRequest): Promise<WalletWithBalance>
+    +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
+}
+User --> "*" Wallet
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+TransactionsService --> "1" Transaction
+TransactionsService --> "1" AlchemyNodeService
+WalletsService --> "1" Wallet
+WalletsService --> "1" AlchemyNodeService
+WalletsService --> "1" TransactionsService
+WalletsService --> "1" AlchemyNodeGateway
+WalletsService --> "1" CreateWalletRequest
+WalletsService --> "1" WalletWithBalance
+WalletsService --> "*" WalletWithBalance
+WalletsController --> "1" WalletsService
+WalletsController --> "1" CreateWalletRequest
+WalletsController --> "1" WalletWithBalance
+WalletsController --> "1" GetWalletsRequest
+WalletsController --> "*" WalletWithBalance
+@enduml

@@ -1,6 +1,6 @@
 @startuml
 
-title View Wallets
+title View Wallets Sequence Diagram
 
 actor User
 participant Client

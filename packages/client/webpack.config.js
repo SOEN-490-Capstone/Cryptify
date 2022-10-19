@@ -8,7 +8,7 @@ module.exports = async function (env, argv) {
                 dangerouslyAddModulePathsToTranspile: ["@cryptify"],
             },
             watchOptions: {
-                ignored: ["/pgdata", "**/node_modules"],
+                ignored: ["**/pgdata", "**/node_modules"],
             },
         },
         argv,

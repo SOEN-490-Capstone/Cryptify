@@ -6,7 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "client:start:dev": "yarn workspace @cryptify/client start",
+    "client:web:dev": "yarn workspace @cryptify/client web",
+    "client:android:dev": "yarn workspace @cryptify/client android",
+    "client:ios:dev": "yarn workspace @cryptify/client ios",
     "client:test:unit": "yarn workspace @cryptify/client test:unit",
     "api:dev": "yarn workspace @cryptify/api start:dev",
     "api:test:unit": "yarn workspace @cryptify/api test:unit",

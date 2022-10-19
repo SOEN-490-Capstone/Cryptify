@@ -12,9 +12,28 @@
                 "simulator": true
             }
         },
+        "test_debug": {
+            "android": {
+                "gradleCommand": ":app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug",
+                "withoutCredentials": true
+            },
+            "ios": {
+                "buildConfiguration": "Debug",
+                "simulator": true
+            },
+            "env": {
+                "EXPO_USE_UPDATES": "1"
+            },
+            "channel": "test_debug"
+        },
         "development": {
-            "developmentClient": true,
-            "distribution": "internal"
+            "distribution": "internal",
+            "android": {
+                "gradleCommand": ":app:assembleDebug"
+            },
+            "ios": {
+                "buildConfiguration": "Debug"
+            }
         },
         "preview": {
             "distribution": "internal"

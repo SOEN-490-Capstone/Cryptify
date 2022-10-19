@@ -4,9 +4,9 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "expo start --dev-client",
-        "android": "expo run:android",
-        "ios": "expo run:ios",
+        "start": "expo start",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
         "web": "expo start --web",
         "test:unit": "jest --passWithNoTests",
         "postinstall": "expo-yarn-workspaces postinstall",

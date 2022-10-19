@@ -371,4 +371,3 @@ pgdata
 
 # dotenv environment variable files
 .env.dev
-.env.test

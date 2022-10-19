@@ -1,6 +1,6 @@
 {
   "testRunner": "jest",
-  "runnerConfig": "e2e/config.json",
+  "runnerConfig": "tests/system/config.json",
   "skipLegacyWorkersInjection": true,
   "apps": {
     "ios.debug": {

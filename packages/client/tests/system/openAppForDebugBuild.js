@@ -1,4 +1,4 @@
-const appConfig = require("../app.json"); // eslint-disable-line @typescript-eslint/no-var-requires
+const appConfig = require("../../app.json"); // eslint-disable-line @typescript-eslint/no-var-requires
 
 module.exports.openAppForDebugBuild = async function openAppForDebugBuild() {
     const [platform, target] = process.env.DETOX_CONFIGURATION.split(".");

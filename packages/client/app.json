@@ -17,17 +17,25 @@
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.cryptify.client"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
-            }
+            },
+            "package": "com.cryptify.client"
         },
         "web": {
             "favicon": "./assets/images/favicon.png"
         },
-        "entryPoint": "./index.js"
+        "entryPoint": "./index.js",
+        "extra": {
+            "eas": {
+                "projectId": "3330c4ab-c29a-412d-b0b9-2e342080a637"
+            }
+        },
+        "plugins": ["@config-plugins/detox"]
     }
 }

@@ -63,9 +63,9 @@ Ports:
     ```sh
     $ docker-compose up -d api
     ```
-3. Start the app on your device in development mode
+3. Start the app on your device in development mode, once the metro loader has appeared press 'a' to run the app in your emulator
     ```sh
-    $ `yarn run client:android:dev`
+    $ `yarn run client:start:dev`
     ```
 
 #### Web Client
@@ -110,6 +110,26 @@ You can now access the client at http://localhost:3000
 3. Run all tests with the following command
     ```sh
     $ docker-compose exec api yarn api:test:integration
+    ```
+
+#### System tests
+Follow the steps to setup your device specific detox [config](https://docs.expo.dev/build-reference/e2e-tests/)
+
+1. Start the api docker container
+    ```sh
+    $ docker-compose up -d api
+    ```
+2. Start the test db docker container
+    ```sh
+    $ docker-compose up -d test-db
+    ```
+3. Build your android apk
+    ```sh
+    $ yarn workspace @cryptify/client detox:android:release:build
+    ```
+4. Open your emulator and run your tests
+    ```sh
+    $ yarn workspace @cryptify/client detox:android:release:test
     ```
 
 ### Linting and Formatting

@@ -1,18 +1,27 @@
 {
-  "cli": {
-    "version": ">= 2.4.1"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+    "cli": {
+        "version": ">= 2.4.1"
     },
-    "preview": {
-      "distribution": "internal"
+    "build": {
+        "test": {
+            "android": {
+                "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
+                "withoutCredentials": true
+            },
+            "ios": {
+                "simulator": true
+            }
+        },
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal"
+        },
+        "preview": {
+            "distribution": "internal"
+        },
+        "production": {}
     },
-    "production": {}
-  },
-  "submit": {
-    "production": {}
-  }
+    "submit": {
+        "production": {}
+    }
 }

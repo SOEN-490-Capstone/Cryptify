@@ -219,7 +219,7 @@ function BottomTabNavigator() {
                 options={{
                     title: "Sign Up",
                     tabBarIcon: tabBarIcon(faBarsCustom),
-                    tabBarTestID: "Sign Up Tab"
+                    tabBarTestID: "Sign Up Tab",
                 }}
             />
             <BottomTab.Screen

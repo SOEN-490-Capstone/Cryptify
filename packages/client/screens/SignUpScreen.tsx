@@ -55,7 +55,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                     value={values.firstName}
                                     onChangeText={handleChange("firstName")}
                                     placeholder="First name"
-                                    testID='firstName'
+                                    testID="firstName"
                                 />
 
                                 <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
@@ -66,14 +66,17 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                     value={values.lastName}
                                     onChangeText={handleChange("lastName")}
                                     placeholder="Last name"
-                                    testID='lastName'
+                                    testID="lastName"
                                 />
                                 <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
                             </FormControl>
                         </HStack>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email"
-                                   testID='email'
+                            <Input
+                                value={values.email}
+                                onChangeText={handleChange("email")}
+                                placeholder="Email"
+                                testID="email"
                             />
                             <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
                         </FormControl>
@@ -92,7 +95,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 }
                                 onChangeText={handleChange("password")}
                                 placeholder="Password (6+ characters)"
-                                testID='password'
+                                testID="password"
                             />
 
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
@@ -112,7 +115,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
                                 }
                                 onChangeText={handleChange("confirmPassword")}
                                 placeholder="Confirm Password"
-                                testID='confirmPassword'
+                                testID="confirmPassword"
                             />
 
                             <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>

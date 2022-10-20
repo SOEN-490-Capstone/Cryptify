@@ -12,13 +12,13 @@ describe("Sign Up CRYP-21", () => {
     it("should have no errors in the signup flow. create user account, and sign in the user", async () => {
         await element(by.id("Sign Up Tab")).tap();
 
-        await element(by.id('firstName')).typeText('John');
-        await element(by.id('lastName')).typeText('Doe');
-        await element(by.id('email')).typeText('johnn@example.com');
-        await element(by.id('password')).typeText('Test123!');
-        await element(by.id('confirmPassword')).typeText('Test123!');
-        await element(by.text('Sign up')).tap();
+        await element(by.id("firstName")).typeText("John");
+        await element(by.id("lastName")).typeText("Doe");
+        await element(by.id("email")).typeText("john@example.com");
+        await element(by.id("password")).typeText("Test123!");
+        await element(by.id("confirmPassword")).typeText("Test123!");
+        await element(by.text("Sign up")).tap();
 
-        await expect(element(by.id('token'))).toBeVisible();
+        await expect(element(by.id("token"))).toBeVisible();
     });
 });

@@ -3,6 +3,8 @@ import { HttpError } from "@cryptify/common/src/errors/http_error";
 const API_URI = `http://${process.env.API_URL}:${process.env.API_PORT}`;
 
 export async function request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
+    console.debug("testing:::::::");
+    console.debug(API_URI, path);
     const response = await fetch(`${API_URI}/${path}`, {
         method: Method[method],
         headers: {
@@ -15,6 +17,7 @@ export async function request<T>(method: Method, headers: Headers, path: string,
     const resBody = await response.json();
 
     if (response.status >= 300) {
+        console.log(resBody.message);
         throw new HttpError(resBody.message, response.status);
     }
 

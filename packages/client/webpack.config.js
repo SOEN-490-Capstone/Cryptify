@@ -7,9 +7,7 @@ module.exports = async function (env, argv) {
             babel: {
                 dangerouslyAddModulePathsToTranspile: ["@cryptify"],
             },
-            watchOptions: {
-                ignored: ["**/pgdata", "**/node_modules"],
-            },
+            watchOptions: { ignored: /node_modules/ }
         },
         argv,
     );

@@ -1,5 +1,5 @@
 module.exports = function (api) {
-    api.cache(true);
+    api.cache(false);
     return {
         presets: ["babel-preset-expo"],
         plugins: [
@@ -8,7 +8,7 @@ module.exports = function (api) {
                 {
                     envName: "APP_ENV",
                     moduleName: "@env",
-                    path: ".env.dev",
+                    path: `.env.dev`,
                 },
             ],
         ],

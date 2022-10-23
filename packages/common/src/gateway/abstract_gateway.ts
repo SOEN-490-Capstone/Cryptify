@@ -26,7 +26,7 @@ export abstract class AbstractGateway {
     protected abstract handleError(response: any): Promise<void>;
 }
 
-enum Method {
+export enum Method {
     POST,
     GET,
     PUT,

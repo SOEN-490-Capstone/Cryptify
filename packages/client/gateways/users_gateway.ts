@@ -1,16 +1,19 @@
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import { Method, request } from "./request";
 import { User } from "@cryptify/common/src/domain/entities/user";
+import { ApiGateway } from "./api_gateway";
+import { Method } from "@cryptify/common/src/gateway/abstract_gateway";
 
-async function whoami(token: JwtToken): Promise<User> {
-    const path = "users/whoami";
-    const headers = {
-        Authorization: `Bearer ${token.accessToken}`,
-    };
+export class UsersGateway extends ApiGateway {
+    constructor() {
+        super();
+    }
 
-    return request<User>(Method.GET, headers, path, null);
+    async whoami(token: JwtToken): Promise<User> {
+        const path = "users/whoami";
+        const headers = {
+            Authorization: `Bearer ${token.accessToken}`,
+        };
+
+        return this.request<User>(Method.GET, headers, path, null);
+    }
 }
-
-export default {
-    whoami,
-};

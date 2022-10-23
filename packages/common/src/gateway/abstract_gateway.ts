@@ -1,6 +1,3 @@
-import {BadRequestException} from "@nestjs/common";
-import {HttpError} from "@cryptify/common/src/errors/http_error";
-
 export abstract class AbstractGateway {
     protected constructor(private readonly uri: string, private readonly fetch: any) {}
 

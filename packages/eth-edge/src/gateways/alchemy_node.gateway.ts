@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import {Gateway} from "@cryptify/common/src/gateway/gateway";
-import {AbstractGateway, Method} from "@cryptify/common/src/gateway/abstract_gateway";
+import { Gateway } from "@cryptify/common/src/gateway/gateway";
+import { Method } from "@cryptify/common/src/gateway/abstract_gateway";
 
 @Injectable()
 export class AlchemyNodeGateway extends Gateway {

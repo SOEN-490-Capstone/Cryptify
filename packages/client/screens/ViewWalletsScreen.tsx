@@ -6,12 +6,15 @@ import { WalletsListAccordion } from "../components/WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import StorageService from "../services/storage_service";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import WalletsGateway from "../gateways/wallets_gateway";
-import UsersGateway from "../gateways/users_gateway";
+import { WalletsGateway } from "../gateways/wallets_gateway";
+import { UsersGateway } from "../gateways/users_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 
 export default function ViewWalletsScreen() {
+    const usersGateway = new UsersGateway();
+    const walletsGateway = new WalletsGateway();
+
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
 
     React.useEffect(() => {
@@ -21,8 +24,8 @@ export default function ViewWalletsScreen() {
                 return;
             }
 
-            const { id } = await UsersGateway.whoami(token);
-            const wallets = await WalletsGateway.findAllWallets({ id }, token);
+            const { id } = await usersGateway.whoami(token);
+            const wallets = await walletsGateway.findAllWallets({ id }, token);
             setWallets(wallets);
         })();
     }, []);

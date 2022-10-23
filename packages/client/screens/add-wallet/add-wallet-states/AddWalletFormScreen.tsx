@@ -10,9 +10,9 @@ import { createWalletSchema } from "@cryptify/common/src/validations/create_wall
 import { FormikHelpers } from "formik/dist/types";
 import StorageService from "../../../services/storage_service";
 import { currenciesDisplayData } from "../../../constants/CurrenciesDisplayData";
-import WalletsGateway from "../../../gateways/wallets_gateway";
+import { WalletsGateway } from "../../../gateways/wallets_gateway";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import UsersGateway from "../../../gateways/users_gateway";
+import { UsersGateway } from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
@@ -39,6 +39,9 @@ export default function AddWalletFormScreen({
     initialErrors,
     setInitialErrors,
 }: Props) {
+    const usersGateway = new UsersGateway();
+    const walletsGateway = new WalletsGateway();
+
     async function onSubmitCreateWallet(
         values: CreateWalletRequest,
         formikHelpers: FormikHelpers<CreateWalletRequest>,
@@ -67,8 +70,9 @@ export default function AddWalletFormScreen({
             if (!token) {
                 throw new Error();
             }
-            const user = await UsersGateway.whoami(token);
-            await WalletsGateway.createWallet(
+
+            const user = await usersGateway.whoami(token);
+            await walletsGateway.createWallet(
                 {
                     ...values,
                     userId: user.id,

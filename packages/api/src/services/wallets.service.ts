@@ -4,11 +4,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { EthEdgeGateway } from "@cryptify/api/src/gateways/eth_edge_gateway";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
-import { getCurrencyType } from "@cryptify/common/src/helpers/currency_utils";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 @Injectable()
 export class WalletsService {

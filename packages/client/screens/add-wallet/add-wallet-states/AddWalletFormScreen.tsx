@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "../../../components/Themed";
 import { StyleSheet } from "react-native";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Formik, FormikErrors } from "formik";
 import { Button, FormControl, Input, VStack } from "native-base";
@@ -17,7 +17,7 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
-import { getCurrencyType } from "@cryptify/common/src/helpers/currency_utils";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 
 type Props = {

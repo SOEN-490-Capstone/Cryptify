@@ -1,4 +1,4 @@
-import { AbstractGateway } from "@cryptify/common/src/gateway/abstract_gateway";
+import { AbstractGateway } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import fetch from "node-fetch";
 import { BadRequestException } from "@nestjs/common";
 import { HttpError } from "@cryptify/common/src/errors/http_error";

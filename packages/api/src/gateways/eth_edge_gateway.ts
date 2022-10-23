@@ -3,8 +3,8 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
-import { Method } from "@cryptify/common/src/gateway/abstract_gateway";
-import { Gateway } from "@cryptify/common/src/gateway/gateway";
+import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
+import { Gateway } from "@cryptify/common/src/utils/gateway/gateway";
 
 @Injectable()
 export class EthEdgeGateway extends Gateway {

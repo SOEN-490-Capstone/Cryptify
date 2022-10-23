@@ -2,7 +2,7 @@ import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { ApiGateway } from "./api_gateway";
-import { Method } from "@cryptify/common/src/gateway/abstract_gateway";
+import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 
 export class AuthGateway extends ApiGateway {
     constructor() {

@@ -1,4 +1,4 @@
-import { AbstractGateway } from "@cryptify/common/src/gateway/abstract_gateway";
+import { AbstractGateway } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 
 export abstract class ApiGateway extends AbstractGateway {

@@ -3,7 +3,7 @@ import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { ApiGateway } from "./api_gateway";
-import { Method } from "@cryptify/common/src/gateway/abstract_gateway";
+import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 
 export class WalletsGateway extends ApiGateway {
     constructor() {

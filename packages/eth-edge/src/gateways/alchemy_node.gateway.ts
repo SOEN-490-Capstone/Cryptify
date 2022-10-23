@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Gateway } from "@cryptify/common/src/utils/gateway/gateway";
+import { AbstractServiceGateway } from "@cryptify/common/src/utils/gateway/abstract_service_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 
 @Injectable()
-export class AlchemyNodeGateway extends Gateway {
+export class AlchemyNodeGateway extends AbstractServiceGateway {
     constructor(private configService: ConfigService) {
         super(`https://${configService.get<string>("ALCHEMY_HOST")}`);
     }

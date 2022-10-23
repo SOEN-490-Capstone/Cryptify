@@ -2,10 +2,10 @@ import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
-import { ApiGateway } from "./api_gateway";
+import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 
-export class WalletsGateway extends ApiGateway {
+export class WalletsGateway extends AbstractApiGateway {
     constructor() {
         super();
     }

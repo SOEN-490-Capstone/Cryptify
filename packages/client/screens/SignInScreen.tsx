@@ -17,6 +17,7 @@ import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
 
 export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
     const authGateway = new AuthGateway();
+
     const [showPassword, setShowPass] = React.useState(false);
 
     const initialValues = {

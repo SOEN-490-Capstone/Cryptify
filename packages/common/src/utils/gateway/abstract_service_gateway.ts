@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import { BadRequestException } from "@nestjs/common";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 
-export abstract class Gateway extends AbstractGateway {
+export abstract class AbstractServiceGateway extends AbstractGateway {
     protected constructor(uri: string) {
         super(uri, fetch);
     }

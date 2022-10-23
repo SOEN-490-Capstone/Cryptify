@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { VStack, Text, HStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../../components/icons/faChevronRightCustom";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { currenciesDisplayData } from "../../constants/CurrenciesDisplayData";

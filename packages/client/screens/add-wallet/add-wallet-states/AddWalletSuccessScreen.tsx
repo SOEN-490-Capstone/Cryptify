@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Box, Button, Center, Link, View } from "native-base";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";

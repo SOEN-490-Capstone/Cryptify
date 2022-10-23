@@ -10,10 +10,10 @@ import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
 import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
-import { zip } from "@cryptify/common/src/helpers/function_utils";
+import { zip } from "@cryptify/common/src/utils/function_utils";
 
 @Injectable()
 export class WalletsService {

@@ -7,7 +7,7 @@ import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
-import AuthGateway from "../gateways/auth_gateway";
+import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
@@ -15,6 +15,8 @@ import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
+    const authGateway = new AuthGateway();
+
     const [showPassword, setShowPass] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 
@@ -28,7 +30,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
 
     async function onSubmitSignUp(values: SignUpRequest, formikHelpers: FormikHelpers<SignUpRequest>): Promise<void> {
         try {
-            const token = await AuthGateway.signUp(values);
+            const token = await authGateway.signUp(values);
             StorageService.put(KEY_JWT, token);
 
             navigation.reset({

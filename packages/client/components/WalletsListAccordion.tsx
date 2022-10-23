@@ -8,7 +8,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { currenciesDisplayData, CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 type Props = {
     wallets: WalletWithBalance[];
@@ -29,7 +29,7 @@ export function WalletsListAccordion({ wallets }: Props) {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
 
-    const renderHeader = (currency: CurrencyDisplayData, _: number, isActive: boolean) => {
+    function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
         return (
             <HStack
                 height="66px"
@@ -50,9 +50,9 @@ export function WalletsListAccordion({ wallets }: Props) {
                 />
             </HStack>
         );
-    };
+    }
 
-    const renderContent = (currency: CurrencyDisplayData) => {
+    function renderContent(currency: CurrencyDisplayData) {
         return (
             <>
                 {walletsByType[currency.type].map((wallet, i) => (
@@ -79,7 +79,7 @@ export function WalletsListAccordion({ wallets }: Props) {
                 ))}
             </>
         );
-    };
+    }
 
     return (
         <>

@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
-import AuthGateway from "../gateways/auth_gateway";
+import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { RootTabScreenProps } from "../types";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
@@ -16,6 +16,8 @@ import { FormikHelpers } from "formik/dist/types";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
 
 export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
+    const authGateway = new AuthGateway();
+
     const [showPassword, setShowPass] = React.useState(false);
 
     const initialValues = {
@@ -25,7 +27,7 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
 
     async function onSubmitSignIn(values: SignInRequest, formikHelpers: FormikHelpers<SignInRequest>): Promise<void> {
         try {
-            const token = await AuthGateway.signIn(values);
+            const token = await authGateway.signIn(values);
             StorageService.put(KEY_JWT, token);
 
             navigation.reset({

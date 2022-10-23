@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "../../../components/Themed";
 import { StyleSheet } from "react-native";
-import { titleCase } from "@cryptify/common/src/helpers/string_utils";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Formik, FormikErrors } from "formik";
 import { Button, FormControl, Input, VStack } from "native-base";
@@ -10,14 +10,14 @@ import { createWalletSchema } from "@cryptify/common/src/validations/create_wall
 import { FormikHelpers } from "formik/dist/types";
 import StorageService from "../../../services/storage_service";
 import { currenciesDisplayData } from "../../../constants/CurrenciesDisplayData";
-import WalletsGateway from "../../../gateways/wallets_gateway";
+import { WalletsGateway } from "../../../gateways/wallets_gateway";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import UsersGateway from "../../../gateways/users_gateway";
+import { UsersGateway } from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
-import { getCurrencyType } from "@cryptify/common/src/helpers/currency_utils";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 
 type Props = {
@@ -39,6 +39,9 @@ export default function AddWalletFormScreen({
     initialErrors,
     setInitialErrors,
 }: Props) {
+    const usersGateway = new UsersGateway();
+    const walletsGateway = new WalletsGateway();
+
     async function onSubmitCreateWallet(
         values: CreateWalletRequest,
         formikHelpers: FormikHelpers<CreateWalletRequest>,
@@ -67,8 +70,9 @@ export default function AddWalletFormScreen({
             if (!token) {
                 throw new Error();
             }
-            const user = await UsersGateway.whoami(token);
-            await WalletsGateway.createWallet(
+
+            const user = await usersGateway.whoami(token);
+            await walletsGateway.createWallet(
                 {
                     ...values,
                     userId: user.id,

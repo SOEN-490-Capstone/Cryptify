@@ -31,12 +31,13 @@ export class WalletsService {
     }
 
     async findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
-        // Map through the currency types to build a list of promises that will each resolve
-        // to a list of wallets, the 2D array can be flattened to have all the wallets on the same level
-        const walletPromises = Object.keys(CurrencyType).map((type) =>
-            this.edgeGatewayStrategyFactory.get(CurrencyType[type]).getWallets(req),
+        // Map through the currency types to build a list of strategies, then map through each strategy
+        // and get the wallets from the associated edge service in parallel, finally flatten the 2D
+        // array of wallets into a single array
+        const strategies = Object.keys(CurrencyType).map((type) =>
+            this.edgeGatewayStrategyFactory.get(CurrencyType[type]),
         );
-        const walletsByType = await Promise.all(walletPromises);
+        const walletsByType = await Promise.all(strategies.map((strategy) => strategy.getWallets(req)));
         return walletsByType.flat();
     }
 }

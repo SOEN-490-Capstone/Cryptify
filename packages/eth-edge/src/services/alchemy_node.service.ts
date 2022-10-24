@@ -1,4 +1,4 @@
-import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResponse, AssetTransfersWithMetadataResult } from "alchemy-sdk";
+import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResult } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import Web3 from "web3";
@@ -31,8 +31,8 @@ export class AlchemyNodeService {
     }
 
     async getTransactions(wallet: string): Promise<AssetTransfersWithMetadataResult[]> {
-        //Getting all in and out transactions of a wallet and returning the results.
-        const transactionsByDirection = await Promise.all([
+        //Getting all in and out transactions of a wallet and returning the an array with those transactions
+        const assetTransfers = await Promise.all([
             this.alchemy.core.getAssetTransfers({
                 fromBlock: "0x0",
                 toAddress: wallet,
@@ -46,8 +46,8 @@ export class AlchemyNodeService {
                 excludeZeroValue: true,
                 category: [AssetTransfersCategory.EXTERNAL],
                 withMetadata: true,
-            })
+            }),
         ]);
-        return transactionsByDirection.flatMap((t) => t.transfers);
+        return assetTransfers.flatMap(({ transfers }) => transfers);
     }
 }

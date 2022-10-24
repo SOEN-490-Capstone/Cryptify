@@ -18,14 +18,16 @@ export class TransactionsService {
         // Getting the transactions from for a specific wallet from alchemy.
         // Filter for only the attributes we want and save it to the database
         const transactions = await this.alchemyNodeService.getTransactions(address);
-        const reqtransaction = this.transactionsRepository.create(transactions.map((t) => ({
-            transactionAddress: t.hash,
-            walletIn: t.from,
-            walletOut: t.to,
-            amount: t.value.toString(),
-            createdAt: t.metadata.blockTimestamp,
-        })));
-        await this.transactionsRepository.save(reqtransaction);
+        const reqTransactions = this.transactionsRepository.create(
+            transactions.map((t) => ({
+                transactionAddress: t.hash,
+                walletIn: t.from,
+                walletOut: t.to,
+                amount: t.value.toString(),
+                createdAt: t.metadata.blockTimestamp,
+            })),
+        );
+        await this.transactionsRepository.save(reqTransactions);
     }
 
     async handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void> {

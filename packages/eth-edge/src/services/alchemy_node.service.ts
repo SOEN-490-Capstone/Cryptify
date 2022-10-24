@@ -1,4 +1,4 @@
-import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResponse } from "alchemy-sdk";
+import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResponse, AssetTransfersWithMetadataResult } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import Web3 from "web3";
@@ -30,25 +30,24 @@ export class AlchemyNodeService {
         }
     }
 
-    //To do: Refactor to include pagination
-    async getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse> {
-        return await this.alchemy.core.getAssetTransfers({
-            fromBlock: "0x0",
-            toAddress: wallet,
-            excludeZeroValue: true,
-            category: [AssetTransfersCategory.EXTERNAL],
-            withMetadata: true,
-        });
-    }
-
-    //To do: Refactor to include pagination
-    async getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse> {
-        return await this.alchemy.core.getAssetTransfers({
-            fromBlock: "0x0",
-            fromAddress: wallet,
-            excludeZeroValue: true,
-            category: [AssetTransfersCategory.EXTERNAL],
-            withMetadata: true,
-        });
+    async getTransactions(wallet: string): Promise<AssetTransfersWithMetadataResult[]> {
+        //Getting all in and out transactions of a wallet and returning the results.
+        const transactionsByDirection = await Promise.all([
+            this.alchemy.core.getAssetTransfers({
+                fromBlock: "0x0",
+                toAddress: wallet,
+                excludeZeroValue: true,
+                category: [AssetTransfersCategory.EXTERNAL],
+                withMetadata: true,
+            }),
+            this.alchemy.core.getAssetTransfers({
+                fromBlock: "0x0",
+                fromAddress: wallet,
+                excludeZeroValue: true,
+                category: [AssetTransfersCategory.EXTERNAL],
+                withMetadata: true,
+            })
+        ]);
+        return transactionsByDirection.flatMap((t) => t.transfers);
     }
 }

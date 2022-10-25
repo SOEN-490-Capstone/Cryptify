@@ -13,11 +13,13 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
         super(`http://${host}:${port}`);
     }
 
-    async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async createWallet(_req: CreateWalletRequest): Promise<WalletWithBalance> {
         throw new Error();
     }
 
-    async getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async getWallets(_req: GetWalletsRequest): Promise<WalletWithBalance[]> {
         return [];
     }
 }

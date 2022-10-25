@@ -2,20 +2,21 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { EthEdgeGateway } from "@cryptify/api/src/gateways/eth_edge_gateway";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Injectable()
 export class WalletsService {
     constructor(
         @InjectRepository(Wallet)
         private readonly walletRepository: Repository<Wallet>,
-        private readonly ethEdgeGateway: EthEdgeGateway,
+        private readonly edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory,
     ) {}
 
     async create(req: CreateWalletRequest): Promise<WalletWithBalance> {
@@ -23,15 +24,20 @@ export class WalletsService {
             throw new BadRequestException(ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(req.currencyType)));
         }
 
-        return this.ethEdgeGateway.createWallet(req);
+        // Get the edge gateway strategy associated to the currency type in the request
+        // then using this gateway create the wallet in the appropriate edge service
+        const edgeGatewayStrategy = this.edgeGatewayStrategyFactory.get(req.currencyType);
+        return edgeGatewayStrategy.createWallet(req);
     }
 
     async findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]> {
-        const wallets = [];
-
-        // all crypto edge gateways should call their own getWallets method here
-        wallets.push(...(await this.ethEdgeGateway.getWallets(req)));
-
-        return wallets;
+        // Map through the currency types to build a list of strategies, then map through each strategy
+        // and get the wallets from the associated edge service in parallel, finally flatten the 2D
+        // array of wallets into a single array
+        const strategies = Object.keys(CurrencyType).map((type) =>
+            this.edgeGatewayStrategyFactory.get(CurrencyType[type]),
+        );
+        const walletsByType = await Promise.all(strategies.map((strategy) => strategy.getWallets(req)));
+        return walletsByType.flat();
     }
 }

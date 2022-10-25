@@ -4,10 +4,10 @@ import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import { AbstractServiceGateway } from "@cryptify/common/src/utils/gateway/abstract_service_gateway";
+import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/abstract_edge_gateway_strategy";
 
 @Injectable()
-export class EthEdgeGateway extends AbstractServiceGateway {
+export class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     constructor(private configService: ConfigService) {
         const host = configService.get<string>("ETH_EDGE_HOST");
         const port = configService.get<string>("ETH_EDGE_PORT");

@@ -1,7 +1,7 @@
 export abstract class AbstractGateway {
     protected constructor(private readonly uri: string, private readonly fetch: any) {}
 
-    async request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
+    protected async request<T>(method: Method, headers: Headers, path: string, body: any): Promise<T> {
         const response = await this.fetch(`${this.uri}/${path}`, {
             method: Method[method],
             headers: {

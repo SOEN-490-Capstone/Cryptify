@@ -15,36 +15,19 @@ export class TransactionsService {
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
-        const inTransactions = await this.alchemyNodeService.getInTransactions(address);
-        const transArr = [];
-        let currTrans;
-        let transaction;
-
-        for (let i = 0; i < inTransactions.transfers.length; i++) {
-            currTrans = inTransactions.transfers[i];
-            transaction = {
-                transactionAddress: currTrans.hash,
-                walletIn: currTrans.from,
-                walletOut: currTrans.to,
-                amount: currTrans.value,
-                createdAt: currTrans.metadata.blockTimestamp,
-            };
-            transArr.push(transaction);
-        }
-        const outTransactions = await this.alchemyNodeService.getOutTransactions(address);
-        for (let i = 0; i < outTransactions.transfers.length; i++) {
-            currTrans = outTransactions.transfers[i];
-            transaction = {
-                transactionAddress: currTrans.hash,
-                walletIn: currTrans.from,
-                walletOut: currTrans.to,
-                amount: currTrans.value,
-                createdAt: currTrans.metadata.blockTimestamp,
-            };
-            transArr.push(transaction);
-        }
-        const reqtransaction = this.transactionsRepository.create(transArr);
-        await this.transactionsRepository.save(reqtransaction);
+        // Getting the transactions from for a specific wallet from alchemy.
+        // Filter for only the attributes we want and save it to the database
+        const transactions = await this.alchemyNodeService.getTransactions(address);
+        const reqTransactions = this.transactionsRepository.create(
+            transactions.map((t) => ({
+                transactionAddress: t.hash,
+                walletIn: t.from,
+                walletOut: t.to,
+                amount: t.value.toString(),
+                createdAt: t.metadata.blockTimestamp,
+            })),
+        );
+        await this.transactionsRepository.save(reqTransactions);
     }
 
     async handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void> {

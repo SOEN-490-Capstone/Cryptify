@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
 import { AssetTransfersCategory } from "alchemy-sdk";
+import { WalletsService } from "./wallets.service";
 
 @Injectable()
 export class TransactionsService {
@@ -12,6 +13,8 @@ export class TransactionsService {
         @InjectRepository(Transaction)
         private transactionsRepository: Repository<Transaction>,
         private alchemyNodeService: AlchemyNodeService,
+        @Inject(forwardRef(() => WalletsService))
+        private walletsService : WalletsService,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
@@ -51,5 +54,16 @@ export class TransactionsService {
         // transactions which can occur if the other wallet involved in a transaction
         // has already been processed by the system
         await this.transactionsRepository.save(transactions);
+    }
+
+    async findAll(userId: number): Promise<Transaction[]>{
+        const userWallets = await this.walletsService.findAll(userId);
+        const addresses = userWallets.map((t) => (t.address.toLowerCase()));
+        return this.transactionsRepository.find({ 
+            where: [
+                { walletIn: In(addresses) },
+                { walletOut: In(addresses) },
+            ]
+        });
     }
 }

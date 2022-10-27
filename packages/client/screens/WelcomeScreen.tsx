@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { Box, Button, Text } from "native-base";
 import { GuestStackScreenProps } from "../types";
 import { Logo } from "../components/icons/Logo";
-import SvgComponent from "../components/icons/WelcomeScreenBackground";
+import { WelcomeScreenBackground } from "../components/icons/WelcomeScreenBackground";
 
 export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"WelcomeScreen">) {
     return (
@@ -21,7 +21,7 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
                 Sign in
             </Button>
             <Box marginBottom="20px"></Box>
-            <SvgComponent style={styles.background} />
+            <WelcomeScreenBackground style={styles.background} />
         </View>
     );
 }

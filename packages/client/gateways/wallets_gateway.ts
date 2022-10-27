@@ -10,19 +10,19 @@ export class WalletsGateway extends AbstractApiGateway {
         super();
     }
 
-    async createWallet(req: CreateWalletRequest, token: JwtToken): Promise<WalletWithBalance> {
+    async createWallet(req: CreateWalletRequest, token: string): Promise<WalletWithBalance> {
         const path = `users/${req.userId}/wallets`;
         const headers = {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${token}`,
         };
 
         return this.request<WalletWithBalance>(Method.POST, headers, path, req);
     }
 
-    async findAllWallets(req: GetWalletsRequest, token: JwtToken): Promise<WalletWithBalance[]> {
+    async findAllWallets(req: GetWalletsRequest, token: string): Promise<WalletWithBalance[]> {
         const path = `users/${req.id}/wallets`;
         const headers = {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${token}`,
         };
 
         return this.request<WalletWithBalance[]>(Method.GET, headers, path, null);

@@ -30,6 +30,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { faPlusCustom } from "../components/icons/faPlusCustom";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import {AuthContext} from "../components/contexts/AuthContext";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -268,7 +269,9 @@ function BottomTabNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-    const isSignedIn = false;
+    const { token } = React.useContext(AuthContext);
+    const isSignedIn = !!token;
+
     return (
         <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <Stack.Navigator>

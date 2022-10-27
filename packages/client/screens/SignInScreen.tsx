@@ -14,10 +14,12 @@ import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
 import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
+import {AuthContext} from "../components/contexts/AuthContext";
 
-export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInScreen">) {
+export default function SignInScreen() {
     const authGateway = new AuthGateway();
 
+    const { setToken } = React.useContext(AuthContext);
     const [showPassword, setShowPass] = React.useState(false);
 
     const initialValues = {
@@ -28,12 +30,8 @@ export default function SignInScreen({ navigation }: RootTabScreenProps<"SignInS
     async function onSubmitSignIn(values: SignInRequest, formikHelpers: FormikHelpers<SignInRequest>): Promise<void> {
         try {
             const token = await authGateway.signIn(values);
+            setToken(token.accessToken);
             StorageService.put(KEY_JWT, token);
-
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "HomeStack" }],
-            });
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("email", ERROR_NOP);

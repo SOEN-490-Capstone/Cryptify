@@ -10,20 +10,18 @@ import { WalletsGateway } from "../gateways/wallets_gateway";
 import { UsersGateway } from "../gateways/users_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
+import {AuthContext} from "../components/contexts/AuthContext";
 
 export default function ViewWalletsScreen() {
     const usersGateway = new UsersGateway();
     const walletsGateway = new WalletsGateway();
 
+    const { token } = React.useContext(AuthContext);
+
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
 
     React.useEffect(() => {
         (async () => {
-            const token = await StorageService.get<JwtToken>("@jwt");
-            if (!token) {
-                return;
-            }
-
             const { id } = await usersGateway.whoami(token);
             const wallets = await walletsGateway.findAllWallets({ id }, token);
             setWallets(wallets);

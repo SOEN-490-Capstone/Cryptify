@@ -8,10 +8,10 @@ export class UsersGateway extends AbstractApiGateway {
         super();
     }
 
-    async whoami(token: JwtToken): Promise<User> {
+    async whoami(token: string): Promise<User> {
         const path = "users/whoami";
         const headers = {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${token}`,
         };
 
         return this.request<User>(Method.GET, headers, path, null);

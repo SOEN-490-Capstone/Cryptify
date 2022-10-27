@@ -19,6 +19,7 @@ import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
+import {AuthContext} from "../../../components/contexts/AuthContext";
 
 type Props = {
     currencyType: CurrencyType;
@@ -41,6 +42,8 @@ export default function AddWalletFormScreen({
 }: Props) {
     const usersGateway = new UsersGateway();
     const walletsGateway = new WalletsGateway();
+
+    const { token } = React.useContext(AuthContext);
 
     async function onSubmitCreateWallet(
         values: CreateWalletRequest,
@@ -65,11 +68,6 @@ export default function AddWalletFormScreen({
             // Artificial delay before processing actually happens, what has
             // the world come too :(
             await new Promise((resolve) => setTimeout(resolve, 2000));
-
-            const token = await StorageService.get<JwtToken>("@jwt");
-            if (!token) {
-                throw new Error();
-            }
 
             const user = await usersGateway.whoami(token);
             await walletsGateway.createWallet(

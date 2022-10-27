@@ -1,13 +1,13 @@
 import React from "react";
 import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRightCustom } from "./icons/faChevronRightCustom";
-import { faChevronDownCustom } from "./icons/faChevronDownCustom";
+import { faChevronRightCustom } from "../icons/faChevronRightCustom";
+import { faChevronDownCustom } from "../icons/faChevronDownCustom";
 import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { currenciesDisplayData, CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
+import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 type Props = {

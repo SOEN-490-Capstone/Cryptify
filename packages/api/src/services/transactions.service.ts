@@ -9,9 +9,6 @@ export class TransactionsService {
     constructor(private readonly edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory) {}
 
     async findAll(req: GetTransactionsRequest): Promise<Transaction[]> {
-        // Map through the currency types to build a list of strategies, then map through each strategy
-        // and get the transactions from the associated edge service in parallel, finally flatten the 2D
-        // array of wallets into a single array
         const strategies = Object.keys(CurrencyType).map((type) =>
             this.edgeGatewayStrategyFactory.get(CurrencyType[type]),
         );

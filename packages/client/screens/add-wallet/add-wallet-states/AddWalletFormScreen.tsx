@@ -10,7 +10,6 @@ import { createWalletSchema } from "@cryptify/common/src/validations/create_wall
 import { FormikHelpers } from "formik/dist/types";
 import { currenciesDisplayData } from "../../../constants/CurrenciesDisplayData";
 import { WalletsGateway } from "../../../gateways/wallets_gateway";
-import { UsersGateway } from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
@@ -38,10 +37,9 @@ export default function AddWalletFormScreen({
     initialErrors,
     setInitialErrors,
 }: Props) {
-    const usersGateway = new UsersGateway();
     const walletsGateway = new WalletsGateway();
 
-    const { token } = React.useContext(AuthContext);
+    const { token, user } = React.useContext(AuthContext);
 
     async function onSubmitCreateWallet(
         values: CreateWalletRequest,
@@ -67,7 +65,6 @@ export default function AddWalletFormScreen({
             // the world come too :(
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            const user = await usersGateway.whoami(token);
             await walletsGateway.createWallet(
                 {
                     ...values,

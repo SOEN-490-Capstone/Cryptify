@@ -10,18 +10,33 @@ import StorageService from "./services/storage_service";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { AuthContext } from "./components/contexts/AuthContext";
 import { KEY_JWT } from "./constants/storage_keys";
+import { UsersGateway } from "./gateways/users_gateway";
+import { User } from "@cryptify/common/src/domain/entities/user";
 
 export default function App() {
+    const usersGateway = new UsersGateway();
+
     const isLoadingComplete = useCachedResources();
     const colorScheme = useColorScheme();
     const theme = extendTheme();
 
+    const [isUserDataLoaded, setIsUserDataLoaded] = React.useState(false);
     const [token, setToken] = React.useState("");
+    // A bit of a hack, but we are bypassing typescripts type system telling them that
+    // user is never null or empty. We can do this because the user object is only
+    // used in screens where we know it is present, this avoids having to account for
+    // default values that will never be used and if statements that will always be true.
+    // This means that the user object should not be used in any of the guest pages, all
+    // other pages will have the user hydrated by one of the 3 entry points: this file,
+    // sign in, or sign up
+    const [user, setUser] = React.useState<User>({} as User);
     // Define the auth context passed to the rest of the application
     // using the token state defined in the root
     const authContext = {
         setToken,
         token,
+        setUser,
+        user,
     };
 
     // Runs only once on app startup and sets the token from local storage
@@ -29,10 +44,17 @@ export default function App() {
         (async () => {
             const token = await StorageService.get<JwtToken>(KEY_JWT);
             setToken(token?.accessToken || "");
+
+            if (token) {
+                const user = await usersGateway.whoami(token.accessToken);
+                setUser(user);
+            }
+
+            setIsUserDataLoaded(true);
         })();
     }, []);
 
-    if (!isLoadingComplete) {
+    if (!isLoadingComplete || !isUserDataLoaded) {
         return null;
     } else {
         return (

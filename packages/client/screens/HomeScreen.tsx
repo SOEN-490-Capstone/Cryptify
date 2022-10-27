@@ -1,17 +1,13 @@
 import { View } from "../components/Themed";
 import React from "react";
-import {Button, HStack, Pressable, Text, VStack} from "native-base";
+import { HStack, Pressable, Text, VStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
-import { AuthContext } from "../components/contexts/AuthContext";
 import WalletsList from "../components/wallets-list/WalletsList";
 import { StyleSheet } from "react-native";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faCirclePlusSolidCustom} from "../components/icons/faCirclePlusSolidCustom";
-import {faPlusCustom} from "../components/icons/faPlusCustom";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faCirclePlusSolidCustom } from "../components/icons/faCirclePlusSolidCustom";
 
 export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScreen">) {
-    const { token } = React.useContext(AuthContext);
-
     return (
         <View style={styles.view}>
             <VStack space="15px">

@@ -11,6 +11,6 @@ import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node
     imports: [TypeOrmModule.forFeature([Wallet]), forwardRef(() => TransactionsModule)],
     controllers: [WalletsController],
     providers: [WalletsService, AlchemyNodeService, AlchemyNodeGateway],
-    exports: [WalletsService]
+    exports: [WalletsService],
 })
 export class WalletsModule {}

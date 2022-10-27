@@ -4,6 +4,8 @@ import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/abstract_edge_gateway_strategy";
+import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
@@ -20,6 +22,11 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async getWallets(_req: GetWalletsRequest): Promise<WalletWithBalance[]> {
+        return [];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async getTransactions(_req: GetTransactionsRequest): Promise<Transaction[]> {
         return [];
     }
 }

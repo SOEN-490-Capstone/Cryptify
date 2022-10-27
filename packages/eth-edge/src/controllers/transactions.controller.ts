@@ -18,7 +18,7 @@ export class TransactionsController {
         return;
     }
 
-    @Get("/transactions/:id")
+    @Get("users/:id/transactions")
     async findAll(@Param() params: GetTransactionsRequest): Promise<Transaction[]> {
         const getTransactionReq = await useValidate(getTransactionsSchema, params);
         return this.transactionsService.findAll(getTransactionReq.id);

@@ -14,7 +14,7 @@ export class TransactionsService {
         private transactionsRepository: Repository<Transaction>,
         private alchemyNodeService: AlchemyNodeService,
         @Inject(forwardRef(() => WalletsService))
-        private walletsService : WalletsService,
+        private walletsService: WalletsService,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
@@ -56,14 +56,11 @@ export class TransactionsService {
         await this.transactionsRepository.save(transactions);
     }
 
-    async findAll(userId: number): Promise<Transaction[]>{
+    async findAll(userId: number): Promise<Transaction[]> {
         const userWallets = await this.walletsService.findAll(userId);
-        const addresses = userWallets.map((t) => (t.address.toLowerCase()));
-        return this.transactionsRepository.find({ 
-            where: [
-                { walletIn: In(addresses) },
-                { walletOut: In(addresses) },
-            ]
+        const addresses = userWallets.map((t) => t.address.toLowerCase());
+        return this.transactionsRepository.find({
+            where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
         });
     }
 }

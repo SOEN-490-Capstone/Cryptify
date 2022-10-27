@@ -1,7 +1,7 @@
 import { View } from "../components/Themed";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Box, Button, Text } from "native-base";
+import { Box, Button, Text, VStack } from "native-base";
 import { GuestStackScreenProps } from "../types";
 import { Logo } from "../components/icons/Logo";
 import { WelcomeScreenBackground } from "../components/icons/WelcomeScreenBackground";
@@ -11,16 +11,17 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
         <View style={styles.view}>
             <Box safeArea></Box>
             <Box style={styles.titleContainer}>
-                <Logo />
-                <Box marginTop="20px"></Box>
-                <Text style={styles.subtext}>Crypto asset management{"\n"}made simple</Text>
+                <VStack space="20px">
+                    <Logo />
+                    <Text style={styles.subtext}>Crypto asset management{"\n"}made simple</Text>
+                </VStack>
             </Box>
-            <Button onPress={() => navigation.navigate("SignUpScreen")}>Sign up</Button>
-            <Box marginTop="15px"></Box>
-            <Button variant="outline" onPress={() => navigation.navigate("SignInScreen")}>
-                Sign in
-            </Button>
-            <Box marginBottom="20px"></Box>
+            <VStack space="15px" marginBottom="20px">
+                <Button onPress={() => navigation.navigate("SignUpScreen")}>Sign up</Button>
+                <Button variant="outline" onPress={() => navigation.navigate("SignInScreen")}>
+                    Sign in
+                </Button>
+            </VStack>
             <WelcomeScreenBackground style={styles.background} />
         </View>
     );

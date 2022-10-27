@@ -44,11 +44,20 @@ export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = C
     RootStackScreenProps<keyof RootStackParamList>
 >;
 
+export type GuestStackParamList = {
+    WelcomeScreen: undefined;
+    SignUpScreen: undefined;
+    SignInScreen: undefined;
+};
+
+export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<
+    BottomTabScreenProps<GuestStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+>;
+
 export type RootTabParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList> | undefined;
     SettingsStack: NavigatorScreenParams<SettingsStackParamList> | undefined;
-    SignUpScreen: undefined;
-    SignInScreen: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
@@ -57,6 +66,7 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
 >;
 
 export type RootStackParamList = {
+    Guest: NavigatorScreenParams<GuestStackParamList> | undefined;
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
     NotFound: undefined;
 };

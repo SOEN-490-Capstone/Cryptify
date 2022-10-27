@@ -8,7 +8,13 @@ import useColorScheme from "../hooks/useColorScheme";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import { HomeStackParamList, RootStackParamList, RootTabParamList, SettingsStackParamList } from "../types";
+import {
+    GuestStackParamList,
+    HomeStackParamList,
+    RootStackParamList,
+    RootTabParamList,
+    SettingsStackParamList,
+} from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
@@ -23,6 +29,8 @@ import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { faPlusCustom } from "../components/icons/faPlusCustom";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -174,6 +182,44 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
     );
 }
 
+const GuestStack = createNativeStackNavigator<GuestStackParamList>();
+
+function GuestStackScreen() {
+    return (
+        <GuestStack.Navigator>
+            <GuestStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+            <GuestStack.Screen
+                name="SignUpScreen"
+                component={SignUpScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerBackVisible: false,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <GuestStack.Screen
+                name="SignInScreen"
+                component={SignInScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+        </GuestStack.Navigator>
+    );
+}
+
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
@@ -213,23 +259,6 @@ function BottomTabNavigator() {
                     tabBarIcon: tabBarIcon(faBarsCustom),
                 }}
             />
-            <BottomTab.Screen
-                name="SignUpScreen"
-                component={SignUpScreen}
-                options={{
-                    title: "Sign Up",
-                    tabBarIcon: tabBarIcon(faBarsCustom),
-                    tabBarTestID: "Sign Up Tab",
-                }}
-            />
-            <BottomTab.Screen
-                name="SignInScreen"
-                component={SignInScreen}
-                options={{
-                    title: "Sign In",
-                    tabBarIcon: tabBarIcon(faBarsCustom),
-                }}
-            />
         </BottomTab.Navigator>
     );
 }
@@ -237,10 +266,17 @@ function BottomTabNavigator() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+    const { token } = React.useContext(AuthContext);
+    const isSignedIn = !!token;
+
     return (
         <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <Stack.Navigator>
-                <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+                {isSignedIn ? (
+                    <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+                ) : (
+                    <Stack.Screen name="Guest" component={GuestStackScreen} options={{ headerShown: false }} />
+                )}
                 <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
             </Stack.Navigator>
         </NavigationContainer>

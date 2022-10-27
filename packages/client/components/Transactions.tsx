@@ -12,6 +12,8 @@ type Props = {
 };
 
 export function FormatTransaction({ transactions, wallet }: Props) {
+    const isIncommingTransaction = wallet == transactions.walletIn;
+
     function formatTransactionAddress(address: string): string {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
@@ -35,8 +37,8 @@ export function FormatTransaction({ transactions, wallet }: Props) {
         <Box style={styles.transactionItemWrapper}>
             <HStack>
                 <FontAwesomeIcon
-                    icon={wallet == transactions.walletIn ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
-                    style={wallet == transactions.walletIn ? styles.receiveIcon : styles.sendIcon}
+                    icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                    style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
                     size={30}
                 />
                 <VStack style={styles.verticalStack}>
@@ -44,7 +46,10 @@ export function FormatTransaction({ transactions, wallet }: Props) {
                         <Text style={styles.transactionsAddress}>
                             {formatTransactionAddress(transactions.transactionAddress)}
                         </Text>
-                        <Text style={styles.transactionAmount}>{transactions.amount}</Text>
+                        <Text style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}>
+                            {isIncommingTransaction ? "+" : "-"}
+                            {transactions.amount}
+                        </Text>
                     </HStack>
                     <HStack>
                         <Text style={styles.transactionDate}>{getFromattedDate(transactions.createdAt)}</Text>
@@ -77,7 +82,12 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: "600",
     },
-    transactionAmount: {
+    transactionAmountOut: {
+        marginLeft: "auto",
+        fontSize: 17,
+        fontWeight: "600",
+    },
+    transactionAmountIn: {
         marginLeft: "auto",
         fontSize: 17,
         color: "#16A34A",

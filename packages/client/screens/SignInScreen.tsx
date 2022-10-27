@@ -41,9 +41,7 @@ export default function SignInScreen() {
 
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Box safeArea>
-                <Text style={styles.title}>Welcome back</Text>
-            </Box>
+            <Text style={styles.title}>Welcome back</Text>
             <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>

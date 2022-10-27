@@ -58,8 +58,6 @@ export type GuestStackScreenProps<T extends keyof GuestStackParamList> = Composi
 export type RootTabParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList> | undefined;
     SettingsStack: NavigatorScreenParams<SettingsStackParamList> | undefined;
-    SignUpScreen: undefined;
-    SignInScreen: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

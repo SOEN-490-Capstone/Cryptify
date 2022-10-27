@@ -13,10 +13,12 @@ import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
+import {AuthContext} from "../components/contexts/AuthContext";
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
     const authGateway = new AuthGateway();
 
+    const { setToken } = React.useContext(AuthContext);
     const [showPassword, setShowPass] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 
@@ -31,12 +33,8 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
     async function onSubmitSignUp(values: SignUpRequest, formikHelpers: FormikHelpers<SignUpRequest>): Promise<void> {
         try {
             const token = await authGateway.signUp(values);
+            setToken(token.accessToken);
             StorageService.put(KEY_JWT, token);
-
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "HomeStack" }],
-            });
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("email", error.message);
@@ -45,9 +43,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpS
     }
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Box safeArea>
-                <Text style={styles.title}>Create an account</Text>
-            </Box>
+            <Text style={styles.title}>Create an account</Text>
             <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>

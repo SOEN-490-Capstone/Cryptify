@@ -201,6 +201,7 @@ function GuestStackScreen() {
                             onPress={() => {
                                 navigation.goBack();
                             }}
+                            testID="headerRightButton"
                         >
                             <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
                         </Pressable>

@@ -1,161 +1,162 @@
 import React from "react";
 import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRightCustom } from "./icons/faChevronRightCustom";
-import { faChevronDownCustom } from "./icons/faChevronDownCustom";
 import { StyleSheet } from "react-native";
-import Accordion from "react-native-collapsible/Accordion";
-import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { currenciesDisplayData, CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
-import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
+import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 
 type Props = {
-    transactions: Transaction[];
+    transactions: Transaction;
+    wallet: string;
 };
 
-export function TransactionAccordion({ transactions }: Props) {
+export function FormatTransaction({ transactions, wallet }: Props) {
+    transactions = {
+        "transactionAddress": "0x085321ee6b98b639bca20d00ac07fada7cabb7662ca7f031dc15e64a8db05980",
+        "walletIn": "0xddfabcdc4d8ffc6d5beaf154f18b778f892a0740",
+        "walletOut": "0x4827f065ee8d939e92d941fb1e48106b4ecd0ea4",
+        "amount": "0.00815709",
+        "createdAt": new Date("2021-11-08T14:10:05.000Z")
+    };
+    wallet = "0xddfabcdc4d8ffc6d5beaf154f18b778f892a0740";
 
-    const [activeSections, setActiveSections] = React.useState({
-        [CurrencyType.BITCOIN]: [],
-        [CurrencyType.ETHEREUM]: [],
-    });
-
-    function formatWalletAddress(address: string): string {
+    function formatTransactionAddress(address: string): string {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
 
-    function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
-        return (
-            <HStack
-                height="66px"
-                alignItems="center"
-                style={{
-                    ...styles.header,
-                    borderBottomRightRadius: isActive ? 0 : 10,
-                    borderBottomLeftRadius: isActive ? 0 : 10,
-                    borderBottomWidth: isActive ? 0 : 1,
-                }}
-            >
-                <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
-                <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
-                <FontAwesomeIcon
-                    icon={isActive ? faChevronDownCustom : faChevronRightCustom}
-                    style={styles.chevronIcon}
-                    size={16}
-                />
-            </HStack>
-        );
+    function getCurrencyType(): string{
+        return transactions.transactionAddress.substring(0,2) == "0x" ? "ETH" : "BTC";
     }
 
-    function renderContent(currency: CurrencyDisplayData) {
-        return (
-            <>
-                {transactions.map((transaction, i) => (
-                    <Box
-                        key={i}
-                        style={{
-                            ...styles.walletItemWrapper,
-                            borderBottomLeftRadius: i === transactions.length - 1 ? 10 : 0,
-                            borderBottomRightRadius: i === transactions.length - 1 ? 10 : 0,
-                            borderBottomWidth: i === length - 1 ? 1 : 0,
-                        }}
-                    >
-                        <HStack style={styles.walletItem} alignItems="center">
-                            <VStack>
-                                <Text style={styles.walletName}>{transaction.walletIn}</Text>
-                                <Box marginTop="2px"></Box>
-                                <Text style={styles.walletAddress}>{formatWalletAddress(transaction.walletOut)}</Text>
-                                <Box marginTop="2px"></Box>
-                                <Text style={styles.walletName}>{formatWalletAddress(transaction.createdAt.toString())}</Text>
-                            </VStack>
-                            <Text style={styles.walletBalance}>
-                                {transaction.amount} {currency.currencyTag}
-                            </Text>
-                        </HStack>
-                    </Box>
-                ))}
-            </>
-        );
+    function getFromattedDate(date: Date): String{
+        const day = date.getDay();
+        const year = date.getFullYear();
+        const hour = date.getHours() % 12;
+        const meridien = date.getHours() > 12 ? "PM" : "AM";
+        const min = date.getMinutes();
+        var month = "";
+        switch(date.getMonth()){
+            case 1:{
+                month="Jan";
+                break;
+            }       
+            case 2:{
+                month="Feb";
+                break;
+            }  
+            case 3:{
+                month="Mar";
+                break;
+            }       
+            case 4:{
+                month="Apr";
+                break;
+            }  
+            case 5:{
+                month="May";
+                break;
+            }       
+            case 6:{
+                month="Jun";
+                break;
+            }  
+            case 7:{
+                month="Jul";
+                break;
+            }       
+            case 8:{
+                month="Aug";
+                break;
+            } 
+            case 9:{
+                month="Sep";
+                break;
+            }       
+            case 10:{
+                month="Oct";
+                break;
+            }  
+            case 11:{
+                month="Nov";
+                break;
+            }       
+            case 12:{
+                month="Dec";
+                break;
+            } 
+        }
+        return "";
     }
 
     return (
-        <>
-            {currenciesDisplayData.map(
-                (currency, i) =>
-                transactions.length > 0 && (
-                        <Box key={i}>
-                            <Accordion
-                                sections={[currency]}
-                                activeSections={activeSections[currency.type]}
-                                renderHeader={renderHeader}
-                                renderContent={renderContent}
-                                onChange={(activeSections) =>
-                                    setActiveSections((curr) => ({
-                                        ...curr,
-                                        [currency.type]: activeSections,
-                                    }))
-                                }
-                                underlayColor="#E5E5E5"
-                            />
-                            <Box marginTop="15px"></Box>
-                        </Box>
-                    ),
-            )}
-        </>
+        <Box style={styles.transactionItemWrapper}>
+        <HStack>
+            <FontAwesomeIcon
+                    icon={wallet == transactions.walletIn ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                    style={wallet == transactions.walletIn ? styles.receiveIcon: styles.sendIcon}
+                    size={30}        
+            />
+            <VStack style={styles.verticalStack}>
+                <HStack>
+                        <Text style={styles.transactionsAddress}>
+                            {formatTransactionAddress(transactions.transactionAddress)}
+                        </Text>
+                        <Text style = {styles.transactionAmount}>
+                            {transactions.amount}
+                        </Text>
+                </HStack>
+                <HStack>
+                    <Text style={styles.transactionDate} >
+                        {transactions.createdAt.toUTCString()}
+                    </Text>
+                    <Text style = {styles.transactionCurrency}>
+                        {getCurrencyType()}
+                    </Text>
+                </HStack>
+            </VStack>
+        </HStack>
+        </Box>
     );
 }
 
 const styles = StyleSheet.create({
-    header: {
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-        borderWidth: 1,
-        borderColor: "#E5E5E5",
-        padding: 15,
+    sendIcon: {
+        color: "#404040",
+        marginLeft: 0,
+        marginRight: 10,
+        alignSelf: 'center'
     },
-    headerText: {
+    receiveIcon: {
+        color: "#16A34A",
+        marginLeft: 0,
+        marginRight: 10,
+        alignSelf: 'center'
+    },
+    verticalStack: {
+        flex: 1
+    },
+    transactionsAddress: {
+        paddingRight: "5px",
         fontSize: 17,
-        lineHeight: 23,
         fontWeight: "600",
-        marginLeft: 10,
     },
-    bitcoinIcon: {
-        color: "#F7931A",
-    },
-    ethereumIcon: {
-        color: "#3C3C3D",
-    },
-    chevronIcon: {
-        color: "#A3A3A3",
+    transactionAmount: {
         marginLeft: "auto",
-        marginRight: 5,
-    },
-    walletItemWrapper: {
-        borderWidth: 1,
-        borderColor: "#E5E5E5",
-        borderTopWidth: 0,
-        borderBottomWidth: 0,
-        paddingHorizontal: 15,
-    },
-    walletItem: {
-        paddingVertical: 15,
-        borderTopWidth: 1,
-        borderColor: "#E5E5E5",
-    },
-    walletName: {
         fontSize: 17,
-        lineHeight: 23,
+        color: "#16A34A",
+        fontWeight: "600",
     },
-    walletAddress: {
-        fontSize: 13,
-        lineHeight: 17,
-        color: "#A3A3A3",
+    transactionDate: {
+        fontSize: 15,
+        color: "#737373",
     },
-    walletBalance: {
-        fontSize: 17,
-        lineHeight: 23,
-        marginLeft: "auto",
+    transactionCurrency: {
+        fontSize: 15,
+        color: "#737373",
+        marginLeft: "auto"
+    },
+    transactionItemWrapper: {
+        paddingVertical: 12,
     },
 });

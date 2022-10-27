@@ -9,6 +9,7 @@ import extendTheme from "./theme/extendTheme";
 import StorageService from "./services/storage_service";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { AuthContext } from "./components/contexts/AuthContext";
+import { KEY_JWT } from "./constants/storage_keys";
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
@@ -26,7 +27,7 @@ export default function App() {
     // Runs only once on app startup and sets the token from local storage
     React.useEffect(() => {
         (async () => {
-            const token = await StorageService.get<JwtToken>("@jwt");
+            const token = await StorageService.get<JwtToken>(KEY_JWT);
             setToken(token?.accessToken || "");
         })();
     }, []);

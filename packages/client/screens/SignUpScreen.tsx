@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, HStack, Text, Box } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable, HStack, Text } from "native-base";
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
@@ -9,13 +9,12 @@ import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
 import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
-import { RootTabScreenProps } from "../types";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
-import {AuthContext} from "../components/contexts/AuthContext";
+import { AuthContext } from "../components/contexts/AuthContext";
 
-export default function SignUpScreen({ navigation }: RootTabScreenProps<"SignUpScreen">) {
+export default function SignUpScreen() {
     const authGateway = new AuthGateway();
 
     const { setToken } = React.useContext(AuthContext);

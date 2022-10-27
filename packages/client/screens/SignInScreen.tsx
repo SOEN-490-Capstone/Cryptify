@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, Text, Box } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable, Text } from "native-base";
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";

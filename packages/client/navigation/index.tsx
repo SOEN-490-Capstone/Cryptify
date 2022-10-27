@@ -184,34 +184,38 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
 
 const GuestStack = createNativeStackNavigator<GuestStackParamList>();
 
-function GuestStackScreen({ navigation}: { route: RouteProp<any, any>; navigation: any }) {
+function GuestStackScreen() {
     return (
         <GuestStack.Navigator>
             <GuestStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
-            <GuestStack.Screen name="SignUpScreen" component={SignUpScreen}
+            <GuestStack.Screen
+                name="SignUpScreen"
+                component={SignUpScreen}
                 options={({ navigation }) => ({
-                title: "",
-                headerTintColor: "#404040",
-                headerShadowVisible: false,
-                headerBackVisible: false,
-                headerRight: () => (
-                    <Pressable
-                        onPress={() => {
-                            navigation.goBack();
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
-                    </Pressable>
-                ),
-            })}
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerBackVisible: false,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
-            <GuestStack.Screen name="SignInScreen" component={SignInScreen}
-               options={{
-                   title: "",
-                   headerTintColor: "#404040",
-                   headerShadowVisible: false,
-               }}
- />
+            <GuestStack.Screen
+                name="SignInScreen"
+                component={SignInScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
         </GuestStack.Navigator>
     );
 }

@@ -4,13 +4,11 @@ import { Text, Center, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { WalletsListAccordion } from "../components/WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import StorageService from "../services/storage_service";
-import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletsGateway } from "../gateways/wallets_gateway";
 import { UsersGateway } from "../gateways/users_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
-import {AuthContext} from "../components/contexts/AuthContext";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 export default function ViewWalletsScreen() {
     const usersGateway = new UsersGateway();

@@ -1,14 +1,14 @@
 import "@env";
-import {StatusBar} from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import {NativeBaseProvider} from "native-base";
+import { NativeBaseProvider } from "native-base";
 import React from "react";
 import extendTheme from "./theme/extendTheme";
 import StorageService from "./services/storage_service";
-import {JwtToken} from "@cryptify/common/src/domain/jwt_token";
-import {AuthContext } from "./components/contexts/AuthContext";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
+import { AuthContext } from "./components/contexts/AuthContext";
 
 export default function App() {
     const isLoadingComplete = useCachedResources();

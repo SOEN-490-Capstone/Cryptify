@@ -13,7 +13,7 @@ import {
     HomeStackParamList,
     RootStackParamList,
     RootTabParamList,
-    SettingsStackParamList
+    SettingsStackParamList,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
@@ -30,7 +30,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { faPlusCustom } from "../components/icons/faPlusCustom";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import {AuthContext} from "../components/contexts/AuthContext";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -184,24 +184,12 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
 
 const GuestStack = createNativeStackNavigator<GuestStackParamList>();
 
-function GuestStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
+function GuestStackScreen() {
     return (
         <GuestStack.Navigator>
-            <GuestStack.Screen
-                name="WelcomeScreen"
-                component={WelcomeScreen}
-                options={{ headerShown: false }}
-            />
-            <GuestStack.Screen
-                name="SignUpScreen"
-                component={SignUpScreen}
-                options={{ headerShown: false }}
-            />
-            <GuestStack.Screen
-                name="SignInScreen"
-                component={SignInScreen}
-                options={{ headerShown: false }}
-            />
+            <GuestStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+            <GuestStack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: false }} />
+            <GuestStack.Screen name="SignInScreen" component={SignInScreen} options={{ headerShown: false }} />
         </GuestStack.Navigator>
     );
 }
@@ -275,11 +263,11 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     return (
         <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <Stack.Navigator>
-                {isSignedIn ?
+                {isSignedIn ? (
                     <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-                :
+                ) : (
                     <Stack.Screen name="Guest" component={GuestStackScreen} options={{ headerShown: false }} />
-                }
+                )}
                 <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
             </Stack.Navigator>
         </NavigationContainer>

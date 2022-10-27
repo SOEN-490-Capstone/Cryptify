@@ -1,4 +1,3 @@
-import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";

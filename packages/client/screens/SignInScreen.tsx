@@ -8,13 +8,12 @@ import { faEyeCustom } from "../components/icons/faEyeCustom";
 import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
 import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
-import { RootTabScreenProps } from "../types";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
 import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
-import {AuthContext} from "../components/contexts/AuthContext";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 export default function SignInScreen() {
     const authGateway = new AuthGateway();

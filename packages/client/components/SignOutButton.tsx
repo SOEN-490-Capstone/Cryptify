@@ -3,7 +3,7 @@ import { Button } from "native-base";
 import { StyleSheet } from "react-native";
 import StorageService from "../services/storage_service";
 import { KEY_JWT } from "../constants/storage_keys";
-import {AuthContext} from "./contexts/AuthContext";
+import { AuthContext } from "./contexts/AuthContext";
 
 export default function SignOutButton() {
     const { setToken } = React.useContext(AuthContext);

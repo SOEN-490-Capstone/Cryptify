@@ -8,10 +8,8 @@ import { Button, FormControl, Input, VStack } from "native-base";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { createWalletSchema } from "@cryptify/common/src/validations/create_wallet_schema";
 import { FormikHelpers } from "formik/dist/types";
-import StorageService from "../../../services/storage_service";
 import { currenciesDisplayData } from "../../../constants/CurrenciesDisplayData";
 import { WalletsGateway } from "../../../gateways/wallets_gateway";
-import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { UsersGateway } from "../../../gateways/users_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
@@ -19,7 +17,7 @@ import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
-import {AuthContext} from "../../../components/contexts/AuthContext";
+import { AuthContext } from "../../../components/contexts/AuthContext";
 
 type Props = {
     currencyType: CurrencyType;

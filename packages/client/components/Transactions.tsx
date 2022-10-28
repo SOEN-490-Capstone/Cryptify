@@ -46,14 +46,14 @@ export function FormatTransaction({ transactions, wallet }: Props) {
                         <Text style={styles.transactionsAddress}>
                             {formatTransactionAddress(transactions.transactionAddress)}
                         </Text>
-                        <Text style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}>
+                        <Text color={isIncommingTransaction? "success.600" : "text.600"} style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}>
                             {isIncommingTransaction ? "+" : "-"}
                             {transactions.amount}
                         </Text>
                     </HStack>
                     <HStack>
-                        <Text style={styles.transactionDate}>{getFromattedDate(transactions.createdAt)}</Text>
-                        <Text style={styles.transactionCurrency}>{getCurrencyType()}</Text>
+                        <Text color="text.500" style={styles.transactionDate}>{getFromattedDate(transactions.createdAt)}</Text>
+                        <Text color="text.500" style={styles.transactionCurrency}>{getCurrencyType()}</Text>
                     </HStack>
                 </VStack>
             </HStack>
@@ -63,12 +63,14 @@ export function FormatTransaction({ transactions, wallet }: Props) {
 
 const styles = StyleSheet.create({
     sendIcon: {
+        //text.700
         color: "#404040",
         marginLeft: 0,
         marginRight: 10,
         alignSelf: "center",
     },
     receiveIcon: {
+        //success.600
         color: "#16A34A",
         marginLeft: 0,
         marginRight: 10,
@@ -90,16 +92,13 @@ const styles = StyleSheet.create({
     transactionAmountIn: {
         marginLeft: "auto",
         fontSize: 17,
-        color: "#16A34A",
         fontWeight: "600",
     },
     transactionDate: {
         fontSize: 15,
-        color: "#737373",
     },
     transactionCurrency: {
         fontSize: 15,
-        color: "#737373",
         marginLeft: "auto",
     },
     transactionItemWrapper: {

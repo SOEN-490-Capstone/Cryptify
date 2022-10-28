@@ -39,9 +39,6 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         )
     }
 
-    //separate transactions by month and year
-    //add a separator alongside with a block of transactions
-
     if(displaySeparation){
         return(
             <>
@@ -58,10 +55,9 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
             </>
         )
     }
-
     return (
        <>
-       {renderTransactions(transactions)}
+        {renderTransactions(transactions)}
        </>
     );
 }

@@ -51,7 +51,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                     <CurrencyAmount
                         currency={currency}
                         amount={amount}
-                        totalStyles={styles.walletTotal}
+                        amountStyles={styles.walletTotal}
                         currencyCodeStyles={styles.walletTotalCurrencyCode}
                     />
                 ) : (
@@ -88,7 +88,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                             <CurrencyAmount
                                 currency={currency}
                                 amount={wallet.balance}
-                                totalStyles={styles.walletBalance}
+                                amountStyles={styles.walletBalance}
                                 currencyCodeStyles={styles.walletBalance}
                             />
                         </HStack>

@@ -8,18 +8,18 @@ import Web3 from "web3";
 type Props = {
     currency: CurrencyDisplayData;
     amount: string;
-    totalStyles: StyleProp<TextStyle>;
+    amountStyles: StyleProp<TextStyle>;
     currencyCodeStyles: StyleProp<TextStyle>;
 };
 
-export function CurrencyAmount({ currency, amount, totalStyles, currencyCodeStyles }: Props) {
-    const etherAmount = currency.type == CurrencyType.ETHEREUM ? Web3.utils.fromWei(amount, "ether") : amount;
+export function CurrencyAmount({ currency, amount, amountStyles, currencyCodeStyles }: Props) {
+    const formattedAmount = currency.type == CurrencyType.ETHEREUM ? Web3.utils.fromWei(amount, "ether") : amount;
 
     return (
         <>
             <Box flex={1}>
-                <Text isTruncated style={totalStyles}>
-                    {etherAmount}
+                <Text isTruncated style={amountStyles}>
+                    {formattedAmount}
                 </Text>
             </Box>
             <Text style={currencyCodeStyles}> {currency.currencyTag}</Text>

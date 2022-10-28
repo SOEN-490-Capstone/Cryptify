@@ -2,24 +2,24 @@ import React from "react";
 import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { Transaction as TransactionEntity } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 
 type Props = {
-    transactions: Transaction;
-    wallet: string;
+    transaction: TransactionEntity;
+    walletAddress: string;
 };
 
-export function FormatTransaction({ transactions, wallet }: Props) {
-    const isIncommingTransaction = wallet == transactions.walletIn;
+export function Transaction({ transaction, walletAddress }: Props) {
+    const isIncommingTransaction = walletAddress == transaction.walletIn;
 
     function formatTransactionAddress(address: string): string {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
 
     function getCurrencyType(): string {
-        return transactions.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
+        return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
     }
 
     function getFromattedDate(date: Date): string {
@@ -44,16 +44,23 @@ export function FormatTransaction({ transactions, wallet }: Props) {
                 <VStack style={styles.verticalStack}>
                     <HStack>
                         <Text style={styles.transactionsAddress}>
-                            {formatTransactionAddress(transactions.transactionAddress)}
+                            {formatTransactionAddress(transaction.transactionAddress)}
                         </Text>
-                        <Text color={isIncommingTransaction? "success.600" : "text.600"} style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}>
+                        <Text
+                            color={isIncommingTransaction ? "success.600" : "text.600"}
+                            style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
+                        >
                             {isIncommingTransaction ? "+" : "-"}
-                            {transactions.amount}
+                            {transaction.amount}
                         </Text>
                     </HStack>
                     <HStack>
-                        <Text color="text.500" style={styles.transactionDate}>{getFromattedDate(transactions.createdAt)}</Text>
-                        <Text color="text.500" style={styles.transactionCurrency}>{getCurrencyType()}</Text>
+                        <Text color="text.500" style={styles.transactionDate}>
+                            {getFromattedDate(transaction.createdAt)}
+                        </Text>
+                        <Text color="text.500" style={styles.transactionCurrency}>
+                            {getCurrencyType()}
+                        </Text>
                     </HStack>
                 </VStack>
             </HStack>
@@ -80,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     transactionsAddress: {
-        paddingRight: "5px",
+        paddingRight: "5",
         fontSize: 17,
         fontWeight: "600",
     },

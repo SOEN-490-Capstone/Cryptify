@@ -22,6 +22,10 @@ export function Transaction({ transaction, walletAddress }: Props) {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
     }
 
+    function formatAmount(amount: string): string {
+        return amount.length>15 ? amount.substring(0,15)+"...": amount;
+    }
+
     function getFromattedDate(date: Date): string {
         const day = date.getDay();
         const year = date.getFullYear();
@@ -51,7 +55,7 @@ export function Transaction({ transaction, walletAddress }: Props) {
                             style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
                         >
                             {isIncommingTransaction ? "+" : "-"}
-                            {transaction.amount}
+                            {formatAmount(transaction.amount)}
                         </Text>
                     </HStack>
                     <HStack>

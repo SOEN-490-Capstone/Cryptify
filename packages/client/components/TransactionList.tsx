@@ -6,62 +6,73 @@ import { Transaction as TransactionEntity } from "@cryptify/common/src/domain/en
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { Transaction } from "./Transaction";
+import { groupBy } from "lodash";
 
 type Props = {
     transactions: TransactionEntity[];
     walletAddress: string;
+    displaySeparation: boolean; 
 };
 
-export function TransactionList({ transactions, walletAddress }: Props) {
+export function TransactionList({ transactions, walletAddress, displaySeparation }: Props) {
+    var savedDate = new Date();
+    function renderSeparation(date: Date) {
+        if(savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()){
+            savedDate = date;
+            return;
+        }
+        savedDate = date;
+        return(
+        <Box backgroundColor="text.100">
+            <Text color="text.500" style={styles.dateSeparator}>
+                {date.toLocaleString('en-US', {month: 'long'})+" "+date.getFullYear()}
+            </Text>
+        </Box>
+        ) 
+    }
+
+    function renderTransactions(transactions: TransactionEntity[]){
+        return(
+            <Box backgroundColor="white" style={styles.transactionWrapper}>
+                {transactions.map((transaction)=><Transaction transaction={transaction} walletAddress={walletAddress}/>)}
+            </Box>
+        )
+    }
+
+    //separate transactions by month and year
+    //add a separator alongside with a block of transactions
+
+    if(displaySeparation){
+        return(
+            <>
+            {transactions.map((transaction)=>
+            (
+            <>
+                {renderSeparation(transaction.createdAt)}                
+                <Box backgroundColor="white" style={styles.transactionWrapper}>
+                    <Transaction transaction={transaction} walletAddress={walletAddress}/>
+                </Box>
+            </>
+            )      
+            )}
+            </>
+        )
+    }
 
     return (
        <>
-       {/* {transactions.map((transaction)=><Transaction transaction={transaction} walletAddress={walletAddress}/>)} */}
+       {renderTransactions(transactions)}
        </>
     );
 }
 
 const styles = StyleSheet.create({
-    sendIcon: {
-        //text.700
-        color: "#404040",
-        marginLeft: 0,
-        marginRight: 10,
-        alignSelf: "center",
-    },
-    receiveIcon: {
-        //success.600
-        color: "#16A34A",
-        marginLeft: 0,
-        marginRight: 10,
-        alignSelf: "center",
-    },
-    verticalStack: {
-        flex: 1,
-    },
-    transactionsAddress: {
-        paddingRight: "5",
+    dateSeparator: {
         fontSize: 17,
         fontWeight: "600",
+        marginLeft: 15,
     },
-    transactionAmountOut: {
-        marginLeft: "auto",
-        fontSize: 17,
-        fontWeight: "600",
+    transactionWrapper:{
+        paddingLeft: 15,
     },
-    transactionAmountIn: {
-        marginLeft: "auto",
-        fontSize: 17,
-        fontWeight: "600",
-    },
-    transactionDate: {
-        fontSize: 15,
-    },
-    transactionCurrency: {
-        fontSize: 15,
-        marginLeft: "auto",
-    },
-    transactionItemWrapper: {
-        paddingVertical: 12,
-    },
-});
+ });

@@ -57,8 +57,8 @@ export class TransactionsService {
     }
 
     async findAll(userId: number): Promise<Transaction[]> {
-        const userWallets = await this.walletsService.findAll(userId);
-        const addresses = userWallets.map((t) => t.address.toLowerCase());
+        const wallets = await this.walletsService.findAll(userId);
+        const addresses = wallets.map((wallet) => wallet.address.toLowerCase());
         return this.transactionsRepository.find({
             where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
         });

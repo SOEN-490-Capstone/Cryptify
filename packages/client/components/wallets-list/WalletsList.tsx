@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, Center, ScrollView, Box} from "native-base";
+import { Text, Center, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { WalletsListAccordion } from "./WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";

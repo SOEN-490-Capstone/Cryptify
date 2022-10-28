@@ -1,7 +1,6 @@
 import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResult } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
-import Web3 from "web3";
 
 @Injectable()
 export class AlchemyNodeService {

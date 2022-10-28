@@ -1,6 +1,5 @@
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import Web3 from "web3";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
 
 export function getWalletsTotal(wallets: WalletWithBalance[]): string {
     // After summing all the wallets together as a single BigNumber convert

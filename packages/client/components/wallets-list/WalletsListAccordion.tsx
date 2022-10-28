@@ -1,16 +1,16 @@
 import React from "react";
-import {Box, HStack, Text, VStack} from "native-base";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronRightCustom} from "../icons/faChevronRightCustom";
-import {faChevronDownCustom} from "../icons/faChevronDownCustom";
-import {StyleSheet} from "react-native";
+import { Box, HStack, Text, VStack } from "native-base";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faChevronRightCustom } from "../icons/faChevronRightCustom";
+import { faChevronDownCustom } from "../icons/faChevronDownCustom";
+import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {currenciesDisplayData, CurrencyDisplayData} from "../../constants/CurrenciesDisplayData";
-import {titleCase} from "@cryptify/common/src/utils/string_utils";
-import { getWalletsTotal} from "../../services/currency_service";
-import {CurrencyAmount} from "../CurrencyAmount";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { getWalletsTotal } from "../../services/currency_service";
+import { CurrencyAmount } from "../CurrencyAmount";
 
 type Props = {
     wallets: WalletWithBalance[];
@@ -47,7 +47,16 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
             >
                 <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                 <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
-                {showCurrencyTotals ? <CurrencyAmount currency={currency} amount={amount} totalStyles={styles.walletTotal} currencyCodeStyles={styles.walletTotalCurrencyCode}/> : <Box flex={1}></Box>}
+                {showCurrencyTotals ? (
+                    <CurrencyAmount
+                        currency={currency}
+                        amount={amount}
+                        totalStyles={styles.walletTotal}
+                        currencyCodeStyles={styles.walletTotalCurrencyCode}
+                    />
+                ) : (
+                    <Box flex={1}></Box>
+                )}
                 <FontAwesomeIcon
                     icon={isActive ? faChevronDownCustom : faChevronRightCustom}
                     style={styles.chevronIcon}
@@ -76,7 +85,12 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                                 <Box marginTop="2px"></Box>
                                 <Text style={styles.walletAddress}>{formatWalletAddress(wallet.address)}</Text>
                             </VStack>
-                            <CurrencyAmount currency={currency} amount={wallet.balance} totalStyles={styles.walletBalance} currencyCodeStyles={styles.walletBalance}/>
+                            <CurrencyAmount
+                                currency={currency}
+                                amount={wallet.balance}
+                                totalStyles={styles.walletBalance}
+                                currencyCodeStyles={styles.walletBalance}
+                            />
                         </HStack>
                     </Box>
                 ))}

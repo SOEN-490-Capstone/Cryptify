@@ -9,12 +9,14 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import {getWalletsTotal} from "../../services/currency_service";
 
 type Props = {
     wallets: WalletWithBalance[];
+    showCurrencyTotals: boolean;
 };
 
-export function WalletsListAccordion({ wallets }: Props) {
+export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
     const walletsByType = {
         [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
@@ -43,6 +45,8 @@ export function WalletsListAccordion({ wallets }: Props) {
             >
                 <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                 <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
+                <Box flex={1}></Box>
+                {showCurrencyTotals && <Text style={styles.walletTotal}>{getWalletsTotal(wallets)}</Text>}
                 <FontAwesomeIcon
                     icon={isActive ? faChevronDownCustom : faChevronRightCustom}
                     style={styles.chevronIcon}
@@ -122,6 +126,12 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         marginLeft: 10,
     },
+    walletTotal: {
+        fontSize: 17,
+        lineHeight: 23,
+        fontWeight: "600",
+        marginRight: 5,
+    },
     bitcoinIcon: {
         color: "#F7931A",
     },
@@ -130,8 +140,6 @@ const styles = StyleSheet.create({
     },
     chevronIcon: {
         color: "#A3A3A3",
-        marginLeft: "auto",
-        marginRight: 5,
     },
     walletItemWrapper: {
         borderWidth: 1,

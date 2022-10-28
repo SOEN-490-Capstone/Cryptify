@@ -19,9 +19,6 @@ export default function WalletsList(props: Props) {
 
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
 
-    // TODO
-    console.log(props.showCurrencyTotals);
-
     React.useEffect(() => {
         (async () => {
             const wallets = await walletsGateway.findAllWallets({ id: user.id }, token);
@@ -31,7 +28,7 @@ export default function WalletsList(props: Props) {
 
     return wallets ? (
         <ScrollView style={styles.scrollView}>
-            <WalletsListAccordion wallets={wallets} />
+            <WalletsListAccordion wallets={wallets} showCurrencyTotals={props.showCurrencyTotals} />
         </ScrollView>
     ) : (
         <Center alignItems="center" marginY="auto">

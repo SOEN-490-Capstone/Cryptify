@@ -23,7 +23,7 @@ export function Transaction({ transaction, walletAddress }: Props) {
     }
 
     function formatAmount(amount: string): string {
-        return amount.length>15 ? amount.substring(0,15)+"...": amount;
+        return amount.length > 15 ? amount.substring(0, 15) + "..." : amount;
     }
 
     function getFromattedDate(date: Date): string {

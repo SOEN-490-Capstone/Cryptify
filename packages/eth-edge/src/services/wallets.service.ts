@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import {
@@ -21,6 +21,7 @@ export class WalletsService {
         @InjectRepository(Wallet)
         private walletRepository: Repository<Wallet>,
         private alchemyNodeService: AlchemyNodeService,
+        @Inject(forwardRef(() => TransactionsService))
         private transactionsService: TransactionsService,
         private alchemyNodeGateway: AlchemyNodeGateway,
     ) {}

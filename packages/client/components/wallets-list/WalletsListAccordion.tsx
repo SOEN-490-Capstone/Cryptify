@@ -44,6 +44,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                     borderBottomLeftRadius: isActive ? 0 : 10,
                     borderBottomWidth: isActive ? 0 : 1,
                 }}
+                testID={`walletsList${currency.type}`}
             >
                 <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                 <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
@@ -78,6 +79,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                             borderBottomRightRadius: i === walletsByType[currency.type].length - 1 ? 10 : 0,
                             borderBottomWidth: i === walletsByType[currency.type].length - 1 ? 1 : 0,
                         }}
+                        testID={`walletsListItem${currency.type}`}
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
                             <VStack space="2px">

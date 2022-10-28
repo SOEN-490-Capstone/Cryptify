@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
             <VStack space="15px" flex={1}>
                 <HStack style={styles.walletsListTitleContainer} justifyContent="space-between" alignItems="center">
                     <Text style={styles.walletsListTitle}>Wallets</Text>
-                    <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
+                    <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")} testID="addWalletButton">
                         <FontAwesomeIcon icon={faCirclePlusSolidCustom} style={styles.addWalletIcon} size={22} />
                     </Pressable>
                 </HStack>

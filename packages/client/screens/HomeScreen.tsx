@@ -10,7 +10,7 @@ import { faCirclePlusSolidCustom } from "../components/icons/faCirclePlusSolidCu
 export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScreen">) {
     return (
         <View style={styles.view}>
-            <VStack space="15px">
+            <VStack space="15px" flex={1}>
                 <HStack style={styles.walletsListTitleContainer} justifyContent="space-between" alignItems="center">
                     <Text style={styles.walletsListTitle}>Wallets</Text>
                     <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>

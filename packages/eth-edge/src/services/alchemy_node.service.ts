@@ -18,15 +18,15 @@ export class AlchemyNodeService {
         try {
             const balance = await this.alchemy.core.getBalance(address);
             // Serializing the BigNumber as a string so we can easily transport it
-            // over HTTP, this shouldn't cause any issues because we won't be doing
-            // any calculations with the balance, we will also convert the WEI value
-            // to ETHER since that is standard for EthEdge
-            return Web3.utils.fromWei(balance.toString(), "ether");
+            // over HTTP, we will leave the balance as WEI for now to allow BigNumber
+            // conversions and calculations, it will only be converted to ETHER when
+            // the value is ready to be displayed
+            return balance.toString();
         } catch (error) {
             // If there is any error, mainly if the wallet is not found return a balance of 0
             // this is done because we can't verify that the wallet doesn't exist just because
             // it doesn't have any previous transactions
-            return "0.000000000000000000";
+            return "0";
         }
     }
 

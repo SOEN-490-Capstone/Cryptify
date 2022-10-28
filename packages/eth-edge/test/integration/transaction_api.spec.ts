@@ -4,7 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { clearDB } from "@cryptify/common/src/db/clear_db";
 import { addressActivityEventFixture } from "@cryptify/eth-edge/test/fixtures/address_activity_event_fixture";
-import {seedDB} from "@cryptify/common/src/db/seed_db";
+import { seedDB } from "@cryptify/common/src/db/seed_db";
 
 describe("Transactions", () => {
     let app: INestApplication;

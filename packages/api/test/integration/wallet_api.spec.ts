@@ -3,8 +3,8 @@ import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { clearDB } from "@cryptify/common/src/db/clear_db";
-import {seedDB} from "@cryptify/common/src/db/seed_db";
-import {token} from "@cryptify/api/test/fixtures/token_fixtures";
+import { seedDB } from "@cryptify/common/src/db/seed_db";
+import { token } from "@cryptify/api/test/fixtures/token_fixtures";
 
 describe("Wallets", () => {
     let app: INestApplication;

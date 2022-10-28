@@ -4,7 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { clearDB } from "@cryptify/common/src/db/clear_db";
 import { ERROR_EMAIL_IN_USE, ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
-import {seedDB} from "@cryptify/common/src/db/seed_db";
+import { seedDB } from "@cryptify/common/src/db/seed_db";
 
 describe("Authentication", () => {
     let app: INestApplication;

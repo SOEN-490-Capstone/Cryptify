@@ -119,9 +119,9 @@ Follow the steps to setup your device specific detox [config](https://docs.expo.
     ```sh
     $ docker-compose up -d api
     ```
-2. Start the test db docker container
+2. Clear and seed the database
     ```sh
-    $ docker-compose up -d test-db
+    $ docker-compose exec api yarn workspace @cryptify/common db:prep
     ```
 3. Build your android apk
     ```sh

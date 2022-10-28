@@ -80,9 +80,8 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                         }}
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
-                            <VStack>
+                            <VStack space="2px">
                                 <Text style={styles.walletName}>{wallet.name}</Text>
-                                <Box marginTop="2px"></Box>
                                 <Text style={styles.walletAddress}>{formatWalletAddress(wallet.address)}</Text>
                             </VStack>
                             <CurrencyAmount

@@ -1,9 +1,8 @@
 import { Box, Text } from "native-base";
 import { CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import React from "react";
 import { StyleProp, TextStyle } from "react-native";
-import Web3 from "web3";
+import { getFormattedAmount } from "../services/currency_service";
 
 type Props = {
     currency: CurrencyDisplayData;
@@ -13,7 +12,7 @@ type Props = {
 };
 
 export function CurrencyAmount({ currency, amount, amountStyles, currencyCodeStyles }: Props) {
-    const formattedAmount = currency.type == CurrencyType.ETHEREUM ? Web3.utils.fromWei(amount, "ether") : amount;
+    const formattedAmount = getFormattedAmount(amount, currency.type);
 
     return (
         <>

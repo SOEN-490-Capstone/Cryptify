@@ -14,11 +14,13 @@ import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
 import { AuthContext } from "../components/contexts/AuthContext";
+import { UsersGateway } from "../gateways/users_gateway";
 
 export default function SignInScreen() {
     const authGateway = new AuthGateway();
+    const usersGateway = new UsersGateway();
 
-    const { setToken } = React.useContext(AuthContext);
+    const { setToken, setUser } = React.useContext(AuthContext);
     const [showPassword, setShowPass] = React.useState(false);
 
     const initialValues = {
@@ -29,6 +31,10 @@ export default function SignInScreen() {
     async function onSubmitSignIn(values: SignInRequest, formikHelpers: FormikHelpers<SignInRequest>): Promise<void> {
         try {
             const token = await authGateway.signIn(values);
+
+            const user = await usersGateway.whoami(token.accessToken);
+            setUser(user);
+
             setToken(token.accessToken);
             StorageService.put(KEY_JWT, token);
         } catch (error) {

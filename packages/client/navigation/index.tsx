@@ -31,6 +31,7 @@ import { RouteProp } from "@react-navigation/core/src/types";
 import { faPlusCustom } from "../components/icons/faPlusCustom";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
+import HomeHeader from "../components/HomeHeader";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -54,7 +55,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    title: "Home",
+                    headerTitle: () => <HomeHeader />,
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 28,

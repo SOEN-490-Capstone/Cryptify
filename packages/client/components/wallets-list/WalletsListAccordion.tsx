@@ -1,20 +1,23 @@
 import React from "react";
-import { Text, HStack, Box, VStack } from "native-base";
+import { Box, HStack, Text, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRightCustom } from "./icons/faChevronRightCustom";
-import { faChevronDownCustom } from "./icons/faChevronDownCustom";
+import { faChevronRightCustom } from "../icons/faChevronRightCustom";
+import { faChevronDownCustom } from "../icons/faChevronDownCustom";
 import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { currenciesDisplayData, CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
+import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { getWalletsTotal } from "../../services/currency_service";
+import { CurrencyAmount } from "../CurrencyAmount";
 
 type Props = {
     wallets: WalletWithBalance[];
+    showCurrencyTotals: boolean;
 };
 
-export function WalletsListAccordion({ wallets }: Props) {
+export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
     const walletsByType = {
         [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
@@ -30,6 +33,7 @@ export function WalletsListAccordion({ wallets }: Props) {
     }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
+        const amount = getWalletsTotal(wallets);
         return (
             <HStack
                 height="66px"
@@ -43,6 +47,16 @@ export function WalletsListAccordion({ wallets }: Props) {
             >
                 <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                 <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
+                {showCurrencyTotals ? (
+                    <CurrencyAmount
+                        currency={currency}
+                        amount={amount}
+                        amountStyles={styles.walletTotal}
+                        currencyCodeStyles={styles.walletTotalCurrencyCode}
+                    />
+                ) : (
+                    <Box flex={1}></Box>
+                )}
                 <FontAwesomeIcon
                     icon={isActive ? faChevronDownCustom : faChevronRightCustom}
                     style={styles.chevronIcon}
@@ -65,15 +79,17 @@ export function WalletsListAccordion({ wallets }: Props) {
                             borderBottomWidth: i === walletsByType[currency.type].length - 1 ? 1 : 0,
                         }}
                     >
-                        <HStack style={styles.walletItem} alignItems="center">
-                            <VStack>
+                        <HStack style={styles.walletItem} alignItems="center" space="5px">
+                            <VStack space="2px">
                                 <Text style={styles.walletName}>{wallet.name}</Text>
-                                <Box marginTop="2px"></Box>
                                 <Text style={styles.walletAddress}>{formatWalletAddress(wallet.address)}</Text>
                             </VStack>
-                            <Text style={styles.walletBalance}>
-                                {wallet.balance} {currency.currencyTag}
-                            </Text>
+                            <CurrencyAmount
+                                currency={currency}
+                                amount={wallet.balance}
+                                amountStyles={styles.walletBalance}
+                                currencyCodeStyles={styles.walletBalance}
+                            />
                         </HStack>
                     </Box>
                 ))}
@@ -120,7 +136,18 @@ const styles = StyleSheet.create({
         fontSize: 17,
         lineHeight: 23,
         fontWeight: "600",
-        marginLeft: 10,
+        marginHorizontal: 10,
+    },
+    walletTotal: {
+        fontSize: 17,
+        lineHeight: 23,
+        fontWeight: "600",
+    },
+    walletTotalCurrencyCode: {
+        fontSize: 17,
+        lineHeight: 23,
+        fontWeight: "600",
+        marginRight: 5,
     },
     bitcoinIcon: {
         color: "#F7931A",
@@ -130,8 +157,6 @@ const styles = StyleSheet.create({
     },
     chevronIcon: {
         color: "#A3A3A3",
-        marginLeft: "auto",
-        marginRight: 5,
     },
     walletItemWrapper: {
         borderWidth: 1,

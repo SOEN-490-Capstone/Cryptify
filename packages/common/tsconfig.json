@@ -4,6 +4,7 @@
         "experimentalDecorators": true,
         "lib": ["ESNext"],
         "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
         "skipLibCheck": true,
         "outDir": "./dist"
     },

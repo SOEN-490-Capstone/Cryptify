@@ -21,6 +21,6 @@ describe("Sign Up CRYP-21", () => {
         await element(by.id("confirmPassword")).typeText("Test123!");
         await element(by.text("Sign up")).tap();
 
-        await expect(element(by.id("token"))).toBeVisible();
+        await expect(element(by.text("Hello, John"))).toBeVisible();
     });
 });

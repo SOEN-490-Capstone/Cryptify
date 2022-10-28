@@ -24,7 +24,7 @@ import { faBarsCustom } from "../components/icons/faBarsCustom";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
-import { Pressable } from "native-base";
+import { Center, Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
@@ -33,6 +33,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
 import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
+import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -42,7 +43,7 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen"];
+        const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen", "walletDetailsScreen"];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {

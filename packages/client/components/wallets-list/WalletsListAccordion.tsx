@@ -3,7 +3,7 @@ import { Box, HStack, Text, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../icons/faChevronRightCustom";
 import { faChevronDownCustom } from "../icons/faChevronDownCustom";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
@@ -11,13 +11,16 @@ import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/Curr
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
+import { useNavigation } from "@react-navigation/native";
+import { HomeStackParamList, HomeStackScreenProps } from "../../types";
 
 type Props = {
     wallets: WalletWithBalance[];
     showCurrencyTotals: boolean;
+    navigation: HomeStackScreenProps<"ViewWalletsScreen">
 };
 
-export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
+export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }: Props) {
     const walletsByType = {
         [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
@@ -31,6 +34,10 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
     function formatWalletAddress(address: string): string {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
+
+    function formatWalletBalance(balance: string): string {
+        return balance.substring(0, 16);
+    };
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
         const amount = getWalletsTotal(wallets);
@@ -71,7 +78,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
         return (
             <>
                 {walletsByType[currency.type].map((wallet, i) => (
-                    <Box
+                    <Pressable
                         key={i}
                         style={{
                             ...styles.walletItemWrapper,
@@ -80,6 +87,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                             borderBottomWidth: i === walletsByType[currency.type].length - 1 ? 1 : 0,
                         }}
                         testID={`walletsListItem${currency.type}`}
+                        onPress={() => {navigation.navigation.navigate("WalletDetailsScreen", {address: formatWalletAddress(wallet.address), name: wallet.name, currencyType: currency.type, balance: wallet.balance})}}
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
                             <VStack space="2px">
@@ -93,7 +101,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals }: Props) {
                                 currencyCodeStyles={styles.walletBalance}
                             />
                         </HStack>
-                    </Box>
+                    </Pressable>
                 ))}
             </>
         );

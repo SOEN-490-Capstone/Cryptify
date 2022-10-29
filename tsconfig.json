@@ -1,8 +1,11 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@cryptify/*": ["packages/*"]
-        }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@cryptify/*": [
+        "packages/*"
+      ]
     }
+  },
+  "extends": "expo/tsconfig.base"
 }

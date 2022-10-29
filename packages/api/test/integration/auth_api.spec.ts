@@ -28,7 +28,7 @@ describe("Authentication", () => {
             const res = await agent(app.getHttpServer()).post("/auth/signup").send({
                 firstName: "fname",
                 lastName: "lname",
-                email: "test@test.com",
+                email: "jane@test.com",
                 password: "Test123!",
                 confirmPassword: "Test123!",
             });

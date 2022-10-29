@@ -9,7 +9,7 @@
         "start:prod": "node dist/api/src/main.js",
         "test:unit": "NODE_ENV=test jest --verbose",
         "test:unit:coverage": "NODE_ENV=test jest --coverage --verbose",
-        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json --verbose"
+        "test:integration": "jest --config test/integration/jest-integration.json --verbose"
     },
     "dependencies": {
         "@cryptify/common": "^1.0.0",

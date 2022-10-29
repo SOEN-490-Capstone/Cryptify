@@ -19,7 +19,6 @@ describe("Wallets", () => {
     });
 
     beforeEach(async () => {
-        await clearDB(true);
         await seedDB(true);
     });
 
@@ -36,6 +35,39 @@ describe("Wallets", () => {
                 });
 
             expect(res.status).toEqual(401);
+        });
+    });
+
+    describe("GET /users/:id/wallets", () => {
+        it("should return a list of users wallets", async () => {
+            // const res = await agent(app.getHttpServer())
+            //     .get("/users/1/wallets")
+            //     .set("Authorization", `Bearer ${token}`)
+            //
+            // expect(res.status).toEqual(200);
+            // expect(res.body).toEqual([
+            //     {
+            //         address: '0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c',
+            //         userId: 1,
+            //         name: 'Ether Wallet Main',
+            //         currencyType: 'ETHEREUM',
+            //         balance: expect.any(String)
+            //     },
+            //     {
+            //         address: '0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a',
+            //         userId: 1,
+            //         name: 'Ether Savings',
+            //         currencyType: 'ETHEREUM',
+            //         balance: expect.any(String)
+            //     },
+            //     {
+            //         address: '0x4a55474eacb48cefe25d7656db1976aa7ae70e3c',
+            //         userId: 1,
+            //         name: 'Ethereum Checking Wallet',
+            //         currencyType: 'ETHEREUM',
+            //         balance: expect.any(String)
+            //     }
+            // ]);
         });
     });
 });

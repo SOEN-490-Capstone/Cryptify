@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import {DataSource} from "typeorm";
 import { dataSourceOptionsManual } from "@cryptify/common/src/db/data_source_options";
 
 export async function clearDB(isTest = false) {
@@ -12,10 +12,5 @@ export async function clearDB(isTest = false) {
               PG_DATABASE: "cryptify_db",
           };
     const dataSource = await new DataSource(dataSourceOptionsManual(config)).initialize();
-
-    await Promise.all(
-        dataSource.entityMetadatas.map(async (entity) => {
-            await dataSource.manager.query(`TRUNCATE \"${entity.tableName}\" RESTART IDENTITY CASCADE;`);
-        }),
-    );
+    await dataSource.manager.connection.destroy();
 }

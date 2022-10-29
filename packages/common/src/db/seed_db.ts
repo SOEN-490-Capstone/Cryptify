@@ -390,4 +390,6 @@ export async function seedDB(isTest = false) {
             ('0x76aed4b725e63a721adbe4f908a53129bb34d6a0f4fd2e20c41a7bb4e8337a1e', '0x4a55474eacb48cefe25d7656db1976aa7ae70e3c', '0xebec795c9c8bbd61ffc14a6662944748f299cacf', '1.0898986515091553', '2022-10-25 17:11:23.000000'),
             ('0x06096df8c241c70191f0288c1abea0acfc3f7ffdb109e6812678351a23ea1626', '0x4a55474eacb48cefe25d7656db1976aa7ae70e3c', '0x1cedc0f3af8f9841b0a1f5c1a4ddc6e1a1629074', '0.03840521038195348', '2022-09-23 19:54:35.000000');
     `);
+
+    await dataSource.manager.connection.destroy();
 }

@@ -19,7 +19,6 @@ describe("Authentication", () => {
     });
 
     beforeEach(async () => {
-        await clearDB(true);
         await seedDB(true);
     });
 

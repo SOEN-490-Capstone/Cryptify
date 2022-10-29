@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "build": "tsc",
-        "db:prep": "ts-node src/db/scripts/prep_db.ts"
+        "db:seed": "ts-node src/db/scripts/run_seed_db.ts"
     },
     "dependencies": {
         "@nestjs/common": "^9.0.0",

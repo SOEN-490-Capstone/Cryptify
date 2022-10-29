@@ -7,14 +7,14 @@ import { ConfigService } from "@nestjs/config";
 const entities = [User, Wallet, Transaction];
 
 export function dataSourceOptionsManual(config: any): DataSourceOptions {
-    return dataSourceOptionsTemplateMethod(<T>(key: string) => config[key] as T);
+    return dataSourceOptionsTemplateMethod(<T>(key: string) => config[key] as T, true);
 }
 
 export function dataSourceOptionsConfig(config: ConfigService): DataSourceOptions {
     return dataSourceOptionsTemplateMethod(<T>(key: string) => config.get<T>(key));
 }
 
-function dataSourceOptionsTemplateMethod(config: <T>(string) => T): DataSourceOptions {
+function dataSourceOptionsTemplateMethod(config: <T>(string) => T, clear = false): DataSourceOptions {
     return {
         type: "postgres",
         host: config<string>("PG_HOST"),
@@ -23,5 +23,7 @@ function dataSourceOptionsTemplateMethod(config: <T>(string) => T): DataSourceOp
         password: config<string>("PG_PASSWORD"),
         database: config<string>("PG_DATABASE"),
         entities,
+        synchronize: clear,
+        dropSchema: clear,
     };
 }

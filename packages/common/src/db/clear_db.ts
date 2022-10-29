@@ -1,4 +1,4 @@
-import {DataSource} from "typeorm";
+import { DataSource } from "typeorm";
 import { dataSourceOptionsManual } from "@cryptify/common/src/db/data_source_options";
 
 export async function clearDB(isTest = false) {

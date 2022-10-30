@@ -33,7 +33,8 @@ type WalletDetailsScreenProps = {
     name: string;
     currencyType: string;
     balance: string;
-}
+    title: string;
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;

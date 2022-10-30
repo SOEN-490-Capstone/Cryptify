@@ -37,7 +37,11 @@ export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }
 
     function formatWalletBalance(balance: string): string {
         return balance.substring(0, 16);
-    };
+    }
+
+    function formatTitle(currencyType: string, address: string): string {
+        return `${currencyType[0].toUpperCase() + currencyType.substring(1).toLowerCase()} ${formatWalletAddress(address)}`
+    }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
         const amount = getWalletsTotal(wallets);
@@ -87,7 +91,15 @@ export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }
                             borderBottomWidth: i === walletsByType[currency.type].length - 1 ? 1 : 0,
                         }}
                         testID={`walletsListItem${currency.type}`}
-                        onPress={() => {navigation.navigation.navigate("WalletDetailsScreen", {address: formatWalletAddress(wallet.address), name: wallet.name, currencyType: currency.type, balance: wallet.balance})}}
+                        onPress={() => {
+                            navigation.navigation.navigate("WalletDetailsScreen", {
+                                title: formatTitle(wallet.currencyType, wallet.address),
+                                address: formatWalletAddress(wallet.address),
+                                name: wallet.name,
+                                currencyType: currency.currencyTag,
+                                balance: wallet.balance,
+                            });
+                        }}
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
                             <VStack space="2px">

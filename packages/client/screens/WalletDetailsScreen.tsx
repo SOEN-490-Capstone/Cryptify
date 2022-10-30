@@ -1,59 +1,71 @@
 import React from "react";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { Box, Button, Card, Text, HStack, VStack, Center } from "native-base";
+import { HomeStackScreenProps } from "../types";
+import { Box, Text, HStack, VStack, Center } from "native-base";
 import { Pressable, StyleSheet } from "react-native";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { View } from "../components/Themed";
+import { faEthereumCustom } from "../components/icons/faEthereumCustom";
 
-type Props = CompositeScreenProps<HomeStackScreenProps<"WalletDetailsScreen">, SettingsStackScreenProps<"WalletDetailsScreen">>;
+type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route, navigation }: Props) {
-
-    const {address, name, currencyType, balance} = route.params;
+    const { address, name, currencyType, balance } = route.params;
 
     return (
-        <Box>
-        <Box style={styles.walletDetailsWrapper}>
-            <HStack style={styles.walletDetails} alignItems="center">
-                <VStack>
-                    <Text style={styles.walletName}>{name}</Text>
-                    <Box marginTop="2px"></Box>
-                    <Text style={styles.walletAddress}>{address}</Text>
-                    <Box marginTop="40px" marginBottom="0"></Box>
-                    <Text style={styles.currencyType}>{currencyType}</Text>
-                    <Text style={styles.walletBalance}>{balance}</Text>
+        <View style={styles.view}>
+            <Box style={styles.walletDetailsWrapper}>
+                <VStack style={styles.walletDetails}>
+                    <HStack justifyContent="space-between">
+                        <VStack>
+                            <Text style={styles.walletName}>{name}</Text>
+                            <Box marginTop="2px"></Box>
+                            <Text style={styles.walletAddress}>{address}</Text>
+                        </VStack>
+                        <VStack>
+                            <FontAwesomeIcon icon={faEthereumCustom} style={styles.ethereumIcon} size={40} />
+                        </VStack>
+                    </HStack>
+                    <HStack alignItems="center">
+                        <VStack>
+                            <Box marginTop="40px" marginBottom="0"></Box>
+                            <Text style={styles.currencyType}>{currencyType}</Text>
+                            <Text style={styles.walletBalance}>{balance}</Text>
+                        </VStack>
+                    </HStack>
                 </VStack>
-            </HStack>
-        </Box>
-        <Box marginTop="20px" marginBottom="0"></Box>
-        <Center>
-            <Pressable style={styles.button}>
-                <Box style={styles.walletIconBackground}>
-                    <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
-                </Box>
-                <Box marginTop="16px"></Box>
-                <Text>Details</Text>
-            </Pressable>
-        </Center>
-        </Box>
-            );
+            </Box>
+            <Box marginTop="20px" marginBottom="0"></Box>
+            <Center>
+                <Pressable style={styles.button}>
+                    <Box style={styles.walletIconBackground}>
+                        <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
+                    </Box>
+                    <Box marginTop="4px"></Box>
+                    <Text style={styles.detailsText}>Details</Text>
+                </Pressable>
+            </Center>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-
+    view: {
+        flex: 1,
+    },
     ethereumIcon: {
         color: "#3C3C3D",
     },
     walletDetailsWrapper: {
-        paddingHorizontal: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
         marginHorizontal: 15,
-        marginTop: 1,
-        backgroundColor: 'rgba(60, 60, 61, 0.25)',
+        backgroundColor: "rgba(60, 60, 61, 0.25)",
         borderRadius: 10,
     },
     walletDetails: {
         paddingVertical: 20,
+        paddingRight: 0,
         borderTopWidth: 1,
         borderColor: "#E5E5E5",
     },
@@ -78,7 +90,7 @@ const styles = StyleSheet.create({
     walletIcon: {
         color: "#404040",
     },
-    walletIconBackground:{
+    walletIconBackground: {
         backgroundColor: "rgba(60, 60, 61, 0.15)",
         padding: 12,
         borderRadius: 50,
@@ -86,5 +98,10 @@ const styles = StyleSheet.create({
     button: {
         alignContent: "center",
         alignItems: "center",
-    }
+    },
+    detailsText: {
+        fontWeight: "600",
+        fontSize: 15,
+        lineHeight: 20,
+    },
 });

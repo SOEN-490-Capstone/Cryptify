@@ -24,7 +24,7 @@ import { faBarsCustom } from "../components/icons/faBarsCustom";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
-import { Center, Pressable } from "native-base";
+import { Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
@@ -108,6 +108,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleStyle: {
                         fontSize: 17,
                         fontWeight: "600",
+                        lineHeight: 23,
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",

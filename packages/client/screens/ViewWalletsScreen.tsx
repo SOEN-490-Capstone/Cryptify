@@ -3,10 +3,14 @@ import { View } from "../components/Themed";
 import { Box } from "native-base";
 import { StyleSheet } from "react-native";
 import WalletsList from "../components/wallets-list/WalletsList";
-import { HomeStackScreenProps } from "../types";
+import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { CompositeScreenProps } from "@react-navigation/native";
 
 type Props = {
-    navigation: HomeStackScreenProps<"ViewWalletsScreen">;
+    navigation: CompositeScreenProps<
+        HomeStackScreenProps<"ViewWalletScreen">,
+        SettingsStackScreenProps<"ViewWalletScreen">
+    >;
 };
 
 export default function ViewWalletsScreen({ navigation }: Props) {

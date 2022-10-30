@@ -7,11 +7,15 @@ import { WalletsGateway } from "../../gateways/wallets_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../icons/faWalletCustom";
 import { AuthContext } from "../contexts/AuthContext";
-import { HomeStackScreenProps } from "../../types";
+import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
+import { CompositeScreenProps } from "@react-navigation/native";
 
 type Props = {
     showCurrencyTotals: boolean;
-    navigation: HomeStackScreenProps<"ViewWalletsScreen">;
+    navigation: CompositeScreenProps<
+        HomeStackScreenProps<"ViewWalletScreen">,
+        SettingsStackScreenProps<"ViewWalletScreen">
+    >;
 };
 
 export default function WalletsList(props: Props) {

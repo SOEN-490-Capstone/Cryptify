@@ -8,11 +8,16 @@ import { UsersGateway } from "../gateways/users_gateway";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { useEffect, useState } from "react";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import {
+    getTransactionCount,
+    getTransactionTotalReceived,
+    getTransactionTotalSent,
+} from "../services/transaction_service";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route }: Props) {
-    const { address, name, currencyType, balance } = route.params;
+    const { address, name, balance } = route.params;
 
     const usersGateway = new UsersGateway();
     const transactionGateway = new TransactionsGateway();
@@ -30,16 +35,9 @@ export default function WalletDetailsScreen({ route }: Props) {
         getTransactions();
     }, []);
 
-    const count = transactions.filter(
-        (transaction) => transaction.walletIn === address || transaction.walletOut === address,
-    ).length;
-
-    const totalReceived = transactions
-        .filter((transaction) => transaction.walletOut == address)
-        .reduce((sum, current) => sum + +current.amount, 0);
-    const totalSent = transactions
-        .filter((transaction) => transaction.walletIn == address)
-        .reduce((sum, current) => sum + +current.amount, 0);
+    const count = getTransactionCount(transactions, address);
+    const totalReceived = getTransactionTotalReceived(transactions, address);
+    const totalSent = getTransactionTotalSent(transactions, address);
     //const count = 15;
     return (
         <View style={styles.view}>

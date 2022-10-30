@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
+import Web3 from "web3";
 import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
@@ -26,7 +27,7 @@ export class TransactionsService {
                 transactionAddress: t.hash,
                 walletIn: t.from,
                 walletOut: t.to,
-                amount: t.value.toString(),
+                amount: Web3.utils.toWei(t.value.toString(), "ether").toString(),
                 createdAt: t.metadata.blockTimestamp,
             })),
         );
@@ -43,7 +44,7 @@ export class TransactionsService {
                     transactionAddress: activity.hash,
                     walletIn: activity.toAddress,
                     walletOut: activity.fromAddress,
-                    amount: activity.value.toString(),
+                    amount: Web3.utils.toWei(activity.value.toString(), "ether").toString(),
                     createdAt: new Date(addressActivityEvent.createdAt),
                 }),
             );

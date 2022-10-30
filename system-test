@@ -5,7 +5,7 @@ docker-compose down > /dev/null 2>&1
 docker-compose up -d test-db
 NODE_ENV=test docker-compose up -d api
 
-#TODO seed db
+docker-compose exec api yarn workspace @cryptify/common db:seed
 
 if [[ "$2" = "build" ]] && [[ "$1" = "android" ]]; then
   yarn workspace @cryptify/client detox:android:release:build

@@ -6,8 +6,8 @@ import { ConfigService } from "@nestjs/config";
 
 const entities = [User, Wallet, Transaction];
 
-export function dataSourceOptionsManual(config: any): DataSourceOptions {
-    return dataSourceOptionsTemplateMethod(<T>(key: string) => config[key] as T, true);
+export function dataSourceOptionsProcess(process: NodeJS.Process): DataSourceOptions {
+    return dataSourceOptionsTemplateMethod(<T>(key: string) => process.env[key] as T, true);
 }
 
 export function dataSourceOptionsConfig(config: ConfigService): DataSourceOptions {

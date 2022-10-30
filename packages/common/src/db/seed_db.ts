@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm";
-import { dataSourceOptionsManual } from "@cryptify/common/src/db/data_source_options";
+import { dataSourceOptionsProcess } from "@cryptify/common/src/db/data_source_options";
 
 export async function seedDB() {
-    const dataSource = await new DataSource(dataSourceOptionsManual(process.env)).initialize();
+    const dataSource = await new DataSource(dataSourceOptionsProcess(process)).initialize();
 
     await dataSource.manager.query(`
         INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457');

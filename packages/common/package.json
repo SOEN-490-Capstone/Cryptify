@@ -4,12 +4,13 @@
     "private": true,
     "scripts": {
         "build": "tsc",
-        "db:seed": "ts-node src/db/scripts/run_seed_db.ts"
+        "db:seed": "DOTENV_CONFIG_PATH=.env.test ts-node src/db/scripts/run_seed_db.ts -r dotenv/config"
     },
     "dependencies": {
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^2.2.0",
         "@nestjs/core": "^9.0.0",
+        "dotenv": "^16.0.3",
         "node-fetch": "^2.6.7",
         "typeorm": "^0.3.9",
         "yup": "^0.32.11"

@@ -2,16 +2,16 @@ import React from "react";
 import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
-import { Transaction as TransactionEntity } from "@cryptify/common/src/domain/entities/transaction";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 
 type Props = {
-    transaction: TransactionEntity;
+    transaction: Transaction;
     walletAddress: string;
 };
 
-export function Transaction({ transaction, walletAddress }: Props) {
+export function TransactionListItem({ transaction, walletAddress }: Props) {
     const isIncommingTransaction = walletAddress == transaction.walletIn;
 
     function formatTransactionAddress(address: string): string {
@@ -20,6 +20,10 @@ export function Transaction({ transaction, walletAddress }: Props) {
 
     function getCurrencyType(): string {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
+    }
+
+    function formatAmount(amount: string): string {
+        return amount.length > 15 ? amount.substring(0, 15) + "..." : amount;
     }
 
     function getFromattedDate(date: Date): string {
@@ -51,7 +55,7 @@ export function Transaction({ transaction, walletAddress }: Props) {
                             style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
                         >
                             {isIncommingTransaction ? "+" : "-"}
-                            {transaction.amount}
+                            {formatAmount(transaction.amount)}
                         </Text>
                     </HStack>
                     <HStack>
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     transactionsAddress: {
-        paddingRight: "5",
+        paddingRight: 5,
         fontSize: 17,
         fontWeight: "600",
     },

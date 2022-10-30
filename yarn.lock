@@ -9380,6 +9380,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
+    expo-clipboard: ^3.1.0
     prettier: ^2.5.1
   languageName: unknown
   linkType: soft
@@ -11282,6 +11283,15 @@ __metadata:
     path-browserify: ^1.0.0
     url-parse: ^1.5.9
   checksum: 4ea8d73afbacc539391007ae6cda1b62478a60388b9fab42def333d1230c92b5c345da28f47167e74d779fecad49850734ac3e690759cccdefe01dd0dea5c1e6
+  languageName: node
+  linkType: hard
+
+"expo-clipboard@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "expo-clipboard@npm:3.1.0"
+  peerDependencies:
+    expo: "*"
+  checksum: ce4bbc5cf3b456ac5a783d82cab5c210852a6019c00da28b07cf8e5b01daa7b9c6bb6661b8b8b07eb2eef5243efc2fba720d816b2450c859a1df7a76636e7ca5
   languageName: node
   linkType: hard
 

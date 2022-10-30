@@ -2,12 +2,12 @@ import React from "react";
 import { Text, HStack, Box, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
-import { Transaction as TransactionEntity } from "@cryptify/common/src/domain/entities/transaction";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 
 type Props = {
-    transaction: TransactionEntity;
+    transaction: Transaction;
     walletAddress: string;
 };
 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     transactionsAddress: {
-        paddingRight: "5",
+        paddingRight: 5,
         fontSize: 17,
         fontWeight: "600",
     },

@@ -12,7 +12,7 @@ type Props = {
 
 export function TransactionList({ transactions, walletAddress, displaySeparation }: Props) {
     let savedDate = new Date();
-    function renderSeparation(date: Date) {
+    function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {
             savedDate = date;
             return;
@@ -44,7 +44,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
             <>
                 {transactions.map((transaction, i) => (
                     <>
-                        {renderSeparation(transaction.createdAt)}
+                        {renderHeader(transaction.createdAt)}
                         <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
                             <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
                         </Box>
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     dateSeparator: {
         fontSize: 17,
         fontWeight: "600",
-        marginLeft: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
     },
     transactionWrapper: {
         paddingLeft: 15,

@@ -11,7 +11,7 @@ type Props = {
     walletAddress: string;
 };
 
-export function Transaction({ transaction, walletAddress }: Props) {
+export function TransactionListItem({ transaction, walletAddress }: Props) {
     const isIncommingTransaction = walletAddress == transaction.walletIn;
 
     function formatTransactionAddress(address: string): string {

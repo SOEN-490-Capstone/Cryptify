@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, Box } from "native-base";
 import { StyleSheet } from "react-native";
-import { Transaction as TransactionEntity } from "@cryptify/common/src/domain/entities/transaction";
-import { Transaction } from "./Transaction";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { TransactionListItem } from "./TransactionListItem";
 
 type Props = {
-    transactions: TransactionEntity[];
+    transactions: Transaction[];
     walletAddress: string;
     displaySeparation: boolean;
 };
@@ -27,11 +27,11 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         );
     }
 
-    function renderTransactions(transactions: TransactionEntity[]) {
+    function renderTransactions(transactions: Transaction[]) {
         return (
             <Box backgroundColor="white" style={styles.transactionWrapper}>
                 {transactions.map((transaction) => (
-                    <Transaction transaction={transaction} walletAddress={walletAddress} />
+                    <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
                 ))}
             </Box>
         );
@@ -44,7 +44,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
                     <>
                         {renderSeparation(transaction.createdAt)}
                         <Box backgroundColor="white" style={styles.transactionWrapper}>
-                            <Transaction transaction={transaction} walletAddress={walletAddress} />
+                            <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
                         </Box>
                     </>
                 ))}
@@ -62,5 +62,6 @@ const styles = StyleSheet.create({
     },
     transactionWrapper: {
         paddingLeft: 15,
+        paddingRight: 15,
     },
 });

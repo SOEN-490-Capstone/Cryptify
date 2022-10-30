@@ -30,8 +30,10 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
     function renderTransactions(transactions: Transaction[]) {
         return (
             <Box backgroundColor="white" style={styles.transactionWrapper}>
-                {transactions.map((transaction) => (
-                    <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
+                {transactions.map((transaction, i) => (
+                    <Box key={i}>
+                        <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
+                    </Box>
                 ))}
             </Box>
         );
@@ -40,10 +42,10 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
     if (displaySeparation) {
         return (
             <>
-                {transactions.map((transaction) => (
+                {transactions.map((transaction, i) => (
                     <>
                         {renderSeparation(transaction.createdAt)}
-                        <Box backgroundColor="white" style={styles.transactionWrapper}>
+                        <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
                             <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
                         </Box>
                     </>

@@ -1,50 +1,75 @@
-import React from "react";
-import { HomeStackScreenProps } from "../types";
-import { Box, Text, HStack, VStack, Center } from "native-base";
-import { Pressable, StyleSheet } from "react-native";
-import { faWalletCustom } from "../components/icons/faWalletCustom";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereumCustom } from "../components/icons/faEthereumCustom";
+import { StyleSheet } from "react-native";
+import { Text, Box, HStack, VStack } from "native-base";
+import { HomeStackScreenProps } from "../types";
+import StorageService from "../services/storage_service";
+import { KEY_JWT } from "../constants/storage_keys";
+import { UsersGateway } from "../gateways/users_gateway";
+import { TransactionsGateway } from "../gateways/transactions_gateway";
+import { useEffect, useState } from "react";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route }: Props) {
     const { address, name, currencyType, balance } = route.params;
 
+    const usersGateway = new UsersGateway();
+    const transactionGateway = new TransactionsGateway();
+
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    async function getTransactions() {
+        const token = await StorageService.get(KEY_JWT);
+        const user = await usersGateway.whoami(token.accessToken);
+        const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token.accessToken);
+        setTransactions(transactions);
+    }
+
+    useEffect(() => {
+        getTransactions();
+    }, []);
+
+    const count = transactions.filter(
+        (transaction) => transaction.walletIn === address || transaction.walletOut === address,
+    ).length;
+
+    const totalReceived = transactions
+        .filter((transaction) => transaction.walletOut == address)
+        .reduce((sum, current) => sum + +current.amount, 0);
+    const totalSent = transactions
+        .filter((transaction) => transaction.walletIn == address)
+        .reduce((sum, current) => sum + +current.amount, 0);
+    //const count = 15;
     return (
         <View style={styles.view}>
-            <Box style={styles.walletDetailsWrapper}>
-                <VStack style={styles.walletDetails}>
-                    <HStack justifyContent="space-between">
-                        <VStack>
-                            <Text style={styles.walletName}>{name}</Text>
-                            <Box marginTop="2px"></Box>
-                            <Text style={styles.walletAddress}>{address}</Text>
-                        </VStack>
-                        <VStack>
-                            <FontAwesomeIcon icon={faEthereumCustom} style={styles.ethereumIcon} size={40} />
-                        </VStack>
-                    </HStack>
-                    <HStack alignItems="center">
-                        <VStack>
-                            <Box marginTop="40px" marginBottom="0"></Box>
-                            <Text style={styles.currencyType}>{currencyType}</Text>
-                            <Text style={styles.walletBalance}>{balance}</Text>
-                        </VStack>
-                    </HStack>
+            <Text style={styles.header}>Wallet Details</Text>
+            <Box marginTop="20px"></Box>
+            <Text style={styles.label}>Name</Text>
+            <Text style={styles.value}>{name}</Text>
+            <Box marginTop="20px"></Box>
+            <Text style={styles.label}>Address</Text>
+            <Text style={styles.value}>{address.toLowerCase()}</Text>
+            <Box marginTop="40px"></Box>
+            <Text style={styles.header}>Transaction Details</Text>
+            <Box marginTop="20px"></Box>
+            <HStack justifyContent="space-between">
+                <VStack>
+                    <Text style={styles.value}>Transactions</Text>
                 </VStack>
-            </Box>
-            <Box marginTop="20px" marginBottom="0"></Box>
-            <Center>
-                <Pressable style={styles.button}>
-                    <Box style={styles.walletIconBackground}>
-                        <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
-                    </Box>
-                </Pressable>
-                <Box marginTop="4px"></Box>
-                <Text style={styles.detailsText}>Details</Text>
-            </Center>
+                <VStack>
+                    <Text style={styles.value}>{count}</Text>
+                </VStack>
+            </HStack>
+            <Box marginTop="20px"></Box>
+            <Text style={styles.label}>Total Received</Text>
+            <Text style={styles.value}>{totalReceived}</Text>
+            <Box marginTop="20px"></Box>
+            <Text style={styles.label}>Total Sent</Text>
+            <Text style={styles.value}>{totalSent}</Text>
+            <Box marginTop="20px"></Box>
+            <Text style={styles.label}>Final Balance</Text>
+            <Text style={styles.value}>{balance}</Text>
         </View>
     );
 }
@@ -52,58 +77,28 @@ export default function WalletDetailsScreen({ route }: Props) {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+        paddingHorizontal: 15,
     },
-    ethereumIcon: {
-        color: "#3C3C3D",
-    },
-    walletDetailsWrapper: {
-        paddingLeft: 20,
-        paddingRight: 20,
-        marginHorizontal: 15,
-        backgroundColor: "rgba(60, 60, 61, 0.25)",
-        borderRadius: 10,
-    },
-    walletDetails: {
-        paddingVertical: 20,
-        paddingRight: 0,
-        borderTopWidth: 1,
-        borderColor: "#E5E5E5",
-    },
-    walletName: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-    walletAddress: {
-        fontSize: 15,
-        lineHeight: 20,
-        color: "#737373",
-    },
-    currencyType: {
-        fontSize: 15,
-        lineHeight: 20,
-        color: "#737373",
-    },
-    walletBalance: {
+    header: {
+        fontWeight: "600",
         fontSize: 20,
         lineHeight: 27,
     },
-    walletIcon: {
-        color: "#404040",
+    label: {
         fontWeight: "400",
-        lineHeight: 20,
-    },
-    walletIconBackground: {
-        backgroundColor: "rgba(60, 60, 61, 0.15)",
-        padding: 12,
-        borderRadius: 50,
-    },
-    button: {
-        alignContent: "center",
-        alignItems: "center",
-    },
-    detailsText: {
-        fontWeight: "600",
         fontSize: 15,
         lineHeight: 20,
+        color: "#737373",
+    },
+    value: {
+        fontWeight: "400",
+        fontSize: 17,
+        lineHeight: 23,
+    },
+    transactionCount: {
+        fontWeight: "400",
+        fontSize: 17,
+        lineHeight: 23,
+        color: "#737373",
     },
 });

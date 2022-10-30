@@ -28,12 +28,15 @@ type TransactionDetailsProps = {
     walletAddress: string;
 };
 
-type WalletDetailsScreenProps = {
+type WalletOverviewScreenProps = {
     address: string;
     name: string;
     currencyType: string;
     balance: string;
-    title: string;
+};
+
+type WalletDetailsScreenProps = {
+    WalletOverviewScreenProps;
 };
 
 export type HomeStackParamList = {
@@ -41,6 +44,7 @@ export type HomeStackParamList = {
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
     TransactionDetailsScreen: TransactionDetailsProps;
+    WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
 };
 
@@ -55,6 +59,7 @@ export type SettingsStackParamList = {
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
     TransactionDetailsScreen: TransactionDetailsProps;
+    WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
 };
 

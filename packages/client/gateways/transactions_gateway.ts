@@ -1,4 +1,3 @@
-import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
@@ -9,10 +8,10 @@ export class TransactionsGateway extends AbstractApiGateway {
         super();
     }
 
-    async findAllTransactions(req: GetTransactionsRequest, token: JwtToken): Promise<Transaction[]> {
+    async findAllTransactions(req: GetTransactionsRequest, token: string): Promise<Transaction[]> {
         const path = `users/${req.id}/transactions`;
         const headers = {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${token}`,
         };
 
         return this.request<Transaction[]>(Method.GET, headers, path, null);

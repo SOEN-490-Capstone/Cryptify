@@ -34,6 +34,7 @@ import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
 import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 import WalletDetailsScreen from "../screens/WalletDetailsScreen";
+import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -43,7 +44,12 @@ const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["AddWalletSelectionScreen", "AddWalletScreen", "walletDetailsScreen"];
+        const tabHiddenRoutes = [
+            "AddWalletSelectionScreen",
+            "AddWalletScreen",
+            "WalletOverviewScreen",
+            "WalletDetailsScreen",
+        ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
@@ -108,11 +114,24 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleStyle: {
                         fontSize: 17,
                         fontWeight: "600",
-                        lineHeight: 23,
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 })}
+            />
+            <HomeStack.Screen
+                name="WalletDetailsScreen"
+                component={WalletDetailsScreen}
+                options={{
+                    title: "Details",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
             />
         </HomeStack.Navigator>
     );

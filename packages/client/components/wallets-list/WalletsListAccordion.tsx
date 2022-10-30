@@ -1,22 +1,26 @@
 import React from "react";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Pressable, Box, HStack, Text, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../icons/faChevronRightCustom";
 import { faChevronDownCustom } from "../icons/faChevronDownCustom";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import { getWalletsTotal } from "../../services/currency_service";
+import { getFormattedAmount, getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
-import { HomeStackScreenProps } from "../../types";
+import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
+import { CompositeScreenProps } from "@react-navigation/native";
 
 type Props = {
     wallets: WalletWithBalance[];
     showCurrencyTotals: boolean;
-    navigation: HomeStackScreenProps<"ViewWalletsScreen">
+    navigation: CompositeScreenProps<
+        HomeStackScreenProps<"ViewWalletScreen">,
+        SettingsStackScreenProps<"ViewWalletScreen">
+    >;
 };
 
 export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }: Props) {
@@ -89,12 +93,12 @@ export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }
                         }}
                         testID={`walletsListItem${currency.type}`}
                         onPress={() => {
-                            navigation.navigation.navigate("WalletDetailsScreen", {
+                            navigation.navigate("WalletOverviewScreen", {
                                 title: formatTitle(wallet.currencyType, wallet.address),
-                                address: formatWalletAddress(wallet.address),
+                                address: wallet.address.toLowerCase(),
                                 name: wallet.name,
                                 currencyType: currency.currencyTag,
-                                balance: wallet.balance,
+                                balance: getFormattedAmount(wallet.balance, currency.type),
                             });
                         }}
                     >

@@ -11,8 +11,7 @@ import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/Curr
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
-import { useNavigation } from "@react-navigation/native";
-import { HomeStackParamList, HomeStackScreenProps } from "../../types";
+import { HomeStackScreenProps } from "../../types";
 
 type Props = {
     wallets: WalletWithBalance[];
@@ -35,12 +34,10 @@ export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
     }
 
-    function formatWalletBalance(balance: string): string {
-        return balance.substring(0, 16);
-    }
-
     function formatTitle(currencyType: string, address: string): string {
-        return `${currencyType[0].toUpperCase() + currencyType.substring(1).toLowerCase()} ${formatWalletAddress(address)}`
+        return `${currencyType[0].toUpperCase() + currencyType.substring(1).toLowerCase()} ${formatWalletAddress(
+            address,
+        )}`;
     }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {

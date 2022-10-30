@@ -30,7 +30,11 @@ export default function WalletsList(props: Props) {
 
     return wallets ? (
         <ScrollView style={styles.scrollView}>
-            <WalletsListAccordion wallets={wallets} navigation={props.navigation} showCurrencyTotals={props.showCurrencyTotals} />
+            <WalletsListAccordion
+                wallets={wallets}
+                navigation={props.navigation}
+                showCurrencyTotals={props.showCurrencyTotals}
+            />
         </ScrollView>
     ) : (
         <Center alignItems="center" marginY="auto">

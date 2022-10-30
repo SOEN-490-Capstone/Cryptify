@@ -9,7 +9,7 @@ import { faEthereumCustom } from "../components/icons/faEthereumCustom";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
-export default function WalletDetailsScreen({ route, navigation }: Props) {
+export default function WalletDetailsScreen({ route }: Props) {
     const { address, name, currencyType, balance } = route.params;
 
     return (

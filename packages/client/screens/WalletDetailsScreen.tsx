@@ -41,9 +41,9 @@ export default function WalletDetailsScreen({ route, navigation }: Props) {
                     <Box style={styles.walletIconBackground}>
                         <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
                     </Box>
-                    <Box marginTop="4px"></Box>
-                    <Text style={styles.detailsText}>Details</Text>
                 </Pressable>
+                <Box marginTop="4px"></Box>
+                <Text style={styles.detailsText}>Details</Text>
             </Center>
         </View>
     );
@@ -89,6 +89,8 @@ const styles = StyleSheet.create({
     },
     walletIcon: {
         color: "#404040",
+        fontWeight: "400",
+        lineHeight: 20,
     },
     walletIconBackground: {
         backgroundColor: "rgba(60, 60, 61, 0.15)",

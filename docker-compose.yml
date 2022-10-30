@@ -21,6 +21,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     api:
         image: cryptify-api
         build:
@@ -43,6 +45,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     eth-edge:
         image: cryptify-eth-edge
         build:
@@ -64,6 +68,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     db:
         image: cryptify-db
         build:
@@ -72,7 +78,7 @@ services:
         ports:
             - "5432:5432"
         volumes:
-            - ./pgdata/:/var/lib/postgresql/data/
+            - db-data:/var/lib/postgresql/data/
     test-db:
         image: cryptify-test-db
         build:
@@ -80,3 +86,5 @@ services:
             dockerfile: packages/docker/test-db.Dockerfile
         ports:
             - "5433:5432"
+volumes:
+    db-data:

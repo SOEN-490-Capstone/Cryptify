@@ -15,21 +15,27 @@ describe("Base", () => {
         await app.init();
     });
 
-    it("GET /", async () => {
-        const res = await agent(app.getHttpServer()).get("/");
+    describe("GET /", () => {
+        it("should return system process details", async () => {
+            const res = await agent(app.getHttpServer()).get("/");
 
-        expect(res.status).toEqual(200);
-        expect(res.body).toEqual(
-            expect.objectContaining({
-                appId: expect.any(String),
-                appVersion: expect.any(String),
-                uptime: expect.any(Number),
-                environment: expect.any(String),
-                nodeVersion: expect.any(String),
-                platform: expect.any(String),
-                memoryUsage: expect.any(Object),
-                cpuUsage: expect.any(Object),
-            }),
-        );
+            expect(res.status).toEqual(200);
+            expect(res.body).toEqual(
+                expect.objectContaining({
+                    appId: expect.any(String),
+                    appVersion: expect.any(String),
+                    uptime: expect.any(Number),
+                    environment: expect.any(String),
+                    nodeVersion: expect.any(String),
+                    platform: expect.any(String),
+                    memoryUsage: expect.any(Object),
+                    cpuUsage: expect.any(Object),
+                }),
+            );
+        });
+    });
+
+    afterAll(async () => {
+        await app.close();
     });
 });

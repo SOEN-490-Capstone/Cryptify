@@ -14,13 +14,13 @@ describe("Sign Up CRYP-21", () => {
 
         await expect(element(by.text("Create an account"))).toBeVisible();
 
-        await element(by.id("firstName")).typeText("John");
+        await element(by.id("firstName")).typeText("Jane");
         await element(by.id("lastName")).typeText("Doe");
-        await element(by.id("email")).typeText("john@example.com");
+        await element(by.id("email")).typeText("jane@example.com");
         await element(by.id("password")).typeText("Test123!");
         await element(by.id("confirmPassword")).typeText("Test123!");
         await element(by.text("Sign up")).tap();
 
-        await expect(element(by.id("token"))).toBeVisible();
+        await expect(element(by.text("Jane"))).toBeVisible();
     });
 });

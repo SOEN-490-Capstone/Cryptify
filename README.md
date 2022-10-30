@@ -31,7 +31,7 @@ The Cryptify project is setup using a monorepo, so a single repository, that con
     $ docker-compose up -d api
     $ docker-compose logs -f api
     ```
-5. (Optional) Connect to the database on `localhost:5432` in pgAdmin
+4. (Optional) Connect to the database on `localhost:5432` in pgAdmin
 
 You can now access the server at http://localhost:3001
 
@@ -115,21 +115,14 @@ You can now access the client at http://localhost:3000
 #### System tests
 Follow the steps to setup your device specific detox [config](https://docs.expo.dev/build-reference/e2e-tests/)
 
-1. Start the api docker container
+1. Open your emulator
+2. Run the system test command for your setup without building
     ```sh
-    $ docker-compose up -d api
+    $ ./system-test [android | ios]
     ```
-2. Start the test db docker container
+   or run the system tests with a new build
     ```sh
-    $ docker-compose up -d test-db
-    ```
-3. Build your android apk
-    ```sh
-    $ yarn workspace @cryptify/client detox:android:release:build
-    ```
-4. Open your emulator and run your tests
-    ```sh
-    $ yarn workspace @cryptify/client detox:android:release:test
+    $ ./system-test [android | ios] build
     ```
 
 ### Linting and Formatting

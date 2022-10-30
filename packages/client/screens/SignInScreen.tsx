@@ -52,7 +52,12 @@ export default function SignInScreen() {
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input value={values.email} onChangeText={handleChange("email")} placeholder="Email" />
+                            <Input
+                                value={values.email}
+                                onChangeText={handleChange("email")}
+                                placeholder="Email"
+                                testID="email"
+                            />
                             <FormControl.ErrorMessage>
                                 {errors.email != ERROR_NOP && errors.email}
                             </FormControl.ErrorMessage>
@@ -72,6 +77,7 @@ export default function SignInScreen() {
                                 }
                                 onChangeText={handleChange("password")}
                                 placeholder="Password"
+                                testID="password"
                             />
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>

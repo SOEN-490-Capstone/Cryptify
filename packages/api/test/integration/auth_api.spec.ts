@@ -2,8 +2,8 @@ import { agent } from "supertest";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
-import { clearDB } from "@cryptify/common/src/db/clear_db";
 import { ERROR_EMAIL_IN_USE, ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
+import { seedDB } from "@cryptify/common/src/db/seed_db";
 
 describe("Authentication", () => {
     let app: INestApplication;
@@ -18,7 +18,7 @@ describe("Authentication", () => {
     });
 
     beforeEach(async () => {
-        await clearDB();
+        await seedDB();
     });
 
     describe("POST /auth/signup", () => {
@@ -26,7 +26,7 @@ describe("Authentication", () => {
             const res = await agent(app.getHttpServer()).post("/auth/signup").send({
                 firstName: "fname",
                 lastName: "lname",
-                email: "test@test.com",
+                email: "jane@test.com",
                 password: "Test123!",
                 confirmPassword: "Test123!",
             });
@@ -40,18 +40,10 @@ describe("Authentication", () => {
         });
 
         it("should return a 400 status code if user with email alredy exists", async () => {
-            await agent(app.getHttpServer()).post("/auth/signup").send({
-                firstName: "fname",
-                lastName: "lname",
-                email: "test@test.com",
-                password: "Test123!",
-                confirmPassword: "Test123!",
-            });
-
             const res = await agent(app.getHttpServer()).post("/auth/signup").send({
                 firstName: "fname",
                 lastName: "lname",
-                email: "test@test.com",
+                email: "john@example.com",
                 password: "Test123!",
                 confirmPassword: "Test123!",
             });
@@ -63,16 +55,8 @@ describe("Authentication", () => {
 
     describe("POST /auth/signin", () => {
         it("should return a signed token when sign in is successful", async () => {
-            await agent(app.getHttpServer()).post("/auth/signup").send({
-                firstName: "fname",
-                lastName: "lname",
-                email: "test@test.com",
-                password: "Test123!",
-                confirmPassword: "Test123!",
-            });
-
             const res = await agent(app.getHttpServer()).post("/auth/signin").send({
-                email: "test@test.com",
+                email: "john@example.com",
                 password: "Test123!",
             });
 
@@ -95,21 +79,17 @@ describe("Authentication", () => {
         });
 
         it("should return a 403 status code if password does not match email", async () => {
-            await agent(app.getHttpServer()).post("/auth/signup").send({
-                firstName: "fname",
-                lastName: "lname",
-                email: "test@test.com",
-                password: "Test123!",
-                confirmPassword: "Test123!",
-            });
-
             const res = await agent(app.getHttpServer()).post("/auth/signin").send({
-                email: "test@test.com",
+                email: "john@example.com",
                 password: "Wrong123!",
             });
 
             expect(res.status).toEqual(403);
             expect(res.body.message).toEqual(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
         });
+    });
+
+    afterAll(async () => {
+        await app.close();
     });
 });

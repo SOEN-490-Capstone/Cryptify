@@ -16,7 +16,7 @@ export class EdgeGatewayStrategyFactory {
             return this.ethEdgeGatewayStrategy;
         }
         if (currencyType == CurrencyType.BITCOIN) {
-            return this.btcEdgeGatewayStrategy;
+            return this.ethEdgeGatewayStrategy;
         }
     }
 }

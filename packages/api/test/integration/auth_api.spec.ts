@@ -18,7 +18,7 @@ describe("Authentication", () => {
     });
 
     beforeEach(async () => {
-        await seedDB(true);
+        await seedDB();
     });
 
     describe("POST /auth/signup", () => {
@@ -87,5 +87,9 @@ describe("Authentication", () => {
             expect(res.status).toEqual(403);
             expect(res.body.message).toEqual(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
         });
+    });
+
+    afterAll(async () => {
+        await app.close();
     });
 });

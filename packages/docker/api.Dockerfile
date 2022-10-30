@@ -9,7 +9,6 @@ COPY packages/api ./packages/api
 RUN yarn install --prod
 
 FROM dependencies AS development
-ENV NODE_ENV dev
 COPY .eslintrc.js .prettierrc.js tsconfig.json ./
 RUN yarn install
 RUN yarn workspace @cryptify/api build

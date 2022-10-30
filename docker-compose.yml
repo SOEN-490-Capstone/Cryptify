@@ -21,6 +21,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     api:
         image: cryptify-api
         build:
@@ -43,6 +45,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     eth-edge:
         image: cryptify-eth-edge
         build:
@@ -64,6 +68,8 @@ services:
             - ./yarn.lock:/code/yarn.lock
             - ./.eslintrc.js:/code/.eslintrc.js
             - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
     db:
         image: cryptify-db
         build:

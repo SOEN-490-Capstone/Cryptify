@@ -1,17 +1,8 @@
 import { DataSource } from "typeorm";
 import { dataSourceOptionsManual } from "@cryptify/common/src/db/data_source_options";
 
-export async function seedDB(isTest = false) {
-    const config = isTest
-        ? process.env
-        : {
-              PG_HOST: "db",
-              PG_PORT: 5432,
-              PG_USER: "postgres",
-              PG_PASSWORD: "postgres",
-              PG_DATABASE: "cryptify_db",
-          };
-    const dataSource = await new DataSource(dataSourceOptionsManual(config)).initialize();
+export async function seedDB() {
+    const dataSource = await new DataSource(dataSourceOptionsManual(process.env)).initialize();
 
     await dataSource.manager.query(`
         INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457');

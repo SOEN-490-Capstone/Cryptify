@@ -12,6 +12,7 @@ import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
+import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -31,7 +32,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
             //TODO sort the transactions by date
-            setTransactions(transactions);
+            setTransactions([]);
         })();
     }, []);
 
@@ -75,29 +76,40 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <Box marginTop="4px"></Box>
                 <Text style={styles.detailsText}>Details</Text>
             </Center>
-            <HStack>
+            <HStack style={styles.transactionBox}>
                 <Text style={styles.transactions}>Transactions</Text>
-                <Pressable
-                    onPress={() =>
-                        navigation.navigate("TransactionsListScreen", {
-                            transactions: transactions,
-                            walletAddress: address,
-                            displaySeparation: true,
-                        })
-                    }
-                    style={styles.rightArrowIcon}
-                >
-                    <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
-                </Pressable>
+                {transactions.length == 0 ? (
+                    <></>
+                ) : (
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate("TransactionsListScreen", {
+                                transactions: transactions,
+                                walletAddress: address,
+                                displaySeparation: true,
+                            })
+                        }
+                        style={styles.rightArrowIcon}
+                    >
+                        <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
+                    </Pressable>
+                )}
             </HStack>
-            <ScrollView>
-                <TransactionList
-                    transactions={transactions}
-                    walletAddress={address}
-                    displaySeparation={false}
-                    navigation={navigation}
-                />
-            </ScrollView>
+            {transactions.length == 0 ? (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={faMagnifyingGlassCustom} size={48} />
+                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
+                </VStack>
+            ) : (
+                <ScrollView>
+                    <TransactionList
+                        transactions={transactions}
+                        walletAddress={address}
+                        displaySeparation={false}
+                        navigation={navigation}
+                    />
+                </ScrollView>
+            )}
         </View>
     );
 }
@@ -159,6 +171,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         lineHeight: 20,
     },
+    transactionBox: {
+        marginBottom: 20,
+        marginTop: 30,
+    },
     transactions: {
         fontWeight: "600",
         fontSize: 20,
@@ -167,5 +183,12 @@ const styles = StyleSheet.create({
     rightArrowIcon: {
         marginLeft: "auto",
         paddingRight: 15,
+    },
+    magnifyingGlass: {
+        alignItems: "center",
+    },
+    magnifyingGlassText: {
+        marginTop: 15,
+        fontSize: 17,
     },
 });

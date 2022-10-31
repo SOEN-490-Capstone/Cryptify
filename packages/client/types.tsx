@@ -22,15 +22,17 @@ type AddWalletScreenProps = {
     currencyType: CurrencyType;
 };
 
+type TransactionDetailsProps = {
+    title: string;
+    transaction: Transaction;
+    walletAddress: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
-    TransactionDetailsScreen: {
-        title: string;
-        transaction: Transaction;
-        walletAddress: string;
-    };
+    TransactionDetailsScreen: TransactionDetailsProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<

@@ -21,14 +21,12 @@ export default function TransactionDetailsScreen(
                 />
             </ScrollView>
         </View>
-
     );
 }
 
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        
     },
     scrollView: {
         paddingHorizontal: 20,

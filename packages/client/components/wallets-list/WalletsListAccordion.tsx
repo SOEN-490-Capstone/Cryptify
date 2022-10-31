@@ -89,7 +89,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                         }}
                         testID={`walletsListItem${currency.type}`}
                         onPress={() => {
-                            navigation.navigation.navigate("WalletOverviewScreen", {
+                            navigation.navigate("WalletOverviewScreen", {
                                 title: formatTitle(wallet.currencyType, wallet.address),
                                 address: wallet.address.toLowerCase(),
                                 name: wallet.name,

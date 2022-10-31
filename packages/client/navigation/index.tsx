@@ -32,6 +32,7 @@ import { faPlusCustom } from "../components/icons/faPlusCustom";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
+import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -95,6 +96,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                             <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
                         </Pressable>
                     ),
+                })}
+            />
+            <HomeStack.Screen
+                name="TransactionDetailsScreen"
+                component={TransactionDetailsScreen}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
                 })}
             />
         </HomeStack.Navigator>
@@ -177,6 +192,20 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                             <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
                         </Pressable>
                     ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="TransactionDetailsScreen"
+                component={TransactionDetailsScreen}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
                 })}
             />
         </SettingsStack.Navigator>

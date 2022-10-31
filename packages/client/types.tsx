@@ -7,6 +7,7 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -21,10 +22,17 @@ type AddWalletScreenProps = {
     currencyType: CurrencyType;
 };
 
+type TransactionDetailsProps = {
+    title: string;
+    transaction: Transaction;
+    walletAddress: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
+    TransactionDetailsScreen: TransactionDetailsProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -37,6 +45,11 @@ export type SettingsStackParamList = {
     ViewWalletsScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
+    TransactionDetailsScreen: {
+        title: string;
+        transaction: Transaction;
+        walletAddress: string;
+    };
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

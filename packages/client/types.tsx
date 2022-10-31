@@ -29,6 +29,7 @@ type TransactionDetailsProps = {
 };
 
 type WalletOverviewScreenProps = {
+    title: string;
     address: string;
     name: string;
     currencyType: string;
@@ -36,7 +37,10 @@ type WalletOverviewScreenProps = {
 };
 
 type WalletDetailsScreenProps = {
-    WalletOverviewScreenProps;
+    address: string;
+    name: string;
+    currencyType: string;
+    balance: string;
 };
 
 export type HomeStackParamList = {

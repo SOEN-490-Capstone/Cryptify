@@ -2,17 +2,16 @@ import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, Box, HStack, VStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
-import StorageService from "../services/storage_service";
-import { KEY_JWT } from "../constants/storage_keys";
 import { UsersGateway } from "../gateways/users_gateway";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
-import { useEffect, useState } from "react";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import {
     getTransactionCount,
     getTransactionTotalReceived,
     getTransactionTotalSent,
 } from "../services/transaction_service";
+import React from "react";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
@@ -22,22 +21,30 @@ export default function WalletDetailsScreen({ route }: Props) {
     const usersGateway = new UsersGateway();
     const transactionGateway = new TransactionsGateway();
 
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const { token, user } = React.useContext(AuthContext);
 
-    async function getTransactions() {
-        const token = await StorageService.get(KEY_JWT);
-        const user = await usersGateway.whoami(token.accessToken);
-        const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token.accessToken);
-        setTransactions(transactions);
-    }
+    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 
-    useEffect(() => {
-        getTransactions();
+    React.useEffect(() => {
+        (async () => {
+            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
+            setTransactions(transactions);
+        })();
     }, []);
 
     const count = getTransactionCount(transactions, address);
     const totalReceived = getTransactionTotalReceived(transactions, address);
     const totalSent = getTransactionTotalSent(transactions, address);
+
+    function KeyValue(key: string, value: string) {
+        return (
+            <>
+                <Text style={styles.label}>{key}</Text>
+                <Text style={styles.value}>{value}</Text>
+                <Box marginTop="20px"></Box>
+            </>
+        );
+    }
     //const count = 15;
     return (
         <View style={styles.view}>

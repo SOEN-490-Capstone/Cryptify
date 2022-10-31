@@ -11,19 +11,15 @@ import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/Curr
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getFormattedAmount, getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     wallets: WalletWithBalance[];
     showCurrencyTotals: boolean;
-    navigation: CompositeScreenProps<
-        HomeStackScreenProps<"ViewWalletScreen">,
-        SettingsStackScreenProps<"ViewWalletScreen">
-    >;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
-export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }: Props) {
+export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }: Props) {
     const walletsByType = {
         [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
@@ -93,7 +89,7 @@ export function WalletsListAccordion({ wallets, navigation, showCurrencyTotals }
                         }}
                         testID={`walletsListItem${currency.type}`}
                         onPress={() => {
-                            navigation.navigate("WalletOverviewScreen", {
+                            navigation.navigation.navigate("WalletOverviewScreen", {
                                 title: formatTitle(wallet.currencyType, wallet.address),
                                 address: wallet.address.toLowerCase(),
                                 name: wallet.name,

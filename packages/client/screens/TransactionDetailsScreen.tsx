@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { TransactionDetails } from "../components/TransactionDetails";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { View } from "../components/Themed";
 
 export default function TransactionDetailsScreen(
     props: CompositeScreenProps<
@@ -12,19 +13,24 @@ export default function TransactionDetailsScreen(
     >,
 ) {
     return (
-        <ScrollView style={styles.view}>
-            <TransactionDetails
-                transaction={props.route.params.transaction}
-                walletAddress={props.route.params.walletAddress}
-            />
-        </ScrollView>
+        <View style={styles.view}>
+            <ScrollView style={styles.scrollView}>
+                <TransactionDetails
+                    transaction={props.route.params.transaction}
+                    walletAddress={props.route.params.walletAddress}
+                />
+            </ScrollView>
+        </View>
+
     );
 }
 
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+        
+    },
+    scrollView: {
         paddingHorizontal: 20,
-        backgroundColor: "white",
     },
 });

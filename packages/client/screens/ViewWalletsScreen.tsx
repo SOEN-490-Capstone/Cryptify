@@ -3,12 +3,13 @@ import { View } from "../components/Themed";
 import { Box } from "native-base";
 import { StyleSheet } from "react-native";
 import WalletsList from "../components/wallets-list/WalletsList";
+import { SettingsStackScreenProps } from "../types";
 
-export default function ViewWalletsScreen() {
+export default function ViewWalletsScreen({ navigation }: SettingsStackScreenProps<"ViewWalletsScreen">) {
     return (
         <View style={styles.view}>
             <Box marginTop="10px"></Box>
-            <WalletsList showCurrencyTotals={false} />
+            <WalletsList navigation={navigation} showCurrencyTotals={false} />
         </View>
     );
 }

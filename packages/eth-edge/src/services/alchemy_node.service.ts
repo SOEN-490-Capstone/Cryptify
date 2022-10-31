@@ -2,6 +2,7 @@ import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataRes
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 
+// To do: convert class into facade to reguralize the data.
 @Injectable()
 export class AlchemyNodeService {
     private alchemy: Alchemy;

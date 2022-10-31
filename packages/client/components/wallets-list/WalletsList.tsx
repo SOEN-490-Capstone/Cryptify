@@ -7,9 +7,11 @@ import { WalletsGateway } from "../../gateways/wallets_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../icons/faWalletCustom";
 import { AuthContext } from "../contexts/AuthContext";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     showCurrencyTotals: boolean;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
 export default function WalletsList(props: Props) {
@@ -28,7 +30,11 @@ export default function WalletsList(props: Props) {
 
     return wallets ? (
         <ScrollView style={styles.scrollView}>
-            <WalletsListAccordion wallets={wallets} showCurrencyTotals={props.showCurrencyTotals} />
+            <WalletsListAccordion
+                wallets={wallets}
+                navigation={props.navigation}
+                showCurrencyTotals={props.showCurrencyTotals}
+            />
         </ScrollView>
     ) : (
         <Center alignItems="center" marginY="auto">

@@ -35,6 +35,7 @@ import HomeHeader from "../components/HomeHeader";
 import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 import WalletOverviewScreen from "../screens/WalletOverviewScreen";
+import TransactionsListScreen from "../screens/TransactionsListScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -138,6 +139,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={WalletDetailsScreen}
                 options={{
                     title: "Details",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="TransactionsListScreen"
+                component={TransactionsListScreen}
+                options={{
+                    title: "Transactions",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,
@@ -262,6 +277,20 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={WalletDetailsScreen}
                 options={{
                     title: "Details",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="TransactionsListScreen"
+                component={TransactionsListScreen}
+                options={{
+                    title: "Transactions",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

@@ -43,6 +43,12 @@ type WalletDetailsScreenProps = {
     balance: string;
 };
 
+type TransactionsListScreenProps = {
+    transactions: Transaction[];
+    walletAddress: string;
+    displaySeparation: boolean;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -50,6 +56,7 @@ export type HomeStackParamList = {
     TransactionDetailsScreen: TransactionDetailsProps;
     WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
+    TransactionsListScreen: TransactionsListScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -65,6 +72,7 @@ export type SettingsStackParamList = {
     TransactionDetailsScreen: TransactionDetailsProps;
     WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
+    TransactionsListScreen: TransactionsListScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

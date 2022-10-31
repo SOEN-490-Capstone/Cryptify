@@ -2,7 +2,6 @@ import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, Box, HStack, VStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
-import { UsersGateway } from "../gateways/users_gateway";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import {
@@ -18,7 +17,6 @@ type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 export default function WalletDetailsScreen({ route }: Props) {
     const { address, name, balance } = route.params;
 
-    const usersGateway = new UsersGateway();
     const transactionGateway = new TransactionsGateway();
 
     const { token, user } = React.useContext(AuthContext);
@@ -35,13 +33,13 @@ export default function WalletDetailsScreen({ route }: Props) {
     const count = getTransactionCount(transactions, address);
     const totalReceived = getTransactionTotalReceived(transactions, address);
     const totalSent = getTransactionTotalSent(transactions, address);
-    
+
     type KeyValueProps = {
         key: string;
         value: string;
-    }
+    };
 
-    function KeyValue({key, value}: KeyValueProps) {
+    function KeyValue({ key, value }: KeyValueProps) {
         return (
             <>
                 <Text style={styles.label}>{key}</Text>
@@ -50,13 +48,13 @@ export default function WalletDetailsScreen({ route }: Props) {
             </>
         );
     }
-    
+
     return (
         <View style={styles.view}>
             <Text style={styles.header}>Wallet Details</Text>
             <Box marginTop="20px"></Box>
-            <KeyValue key="Name" value={name}/>
-            <KeyValue key="Address" value={address.toLocaleLowerCase()}/>
+            <KeyValue key="Name" value={name} />
+            <KeyValue key="Address" value={address.toLocaleLowerCase()} />
             <Box marginTop="20px"></Box>
             <Text style={styles.header}>Transaction Details</Text>
             <Box marginTop="20px"></Box>
@@ -69,9 +67,9 @@ export default function WalletDetailsScreen({ route }: Props) {
                 </VStack>
             </HStack>
             <Box marginTop="20px"></Box>
-            <KeyValue key="Total Received" value={totalReceived}/>
-            <KeyValue key="Total Sent" value={totalSent}/>
-            <KeyValue key="Final Balance" value={balance}/>
+            <KeyValue key="Total Received" value={totalReceived} />
+            <KeyValue key="Total Sent" value={totalSent} />
+            <KeyValue key="Final Balance" value={balance} />
         </View>
     );
 }

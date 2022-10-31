@@ -35,9 +35,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
     }
 
     function formatTitle(currencyType: string, address: string): string {
-        return `${currencyType[0].toUpperCase() + currencyType.substring(1).toLowerCase()} ${formatWalletAddress(
-            address,
-        )}`;
+        return `${titleCase(currencyType)} ${formatWalletAddress(address)}`;
     }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {

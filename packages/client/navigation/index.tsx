@@ -243,6 +243,34 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 })}
             />
+            <SettingsStack.Screen
+                name="WalletOverviewScreen"
+                component={WalletOverviewScreen}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                })}
+            />
+            <SettingsStack.Screen
+                name="WalletDetailsScreen"
+                component={WalletDetailsScreen}
+                options={{
+                    title: "Details",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
         </SettingsStack.Navigator>
     );
 }

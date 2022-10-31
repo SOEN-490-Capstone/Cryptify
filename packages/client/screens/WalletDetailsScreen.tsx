@@ -34,12 +34,12 @@ export default function WalletDetailsScreen({ route }: Props) {
     const totalReceived = getTransactionTotalReceived(transactions, address);
     const totalSent = getTransactionTotalSent(transactions, address);
 
-    type KeyValueProps = {
+    type RowItemsProps = {
         label: string;
         value: string;
     };
 
-    function RowItem({ label, value }: KeyValueProps) {
+    function RowItem({ label, value }: RowItemsProps) {
         return (
             <>
                 <Text style={{ ...styles.label, color: "text.500" }}>{label}</Text>

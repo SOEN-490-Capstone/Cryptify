@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { faEthereumCustom } from "../components/icons/faEthereumCustom";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { formatWalletAddress } from "@cryptify/common/src/utils/string_utils";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -16,6 +15,10 @@ type Props = CompositeScreenProps<
 
 export default function WalletOverviewScreen({ route, navigation }: Props) {
     const { address, name, currencyType, balance } = route.params;
+
+    function formatWalletAddress(address: string): string {
+        return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
+    }
 
     return (
         <View style={styles.view}>
@@ -32,9 +35,10 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">
-                        <VStack marginTop="40px">
+                        <VStack>
+                            <Box marginTop="40px" marginBottom="0"></Box>
                             <Text style={styles.currencyType}>{currencyType}</Text>
-                            <Text style={{ ...styles.walletBalance, color: "text.700" }}>{balance}</Text>
+                            <Text style={styles.walletBalance}>{balance}</Text>
                         </VStack>
                     </HStack>
                 </VStack>
@@ -64,15 +68,16 @@ const styles = StyleSheet.create({
         color: "#3C3C3D",
     },
     walletDetailsWrapper: {
-        paddingVertical: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
         marginHorizontal: 15,
-        backgroundColor: "#3c3c3d",
-        opacity: 0.2,
+        backgroundColor: "rgba(60, 60, 61, 0.25)",
         borderRadius: 10,
     },
     walletDetails: {
         paddingVertical: 20,
         paddingRight: 0,
+        borderTopWidth: 1,
         borderColor: "#E5E5E5",
     },
     walletName: {
@@ -99,8 +104,7 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     walletIconBackground: {
-        backgroundColor: "#3c3c3d",
-        opacity: 0.1,
+        backgroundColor: "rgba(60, 60, 61, 0.15)",
         padding: 12,
         borderRadius: 50,
     },

@@ -25,6 +25,9 @@ export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
+    TransactionDetailsScreen: {
+        title: string;
+    };
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -37,6 +40,9 @@ export type SettingsStackParamList = {
     ViewWalletsScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
+    TransactionDetailsScreen: {
+        title: string;
+    };
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

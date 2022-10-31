@@ -28,161 +28,151 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
     }
 
-    function renderHeader() {
-        return (
-            <Box style={styles.itemWrapper}>
-                <VStack>
-                    <FontAwesomeIcon
-                        icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
-                        style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
-                        size={48}
-                    />
-                    <Text
-                        color={isIncommingTransaction ? "success.600" : "text.600"}
-                        style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
-                    >
-                        {isIncommingTransaction ? "+" : "-"}
-                        {transaction.amount + " "} {getCurrencyType()}
-                    </Text>
-                    <Text color="text.500" style={styles.transactionsAddress}>
-                        {formatTransactionAddress(transaction.transactionAddress)}
-                    </Text>
-                </VStack>
-            </Box>
-        );
-    }
-    function renderBasicInfo() {
+    const renderHeader = (
+        <Box style={styles.itemWrapper}>
+            <VStack>
+                <FontAwesomeIcon
+                    icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                    style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
+                    size={48}
+                />
+                <Text
+                    color={isIncommingTransaction ? "success.600" : "text.700"}
+                    style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
+                >
+                    {isIncommingTransaction ? "+" : "-"}
+                    {transaction.amount + " "} {getCurrencyType()}
+                </Text>
+                <Text color="text.500" style={styles.transactionsAddress}>
+                    {formatTransactionAddress(transaction.transactionAddress)}
+                </Text>
+            </VStack>
+        </Box>
+    );
+    const renderBasicInfo = (
         // TODO
         // dynamically get the wallet name if any
-        return (
-            <Box style={styles.itemWrapper}>
-                <VStack>
-                    <Box>
-                        <Text color="text.500" style={styles.elementInformationTitle}>
-                            Transaction ID
-                        </Text>
-                        <HStack space="10px">
-                            <Text style={styles.elementInformationText}>{transaction.transactionAddress}</Text>
-                            <Pressable onPress={() => copyToClipboard(transaction.transactionAddress)}>
+        <Box style={styles.itemWrapper}>
+            <VStack>
+                <Box>
+                    <Text color="text.500" style={styles.elementInformationTitle}>
+                        Transaction ID
+                    </Text>
+                    <HStack space="10px">
+                        <Text style={styles.elementInformationText}>{transaction.transactionAddress}</Text>
+                        <Pressable onPress={() => copyToClipboard(transaction.transactionAddress)}>
+                            <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+                        </Pressable>
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Status</Text>
+                        <Badge colorScheme="success" style={styles.transactionStatus}>
+                            <Text color="success.600">Confirmed</Text>
+                        </Badge>
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <Text color="text.500" style={styles.elementInformationTitle}>
+                        From
+                    </Text>
+                    <HStack space="10px">
+                        <Text style={styles.elementInformationText}>{transaction.walletIn}</Text>
+                        {isIncommingTransaction ? (
+                            <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
                                 <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
                             </Pressable>
-                        </HStack>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <HStack>
-                            <Text style={styles.elementInformationText}>Status</Text>
-                            <Badge colorScheme="success" style={styles.transactionStatus}>
-                                <Text color="success.600">Confirmed</Text>
-                            </Badge>
-                        </HStack>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <Text color="text.500" style={styles.elementInformationTitle}>
-                            From
-                        </Text>
-                        <HStack space="10px">
-                            <Text style={styles.elementInformationText}>{transaction.walletIn}</Text>
-                            {isIncommingTransaction ? (
-                                <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
-                                    <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
-                                </Pressable>
-                            ) : (
-                                <></>
-                            )}
-                        </HStack>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <Text color="text.500" style={styles.elementInformationTitle}>
-                            To
-                        </Text>
-                        <HStack space="10px">
-                            <Text style={styles.elementInformationText}>{transaction.walletOut}</Text>
-                            {isIncommingTransaction ? (
-                                <></>
-                            ) : (
-                                <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
-                                    <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
-                                </Pressable>
-                            )}
-                        </HStack>
-                    </Box>
-                </VStack>
-            </Box>
-        );
-    }
-    function renderTransactionFee() {
+                        ) : (
+                            <></>
+                        )}
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <Text color="text.500" style={styles.elementInformationTitle}>
+                        To
+                    </Text>
+                    <HStack space="10px">
+                        <Text style={styles.elementInformationText}>{transaction.walletOut}</Text>
+                        {isIncommingTransaction ? (
+                            <></>
+                        ) : (
+                            <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
+                                <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+                            </Pressable>
+                        )}
+                    </HStack>
+                </Box>
+            </VStack>
+        </Box>
+    );
+    const renderTransactionFee = (
         // TODO
         // Get Gas
         // Get Gas Limit
-        return (
-            <Box style={styles.itemWrapper}>
-                <VStack>
-                    <Box>
-                        <Text style={styles.categoryTitle}>Transaction Fee</Text>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <Text color="text.500" style={styles.elementInformationTitle}>
-                            Gas Price
+        <Box style={styles.itemWrapper}>
+            <VStack>
+                <Text style={styles.categoryTitle}>Transaction Fee</Text>
+                <Box style={styles.subItemWrapper}>
+                    <Text color="text.500" style={styles.elementInformationTitle}>
+                        Gas Price
+                    </Text>
+                    <Text>0.0000000000012323 ETH</Text>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Gas Limit</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            100 000
                         </Text>
-                        <Text>0.0000000000012323 ETH</Text>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <HStack>
-                            <Text>Gas Limit</Text>
-                            <Text color="text.500" style={styles.gasLimit}>
-                                100 000
-                            </Text>
-                        </HStack>
-                    </Box>
-                </VStack>
-            </Box>
-        );
-    }
-    function renderOtherDetails() {
+                    </HStack>
+                </Box>
+            </VStack>
+        </Box>
+    );
+    const renderOtherDetails = (
         // TODO
         // Add block number, position in block and nonce
-        return (
-            <Box style={styles.itemWrapper}>
-                <VStack>
-                    <Box>
-                        <Text style={styles.categoryTitle}>Other Details</Text>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <HStack>
-                            <Text>Block Number</Text>
-                            <Text color="text.500" style={styles.gasLimit}>
-                                15
-                            </Text>
-                        </HStack>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <HStack>
-                            <Text>Position in Block</Text>
-                            <Text color="text.500" style={styles.gasLimit}>
-                                19
-                            </Text>
-                        </HStack>
-                    </Box>
-                    <Box style={styles.subItemWrapper}>
-                        <HStack>
-                            <Text>Nonce</Text>
-                            <Text color="text.500" style={styles.gasLimit}>
-                                109,764
-                            </Text>
-                        </HStack>
-                    </Box>
-                </VStack>
-            </Box>
-        );
-    }
+        <Box style={styles.itemWrapper}>
+            <VStack>
+                <Box>
+                    <Text style={styles.categoryTitle}>Other Details</Text>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Block Number</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            15
+                        </Text>
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Position in Block</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            19
+                        </Text>
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Nonce</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            109,764
+                        </Text>
+                    </HStack>
+                </Box>
+            </VStack>
+        </Box>
+    );
 
     return (
         <ScrollView>
-            {renderHeader()}
+            {renderHeader}
             <Box>
-                {renderBasicInfo()}
-                {renderTransactionFee()}
-                {renderOtherDetails()}
+                {renderBasicInfo}
+                {renderTransactionFee}
+                {renderOtherDetails}
             </Box>
         </ScrollView>
     );
@@ -213,7 +203,7 @@ const styles = StyleSheet.create({
         marginLeft: "auto",
     },
     transactionsAddress: {
-        paddingRight: "5",
+        paddingRight: 5,
         fontSize: 18,
         fontWeight: "600",
         textAlign: "center",

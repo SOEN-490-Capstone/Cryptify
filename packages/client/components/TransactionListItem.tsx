@@ -31,7 +31,7 @@ export function TransactionListItem({ transaction, walletAddress }: Props) {
         const year = date.getFullYear();
         const hour = date.getHours() % 12;
         const meridien = date.getHours() > 12 ? "PM" : "AM";
-        const min = date.getMinutes();
+        const min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
         const month = date.toLocaleString("en-US", { month: "short" });
 
         return month + " " + day + ", " + year + " • " + hour + ":" + min + " " + meridien;

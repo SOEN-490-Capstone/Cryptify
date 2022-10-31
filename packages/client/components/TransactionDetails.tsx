@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, HStack, Box, VStack, Badge, ScrollView } from "native-base";
+import { Text, HStack, Box, VStack, Badge } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Pressable, StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -167,14 +167,14 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
     );
 
     return (
-        <ScrollView>
+        <>
             {renderHeader}
             <Box>
                 {renderBasicInfo}
                 {renderTransactionFee}
                 {renderOtherDetails}
             </Box>
-        </ScrollView>
+        </>
     );
 }
 

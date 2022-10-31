@@ -371,3 +371,5 @@ pgdata
 
 # dotenv environment variable files
 .env.dev
+
+.scannerwork

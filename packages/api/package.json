@@ -7,9 +7,8 @@
         "build": "nest build",
         "start:dev": "nest start --watch",
         "start:prod": "node dist/api/src/main.js",
-        "test:unit": "NODE_ENV=test jest --verbose",
-        "test:unit:coverage": "NODE_ENV=test jest --coverage --verbose",
-        "test:integration": "NODE_ENV=test jest --config test/integration/jest-integration.json --verbose"
+        "test": "NODE_ENV=test jest --config jest-config.json --verbose --coverage",
+        "test:unit": "NODE_ENV=test jest --verbose"
     },
     "dependencies": {
         "@cryptify/common": "^1.0.0",
@@ -47,22 +46,5 @@
         "ts-node": "^10.8.2",
         "tsconfig-paths": "^4.0.0",
         "typescript": "^4.7.4"
-    },
-    "jest": {
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "ts"
-        ],
-        "rootDir": "test/unit",
-        "testRegex": ".*\\.spec\\.ts$",
-        "transform": {
-            "^.+\\.(t|j)s$": "ts-jest"
-        },
-        "collectCoverageFrom": [
-            "src/**/*.(t|j)s"
-        ],
-        "coverageDirectory": "coverage",
-        "testEnvironment": "node"
     }
 }

@@ -29,7 +29,7 @@ jobs:
             - name: Lint and format
               run: docker run --entrypoint yarn cryptify-api lint:check
             - name: Unit test
-              run: docker run --entrypoint yarn cryptify-api api:test:unit
+              run: docker run --entrypoint yarn cryptify-api workspace @cryptify/api test:unit
     eth-edge:
         name: EthEdge
         runs-on: ubuntu-latest
@@ -41,19 +41,7 @@ jobs:
             - name: Lint and format
               run: docker run --entrypoint yarn cryptify-eth-edge lint:check
             - name: Unit test
-              run: docker run --entrypoint yarn cryptify-eth-edge eth-edge:test:unit
-    common:
-        name: Common
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Build image
-              run: docker build -t cryptify-eth-edge -f packages/docker/eth-edge.Dockerfile --target development .
-            - name: Lint and format
-              run: docker run --entrypoint yarn cryptify-eth-edge lint:check
-            - name: Unit test
-              run: docker run --entrypoint yarn cryptify-eth-edge eth-edge:test:unit
+              run: docker run --entrypoint yarn cryptify-eth-edge workspace @cryptify/eth-edge test:unit
     integration-tests:
         name: Integration Tests
         runs-on: ubuntu-latest
@@ -63,6 +51,6 @@ jobs:
             - name: Bring up containers
               run: sudo docker-compose up -d api && sudo docker-compose up -d eth-edge && sudo docker-compose up -d test-db
             - name: Integration test api
-              run: docker-compose exec -T api yarn run api:test:integration
+              run: docker-compose exec -T api yarn run api:test
             - name: Integration test eth-edge
-              run: docker-compose exec -T eth-edge yarn run eth-edge:test:integration
+              run: docker-compose exec -T eth-edge yarn run eth-edge:test

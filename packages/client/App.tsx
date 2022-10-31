@@ -46,8 +46,14 @@ export default function App() {
             setToken(token?.accessToken || "");
 
             if (token) {
-                const user = await usersGateway.whoami(token.accessToken);
-                setUser(user);
+                try {
+                    const user = await usersGateway.whoami(token.accessToken);
+                    setUser(user);
+                } catch (err) {
+                    // If a user has an old JWT token that isn't found in the database catch the not found exception
+                    // and set the token to an empty string so the user is redirected back to the welcome page
+                    setToken("");
+                }
             }
 
             setIsUserDataLoaded(true);

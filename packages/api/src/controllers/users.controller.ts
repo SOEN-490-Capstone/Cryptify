@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request } from "@nestjs/common";
+import { Controller, Get, UseGuards, Request, NotFoundException } from "@nestjs/common";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { UsersService } from "@cryptify/api/src/services/users.service";
 
@@ -9,6 +9,12 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Get("/whoami")
     async whoami(@Request() req) {
-        return this.usersService.findOneById(req.user.id);
+        const user = await this.usersService.findOneById(req.user.id);
+
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        return user;
     }
 }

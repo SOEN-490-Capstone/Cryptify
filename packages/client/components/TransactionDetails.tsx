@@ -7,6 +7,7 @@ import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { faCopyCustom } from "./icons/faCopyCustom";
 import * as Clipboard from "expo-clipboard";
+import { weiToEth } from "../services/transaction_service";
 
 type Props = {
     transaction: Transaction;
@@ -41,7 +42,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
                 >
                     {isIncommingTransaction ? "+" : "-"}
-                    {transaction.amount + " "} {getCurrencyType()}
+                    {weiToEth(transaction.amount) + " "} {getCurrencyType()}
                 </Text>
                 <Text color="text.500" style={styles.transactionsAddress}>
                     {formatTransactionAddress(transaction.transactionAddress)}

@@ -34,7 +34,11 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
             <Box backgroundColor="white" style={styles.transactionWrapper}>
                 {transactions.map((transaction, i) => (
                     <Box key={i}>
-                        <TransactionListItem transaction={transaction} walletAddress={walletAddress} navigation = {navigation} />
+                        <TransactionListItem
+                            transaction={transaction}
+                            walletAddress={walletAddress}
+                            navigation={navigation}
+                        />
                     </Box>
                 ))}
             </Box>
@@ -48,7 +52,11 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
                     <>
                         {renderHeader(new Date(transaction.createdAt.toString()))}
                         <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
-                            <TransactionListItem transaction={transaction} walletAddress={walletAddress} navigation={navigation} />
+                            <TransactionListItem
+                                transaction={transaction}
+                                walletAddress={walletAddress}
+                                navigation={navigation}
+                            />
                         </Box>
                     </>
                 ))}

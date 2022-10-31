@@ -24,7 +24,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     const transactionGateway = new TransactionsGateway();
 
     const { token, user } = React.useContext(AuthContext);
-    
+
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 
     React.useEffect(() => {
@@ -76,19 +76,27 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <Text style={styles.detailsText}>Details</Text>
             </Center>
             <HStack>
-                <Text style={styles.transactions}>
-                    Transactions
-                </Text>
-                <Pressable onPress={() => navigation.navigate("TransactionsListScreen", {
+                <Text style={styles.transactions}>Transactions</Text>
+                <Pressable
+                    onPress={() =>
+                        navigation.navigate("TransactionsListScreen", {
                             transactions: transactions,
                             walletAddress: address,
                             displaySeparation: true,
-                        })} style={styles.rightArrowIcon}>
+                        })
+                    }
+                    style={styles.rightArrowIcon}
+                >
                     <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
                 </Pressable>
             </HStack>
             <ScrollView>
-                <TransactionList transactions={transactions} walletAddress={address} displaySeparation={false} navigation={navigation}/>
+                <TransactionList
+                    transactions={transactions}
+                    walletAddress={address}
+                    displaySeparation={false}
+                    navigation={navigation}
+                />
             </ScrollView>
         </View>
     );
@@ -159,6 +167,5 @@ const styles = StyleSheet.create({
     rightArrowIcon: {
         marginLeft: "auto",
         paddingRight: 15,
-
-    }
+    },
 });

@@ -27,3 +27,7 @@ export function getTransactionTotalSent(transactions: Transaction[], address: st
 
     return Web3.utils.fromWei(totalInWei, "ether");
 }
+
+export function weiToEth(weiValue: string): string {
+    return Web3.utils.fromWei(weiValue);
+}

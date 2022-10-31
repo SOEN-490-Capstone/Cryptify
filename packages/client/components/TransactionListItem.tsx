@@ -5,8 +5,8 @@ import { Pressable, StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
-import { getFormattedAmount } from "../services/currency_service";
 import { CompositeNavigationProp } from "@react-navigation/native";
+import { weiToEth } from "../services/transaction_service";
 
 type Props = {
     transaction: Transaction;
@@ -30,8 +30,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
     }
 
     function getFromattedDate(date: Date): string {
-        if(date == null)
-            return "";
+        if (date == null) return "";
         const day = date.getDay();
         const year = date.getFullYear();
         const hour = date.getHours() % 12;
@@ -43,13 +42,15 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
     }
 
     return (
-        <Pressable onPress={() =>
-            navigation.navigate("TransactionDetailsScreen", {
-                title: "Monday",
-                transaction: transaction,
-                walletAddress: walletAddress,
-            })
-        }>
+        <Pressable
+            onPress={() =>
+                navigation.navigate("TransactionDetailsScreen", {
+                    title: "Monday",
+                    transaction: transaction,
+                    walletAddress: walletAddress,
+                })
+            }
+        >
             <Box style={styles.transactionItemWrapper}>
                 <HStack>
                     <FontAwesomeIcon
@@ -64,17 +65,19 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                             </Text>
                             <Text
                                 color={isIncommingTransaction ? "success.600" : "text.600"}
-                                style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
+                                style={
+                                    isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut
+                                }
                             >
                                 {isIncommingTransaction ? "+" : "-"}
-                                {formatAmount(transaction.amount)}
+                                {formatAmount(weiToEth(transaction.amount))}
                             </Text>
                         </HStack>
                         <HStack>
                             <Text color="text.500" style={styles.transactionDate}>
                                 {/* For some reason the transaction.createdAt does not have the "day" attributes */}
                                 {/* TODO fix the attributes in the transaction */}
-                                {getFromattedDate( new Date(transaction.createdAt.toString()))}
+                                {getFromattedDate(new Date(transaction.createdAt.toString()))}
                             </Text>
                             <Text color="text.500" style={styles.transactionCurrency}>
                                 {getCurrencyType()}

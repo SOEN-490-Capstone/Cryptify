@@ -120,6 +120,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 })}
             />
             <HomeStack.Screen
+                name="WalletOverviewScreen"
+                component={WalletOverviewScreen}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                })}
+            />
+            <HomeStack.Screen
                 name="WalletDetailsScreen"
                 component={WalletDetailsScreen}
                 options={{

@@ -35,8 +35,13 @@ export default function WalletDetailsScreen({ route }: Props) {
     const count = getTransactionCount(transactions, address);
     const totalReceived = getTransactionTotalReceived(transactions, address);
     const totalSent = getTransactionTotalSent(transactions, address);
+    
+    type KeyValueProps = {
+        key: string;
+        value: string;
+    }
 
-    function KeyValue(key: string, value: string) {
+    function KeyValue({key, value}: KeyValueProps) {
         return (
             <>
                 <Text style={styles.label}>{key}</Text>
@@ -45,17 +50,14 @@ export default function WalletDetailsScreen({ route }: Props) {
             </>
         );
     }
-    //const count = 15;
+    
     return (
         <View style={styles.view}>
             <Text style={styles.header}>Wallet Details</Text>
             <Box marginTop="20px"></Box>
-            <Text style={styles.label}>Name</Text>
-            <Text style={styles.value}>{name}</Text>
+            <KeyValue key="Name" value={name}/>
+            <KeyValue key="Address" value={address.toLocaleLowerCase()}/>
             <Box marginTop="20px"></Box>
-            <Text style={styles.label}>Address</Text>
-            <Text style={styles.value}>{address.toLowerCase()}</Text>
-            <Box marginTop="40px"></Box>
             <Text style={styles.header}>Transaction Details</Text>
             <Box marginTop="20px"></Box>
             <HStack justifyContent="space-between">
@@ -67,14 +69,9 @@ export default function WalletDetailsScreen({ route }: Props) {
                 </VStack>
             </HStack>
             <Box marginTop="20px"></Box>
-            <Text style={styles.label}>Total Received</Text>
-            <Text style={styles.value}>{totalReceived}</Text>
-            <Box marginTop="20px"></Box>
-            <Text style={styles.label}>Total Sent</Text>
-            <Text style={styles.value}>{totalSent}</Text>
-            <Box marginTop="20px"></Box>
-            <Text style={styles.label}>Final Balance</Text>
-            <Text style={styles.value}>{balance}</Text>
+            <KeyValue key="Total Received" value={totalReceived}/>
+            <KeyValue key="Total Sent" value={totalSent}/>
+            <KeyValue key="Final Balance" value={balance}/>
         </View>
     );
 }

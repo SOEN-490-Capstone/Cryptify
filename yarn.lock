@@ -1786,6 +1786,7 @@ __metadata:
     "@types/supertest": ^2.0.12
     alchemy-sdk: ^2.1.0
     jest: ^28.1.2
+    jest-sonar-reporter: ^2.0.0
     pg: ^8.8.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
@@ -9415,7 +9416,6 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
-    jest-sonar-reporter: ^2.0.0
     prettier: ^2.5.1
     sonarqube-scanner: ^2.8.2
   languageName: unknown

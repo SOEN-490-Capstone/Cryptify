@@ -53,6 +53,7 @@ export default function App() {
                     // If a user has an old JWT token that isn't found in the database catch the not found exception
                     // and set the token to an empty string so the user is redirected back to the welcome page
                     setToken("");
+                    await StorageService.remove(KEY_JWT);
                 }
             }
 

@@ -32,7 +32,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
             //TODO sort the transactions by date
-            setTransactions([]);
+            setTransactions(transactions);
         })();
     }, []);
 

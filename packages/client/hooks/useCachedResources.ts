@@ -15,7 +15,9 @@ export default function useCachedResources() {
                 // Load fonts
                 await Font.loadAsync({
                     ...FontAwesome.font,
-                    "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
+                    "SegoeUI-Regular": require("../assets/fonts/SegoeUI-Regular.ttf"),
+                    "SegoeUI-Semibold": require("../assets/fonts/SegoeUI-Semibold.ttf"),
+                    "SegoeUI-Bold": require("../assets/fonts/SegoeUI-Bold.ttf"),
                 });
             } catch (e) {
                 // We might want to provide this error information to an error reporting service

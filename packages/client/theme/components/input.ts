@@ -50,8 +50,14 @@ export const input = {
             },
         },
     },
+    sizes: {
+        callout: {
+            fontSize: "callout",
+            lineHeight: "callout",
+        },
+    },
     defaultProps: {
-        size: "lg",
+        size: "callout",
         variant: "outline",
     },
 };

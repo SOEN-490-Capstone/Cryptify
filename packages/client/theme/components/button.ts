@@ -38,8 +38,16 @@ export const button = {
             },
         },
     },
+    sizes: {
+        body: {
+            _text: {
+                fontSize: "body",
+                lineHeight: "body",
+            },
+        },
+    },
     defaultProps: {
         variant: "solid",
-        size: "lg",
+        size: "body",
     },
 };

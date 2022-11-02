@@ -23,5 +23,5 @@ module.exports = {
         ],
         "@typescript-eslint/no-explicit-any": 0,
     },
-    ignorePatterns: ["dist", "pgdata", "android", "ios"],
+    ignorePatterns: ["dist", "android", "ios", "coverage"],
 };

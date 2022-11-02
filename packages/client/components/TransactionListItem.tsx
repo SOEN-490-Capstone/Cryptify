@@ -1,12 +1,13 @@
 import React from "react";
-import { Text, HStack, Box, VStack } from "native-base";
+import { Text, HStack, Box, VStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import { weiToEth } from "../services/transaction_service";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { getFormattedAmount } from "../services/currency_service";
 
 type Props = {
     transaction: Transaction;
@@ -64,13 +65,14 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                                 {formatTransactionAddress(transaction.transactionAddress)}
                             </Text>
                             <Text
-                                color={isIncommingTransaction ? "success.600" : "text.600"}
+                                color={isIncommingTransaction ? "success.600" : "text.700"}
                                 style={
                                     isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut
                                 }
                             >
                                 {isIncommingTransaction ? "+" : "-"}
-                                {formatAmount(weiToEth(transaction.amount))}
+                                {/* TODO fomat amount only once and find a way to add elipsis dynamically */}
+                                {formatAmount(getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM))}
                             </Text>
                         </HStack>
                         <HStack>

@@ -28,6 +28,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
 
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 
+    //TODO get all transactions only once. Remove it from the wallet details page
     React.useEffect(() => {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
@@ -78,9 +79,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
             </Center>
             <HStack style={styles.transactionBox}>
                 <Text style={styles.transactions}>Transactions</Text>
-                {transactions.length == 0 ? (
-                    <></>
-                ) : (
+                {transactions.length == 0 && (
                     <Pressable
                         onPress={() =>
                             navigation.navigate("TransactionsListScreen", {

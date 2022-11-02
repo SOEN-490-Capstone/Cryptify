@@ -14,14 +14,14 @@ type Props = {
 
 export function TransactionList({ transactions, walletAddress, displaySeparation, navigation }: Props) {
     let savedDate = new Date();
-    function renderHeader(date: Date, i: number) {
+    function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {
             savedDate = date;
             return;
         }
         savedDate = date;
         return (
-            <Box key={i} backgroundColor="text.100">
+            <Box key={+date} backgroundColor="text.100">
                 <Text color="text.500" style={styles.dateSeparator}>
                     {date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear()}
                 </Text>
@@ -48,11 +48,9 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
     if (displaySeparation) {
         return (
             <>
-                {transactions.map((transaction, i, j) => (
+                {transactions.map((transaction, i) => (
                     <>
-                        {/* I cannot think of a better way to index the headercomponents */}
-                        {/* TODO find a better way of assigning a key to the transactionListItem and header */}
-                        {renderHeader(new Date(transaction.createdAt.toString()), i + j.length)}
+                        {renderHeader(new Date(transaction.createdAt.toString()))}
                         <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
                             <TransactionListItem
                                 transaction={transaction}

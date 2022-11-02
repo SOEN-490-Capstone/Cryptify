@@ -1,12 +1,18 @@
 import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { Pressable, Box, Text, HStack, VStack, Center } from "native-base";
+import { Pressable, Box, Text, HStack, VStack, Center, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { faEthereumCustom } from "../components/icons/faEthereumCustom";
+import { faArrowRightCustom } from "../components/icons/faArrowRightCustom";
 import { CompositeScreenProps } from "@react-navigation/native";
+import { TransactionList } from "../components/TransactionList";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { TransactionsGateway } from "../gateways/transactions_gateway";
+import { AuthContext } from "../components/contexts/AuthContext";
+import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -15,6 +21,21 @@ type Props = CompositeScreenProps<
 
 export default function WalletOverviewScreen({ route, navigation }: Props) {
     const { address, name, currencyType, balance } = route.params;
+
+    const transactionGateway = new TransactionsGateway();
+
+    const { token, user } = React.useContext(AuthContext);
+
+    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+
+    //TODO get all transactions only once. Remove it from the wallet details page
+    React.useEffect(() => {
+        (async () => {
+            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
+            //TODO sort the transactions by date
+            setTransactions(transactions);
+        })();
+    }, []);
 
     function formatWalletAddress(address: string): string {
         return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
@@ -56,6 +77,38 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <Box marginTop="4px"></Box>
                 <Text style={styles.detailsText}>Details</Text>
             </Center>
+            <HStack style={styles.transactionBox}>
+                <Text style={styles.transactions}>Transactions</Text>
+                {transactions.length == 0 && (
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate("TransactionsListScreen", {
+                                transactions: transactions,
+                                walletAddress: address,
+                                displaySeparation: true,
+                            })
+                        }
+                        style={styles.rightArrowIcon}
+                    >
+                        <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
+                    </Pressable>
+                )}
+            </HStack>
+            {transactions.length == 0 ? (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={faMagnifyingGlassCustom} size={48} />
+                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
+                </VStack>
+            ) : (
+                <ScrollView>
+                    <TransactionList
+                        transactions={transactions}
+                        walletAddress={address}
+                        displaySeparation={false}
+                        navigation={navigation}
+                    />
+                </ScrollView>
+            )}
         </View>
     );
 }
@@ -116,5 +169,25 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         fontSize: 15,
         lineHeight: 20,
+    },
+    transactionBox: {
+        marginBottom: 20,
+        marginTop: 30,
+    },
+    transactions: {
+        fontWeight: "600",
+        fontSize: 20,
+        paddingLeft: 15,
+    },
+    rightArrowIcon: {
+        marginLeft: "auto",
+        paddingRight: 15,
+    },
+    magnifyingGlass: {
+        alignItems: "center",
+    },
+    magnifyingGlassText: {
+        marginTop: 15,
+        fontSize: 17,
     },
 });

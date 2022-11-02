@@ -1,17 +1,21 @@
 import React from "react";
-import { Text, HStack, Box, VStack } from "native-base";
+import { Text, HStack, Box, VStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { getFormattedAmount } from "../services/currency_service";
 
 type Props = {
     transaction: Transaction;
     walletAddress: string;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionListItem({ transaction, walletAddress }: Props) {
+export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
     const isIncommingTransaction = walletAddress == transaction.walletIn;
 
     function formatTransactionAddress(address: string): string {
@@ -27,6 +31,7 @@ export function TransactionListItem({ transaction, walletAddress }: Props) {
     }
 
     function getFromattedDate(date: Date): string {
+        if (date == null) return "";
         const day = date.getDay();
         const year = date.getFullYear();
         const hour = date.getHours() % 12;
@@ -38,37 +43,52 @@ export function TransactionListItem({ transaction, walletAddress }: Props) {
     }
 
     return (
-        <Box style={styles.transactionItemWrapper}>
-            <HStack>
-                <FontAwesomeIcon
-                    icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
-                    style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
-                    size={30}
-                />
-                <VStack style={styles.verticalStack}>
-                    <HStack>
-                        <Text style={styles.transactionsAddress}>
-                            {formatTransactionAddress(transaction.transactionAddress)}
-                        </Text>
-                        <Text
-                            color={isIncommingTransaction ? "success.600" : "text.600"}
-                            style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
-                        >
-                            {isIncommingTransaction ? "+" : "-"}
-                            {formatAmount(transaction.amount)}
-                        </Text>
-                    </HStack>
-                    <HStack>
-                        <Text color="text.500" style={styles.transactionDate}>
-                            {getFromattedDate(transaction.createdAt)}
-                        </Text>
-                        <Text color="text.500" style={styles.transactionCurrency}>
-                            {getCurrencyType()}
-                        </Text>
-                    </HStack>
-                </VStack>
-            </HStack>
-        </Box>
+        <Pressable
+            onPress={() =>
+                navigation.navigate("TransactionDetailsScreen", {
+                    title: "Monday",
+                    transaction: transaction,
+                    walletAddress: walletAddress,
+                })
+            }
+        >
+            <Box style={styles.transactionItemWrapper}>
+                <HStack>
+                    <FontAwesomeIcon
+                        icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                        style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
+                        size={30}
+                    />
+                    <VStack style={styles.verticalStack}>
+                        <HStack>
+                            <Text style={styles.transactionsAddress}>
+                                {formatTransactionAddress(transaction.transactionAddress)}
+                            </Text>
+                            <Text
+                                color={isIncommingTransaction ? "success.600" : "text.700"}
+                                style={
+                                    isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut
+                                }
+                            >
+                                {isIncommingTransaction ? "+" : "-"}
+                                {/* TODO fomat amount only once and find a way to add elipsis dynamically */}
+                                {formatAmount(getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM))}
+                            </Text>
+                        </HStack>
+                        <HStack>
+                            <Text color="text.500" style={styles.transactionDate}>
+                                {/* For some reason the transaction.createdAt does not have the "day" attributes */}
+                                {/* TODO fix the attributes in the transaction */}
+                                {getFromattedDate(new Date(transaction.createdAt.toString()))}
+                            </Text>
+                            <Text color="text.500" style={styles.transactionCurrency}>
+                                {getCurrencyType()}
+                            </Text>
+                        </HStack>
+                    </VStack>
+                </HStack>
+            </Box>
+        </Pressable>
     );
 }
 

@@ -7,6 +7,8 @@ import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom
 import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { faCopyCustom } from "./icons/faCopyCustom";
 import * as Clipboard from "expo-clipboard";
+import { getFormattedAmount } from "../services/currency_service";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
     transaction: Transaction;
@@ -41,7 +43,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
                 >
                     {isIncommingTransaction ? "+" : "-"}
-                    {transaction.amount + " "} {getCurrencyType()}
+                    {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM) + " "} {getCurrencyType()}
                 </Text>
                 <Text color="text.500" style={styles.transactionsAddress}>
                     {formatTransactionAddress(transaction.transactionAddress)}

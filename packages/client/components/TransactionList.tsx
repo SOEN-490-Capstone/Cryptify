@@ -3,14 +3,16 @@ import { Text, Box } from "native-base";
 import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionListItem } from "./TransactionListItem";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     transactions: Transaction[];
     walletAddress: string;
     displaySeparation: boolean;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionList({ transactions, walletAddress, displaySeparation }: Props) {
+export function TransactionList({ transactions, walletAddress, displaySeparation, navigation }: Props) {
     let savedDate = new Date();
     function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {
@@ -19,7 +21,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         }
         savedDate = date;
         return (
-            <Box backgroundColor="text.100">
+            <Box key={+date} backgroundColor="text.100">
                 <Text color="text.500" style={styles.dateSeparator}>
                     {date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear()}
                 </Text>
@@ -32,7 +34,11 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
             <Box backgroundColor="white" style={styles.transactionWrapper}>
                 {transactions.map((transaction, i) => (
                     <Box key={i}>
-                        <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
+                        <TransactionListItem
+                            transaction={transaction}
+                            walletAddress={walletAddress}
+                            navigation={navigation}
+                        />
                     </Box>
                 ))}
             </Box>
@@ -44,9 +50,13 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
             <>
                 {transactions.map((transaction, i) => (
                     <>
-                        {renderHeader(transaction.createdAt)}
+                        {renderHeader(new Date(transaction.createdAt.toString()))}
                         <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
-                            <TransactionListItem transaction={transaction} walletAddress={walletAddress} />
+                            <TransactionListItem
+                                transaction={transaction}
+                                walletAddress={walletAddress}
+                                navigation={navigation}
+                            />
                         </Box>
                     </>
                 ))}

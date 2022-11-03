@@ -21,7 +21,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         }
         savedDate = date;
         return (
-            <Box key={+date} backgroundColor="text.100">
+            <Box key={+date} backgroundColor="text.100" testID="transactionsDateSeparator">
                 <Text color="text.500" style={styles.dateSeparator}>
                     {date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear()}
                 </Text>
@@ -31,9 +31,9 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
 
     function renderTransactions(transactions: Transaction[]) {
         return (
-            <Box backgroundColor="white" style={styles.transactionWrapper} testID={"transactionsList"}>
+            <Box backgroundColor="white" style={styles.transactionWrapper}>
                 {transactions.map((transaction, i) => (
-                    <Box key={i}>
+                    <Box key={i} testID="transactionWithoutSeparation">
                         <TransactionListItem
                             transaction={transaction}
                             walletAddress={walletAddress}
@@ -51,7 +51,12 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
                 {transactions.map((transaction, i) => (
                     <>
                         {renderHeader(new Date(transaction.createdAt.toString()))}
-                        <Box key={i} backgroundColor="white" style={styles.transactionWrapper}>
+                        <Box
+                            key={i}
+                            backgroundColor="white"
+                            style={styles.transactionWrapper}
+                            testID="transactionWithSepartion"
+                        >
                             <TransactionListItem
                                 transaction={transaction}
                                 walletAddress={walletAddress}

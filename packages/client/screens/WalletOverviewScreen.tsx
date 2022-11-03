@@ -1,6 +1,6 @@
 import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { Pressable, Box, Text, HStack, VStack, Center, ScrollView } from "native-base";
+import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -13,6 +13,7 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
+import { faQrCodeCustom } from "../components/icons/faQrCodeCustom";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -65,18 +66,32 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 </VStack>
             </Box>
             <Box marginTop="20px" marginBottom="0"></Box>
-            <Center>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance })}
-                >
-                    <Box style={styles.walletIconBackground}>
-                        <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
-                    </Box>
-                </Pressable>
-                <Box marginTop="4px"></Box>
-                <Text style={styles.detailsText}>Details</Text>
-            </Center>
+            <HStack paddingX="83px" justifyContent="space-between">
+                <VStack space="4px">
+                    <Pressable
+                        style={styles.button}
+                        onPress={() =>
+                            navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance })
+                        }
+                    >
+                        <Box style={styles.walletIconBackground}>
+                            <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
+                        </Box>
+                    </Pressable>
+                    <Text style={styles.detailsText}>Details</Text>
+                </VStack>
+                <VStack space="4px">
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
+                    >
+                        <Box style={styles.walletIconBackground}>
+                            <FontAwesomeIcon icon={faQrCodeCustom} style={styles.walletIcon} size={20} />
+                        </Box>
+                    </Pressable>
+                    <Text style={styles.detailsText}>QR Code</Text>
+                </VStack>
+            </HStack>
             <HStack style={styles.transactionBox} testID="transactionsListHeader">
                 <Text style={styles.transactions}>Transactions</Text>
                 {transactions.length != 0 && (

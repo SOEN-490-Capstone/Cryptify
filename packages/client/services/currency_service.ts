@@ -21,3 +21,8 @@ export function getFormattedAmount(amount: string, type: CurrencyType): string {
     }
     return parts.join(".");
 }
+
+export const currencyTagToName = new Map<string, CurrencyType>([
+    ["ETH", CurrencyType.ETHEREUM],
+    ["BTC", CurrencyType.BITCOIN],
+]);

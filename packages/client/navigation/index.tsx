@@ -36,6 +36,8 @@ import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 import TransactionsListScreen from "../screens/TransactionsListScreen";
+import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
+import { AddressShareButton } from "../components/ShareButton";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -161,6 +163,23 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 }}
+            />
+            <HomeStack.Screen
+                name="WalletQRCodeScreen"
+                component={WalletQRCodeScreen}
+                options={({ route }) => ({
+                    title: "QR Code",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
+                    ),
+                })}
             />
         </HomeStack.Navigator>
     );
@@ -299,6 +318,23 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 }}
+            />
+            <HomeStack.Screen
+                name="WalletQRCodeScreen"
+                component={WalletQRCodeScreen}
+                options={({ route }) => ({
+                    title: "QR Code",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
+                    ),
+                })}
             />
         </SettingsStack.Navigator>
     );

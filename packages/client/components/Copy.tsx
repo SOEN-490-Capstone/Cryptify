@@ -12,10 +12,11 @@ type Props = {
 export function Copy({ label, value }: Props) {
     const toast = useToast();
 
-    const copyToClipboard = async (valueToCopy: string) => {
+    async function copyToClipboard(valueToCopy: string) {
         await Clipboard.setStringAsync(valueToCopy);
-    };
+    }
 
+    // To do Refactor Toast styling and custom render to overide native base to avoid code duplicates.
     return (
         <Pressable
             onPress={() => {

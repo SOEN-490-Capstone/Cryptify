@@ -67,7 +67,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
             </Box>
             <Box marginTop="20px" marginBottom="0"></Box>
             <HStack paddingX="83px" justifyContent="space-between">
-                <VStack>
+                <VStack space="4px">
                     <Pressable
                         style={styles.button}
                         onPress={() =>
@@ -78,10 +78,9 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
-                    <Box marginTop="4px"></Box>
                     <Text style={styles.detailsText}>Details</Text>
                 </VStack>
-                <VStack>
+                <VStack space="4px">
                     <Pressable
                         style={styles.button}
                         onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
@@ -90,7 +89,6 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             <FontAwesomeIcon icon={faQrCodeCustom} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
-                    <Box marginTop="4px"></Box>
                     <Text style={styles.detailsText}>QR Code</Text>
                 </VStack>
             </HStack>

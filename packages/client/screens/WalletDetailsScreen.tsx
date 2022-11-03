@@ -41,12 +41,10 @@ export default function WalletDetailsScreen({ route }: Props) {
             <Text style={styles.header}>Wallet Details</Text>
             <Box marginTop="20px"></Box>
             <RowItem label="Name" value={name} />
-
             <HStack space="10px">
-                <Text style={{ ...styles.address, color: "text.900" }}>{address}</Text>
+                <Text style={{ ...styles.address, color: "text.700" }}>{address}</Text>
                 <Copy label="Address" value={address} />
             </HStack>
-
             <Box marginTop="20px"></Box>
             <Text style={styles.header}>Transaction Details</Text>
             <Box marginTop="20px"></Box>

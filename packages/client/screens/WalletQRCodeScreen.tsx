@@ -4,7 +4,7 @@ import { Text, HStack, Center, VStack } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { getCurrencyNameFromTag } from "../services/currency_service";
+import { currencyTagToName } from "../services/currency_service";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import RowItem from "../components/RowItem";
@@ -19,19 +19,19 @@ type Props = CompositeScreenProps<
 
 export default function WalletQRCodeScreen({ route }: Props) {
     const { address, name, currencyType } = route.params;
-    const currencyName = getCurrencyNameFromTag(currencyType);
+    const currencyName = currencyTagToName.get(currencyType);
 
     return (
         <View style={styles.view}>
             <Text style={styles.text}>
                 Copy and share this information to add{" "}
-                <Text bold>
-                    {titleCase(currencyName)} ({currencyType}){" "}
+                <Text style={{ fontWeight: "600" }}>
+                    {titleCase(currencyName ? currencyName : "")} ({currencyType}){" "}
                 </Text>
                 from another source. A{" "}
-                <Text bold underline>
-                    network fee
-                </Text>{" "}
+                <Text style={{ fontWeight: "600" }} underline>
+                    network fee{" "}
+                </Text>
                 could be required for a transfer to this wallet.
             </Text>
 
@@ -45,16 +45,16 @@ export default function WalletQRCodeScreen({ route }: Props) {
                     <Text style={styles.label}>Address</Text>
                 </HStack>
                 <HStack space="10px">
-                    <Text style={{ ...styles.address, color: "text.900" }}>{address}</Text>
+                    <Text style={{ ...styles.address, color: "text.700" }}>{address}</Text>
                     <Copy label="Address" value={address} />
                 </HStack>
             </VStack>
 
             <HStack style={styles.info}>
-                <FontAwesomeIcon icon={faCircleInfoCustom} size={20} />
+                <FontAwesomeIcon icon={faCircleInfoCustom} size={16} />
                 <Text style={styles.infoText}>
-                    Never enter this address by hand and only send {titleCase(currencyName)} ({currencyType}) to this
-                    address.
+                    Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (
+                    {currencyType}) to this address.
                 </Text>
             </HStack>
         </View>
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
     },
     info: {
+        marginTop: 20,
         borderRadius: 10,
         backgroundColor: "#FFEDD5",
         paddingHorizontal: 12,

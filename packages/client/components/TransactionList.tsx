@@ -33,7 +33,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         return (
             <Box backgroundColor="white" style={styles.transactionWrapper}>
                 {transactions.map((transaction, i) => (
-                    <Box key={i}>
+                    <Box key={i} testID={"transactionsList"}>
                         <TransactionListItem
                             transaction={transaction}
                             walletAddress={walletAddress}

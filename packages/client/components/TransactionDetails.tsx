@@ -31,7 +31,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
     }
 
     const renderHeader = (
-        <Box style={styles.itemWrapper}>
+        <Box style={styles.itemWrapper} testID="transactionDetailsHeader">
             <VStack>
                 <FontAwesomeIcon
                     icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
@@ -54,7 +54,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
     const renderBasicInfo = (
         // TODO
         // dynamically get the wallet name if any
-        <Box style={styles.itemWrapper}>
+        <Box style={styles.itemWrapper} testID="transactionDetailsBasicInfo">
             <VStack>
                 <Box>
                     <Text color="text.500" style={styles.elementInformationTitle}>
@@ -112,7 +112,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         // TODO
         // Get Gas
         // Get Gas Limit
-        <Box style={styles.itemWrapper}>
+        <Box style={styles.itemWrapper} testID="transactionDetailsFee">
             <VStack>
                 <Text style={styles.categoryTitle}>Transaction Fee</Text>
                 <Box style={styles.subItemWrapper}>
@@ -135,7 +135,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
     const renderOtherDetails = (
         // TODO
         // Add block number, position in block and nonce
-        <Box style={styles.itemWrapper}>
+        <Box style={styles.itemWrapper} testID="transactionDetailsOtherDetails">
             <VStack>
                 <Box>
                     <Text style={styles.categoryTitle}>Other Details</Text>

@@ -4,18 +4,14 @@ export async function pressBackLeft() {
     if (device.getPlatform() === "android") {
         await device.pressBack(); // Android only
     } else {
-        for(let i =0; i<= 15; i++){
-            try{
-                await element(by.traits(['button']))
-                .atIndex(i)
-                .tap();
+        for (let i = 0; i <= 20; i++) {
+            try {
+                await element(by.traits(["button"]))
+                    .atIndex(i)
+                    .tap();
                 break;
-            }
-            catch(e){
-
-            }
+            } catch (e) {}
         }
-        
     }
 }
 

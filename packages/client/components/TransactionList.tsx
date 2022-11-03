@@ -31,9 +31,9 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
 
     function renderTransactions(transactions: Transaction[]) {
         return (
-            <Box backgroundColor="white" style={styles.transactionWrapper}>
+            <Box backgroundColor="white" style={styles.transactionWrapper} testID={"transactionsList"}>
                 {transactions.map((transaction, i) => (
-                    <Box key={i} testID={"transactionsList"}>
+                    <Box key={i}>
                         <TransactionListItem
                             transaction={transaction}
                             walletAddress={walletAddress}

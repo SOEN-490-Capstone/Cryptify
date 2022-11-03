@@ -34,12 +34,12 @@ describe("Home Page CRYP-101", () => {
 
         // Assert transaction details are visible
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
-        await expect(element(by.id("transactionsList")).atIndex(0)).toBeVisible();
-        await element(by.id("transactionsList")).atIndex(0).tap();
-        await expect(element(by.id("transactionDetailsHeader"))).toBeVisible();
-        await expect(element(by.id("transactionDetailsBasicInfo"))).toBeVisible();
-        await expect(element(by.id("transactionDetailsFee"))).toBeVisible();
-        // await element(by.id('transactionDetailsFee')).scrollTo('bottom');
+        await expect(element(by.id("transactionsList"))).toExist();
+        await expect(element(by.id("transactionsListItem")).atIndex(0)).toExist();
+        await element(by.id("transactionsListItem")).atIndex(0).tap();
+        await expect(element(by.id("transactionDetailsHeader"))).toExist();
+        await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
+        await expect(element(by.id("transactionDetailsFee"))).toExist();
         await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
     });
 });

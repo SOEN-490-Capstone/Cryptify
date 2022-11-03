@@ -21,7 +21,7 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
                     Sign in
                 </Button>
             </VStack>
-            {/* <WelcomeScreenBackground style={styles.background} /> */}
+            <WelcomeScreenBackground style={styles.background} />
         </View>
     );
 }

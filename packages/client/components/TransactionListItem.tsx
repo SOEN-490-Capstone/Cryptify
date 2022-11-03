@@ -44,7 +44,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
 
     return (
         <Pressable
-        testID={"transactionsListItem"}
+            testID={"transactionsListItem"}
             onPress={() =>
                 navigation.navigate("TransactionDetailsScreen", {
                     title: "Monday",

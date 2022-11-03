@@ -1,0 +1,85 @@
+import { View } from "../components/Themed";
+import { StyleSheet } from "react-native";
+import { Text, Box, HStack, Center, Container, Alert, VStack } from "native-base";
+import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { TransactionsGateway } from "../gateways/transactions_gateway";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import {
+    getTransactionCount,
+    getTransactionTotalReceived,
+    getTransactionTotalSent,
+} from "../services/transaction_service";
+import React from "react";
+import { AuthContext } from "../components/contexts/AuthContext";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { getCurrencyNameFromTag } from "../services/currency_service";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import QRCode from 'react-native-qrcode-svg';
+import RowItem from "../components/RowItem";
+import { faCircleInfoCustom } from "../components/icons/faCircleInfoCustom";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+type Props = CompositeScreenProps<
+    HomeStackScreenProps<"WalletQRCodeScreen">,
+    SettingsStackScreenProps<"WalletQRCodeScreen">
+>;
+
+export default function WalletQRCodeScreen({ route }: Props) {
+    const { address, name, currencyType } = route.params;
+    const currencyName = getCurrencyNameFromTag(currencyType);
+
+    return (
+        <View style={styles.view}>
+            <Text style={styles.text}>
+                Copy and share this information to add <Text bold>{titleCase(currencyName)} ({currencyType}) </Text>
+                from another source. A <Text bold underline>network fee</Text> could be required for a transfer to this wallet.
+            </Text>
+
+            <Center style={styles.qrCode}>
+                <QRCode
+                    value={address}
+                    size={200}
+                    logoMargin={0}
+                />
+            </Center>
+
+            <RowItem label="Name" value={name}/>
+            <RowItem label="Address" value={address}/>
+
+            <HStack style={styles.info}>
+                    <FontAwesomeIcon icon={faCircleInfoCustom} size={20}/>
+                    <Text style={styles.infoText}>Never enter this address by hand and only send {titleCase(currencyName)} ({currencyType}) to this address.</Text>
+            </HStack>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    view: {
+        flex: 1,
+        paddingHorizontal: 15,
+        paddingBottom: 15,
+        paddingTop: 20,
+    },
+    text: {
+        fontWeight: "400",
+        fontSize: 15,
+        lineHeight: 20,
+    },
+    qrCode: {
+        paddingVertical: 20,
+    },
+    info: {
+        borderRadius: 10,
+        backgroundColor: "#FFEDD5",
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: "center",
+    },
+    infoText: {
+        fontSize: 13,
+        lineHeight: 17,
+        fontWeight: "400",
+        paddingLeft: 10,
+    }
+});

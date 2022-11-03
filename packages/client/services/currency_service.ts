@@ -21,3 +21,17 @@ export function getFormattedAmount(amount: string, type: CurrencyType): string {
     }
     return parts.join(".");
 }
+
+export function getCurrencyNameFromTag(currencyTag: string): string {
+    
+    switch(currencyTag){
+        case "ETH": {
+            return CurrencyType.ETHEREUM;
+        }
+        case "BTC": {
+            return CurrencyType.BITCOIN;
+        }
+    }
+
+    return "";
+}

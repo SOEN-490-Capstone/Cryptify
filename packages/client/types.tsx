@@ -43,6 +43,12 @@ type WalletDetailsScreenProps = {
     balance: string;
 };
 
+type WalletQRCodeProps = {
+    address: string;
+    name: string;
+    currencyType: string;
+};
+
 type TransactionsListScreenProps = {
     transactions: Transaction[];
     walletAddress: string;
@@ -57,6 +63,7 @@ export type HomeStackParamList = {
     WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
+    WalletQRCodeScreen: WalletQRCodeProps
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -73,6 +80,7 @@ export type SettingsStackParamList = {
     WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
+    WalletQRCodeScreen: WalletQRCodeProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

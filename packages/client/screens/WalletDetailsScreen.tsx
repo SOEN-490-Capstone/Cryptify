@@ -11,6 +11,7 @@ import {
 } from "../services/transaction_service";
 import React from "react";
 import { AuthContext } from "../components/contexts/AuthContext";
+import RowItem  from "../components/RowItem";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
@@ -33,21 +34,6 @@ export default function WalletDetailsScreen({ route }: Props) {
     const count = getTransactionCount(transactions, address);
     const totalReceived = getTransactionTotalReceived(transactions, address);
     const totalSent = getTransactionTotalSent(transactions, address);
-
-    type RowItemsProps = {
-        label: string;
-        value: string;
-    };
-
-    function RowItem({ label, value }: RowItemsProps) {
-        return (
-            <>
-                <Text style={{ ...styles.label, color: "text.500" }}>{label}</Text>
-                <Text style={styles.value}>{value}</Text>
-                <Box marginTop="20px"></Box>
-            </>
-        );
-    }
 
     return (
         <View style={styles.view}>

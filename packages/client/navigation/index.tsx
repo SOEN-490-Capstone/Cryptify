@@ -24,7 +24,7 @@ import { faBarsCustom } from "../components/icons/faBarsCustom";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
-import { Pressable } from "native-base";
+import { Button, Pressable } from "native-base";
 import { faXMarkCustom } from "../components/icons/faXMarkCustom";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
@@ -37,6 +37,7 @@ import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 import TransactionsListScreen from "../screens/TransactionsListScreen";
 import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
+import { AddressShareButton } from "../components/ShareButton";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -166,7 +167,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             <HomeStack.Screen
                 name="WalletQRCodeScreen"
                 component={WalletQRCodeScreen}
-                options={{
+                options={({ route }) => ({
                     title: "QR Code",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -175,7 +176,8 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                }}
+                    headerRight: () => (<AddressShareButton currencyType={route.params.currencyType} address={route.params.address}/>)
+                })}
             />
         </HomeStack.Navigator>
     );
@@ -315,10 +317,10 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 }}
             />
-            <SettingsStack.Screen
+            <HomeStack.Screen
                 name="WalletQRCodeScreen"
                 component={WalletQRCodeScreen}
-                options={{
+                options={({ route }) => ({
                     title: "QR Code",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -327,7 +329,8 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                }}
+                    headerRight: () => (<AddressShareButton currencyType={route.params.currencyType} address={route.params.address}/>)
+                })}
             />
         </SettingsStack.Navigator>
     );

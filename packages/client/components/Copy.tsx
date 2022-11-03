@@ -56,16 +56,3 @@ const styles = StyleSheet.create({
         paddingVertical: 10.5,
     },
 });
-
-{
-    /* <Pressable onPress={() => {
-    copyToClipboard(address);
-    toast.show({
-        placement: "top",
-        duration: 2000,
-        render: () => {
-            return <Box style={styles.toastBox}><Text style={styles.toastText}>address copied to clipboard</Text></Box>
-        },
-    })
-}}> */
-}

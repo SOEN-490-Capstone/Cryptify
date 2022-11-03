@@ -79,7 +79,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
             </Center>
             <HStack style={styles.transactionBox}>
                 <Text style={styles.transactions}>Transactions</Text>
-                {transactions.length == 0 && (
+                {transactions.length != 0 && (
                     <Pressable
                         onPress={() =>
                             navigation.navigate("TransactionsListScreen", {

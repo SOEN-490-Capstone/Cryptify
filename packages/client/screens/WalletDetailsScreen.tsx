@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { AuthContext } from "../components/contexts/AuthContext";
 import RowItem  from "../components/RowItem";
+import { Copy } from "../components/Copy";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
@@ -40,7 +41,12 @@ export default function WalletDetailsScreen({ route }: Props) {
             <Text style={styles.header}>Wallet Details</Text>
             <Box marginTop="20px"></Box>
             <RowItem label="Name" value={name} />
-            <RowItem label="Address" value={address.toLocaleLowerCase()} />
+
+            <HStack space="10px">
+                <Text style={{...styles.address, color: "text.900"}}>{address}</Text>
+                <Copy label="Address" value={address}/>
+            </HStack> 
+
             <Box marginTop="20px"></Box>
             <Text style={styles.header}>Transaction Details</Text>
             <Box marginTop="20px"></Box>
@@ -75,5 +81,10 @@ const styles = StyleSheet.create({
     value: {
         fontSize: 17,
         lineHeight: 23,
+    },
+    address: {
+        fontSize: 17,
+        lineHeight: 23,
+        flex: 1,
     },
 });

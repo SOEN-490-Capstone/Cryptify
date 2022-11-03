@@ -10,7 +10,7 @@ type RowItemsProps = {
 export default function RowItem({ label, value }: RowItemsProps) {
     return (
         <>
-            <Text style={{ ...styles.label, color: "text.500" }}>{label}</Text>
+            <Text style={styles.label}>{label}</Text>
             <Text style={styles.value}>{value}</Text>
             <Box marginTop="20px"></Box>
         </>
@@ -19,6 +19,7 @@ export default function RowItem({ label, value }: RowItemsProps) {
 
 const styles = StyleSheet.create({
     label: {
+        fontWeight: "400",
         fontSize: 15,
         lineHeight: 20,
     },

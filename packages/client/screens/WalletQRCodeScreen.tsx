@@ -1,6 +1,6 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Box, HStack, Center, Container, Alert, VStack } from "native-base";
+import { Text, Box, HStack, Center, Container, Alert, VStack, Pressable, useToast } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -18,6 +18,9 @@ import QRCode from 'react-native-qrcode-svg';
 import RowItem from "../components/RowItem";
 import { faCircleInfoCustom } from "../components/icons/faCircleInfoCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import * as Clipboard from "expo-clipboard";
+import { faCopyCustom } from "../components/icons/faCopyCustom";
+import { Copy } from "../components/Copy";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletQRCodeScreen">,
@@ -27,6 +30,12 @@ type Props = CompositeScreenProps<
 export default function WalletQRCodeScreen({ route }: Props) {
     const { address, name, currencyType } = route.params;
     const currencyName = getCurrencyNameFromTag(currencyType);
+    const toast = useToast();
+
+    const copyToClipboard = async (valueToCopy: string) => {
+        await Clipboard.setStringAsync(valueToCopy);
+    };
+    
 
     return (
         <View style={styles.view}>
@@ -44,7 +53,15 @@ export default function WalletQRCodeScreen({ route }: Props) {
             </Center>
 
             <RowItem label="Name" value={name}/>
-            <RowItem label="Address" value={address}/>
+            <VStack>
+                <HStack>
+                    <Text style={styles.label}>Address</Text>
+                </HStack>
+                <HStack space="10px">
+                    <Text style={{...styles.address, color: "text.900"}}>{address}</Text>
+                    <Copy label="Address" value={address}/>
+                </HStack> 
+            </VStack>
 
             <HStack style={styles.info}>
                     <FontAwesomeIcon icon={faCircleInfoCustom} size={20}/>
@@ -81,5 +98,19 @@ const styles = StyleSheet.create({
         lineHeight: 17,
         fontWeight: "400",
         paddingLeft: 10,
-    }
+    },
+    copyIcon: {
+        //darkBlue.500
+        color: "#0077E6",
+        paddingHorizontal: 10,
+    },
+    label: {
+        fontSize: 15,
+        lineHeight: 20,
+    },
+    address: {
+        fontSize: 17,
+        lineHeight: 23,
+        flex: 1,
+    },
 });

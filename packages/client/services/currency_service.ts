@@ -23,8 +23,7 @@ export function getFormattedAmount(amount: string, type: CurrencyType): string {
 }
 
 export function getCurrencyNameFromTag(currencyTag: string): string {
-    
-    switch(currencyTag){
+    switch (currencyTag) {
         case "ETH": {
             return CurrencyType.ETHEREUM;
         }

@@ -1,25 +1,15 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Box, HStack, Center, Container, Alert, VStack, Pressable, useToast } from "native-base";
+import { Text, HStack, Center, VStack } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { TransactionsGateway } from "../gateways/transactions_gateway";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import {
-    getTransactionCount,
-    getTransactionTotalReceived,
-    getTransactionTotalSent,
-} from "../services/transaction_service";
 import React from "react";
-import { AuthContext } from "../components/contexts/AuthContext";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { getCurrencyNameFromTag } from "../services/currency_service";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import QRCode from 'react-native-qrcode-svg';
+import QRCode from "react-native-qrcode-svg";
 import RowItem from "../components/RowItem";
 import { faCircleInfoCustom } from "../components/icons/faCircleInfoCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import * as Clipboard from "expo-clipboard";
-import { faCopyCustom } from "../components/icons/faCopyCustom";
 import { Copy } from "../components/Copy";
 
 type Props = CompositeScreenProps<
@@ -30,42 +20,42 @@ type Props = CompositeScreenProps<
 export default function WalletQRCodeScreen({ route }: Props) {
     const { address, name, currencyType } = route.params;
     const currencyName = getCurrencyNameFromTag(currencyType);
-    const toast = useToast();
-
-    const copyToClipboard = async (valueToCopy: string) => {
-        await Clipboard.setStringAsync(valueToCopy);
-    };
-    
 
     return (
         <View style={styles.view}>
             <Text style={styles.text}>
-                Copy and share this information to add <Text bold>{titleCase(currencyName)} ({currencyType}) </Text>
-                from another source. A <Text bold underline>network fee</Text> could be required for a transfer to this wallet.
+                Copy and share this information to add{" "}
+                <Text bold>
+                    {titleCase(currencyName)} ({currencyType}){" "}
+                </Text>
+                from another source. A{" "}
+                <Text bold underline>
+                    network fee
+                </Text>{" "}
+                could be required for a transfer to this wallet.
             </Text>
 
             <Center style={styles.qrCode}>
-                <QRCode
-                    value={address}
-                    size={200}
-                    logoMargin={0}
-                />
+                <QRCode value={address} size={200} logoMargin={0} />
             </Center>
 
-            <RowItem label="Name" value={name}/>
+            <RowItem label="Name" value={name} />
             <VStack>
                 <HStack>
                     <Text style={styles.label}>Address</Text>
                 </HStack>
                 <HStack space="10px">
-                    <Text style={{...styles.address, color: "text.900"}}>{address}</Text>
-                    <Copy label="Address" value={address}/>
-                </HStack> 
+                    <Text style={{ ...styles.address, color: "text.900" }}>{address}</Text>
+                    <Copy label="Address" value={address} />
+                </HStack>
             </VStack>
 
             <HStack style={styles.info}>
-                    <FontAwesomeIcon icon={faCircleInfoCustom} size={20}/>
-                    <Text style={styles.infoText}>Never enter this address by hand and only send {titleCase(currencyName)} ({currencyType}) to this address.</Text>
+                <FontAwesomeIcon icon={faCircleInfoCustom} size={20} />
+                <Text style={styles.infoText}>
+                    Never enter this address by hand and only send {titleCase(currencyName)} ({currencyType}) to this
+                    address.
+                </Text>
             </HStack>
         </View>
     );

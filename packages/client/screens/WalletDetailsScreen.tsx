@@ -11,7 +11,7 @@ import {
 } from "../services/transaction_service";
 import React from "react";
 import { AuthContext } from "../components/contexts/AuthContext";
-import RowItem  from "../components/RowItem";
+import RowItem from "../components/RowItem";
 import { Copy } from "../components/Copy";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
@@ -43,9 +43,9 @@ export default function WalletDetailsScreen({ route }: Props) {
             <RowItem label="Name" value={name} />
 
             <HStack space="10px">
-                <Text style={{...styles.address, color: "text.900"}}>{address}</Text>
-                <Copy label="Address" value={address}/>
-            </HStack> 
+                <Text style={{ ...styles.address, color: "text.900" }}>{address}</Text>
+                <Copy label="Address" value={address} />
+            </HStack>
 
             <Box marginTop="20px"></Box>
             <Text style={styles.header}>Transaction Details</Text>

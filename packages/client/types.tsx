@@ -63,7 +63,7 @@ export type HomeStackParamList = {
     WalletOverviewScreen: WalletOverviewScreenProps;
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
-    WalletQRCodeScreen: WalletQRCodeProps
+    WalletQRCodeScreen: WalletQRCodeProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<

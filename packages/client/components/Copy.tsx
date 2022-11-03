@@ -1,4 +1,4 @@
-import {StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Box, Pressable, Text, useToast } from "native-base";
 import React from "react";
 import * as Clipboard from "expo-clipboard";
@@ -16,22 +16,26 @@ export function Copy({ label, value }: Props) {
         await Clipboard.setStringAsync(valueToCopy);
     };
 
-
     return (
-        <Pressable onPress={() => {
-            copyToClipboard(value);
-            toast.show({
-                placement: "top",
-                duration: 2000,
-                render: () => {
-                    return <Box style={styles.toastBox}><Text style={styles.toastText}>{label} copied to clipboard</Text></Box>
-                },
-            })
-        }}>
+        <Pressable
+            onPress={() => {
+                copyToClipboard(value);
+                toast.show({
+                    placement: "top",
+                    duration: 2000,
+                    render: () => {
+                        return (
+                            <Box style={styles.toastBox}>
+                                <Text style={styles.toastText}>{label} copied to clipboard</Text>
+                            </Box>
+                        );
+                    },
+                });
+            }}
+        >
             <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
         </Pressable>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -50,13 +54,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         paddingHorizontal: 25.5,
         paddingVertical: 10.5,
-    }
+    },
 });
 
-
-
-
-{/* <Pressable onPress={() => {
+{
+    /* <Pressable onPress={() => {
     copyToClipboard(address);
     toast.show({
         placement: "top",
@@ -65,4 +67,5 @@ const styles = StyleSheet.create({
             return <Box style={styles.toastBox}><Text style={styles.toastText}>address copied to clipboard</Text></Box>
         },
     })
-}}> */}
+}}> */
+}

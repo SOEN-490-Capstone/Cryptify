@@ -1,6 +1,6 @@
 import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { Pressable, Box, Text, HStack, VStack, Center, ScrollView } from "native-base";
+import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -70,14 +70,16 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <VStack>
                     <Pressable
                         style={styles.button}
-                        onPress={() => navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance })}
+                        onPress={() =>
+                            navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance })
+                        }
                     >
                         <Box style={styles.walletIconBackground}>
                             <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Box marginTop="4px"></Box>
-                    <Text style={styles.detailsText}>Details</Text>  
+                    <Text style={styles.detailsText}>Details</Text>
                 </VStack>
                 <VStack>
                     <Pressable
@@ -89,7 +91,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         </Box>
                     </Pressable>
                     <Box marginTop="4px"></Box>
-                    <Text style={styles.detailsText}>QR Code</Text>  
+                    <Text style={styles.detailsText}>QR Code</Text>
                 </VStack>
             </HStack>
             <HStack style={styles.transactionBox} testID="transactionsListHeader">

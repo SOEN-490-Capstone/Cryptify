@@ -77,10 +77,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <Box marginTop="4px"></Box>
                 <Text style={styles.detailsText}>Details</Text>
             </Center>
-            <HStack style={styles.transactionBox}>
+            <HStack style={styles.transactionBox} testID="transactionsListHeader">
                 <Text style={styles.transactions}>Transactions</Text>
                 {transactions.length != 0 && (
                     <Pressable
+                        testID="transactionsListButton"
                         onPress={() =>
                             navigation.navigate("TransactionsListScreen", {
                                 transactions: transactions,
@@ -100,7 +101,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
                 </VStack>
             ) : (
-                <ScrollView>
+                <ScrollView testID="transactionsList">
                     <TransactionList
                         transactions={transactions}
                         walletAddress={address}

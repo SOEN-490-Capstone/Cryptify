@@ -1,10 +1,34 @@
 @startuml
+class JwtAuthGuard
+interface GetTransactionsRequest extends InferType
+class CanAccessResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
 enum CurrencyType {
     ETHEREUM
     BITCOIN
 }
+abstract class AbstractGateway {
+    -uri: string
+    -fetch: any
+    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
+    #{abstract} handleError(response: any): Promise<void>
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+abstract class AbstractServiceGateway extends AbstractGateway {
+    #handleError(response: any): Promise<void>
+}
 interface CreateWalletRequest extends InferType
-class JwtAuthGuard
 class User {
     +id: number
     +firstName: string
@@ -33,27 +57,6 @@ interface WalletWithBalance extends Wallet {
     +balance: string
 }
 interface GetWalletsRequest extends InferType
-abstract class AbstractGateway {
-    -uri: string
-    -fetch: any
-    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
-    #{abstract} handleError(response: any): Promise<void>
-}
-enum Method {
-    POST
-    GET
-    PUT
-    PATCH
-    DELETE
-}
-class HttpError extends Error {
-    +message: string
-    +status: number
-}
-abstract class AbstractServiceGateway extends AbstractGateway {
-    #handleError(response: any): Promise<void>
-}
-interface GetTransactionsRequest extends InferType
 abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
     +{abstract} getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
@@ -76,27 +79,19 @@ class EdgeGatewayStrategyFactory {
     -btcEdgeGatewayStrategy: BtcEdgeGatewayStrategy
     +get(currencyType: CurrencyType): AbstractEdgeGatewayStrategy
 }
-class WalletsService {
+class TransactionsService {
     -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
-    +create(req: CreateWalletRequest): Promise<WalletWithBalance>
-    +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +findAll(req: GetTransactionsRequest): Promise<Transaction[]>
 }
-class CanMutateResourceGuard implements CanActivate {
-    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+class TransactionsController {
+    -transactionsService: TransactionsService
+    +findAll(params: GetTransactionsRequest): Promise<Transaction[]>
 }
-class CanAccessResourceGuard implements CanActivate {
-    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
-}
-class WalletsController {
-    -walletsService: WalletsService
-    +create(body: CreateWalletRequest): Promise<WalletWithBalance>
-    +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
-}
+AbstractGateway --> "1" Method
 User --> "*" Wallet
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
-AbstractGateway --> "1" Method
 AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
 AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
 AbstractEdgeGatewayStrategy --> "1" GetWalletsRequest
@@ -119,14 +114,10 @@ EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" CurrencyType
 EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
-WalletsService --> "1" EdgeGatewayStrategyFactory
-WalletsService --> "1" CreateWalletRequest
-WalletsService --> "1" WalletWithBalance
-WalletsService --> "1" GetWalletsRequest
-WalletsService --> "*" WalletWithBalance
-WalletsController --> "1" WalletsService
-WalletsController --> "1" CreateWalletRequest
-WalletsController --> "1" WalletWithBalance
-WalletsController --> "1" GetWalletsRequest
-WalletsController --> "*" WalletWithBalance
+TransactionsService --> "1" EdgeGatewayStrategyFactory
+TransactionsService --> "1" GetTransactionsRequest
+TransactionsService --> "*" Transaction
+TransactionsController --> "1" TransactionsService
+TransactionsController --> "1" GetTransactionsRequest
+TransactionsController --> "*" Transaction
 @enduml

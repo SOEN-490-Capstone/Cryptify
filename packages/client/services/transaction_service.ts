@@ -2,7 +2,9 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
 
 export function getTransactionByWallet(transactions: Transaction[], walletAddress: string): Transaction[] {
-   return transactions.filter((transaction) => transaction.walletIn == walletAddress || transaction.walletOut == walletAddress);
+    return transactions.filter(
+        (transaction) => transaction.walletIn == walletAddress || transaction.walletOut == walletAddress,
+    );
 }
 
 export function getTransactionCount(transactions: Transaction[]): number {

@@ -12,7 +12,7 @@ import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getFormattedAmount, getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import {formatAddress} from "../../services/address_service";
+import { formatAddress } from "../../services/address_service";
 
 type Props = {
     wallets: WalletWithBalance[];

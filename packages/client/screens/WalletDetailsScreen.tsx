@@ -2,15 +2,12 @@ import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, Box, HStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
-import { TransactionsGateway } from "../gateways/transactions_gateway";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import {
     getTransactionCount,
     getTransactionTotalReceived,
     getTransactionTotalSent,
 } from "../services/transaction_service";
 import React from "react";
-import { AuthContext } from "../components/contexts/AuthContext";
 import RowItem from "../components/RowItem";
 import { Copy } from "../components/Copy";
 

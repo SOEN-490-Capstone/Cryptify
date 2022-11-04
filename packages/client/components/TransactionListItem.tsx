@@ -8,7 +8,7 @@ import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getFormattedAmount } from "../services/currency_service";
-import {formatAddress} from "../services/address_service";
+import { formatAddress } from "../services/address_service";
 
 type Props = {
     transaction: Transaction;
@@ -25,14 +25,14 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
 
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);
-        const datePart = date.toLocaleString("en-US", { month: 'short', day: 'numeric', year: 'numeric' });
-        const timePart = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })
-        return `${datePart} • ${timePart}`
+        const datePart = date.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        const timePart = date.toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
+        return `${datePart} • ${timePart}`;
     }
 
     function getWeekday(timestamp: string): string {
         const date = new Date(timestamp);
-        return date.toLocaleString('en-US', { weekday: 'long'});
+        return date.toLocaleString("en-US", { weekday: "long" });
     }
 
     return (

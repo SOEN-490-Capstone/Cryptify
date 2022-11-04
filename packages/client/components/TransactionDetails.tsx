@@ -9,7 +9,7 @@ import { faCopyCustom } from "./icons/faCopyCustom";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount } from "../services/currency_service";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import {formatAddress} from "../services/address_service";
+import { formatAddress } from "../services/address_service";
 
 type Props = {
     transaction: Transaction;

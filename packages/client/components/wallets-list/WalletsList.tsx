@@ -7,7 +7,7 @@ import { WalletsGateway } from "../../gateways/wallets_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faWalletCustom } from "../icons/faWalletCustom";
 import { AuthContext } from "../contexts/AuthContext";
-import { CompositeNavigationProp } from "@react-navigation/native";
+import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native";
 
 type Props = {
     showCurrencyTotals: boolean;
@@ -17,16 +17,23 @@ type Props = {
 export default function WalletsList(props: Props) {
     const walletsGateway = new WalletsGateway();
 
+    const isFocused = useIsFocused();
+
     const { token, user } = React.useContext(AuthContext);
 
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
 
     React.useEffect(() => {
         (async () => {
-            const wallets = await walletsGateway.findAllWallets({ id: user.id }, token);
-            setWallets(wallets);
+            // Get all the users wallets everytime the page comes in focus
+            // without this the home page (because of caching) and the settings page
+            // will not update when a new wallet is added
+            if (isFocused) {
+                const wallets = await walletsGateway.findAllWallets({ id: user.id }, token);
+                setWallets(wallets);
+            }
         })();
-    }, []);
+    }, [isFocused]);
 
     return wallets ? (
         <ScrollView style={styles.scrollView}>

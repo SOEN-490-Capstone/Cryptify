@@ -17,24 +17,11 @@ import { Copy } from "../components/Copy";
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route }: Props) {
-    const { address, name, balance } = route.params;
+    const { address, name, balance, transactions } = route.params;
 
-    const transactionGateway = new TransactionsGateway();
-
-    const { token, user } = React.useContext(AuthContext);
-
-    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
-
-    React.useEffect(() => {
-        (async () => {
-            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            setTransactions(transactions);
-        })();
-    }, []);
-
-    const count = getTransactionCount(transactions, address);
-    const totalReceived = getTransactionTotalReceived(transactions, address);
-    const totalSent = getTransactionTotalSent(transactions, address);
+    const count = getTransactionCount(transactions);
+    const totalReceived = getTransactionTotalReceived(transactions);
+    const totalSent = getTransactionTotalSent(transactions);
 
     return (
         <View style={styles.view}>

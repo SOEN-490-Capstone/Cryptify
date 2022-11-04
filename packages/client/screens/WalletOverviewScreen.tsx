@@ -14,6 +14,7 @@ import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
 import { faQrCodeCustom } from "../components/icons/faQrCodeCustom";
+import {getTransactionByWallet} from "../services/transaction_service";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -29,12 +30,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
 
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 
-    //TODO get all transactions only once. Remove it from the wallet details page
     React.useEffect(() => {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
             //TODO sort the transactions by date
-            setTransactions(transactions);
+            setTransactions(getTransactionByWallet(transactions, address));
         })();
     }, []);
 
@@ -71,7 +71,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     <Pressable
                         style={styles.button}
                         onPress={() =>
-                            navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance })
+                            navigation.navigate("WalletDetailsScreen", { address, name, currencyType, balance, transactions })
                         }
                     >
                         <Box style={styles.walletIconBackground}>

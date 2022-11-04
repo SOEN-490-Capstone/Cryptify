@@ -7,7 +7,7 @@ import {
 } from "@cryptify/common/src/errors/error_messages";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
-import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
+import { AlchemyNodeServiceFacade } from "@cryptify/eth-edge/src/services/alchemy_node_facade.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
@@ -20,7 +20,7 @@ export class WalletsService {
     constructor(
         @InjectRepository(Wallet)
         private walletRepository: Repository<Wallet>,
-        private alchemyNodeService: AlchemyNodeService,
+        private alchemyNodeServiceFacade: AlchemyNodeServiceFacade,
         @Inject(forwardRef(() => TransactionsService))
         private transactionsService: TransactionsService,
         private alchemyNodeGateway: AlchemyNodeGateway,
@@ -45,7 +45,7 @@ export class WalletsService {
         // everything will be reset to before the request started including removing the wallet that
         // was just inserted
         const [balance] = await Promise.all([
-            this.alchemyNodeService.getBalance(reqWallet.address),
+            this.alchemyNodeServiceFacade.getBalance(reqWallet.address),
             this.transactionsService.backfillTransactions(reqWallet.address),
             this.alchemyNodeGateway.updateWebhookAddresses([reqWallet.address], []),
         ]);
@@ -63,7 +63,7 @@ export class WalletsService {
         // For each wallet owned by the user get the wallets balance from Alchemy, we can parallelize these requests
         // to speed up the processing time
         const balances = await Promise.all(
-            wallets.map(async (wallet) => this.alchemyNodeService.getBalance(wallet.address)),
+            wallets.map(async (wallet) => this.alchemyNodeServiceFacade.getBalance(wallet.address)),
         );
         // Once all the balances have been retrieved zip the lists together and map through them to construct the final
         // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances

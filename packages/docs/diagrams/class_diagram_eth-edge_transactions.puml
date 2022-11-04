@@ -3,8 +3,7 @@ class AlchemyNodeService {
     -alchemy: Alchemy
     -configService: ConfigService<Record<string, unknown>, false>
     +getBalance(address: string): Promise<string>
-    +getInTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
-    +getOutTransactions(wallet: string): Promise<AssetTransfersWithMetadataResponse>
+    +getTransactions(wallet: string): Promise<AssetTransfersWithMetadataResult[]>
 }
 class Transaction {
     +transactionAddress: string
@@ -13,17 +12,95 @@ class Transaction {
     +amount: string
     +createdAt: Date
 }
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+}
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+interface CreateWalletRequest extends InferType
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+abstract class AbstractGateway {
+    -uri: string
+    -fetch: any
+    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
+    #{abstract} handleError(response: any): Promise<void>
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+abstract class AbstractServiceGateway extends AbstractGateway {
+    #handleError(response: any): Promise<void>
+}
+class AlchemyNodeGateway extends AbstractServiceGateway {
+    -configService: ConfigService<Record<string, unknown>, false>
+    +updateWebhookAddresses(addressesToAdd: string[], addressesToRemove: string[]): Promise<void>
+}
+class WalletsService {
+    -walletRepository: Repository<Wallet>
+    -alchemyNodeService: AlchemyNodeService
+    -transactionsService: TransactionsService
+    -alchemyNodeGateway: AlchemyNodeGateway
+    +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
+    +findOne(address: string, userId: number): Promise<Wallet>
+    +findAll(userId: number): Promise<WalletWithBalance[]>
+}
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
     -alchemyNodeService: AlchemyNodeService
+    -walletsService: WalletsService
     +backfillTransactions(address: string): Promise<void>
     +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
+    +findAll(userId: number): Promise<Transaction[]>
 }
+interface GetTransactionsRequest extends InferType
 class TransactionsController {
     -transactionsService: TransactionsService
     +create(body: AddressActivityEvent): Promise<void>
+    +findAll(params: GetTransactionsRequest): Promise<Transaction[]>
 }
+User --> "*" Wallet
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+AbstractGateway --> "1" Method
+WalletsService --> "1" Wallet
+WalletsService --> "1" AlchemyNodeService
+WalletsService --> "1" TransactionsService
+WalletsService --> "1" AlchemyNodeGateway
+WalletsService --> "1" CreateWalletRequest
+WalletsService --> "1" WalletWithBalance
+WalletsService --> "*" WalletWithBalance
 TransactionsService --> "1" Transaction
 TransactionsService --> "1" AlchemyNodeService
+TransactionsService --> "1" WalletsService
+TransactionsService --> "*" Transaction
 TransactionsController --> "1" TransactionsService
+TransactionsController --> "1" GetTransactionsRequest
+TransactionsController --> "*" Transaction
 @enduml

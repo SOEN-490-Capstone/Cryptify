@@ -1,4 +1,6 @@
 import "@env";
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 import { StatusBar } from "expo-status-bar";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";

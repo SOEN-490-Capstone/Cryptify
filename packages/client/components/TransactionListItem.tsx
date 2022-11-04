@@ -23,16 +23,16 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
     }
 
-    function getFormattedDate(date: Date): string {
-        if (date == null) return "";
-        const day = date.getDay();
-        const year = date.getFullYear();
-        const hour = date.getHours() % 12;
-        const meridien = date.getHours() > 12 ? "PM" : "AM";
-        const min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        const month = date.toLocaleString("en-US", { month: "short" });
+    function getFormattedDate(timestamp: string): string {
+        const date = new Date(timestamp);
+        const datePart = date.toLocaleString("en-US", { month: 'short', day: 'numeric', year: 'numeric' });
+        const timePart = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })
+        return `${datePart} • ${timePart}`
+    }
 
-        return month + " " + day + ", " + year + " • " + hour + ":" + min + " " + meridien;
+    function getWeekday(timestamp: string): string {
+        const date = new Date(timestamp);
+        return date.toLocaleString('en-US', { weekday: 'long'});
     }
 
     return (
@@ -40,7 +40,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
             testID={"transactionsListItem"}
             onPress={() =>
                 navigation.navigate("TransactionDetailsScreen", {
-                    title: "Monday",
+                    title: getWeekday(transaction.createdAt as any),
                     transaction: transaction,
                     walletAddress: walletAddress,
                 })
@@ -71,9 +71,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                         </HStack>
                         <HStack>
                             <Text color="text.500" style={styles.transactionDate}>
-                                {/* For some reason the transaction.createdAt does not have the "day" attributes */}
-                                {/* TODO fix the attributes in the transaction */}
-                                {getFormattedDate(new Date(transaction.createdAt.toString()))}
+                                {getFormattedDate(transaction.createdAt as any)}
                             </Text>
                             <Text color="text.500" style={styles.transactionCurrency}>
                                 {getCurrencyType()}

@@ -41,6 +41,7 @@ type WalletDetailsScreenProps = {
     name: string;
     currencyType: string;
     balance: string;
+    transactions: Transaction[];
 };
 
 type WalletQRCodeProps = {

@@ -2,39 +2,23 @@ import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, Box, HStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
-import { TransactionsGateway } from "../gateways/transactions_gateway";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import {
     getTransactionCount,
     getTransactionTotalReceived,
     getTransactionTotalSent,
 } from "../services/transaction_service";
 import React from "react";
-import { AuthContext } from "../components/contexts/AuthContext";
 import RowItem from "../components/RowItem";
 import { Copy } from "../components/Copy";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route }: Props) {
-    const { address, name, balance } = route.params;
+    const { address, name, balance, transactions } = route.params;
 
-    const transactionGateway = new TransactionsGateway();
-
-    const { token, user } = React.useContext(AuthContext);
-
-    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
-
-    React.useEffect(() => {
-        (async () => {
-            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            setTransactions(transactions);
-        })();
-    }, []);
-
-    const count = getTransactionCount(transactions, address);
-    const totalReceived = getTransactionTotalReceived(transactions, address);
-    const totalSent = getTransactionTotalSent(transactions, address);
+    const count = getTransactionCount(transactions);
+    const totalReceived = getTransactionTotalReceived(transactions);
+    const totalSent = getTransactionTotalSent(transactions);
 
     return (
         <View style={styles.view}>

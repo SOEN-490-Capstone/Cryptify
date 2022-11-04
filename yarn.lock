@@ -1719,6 +1719,7 @@ __metadata:
     expo-web-browser: ~11.0.0
     expo-yarn-workspaces: ^1.2.1
     formik: ^2.2.9
+    intl: ^1.2.5
     jest: ^27.5.1
     jest-expo: ~44.0.1
     native-base: ^3.4.15
@@ -13896,6 +13897,13 @@ __metadata:
     "@formatjs/icu-messageformat-parser": 2.1.8
     tslib: 2.4.0
   checksum: 0e95843c74f099c5f3c9e21812f929c392a39b37f0c7b0102f15b1608dc20bbf94dc39d4f42d5146d1c5036841ba3195d9c3cf4cbd13eb0b335c74b47c71cdd3
+  languageName: node
+  linkType: hard
+
+"intl@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "intl@npm:1.2.5"
+  checksum: 54c2444ec334b4e7f501c1b988ccfdae96d62a6275a915b9c75a38fc42d611bfc7dd33447e94079b7a8fdb3fbf36b95afd13132af4bfd70e2ec4bf9c9e0935f9
   languageName: node
   linkType: hard
 

@@ -12,6 +12,7 @@ import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getFormattedAmount, getWalletsTotal } from "../../services/currency_service";
 import { CurrencyAmount } from "../CurrencyAmount";
 import { CompositeNavigationProp } from "@react-navigation/native";
+import { formatAddress } from "../../services/address_service";
 
 type Props = {
     wallets: WalletWithBalance[];
@@ -30,12 +31,8 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
         [CurrencyType.ETHEREUM]: [],
     });
 
-    function formatWalletAddress(address: string): string {
-        return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
-    }
-
     function formatTitle(currencyType: string, address: string): string {
-        return `${titleCase(currencyType)} ${formatWalletAddress(address)}`;
+        return `${titleCase(currencyType)} ${formatAddress(address)}`;
     }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
@@ -99,7 +96,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
                             <VStack space="2px">
                                 <Text style={styles.walletName}>{wallet.name}</Text>
-                                <Text style={styles.walletAddress}>{formatWalletAddress(wallet.address)}</Text>
+                                <Text style={styles.walletAddress}>{formatAddress(wallet.address)}</Text>
                             </VStack>
                             <CurrencyAmount
                                 currency={currency}

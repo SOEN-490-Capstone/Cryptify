@@ -9,6 +9,7 @@ import { faCopyCustom } from "./icons/faCopyCustom";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount } from "../services/currency_service";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { formatAddress } from "../services/address_service";
 
 type Props = {
     transaction: Transaction;
@@ -21,10 +22,6 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
     const copyToClipboard = async (valueToCopy: string) => {
         await Clipboard.setStringAsync(valueToCopy);
     };
-
-    function formatTransactionAddress(address: string): string {
-        return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
-    }
 
     function getCurrencyType(): string {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
@@ -46,7 +43,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM) + " "} {getCurrencyType()}
                 </Text>
                 <Text color="text.500" style={styles.transactionsAddress}>
-                    {formatTransactionAddress(transaction.transactionAddress)}
+                    {formatAddress(transaction.transactionAddress)}
                 </Text>
             </VStack>
         </Box>

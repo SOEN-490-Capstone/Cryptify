@@ -16,16 +16,14 @@ describe("TransactionController", () => {
 
     beforeEach(async () => {
         fakeTransactionService = {
-            findAll: async ({id: number}) => {
+            findAll: async () => {
                 return [transaction];
             },
         };
 
         const module: TestingModule = await Test.createTestingModule({
             controllers: [TransactionsController],
-            providers: [
-                { provide: TransactionsService, useValue: fakeTransactionService },
-            ],
+            providers: [{ provide: TransactionsService, useValue: fakeTransactionService }],
         }).compile();
 
         controller = module.get<TransactionsController>(TransactionsController);
@@ -33,8 +31,8 @@ describe("TransactionController", () => {
 
     it("should return list of transactions", async () => {
         const req = {
-                id: 1,
-            };
+            id: 1,
+        };
 
         expect(await controller.findAll(req)).toEqual([transaction]);
     });

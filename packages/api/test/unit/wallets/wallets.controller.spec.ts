@@ -40,8 +40,8 @@ describe("WalletsController", () => {
         user: user,
         currencyType: CurrencyType.ETHEREUM,
         transactions: [transaction],
-        balance: "111"
-    }
+        balance: "111",
+    };
 
     beforeEach(async () => {
         fakeWalletsService = {
@@ -50,21 +50,18 @@ describe("WalletsController", () => {
             },
             findAll: async () => {
                 return [walletWithBalance];
-            }
+            },
         };
 
         const module: TestingModule = await Test.createTestingModule({
             controllers: [WalletsController],
-            providers: [
-                { provide: WalletsService, useValue: fakeWalletsService },
-            ],
+            providers: [{ provide: WalletsService, useValue: fakeWalletsService }],
         }).compile();
 
         controller = module.get<WalletsController>(WalletsController);
     });
 
     it("should return a WalletWithBalance", async () => {
-
         expect(await controller.create(createWalletReq)).toEqual(walletWithBalance);
     });
 
@@ -75,6 +72,4 @@ describe("WalletsController", () => {
 
         expect(await controller.findAll(req)).toEqual([walletWithBalance]);
     });
-
-
 });

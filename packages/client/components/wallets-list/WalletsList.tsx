@@ -25,6 +25,9 @@ export default function WalletsList(props: Props) {
 
     React.useEffect(() => {
         (async () => {
+            // Get all the users wallets everytime the page comes in focus
+            // without this the home page (because of caching) and the settings page
+            // will not update when a new wallet is added
             if (isFocused) {
                 const wallets = await walletsGateway.findAllWallets({ id: user.id }, token);
                 setWallets(wallets);

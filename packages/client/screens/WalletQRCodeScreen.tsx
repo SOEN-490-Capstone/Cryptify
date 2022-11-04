@@ -23,7 +23,7 @@ export default function WalletQRCodeScreen({ route }: Props) {
 
     return (
         <View style={styles.view}>
-            <Text style={styles.text}>
+            <Text style={styles.text} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
                     {titleCase(currencyName ? currencyName : "")} ({currencyType}){" "}
@@ -50,7 +50,7 @@ export default function WalletQRCodeScreen({ route }: Props) {
                 </HStack>
             </VStack>
 
-            <HStack style={styles.info}>
+            <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={faCircleInfoCustom} size={16} />
                 <Text style={styles.infoText}>
                     Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (

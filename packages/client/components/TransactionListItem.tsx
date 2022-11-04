@@ -8,6 +8,7 @@ import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getFormattedAmount } from "../services/currency_service";
+import {formatAddress} from "../services/address_service";
 
 type Props = {
     transaction: Transaction;
@@ -18,19 +19,11 @@ type Props = {
 export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
     const isIncommingTransaction = walletAddress == transaction.walletIn;
 
-    function formatTransactionAddress(address: string): string {
-        return `${address.substring(0, 6)}...${address.substring(address.length - 4, address.length)}`;
-    }
-
     function getCurrencyType(): string {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
     }
 
-    function formatAmount(amount: string): string {
-        return amount.length > 15 ? amount.substring(0, 15) + "..." : amount;
-    }
-
-    function getFromattedDate(date: Date): string {
+    function getFormattedDate(date: Date): string {
         if (date == null) return "";
         const day = date.getDay();
         const year = date.getFullYear();
@@ -63,24 +56,24 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                     <VStack style={styles.verticalStack}>
                         <HStack>
                             <Text style={styles.transactionsAddress}>
-                                {formatTransactionAddress(transaction.transactionAddress)}
+                                {formatAddress(transaction.transactionAddress)}
                             </Text>
                             <Text
+                                isTruncated
                                 color={isIncommingTransaction ? "success.600" : "text.700"}
                                 style={
                                     isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut
                                 }
                             >
                                 {isIncommingTransaction ? "+" : "-"}
-                                {/* TODO fomat amount only once and find a way to add elipsis dynamically */}
-                                {formatAmount(getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM))}
+                                {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)}
                             </Text>
                         </HStack>
                         <HStack>
                             <Text color="text.500" style={styles.transactionDate}>
                                 {/* For some reason the transaction.createdAt does not have the "day" attributes */}
                                 {/* TODO fix the attributes in the transaction */}
-                                {getFromattedDate(new Date(transaction.createdAt.toString()))}
+                                {getFormattedDate(new Date(transaction.createdAt.toString()))}
                             </Text>
                             <Text color="text.500" style={styles.transactionCurrency}>
                                 {getCurrencyType()}

@@ -1,8 +1,8 @@
-import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResult } from "alchemy-sdk";
+import { Network, Alchemy, AssetTransfersCategory } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
-import {normalizeCurrency} from "@cryptify/common/src/utils/currency_utils";
-import {Transaction} from "@cryptify/common/src/domain/entities/transaction";
+import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
 
 @Injectable()
@@ -62,6 +62,6 @@ export class AlchemyNodeServiceFacade {
             walletOut: transfer.to,
             amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
             createdAt: new Date(transfer.metadata.blockTimestamp),
-        }))
+        }));
     }
 }

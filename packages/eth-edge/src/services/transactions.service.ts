@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
 import Web3 from "web3";
-import { AlchemyNodeService } from "@cryptify/eth-edge/src/services/alchemy_node.service";
+import { AlchemyNodeServiceFacade } from "@cryptify/eth-edge/src/services/alchemy_node_facade.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
 import { AssetTransfersCategory } from "alchemy-sdk";
@@ -13,7 +13,7 @@ export class TransactionsService {
     constructor(
         @InjectRepository(Transaction)
         private transactionsRepository: Repository<Transaction>,
-        private alchemyNodeService: AlchemyNodeService,
+        private alchemyNodeServiceFacade: AlchemyNodeServiceFacade,
         @Inject(forwardRef(() => WalletsService))
         private walletsService: WalletsService,
     ) {}
@@ -21,17 +21,8 @@ export class TransactionsService {
     async backfillTransactions(address: string): Promise<void> {
         // Getting the transactions from for a specific wallet from alchemy.
         // Filter for only the attributes we want and save it to the database
-        const transactions = await this.alchemyNodeService.getTransactions(address);
-        const reqTransactions = this.transactionsRepository.create(
-            transactions.map((t) => ({
-                transactionAddress: t.hash,
-                walletIn: t.from,
-                walletOut: t.to,
-                amount: Web3.utils.toWei(t.value.toString(), "ether").toString(),
-                createdAt: t.metadata.blockTimestamp,
-            })),
-        );
-        await this.transactionsRepository.save(reqTransactions);
+        const transactions = await this.alchemyNodeServiceFacade.getTransactions(address);
+        await this.transactionsRepository.save(this.transactionsRepository.create(transactions));
     }
 
     async handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void> {
@@ -60,6 +51,7 @@ export class TransactionsService {
     async findAll(userId: number): Promise<Transaction[]> {
         const wallets = await this.walletsService.findAll(userId);
         const addresses = wallets.map((wallet) => wallet.address.toLowerCase());
+
         return this.transactionsRepository.find({
             where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
         });

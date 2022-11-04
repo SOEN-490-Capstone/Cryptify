@@ -1,10 +1,12 @@
-import { Network, Alchemy, AssetTransfersCategory, AssetTransfersWithMetadataResult } from "alchemy-sdk";
+import { Network, Alchemy, AssetTransfersCategory } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
+import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import Web3 from "web3";
 
-// To do: convert class into facade to reguralize the data.
 @Injectable()
-export class AlchemyNodeService {
+export class AlchemyNodeServiceFacade {
     private alchemy: Alchemy;
 
     constructor(private configService: ConfigService) {
@@ -30,8 +32,9 @@ export class AlchemyNodeService {
         }
     }
 
-    async getTransactions(wallet: string): Promise<AssetTransfersWithMetadataResult[]> {
-        //Getting all in and out transactions of a wallet and returning the an array with those transactions
+    async getTransactions(wallet: string): Promise<Transaction[]> {
+        // Get both in and out transactions in parallel then flatten the 2D array
+        // into a single dimension
         const assetTransfers = await Promise.all([
             this.alchemy.core.getAssetTransfers({
                 fromBlock: "0x0",
@@ -48,6 +51,17 @@ export class AlchemyNodeService {
                 withMetadata: true,
             }),
         ]);
-        return assetTransfers.flatMap(({ transfers }) => transfers);
+        const transfers = assetTransfers.flatMap(({ transfers }) => transfers);
+
+        // We normalize the currency to remove scientific notation that is in
+        // some alchemy transactions then convert all transaction amounts
+        // from ETHER to WEI so we can represent them as BigIntegers
+        return transfers.map((transfer) => ({
+            transactionAddress: transfer.hash,
+            walletIn: transfer.from,
+            walletOut: transfer.to,
+            amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
+            createdAt: new Date(transfer.metadata.blockTimestamp),
+        }));
     }
 }

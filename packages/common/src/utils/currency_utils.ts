@@ -9,3 +9,14 @@ export function getCurrencyType(address: string): CurrencyType {
 
     throw new Error("Currency type not supported");
 }
+
+export function normalizeCurrency(amount: number): string {
+    const amountString = amount.toString();
+
+    const isScientificNotation = amountString.includes("e");
+    if (isScientificNotation) {
+        return amount.toFixed(18);
+    }
+
+    return amountString;
+}

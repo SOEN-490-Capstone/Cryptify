@@ -66,6 +66,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
             <HStack paddingX="83px" justifyContent="space-between">
                 <VStack space="4px">
                     <Pressable
+                        testID="walletDetailsButton"
                         style={styles.button}
                         onPress={() =>
                             navigation.navigate("WalletDetailsScreen", {

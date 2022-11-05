@@ -42,13 +42,15 @@ describe("UsersController", () => {
         controller = module.get<UsersController>(UsersController);
     });
 
-    it("should return user found by id in token", async () => {
-        const req = {
-            user: {
-                id: 1,
-            },
-        };
+    describe("UsersController::whoami", () => {
+        it("should return user found by id in token", async () => {
+            const req = {
+                user: {
+                    id: 1,
+                },
+            };
 
-        expect(await controller.whoami(req)).toEqual(user);
+            expect(await controller.whoami(req)).toEqual(user);
+        });
     });
 });

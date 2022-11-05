@@ -29,7 +29,7 @@ describe("TransactionController", () => {
         controller = module.get<TransactionsController>(TransactionsController);
     });
 
-    describe("TransactionController::findall", () => {
+    describe("TransactionController::findAll", () => {
         it("should return list of transactions", async () => {
             const req = {
                 id: 1,

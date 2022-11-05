@@ -86,6 +86,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 </VStack>
                 <VStack space="4px">
                     <Pressable
+                        testID="walletQRCodeButton"
                         style={styles.button}
                         onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
                     >

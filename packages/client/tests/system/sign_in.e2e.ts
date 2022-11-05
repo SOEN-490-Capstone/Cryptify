@@ -1,3 +1,5 @@
+import {pressBackLeft} from "./utils/test_utils";
+
 const { openAppForDebugBuild } = require("./open_app_for_debug_build"); // eslint-disable-line @typescript-eslint/no-var-requires
 import { by, device, expect, element } from "detox";
 
@@ -10,12 +12,16 @@ describe("Sign In CRYP-22", () => {
     });
 
     it("should sign in the user to their account without any errors", async () => {
-        await element(by.id("Sign In Tab")).tap();
+        await element(by.id("signInButton")).tap();
+
+        await expect(element(by.text("Welcome back"))).toBeVisible();
 
         await element(by.id("email")).typeText("john@example.com");
         await element(by.id("password")).typeText("Test123!");
-        await element(by.text("Sign In")).tap();
+        await element(by.text("Sign in")).tap();
 
-        await expect(element(by.id("token"))).toBeVisible();
+        // Assert home page header
+        await expect(element(by.text("Hello, "))).toBeVisible();
+        await expect(element(by.text("John"))).toBeVisible();
     });
 });

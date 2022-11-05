@@ -25,6 +25,7 @@ export class AlchemyNodeServiceFacade {
             // the value is ready to be displayed
             return balance.toString();
         } catch (error) {
+            console.log(error);
             // If there is any error, mainly if the wallet is not found return a balance of 0
             // this is done because we can't verify that the wallet doesn't exist just because
             // it doesn't have any previous transactions

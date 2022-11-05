@@ -130,7 +130,7 @@ export default function AddWalletFormScreen({
                     {({ values, errors, touched, handleChange, submitForm }) => (
                         <VStack space="13" style={styles.addWalletForm}>
                             <FormControl isInvalid={!!(errors.name && (touched.address || initialValues.name != ""))}>
-                                <Input value={values.name} onChangeText={handleChange("name")} placeholder="Name" />
+                                <Input value={values.name} onChangeText={handleChange("name")} placeholder="Name" testID="walletName"/>
                                 <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
                             </FormControl>
                             <FormControl
@@ -140,6 +140,7 @@ export default function AddWalletFormScreen({
                                     value={values.address}
                                     onChangeText={handleChange("address")}
                                     placeholder={displayData.addressInput}
+                                    testID="walletAddress"
                                 />
                                 <FormControl.ErrorMessage>{errors.address}</FormControl.ErrorMessage>
                             </FormControl>
@@ -147,6 +148,7 @@ export default function AddWalletFormScreen({
                                 style={styles.addWalletFormButton}
                                 _text={styles.addWalletFormButtonText}
                                 onPress={submitForm}
+                                testID="submitAddWalletButton"
                             >
                                 {buttonText}
                             </Button>

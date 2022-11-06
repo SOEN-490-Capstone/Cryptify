@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pressBackLeft } from "./utils/test_utils";
 
-describe("Home Page CRYP-101", () => {
+describe("CRYP-108 Wallet QR code", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("Home Page CRYP-101", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view home page with wallets list", async () => {
+    it("Should be able to view wallet qr code and share functions", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();

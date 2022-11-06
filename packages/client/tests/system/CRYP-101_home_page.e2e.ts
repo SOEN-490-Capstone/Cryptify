@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pressBackLeft } from "./utils/test_utils";
 
-describe("Home Page CRYP-101", () => {
+describe("CRYP-101 Home Page", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -31,15 +31,5 @@ describe("Home Page CRYP-101", () => {
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(0)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
-
-        // Assert transaction details are visible
-        await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
-        await expect(element(by.id("transactionsList"))).toExist();
-        await expect(element(by.id("transactionsListItem")).atIndex(0)).toExist();
-        await element(by.id("transactionsListItem")).atIndex(0).tap();
-        await expect(element(by.id("transactionDetailsHeader"))).toExist();
-        await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
-        await expect(element(by.id("transactionDetailsFee"))).toExist();
-        await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
     });
 });

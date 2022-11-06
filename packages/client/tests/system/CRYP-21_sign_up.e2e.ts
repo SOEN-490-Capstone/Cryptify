@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-21 Sign up", () => {
     beforeEach(async () => {
@@ -22,5 +23,7 @@ describe("CRYP-21 Sign up", () => {
         await element(by.text("Sign up")).tap();
 
         await expect(element(by.text("Jane"))).toBeVisible();
+
+        await pause();
     });
 });

@@ -18,3 +18,7 @@ export async function pressBackLeft() {
 export async function pressBackRight() {
     await element(by.id("headerRightButton")).tap();
 }
+
+export async function pause(millis = 2000): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, millis));
+}

@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-94 Tab bar", () => {
     beforeEach(async () => {
@@ -25,5 +26,7 @@ describe("CRYP-94 Tab bar", () => {
         await element(by.id("homeTab")).tap();
         await expect(element(by.text("Hello, "))).toBeVisible();
         await expect(element(by.text("John"))).toBeVisible();
+
+        await pause();
     });
 });

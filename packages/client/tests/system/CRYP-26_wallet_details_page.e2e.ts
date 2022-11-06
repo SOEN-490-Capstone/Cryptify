@@ -1,6 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pressBackLeft } from "./utils/test_utils";
+import { pause, pressBackLeft } from "./utils/test_utils";
 
 describe("CRYP-26 Wallet details", () => {
     beforeEach(async () => {
@@ -48,5 +48,7 @@ describe("CRYP-26 Wallet details", () => {
         await expect(element(by.text("Total Received"))).toBeVisible();
         await expect(element(by.text("Total Sent"))).toBeVisible();
         await expect(element(by.text("Final Balance"))).toBeVisible();
+
+        await pause();
     });
 });

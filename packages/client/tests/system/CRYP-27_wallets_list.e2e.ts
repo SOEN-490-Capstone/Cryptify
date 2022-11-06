@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-27 Wallets list", () => {
     beforeEach(async () => {
@@ -25,5 +26,7 @@ describe("CRYP-27 Wallets list", () => {
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(0)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
+
+        await pause();
     });
 });

@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-23 Sign out", () => {
     beforeEach(async () => {
@@ -25,5 +26,7 @@ describe("CRYP-23 Sign out", () => {
         await element(by.id("settingsTab")).tap();
         await element(by.id("signOutButton")).tap();
         await expect(element(by.id("logo"))).toBeVisible();
+
+        await pause();
     });
 });

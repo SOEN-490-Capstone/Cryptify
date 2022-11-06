@@ -1,4 +1,4 @@
-import { pressBackLeft, pressBackRight } from "./utils/test_utils";
+import { pause, pressBackLeft, pressBackRight } from "./utils/test_utils";
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 
@@ -22,5 +22,7 @@ describe("CRYP-100 Welcome page", () => {
         await pressBackLeft();
 
         await expect(element(by.id("logo"))).toBeVisible();
+
+        await pause();
     });
 });

@@ -27,10 +27,12 @@ describe("CRYP-28 Transactions list", () => {
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
 
-        // Assert all transactionsfor the first wallet exist
+        // Assert all transactions for the first wallet exist
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
         await expect(element(by.id("transactionsListHeader"))).toExist();
-        await expect(element(by.id("transactionsListButton"))).toExist();
+        await waitFor(element(by.id("transactionsListButton")))
+            .toExist()
+            .withTimeout(5000);
         await expect(element(by.id("transactionsList"))).toExist();
         for (let i = 0; i < 37; i++) {
             await expect(element(by.id("transactionWithoutSeparation")).atIndex(i)).toExist();
@@ -40,7 +42,9 @@ describe("CRYP-28 Transactions list", () => {
         // Assert all transactions for the second wallet exist
         await element(by.id("walletsListItemETHEREUM")).atIndex(1).tap();
         await expect(element(by.id("transactionsListHeader"))).toExist();
-        await expect(element(by.id("transactionsListButton"))).toExist();
+        await waitFor(element(by.id("transactionsListButton")))
+            .toExist()
+            .withTimeout(5000);
         await expect(element(by.id("transactionsList"))).toExist();
         for (let i = 0; i < 260; i++) {
             await expect(element(by.id("transactionWithoutSeparation")).atIndex(i)).toExist();
@@ -50,7 +54,9 @@ describe("CRYP-28 Transactions list", () => {
         // Assert all transactions for the third wallet exist
         await element(by.id("walletsListItemETHEREUM")).atIndex(2).tap();
         await expect(element(by.id("transactionsListHeader"))).toExist();
-        await expect(element(by.id("transactionsListButton"))).toExist();
+        await waitFor(element(by.id("transactionsListButton")))
+            .toExist()
+            .withTimeout(5000);
         await expect(element(by.id("transactionsList"))).toExist();
         for (let i = 0; i < 67; i++) {
             await expect(element(by.id("transactionWithoutSeparation")).atIndex(i)).toExist();

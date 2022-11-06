@@ -1,6 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pressBackLeft } from "./utils/test_utils";
+import { pause, pressBackLeft } from "./utils/test_utils";
 
 describe("CRYP-108 Wallet QR code", () => {
     beforeEach(async () => {
@@ -40,5 +40,7 @@ describe("CRYP-108 Wallet QR code", () => {
         await expect(element(by.text("Address"))).toBeVisible();
         await expect(element(by.id("QRCodeWarning"))).toBeVisible();
         await expect(element(by.id("QRCodeHeader"))).toBeVisible();
+
+        await pause();
     });
 });

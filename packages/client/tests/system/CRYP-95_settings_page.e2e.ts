@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-95 Settings page", () => {
     beforeEach(async () => {
@@ -22,5 +23,7 @@ describe("CRYP-95 Settings page", () => {
         await expect(element(by.text("Settings")).atIndex(0)).toBeVisible();
         await expect(element(by.id("walletsButton"))).toBeVisible();
         await expect(element(by.id("signOutButton"))).toBeVisible();
+
+        await pause();
     });
 });

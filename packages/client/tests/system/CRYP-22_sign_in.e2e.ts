@@ -1,5 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-22 Sign in", () => {
     beforeEach(async () => {
@@ -21,5 +22,7 @@ describe("CRYP-22 Sign in", () => {
         // Assert home page header
         await expect(element(by.text("Hello, "))).toBeVisible();
         await expect(element(by.text("John"))).toBeVisible();
+
+        await pause();
     });
 });

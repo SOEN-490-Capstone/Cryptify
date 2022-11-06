@@ -51,6 +51,7 @@ export default function AddWalletSuccessScreen({ currencyType, setState, walletN
                         navigation.goBack();
                         navigation.goBack();
                     }}
+                    testID="backToWalletsButton"
                 >
                     Back to wallets
                 </Link>

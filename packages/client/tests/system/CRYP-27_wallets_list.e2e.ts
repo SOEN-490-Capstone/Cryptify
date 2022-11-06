@@ -1,8 +1,7 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pressBackLeft } from "./utils/test_utils";
 
-describe("Home Page CRYP-101", () => {
+describe("CRYP-27 Wallets list", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +9,7 @@ describe("Home Page CRYP-101", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view home page with wallets list", async () => {
+    it("Should be able to view a list of wallets in the settings page", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -18,13 +17,8 @@ describe("Home Page CRYP-101", () => {
         await element(by.id("password")).typeText("Test123!");
         await element(by.text("Sign in")).tap();
 
-        // Assert home page header
-        await expect(element(by.text("John"))).toBeVisible();
-
-        // Assert add wallet button works
-        await element(by.id("addWalletButton")).tap();
-        await expect(element(by.text("Add a Wallet"))).toBeVisible();
-        await pressBackLeft();
+        await element(by.id("settingsTab")).tap();
+        await element(by.id("walletsButton")).tap();
 
         // Assert ethereum wallets
         await element(by.id("walletsListETHEREUM")).tap();

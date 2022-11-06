@@ -18,6 +18,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     _pressed={{
                         background: "text.200",
                     }}
+                    testID="walletsButton"
                 >
                     <HStack height="50px" alignItems="center">
                         <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />

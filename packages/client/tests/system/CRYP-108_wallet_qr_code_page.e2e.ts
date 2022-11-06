@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pressBackLeft } from "./utils/test_utils";
 
-describe("Home Page CRYP-101", () => {
+describe("CRYP-108 Wallet QR code", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("Home Page CRYP-101", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view home page with wallets list", async () => {
+    it("Should be able to view wallet qr code and share functions", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -32,22 +32,13 @@ describe("Home Page CRYP-101", () => {
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
 
-        // Assert wallet details are visible
+        // Assert QR Code details are visible
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
-        await expect(element(by.text("Ether Wallet Main"))).toBeVisible();
-        await expect(element(by.text("1.906702334814666485"))).toBeVisible();
-        await expect(element(by.text("Details"))).toBeVisible();
-        await expect(element(by.id("walletDetailsButton"))).toExist();
-
-        // Assert wallet details page is accesable and contains the proper information
-        await element(by.id("walletDetailsButton")).tap();
-        await expect(element(by.text("Wallet Details"))).toBeVisible();
+        await expect(element(by.id("walletQRCodeButton"))).toBeVisible();
+        await element(by.id("walletQRCodeButton")).tap();
         await expect(element(by.text("Name"))).toBeVisible();
         await expect(element(by.text("Address"))).toBeVisible();
-        await expect(element(by.text("Transaction Details"))).toBeVisible();
-        await expect(element(by.text("Transaction"))).toBeVisible();
-        await expect(element(by.text("Total Received"))).toBeVisible();
-        await expect(element(by.text("Total Sent"))).toBeVisible();
-        await expect(element(by.text("Final Balance"))).toBeVisible();
+        await expect(element(by.id("QRCodeWarning"))).toBeVisible();
+        await expect(element(by.id("QRCodeHeader"))).toBeVisible();
     });
 });

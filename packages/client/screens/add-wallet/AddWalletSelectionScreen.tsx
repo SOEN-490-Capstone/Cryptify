@@ -28,6 +28,7 @@ export default function AddWalletSelectionScreen({ navigation }: Props) {
                         _pressed={{
                             background: "text.200",
                         }}
+                        testID={`addWalletButton${currency.type}`}
                     >
                         <HStack height="50px" alignItems="center">
                             <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />

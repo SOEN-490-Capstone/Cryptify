@@ -2,7 +2,7 @@ import { pressBackLeft, pressBackRight } from "./utils/test_utils";
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 
-describe("Welcome page CRYP-100", () => {
+describe("CRYP-100 Welcome page", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,

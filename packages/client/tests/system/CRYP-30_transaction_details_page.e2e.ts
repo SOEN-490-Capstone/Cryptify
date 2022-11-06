@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pressBackLeft } from "./utils/test_utils";
 
-describe("Home Page CRYP-101", () => {
+describe("CRYP-30 Transaction details", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("Home Page CRYP-101", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view home page with wallets list", async () => {
+    it("Should be able to view details of a transaction", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -32,13 +32,14 @@ describe("Home Page CRYP-101", () => {
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
         await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
 
-        // Assert QR Code details are visible
+        // Assert transaction details are visible
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
-        await expect(element(by.id("walletQRCodeButton"))).toBeVisible();
-        await element(by.id("walletQRCodeButton")).tap();
-        await expect(element(by.text("Name"))).toBeVisible();
-        await expect(element(by.text("Address"))).toBeVisible();
-        await expect(element(by.id("QRCodeWarning"))).toBeVisible();
-        await expect(element(by.id("QRCodeHeader"))).toBeVisible();
+        await expect(element(by.id("transactionsList"))).toExist();
+        await expect(element(by.id("transactionsListItem")).atIndex(0)).toExist();
+        await element(by.id("transactionsListItem")).atIndex(0).tap();
+        await expect(element(by.id("transactionDetailsHeader"))).toExist();
+        await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
+        await expect(element(by.id("transactionDetailsFee"))).toExist();
+        await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
     });
 });

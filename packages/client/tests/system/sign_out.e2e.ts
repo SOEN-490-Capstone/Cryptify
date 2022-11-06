@@ -15,7 +15,7 @@ describe("Sign Out CRYP-23", () => {
         await expect(element(by.text("Welcome back"))).toBeVisible();
         await element(by.id("email")).typeText("john@example.com");
         await element(by.id("password")).typeText("Test123!");
-        await element(by.text("Sign In")).tap();
+        await element(by.text("Sign in")).tap();
 
         // Assert home page header
         await expect(element(by.text("Hello, "))).toBeVisible();

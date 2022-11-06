@@ -1,6 +1,4 @@
-import {pressBackLeft} from "./utils/test_utils";
-
-const { openAppForDebugBuild } = require("./open_app_for_debug_build"); // eslint-disable-line @typescript-eslint/no-var-requires
+import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 
 describe("Sign In CRYP-22", () => {

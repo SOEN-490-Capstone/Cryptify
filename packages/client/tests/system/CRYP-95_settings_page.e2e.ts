@@ -18,8 +18,9 @@ describe("CRYP-95 Settings page", () => {
         await element(by.id("password")).typeText("Test123!");
         await element(by.text("Sign in")).tap();
 
+        // Assert settings page has correct elements
         await element(by.id("settingsTab")).tap();
-        await expect(element(by.text("Settings"))).toBeVisible();
+        await expect(element(by.text("Settings")).atIndex(0)).toBeVisible();
         await expect(element(by.id("walletsButton"))).toBeVisible();
         await expect(element(by.id("signOutButton"))).toBeVisible();
     });

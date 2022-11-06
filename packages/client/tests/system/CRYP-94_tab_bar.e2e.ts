@@ -20,7 +20,7 @@ describe("CRYP-94 Tab bar", () => {
 
         // Settings tab
         await element(by.id("settingsTab")).tap();
-        await expect(element(by.text("Settings"))).toBeVisible();
+        await expect(element(by.text("Settings")).atIndex(0)).toBeVisible();
 
         // Home tab
         await element(by.id("homeTab")).tap();

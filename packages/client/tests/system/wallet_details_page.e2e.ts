@@ -35,17 +35,16 @@ describe("Home Page CRYP-101", () => {
         // Assert wallet details are visible
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
         await expect(element(by.text("Ether Wallet Main"))).toBeVisible();
-        await expect(element(by.text("1.906702334814666485"))).toBeVisible();
         await expect(element(by.text("Details"))).toBeVisible();
         await expect(element(by.id("walletDetailsButton"))).toExist();
 
-        // Assert wallet details page is accesable and contains the proper information
+        // Assert wallet details page contains the proper information
         await element(by.id("walletDetailsButton")).tap();
         await expect(element(by.text("Wallet Details"))).toBeVisible();
         await expect(element(by.text("Name"))).toBeVisible();
-        await expect(element(by.text("Address"))).toBeVisible();
+        await expect(element(by.text("0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c"))).toBeVisible();
         await expect(element(by.text("Transaction Details"))).toBeVisible();
-        await expect(element(by.text("Transaction"))).toBeVisible();
+        await expect(element(by.text("Transactions"))).toBeVisible();
         await expect(element(by.text("Total Received"))).toBeVisible();
         await expect(element(by.text("Total Sent"))).toBeVisible();
         await expect(element(by.text("Final Balance"))).toBeVisible();

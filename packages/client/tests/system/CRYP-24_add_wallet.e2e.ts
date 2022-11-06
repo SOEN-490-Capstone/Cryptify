@@ -27,9 +27,11 @@ describe("CRYP-24 Add wallet", () => {
         // Add wallet
         await element(by.id("walletName")).typeText("New ETH");
         await element(by.id("walletAddress")).typeText("0xefd0660b197760cF74B54c1f434fbF5CE38855A4");
-        await element(by.text("submitAddWalletButton")).tap();
-        await expect(element(by.text("Add another Ethereum wallet"))).toBeVisible();
-        await element(by.text("backToWalletsButton")).tap();
+        await element(by.id("submitAddWalletButton")).tap();
+
+        // Wait for wallet to be added
+        await waitFor(element(by.text("Add another Ethereum wallet"))).toBeVisible().withTimeout(5000)
+        await element(by.id("backToWalletsButton")).tap();
 
         // Assert ethereum wallets
         await element(by.id("walletsListETHEREUM")).tap();

@@ -35,7 +35,7 @@ export default function WalletsList(props: Props) {
         })();
     }, [isFocused]);
 
-    return wallets ? (
+    return wallets.length > 0 ? (
         <ScrollView style={styles.scrollView}>
             <WalletsListAccordion
                 wallets={wallets}

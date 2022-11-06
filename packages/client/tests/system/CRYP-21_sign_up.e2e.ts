@@ -1,7 +1,7 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 
-describe("CRYP-21 Sign Up", () => {
+describe("CRYP-21 Sign up", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,

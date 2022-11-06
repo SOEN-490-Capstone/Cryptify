@@ -1,7 +1,7 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 
-describe("CRYP-23 Sign Out", () => {
+describe("CRYP-23 Sign out", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,

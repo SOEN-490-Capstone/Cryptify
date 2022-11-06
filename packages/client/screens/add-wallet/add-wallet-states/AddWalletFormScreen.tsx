@@ -130,7 +130,12 @@ export default function AddWalletFormScreen({
                     {({ values, errors, touched, handleChange, submitForm }) => (
                         <VStack space="13" style={styles.addWalletForm}>
                             <FormControl isInvalid={!!(errors.name && (touched.address || initialValues.name != ""))}>
-                                <Input value={values.name} onChangeText={handleChange("name")} placeholder="Name" testID="walletName"/>
+                                <Input
+                                    value={values.name}
+                                    onChangeText={handleChange("name")}
+                                    placeholder="Name"
+                                    testID="walletName"
+                                />
                                 <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
                             </FormControl>
                             <FormControl

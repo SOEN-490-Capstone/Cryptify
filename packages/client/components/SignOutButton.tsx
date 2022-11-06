@@ -14,7 +14,12 @@ export default function SignOutButton() {
     }
 
     return (
-        <Button variant="outline" _text={{ ...styles.signOutButtonText, color: "error.500" }} onPress={handleSignOut} testID="signOutButton">
+        <Button
+            variant="outline"
+            _text={{ ...styles.signOutButtonText, color: "error.500" }}
+            onPress={handleSignOut}
+            testID="signOutButton"
+        >
             Sign out
         </Button>
     );

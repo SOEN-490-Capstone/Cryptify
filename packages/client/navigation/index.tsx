@@ -408,7 +408,7 @@ function BottomTabNavigator() {
                 options={{
                     title: "Home",
                     tabBarIcon: tabBarIcon(faHouseCustom),
-                    tabBarTestID: "homeTab"
+                    tabBarTestID: "homeTab",
                 }}
             />
             <BottomTab.Screen

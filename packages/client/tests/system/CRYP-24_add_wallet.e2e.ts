@@ -1,6 +1,5 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pressBackLeft } from "./utils/test_utils";
 
 describe("CRYP-24 Add wallet", () => {
     beforeEach(async () => {
@@ -30,7 +29,9 @@ describe("CRYP-24 Add wallet", () => {
         await element(by.id("submitAddWalletButton")).tap();
 
         // Wait for wallet to be added
-        await waitFor(element(by.text("Add another Ethereum wallet"))).toBeVisible().withTimeout(5000)
+        await waitFor(element(by.text("Add another Ethereum wallet")))
+            .toBeVisible()
+            .withTimeout(5000);
         await element(by.id("backToWalletsButton")).tap();
 
         // Assert ethereum wallets

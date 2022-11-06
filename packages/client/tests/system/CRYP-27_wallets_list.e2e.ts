@@ -1,6 +1,5 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pressBackLeft } from "./utils/test_utils";
 
 describe("CRYP-27 Wallets list", () => {
     beforeEach(async () => {

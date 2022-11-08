@@ -20,7 +20,11 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
                     Sign in
                 </Button>
             </VStack>
-            <Image source={require("../assets/images/WelcomeScreenBackground.png")} alt="background" style={styles.background} />
+            <Image
+                source={require("../assets/images/WelcomeScreenBackground.png")}
+                alt="background"
+                style={styles.background}
+            />
         </View>
     );
 }

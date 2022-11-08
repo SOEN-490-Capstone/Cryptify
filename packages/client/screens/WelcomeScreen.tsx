@@ -1,10 +1,9 @@
 import { View } from "../components/Themed";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Button, Text, VStack } from "native-base";
+import { Button, Text, VStack, Image } from "native-base";
 import { GuestStackScreenProps } from "../types";
 import { Logo } from "../components/icons/Logo";
-import { WelcomeScreenBackground } from "../components/icons/WelcomeScreenBackground";
 
 export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"WelcomeScreen">) {
     return (
@@ -21,7 +20,7 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
                     Sign in
                 </Button>
             </VStack>
-            <WelcomeScreenBackground style={styles.background} />
+            <Image source={require("../assets/images/WelcomeScreenBackground.png")} alt="background" style={styles.background} />
         </View>
     );
 }
@@ -44,8 +43,8 @@ const styles = StyleSheet.create({
     background: {
         position: "absolute",
         zIndex: -1,
-        top: -110,
-        left: -280,
+        top: -500,
+        left: -320,
         right: 0,
         bottom: 0,
     },

@@ -8,6 +8,6 @@ scanner({
         "sonar.test.inclusions": "**/*.spec.ts",
         "sonar.typescript.lcov.reportPaths": "**/coverage/lcov.info",
         "sonar.exclusions": "**/android/**/*, **/ios/**/*, **/test/**/*, **/tests/**/*, **/icons/**/*",
-        "sonar.testExecutionReportPaths": "./packages/api/test-report.xml, ./packages/eth-edge/test-report.xml, ./packages/eth-edge/test-report.xml"
+        "sonar.testExecutionReportPaths": "./packages/api/test-report.xml, ./packages/eth-edge/test-report.xml, ./packages/btc-edge/test-report.xml"
     },
 }, () => process.exit());

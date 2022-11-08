@@ -42,6 +42,18 @@ jobs:
               run: docker run --entrypoint yarn cryptify-eth-edge lint:check
             - name: Unit test
               run: docker run --entrypoint yarn cryptify-eth-edge workspace @cryptify/eth-edge test:unit
+    btc-edge:
+        name: BtcEdge
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-btc-edge -f packages/docker/btc-edge.Dockerfile --target development .
+            - name: Lint and format
+              run: docker run --entrypoint yarn cryptify-btc-edge lint:check
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-btc-edge workspace @cryptify/btc-edge test:unit
     integration-tests:
         name: Integration Tests
         runs-on: ubuntu-latest
@@ -49,8 +61,10 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Bring up containers
-              run: sudo docker-compose up -d api && sudo docker-compose up -d eth-edge && sudo docker-compose up -d test-db
+              run: sudo docker-compose up -d api && sudo docker-compose up -d eth-edge && sudo docker-compose up -d btc-edge && sudo docker-compose up -d test-db
             - name: Integration test api
               run: docker-compose exec -T api yarn run api:test
             - name: Integration test eth-edge
               run: docker-compose exec -T eth-edge yarn run eth-edge:test
+            - name: Integration test btc-edge
+              run: docker-compose exec -T btc-edge yarn run btc-edge:test

@@ -32,6 +32,7 @@ services:
         depends_on:
             - db
             - eth-edge
+            - btc-edge
         ports:
             - "3001:80"
         volumes:
@@ -62,6 +63,29 @@ services:
             - /code/packages/eth-edge/node_modules
             - /code/packages/common/node_modules
             - ./packages/eth-edge:/code/packages/eth-edge
+            - ./packages/common:/code/packages/common
+            - ./tsconfig.json:/code/tsconfig.json
+            - ./package.json:/code/package.json
+            - ./yarn.lock:/code/yarn.lock
+            - ./.eslintrc.js:/code/.eslintrc.js
+            - ./.prettierrc.js:/code/.prettierrc.js
+        environment:
+            - NODE_ENV=${NODE_ENV:-dev}
+    btc-edge:
+        image: cryptify-btc-edge
+        build:
+            context: .
+            dockerfile: packages/docker/btc-edge.Dockerfile
+            target: development
+        depends_on:
+            - db
+        ports:
+            - "3003:80"
+        volumes:
+            - /code/node_modules
+            - /code/packages/btc-edge/node_modules
+            - /code/packages/common/node_modules
+            - ./packages/btc-edge:/code/packages/btc-edge
             - ./packages/common:/code/packages/common
             - ./tsconfig.json:/code/tsconfig.json
             - ./package.json:/code/package.json

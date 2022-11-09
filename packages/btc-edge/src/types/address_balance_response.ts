@@ -5,5 +5,5 @@ export interface SoChainAddressBalanceResponse {
         address: string;
         confirmed_balance: string;
         unconfirmed_balance: string;
-    }
+    };
 }

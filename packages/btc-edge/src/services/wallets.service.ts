@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
@@ -7,9 +7,9 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import {
     ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
-    ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT
+    ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
 } from "@cryptify/common/src/errors/error_messages";
-import {SoChainGateway} from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
+import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 
 @Injectable()
 export class WalletsService {
@@ -20,7 +20,9 @@ export class WalletsService {
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
-        if (await this.walletRepository.findOneBy({address: createWalletReq.address, userId: createWalletReq.userId })) {
+        if (
+            await this.walletRepository.findOneBy({ address: createWalletReq.address, userId: createWalletReq.userId })
+        ) {
             throw new BadRequestException(
                 ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(createWalletReq.currencyType)),
             );
@@ -33,7 +35,10 @@ export class WalletsService {
         await this.walletRepository.insert(this.walletRepository.create(createWalletReq));
 
         const balance = await this.soChainGateway.getBalance(createWalletReq.address);
-        const wallet = await this.walletRepository.findOneBy({address: createWalletReq.address, userId: createWalletReq.userId });
+        const wallet = await this.walletRepository.findOneBy({
+            address: createWalletReq.address,
+            userId: createWalletReq.userId,
+        });
 
         return { ...wallet, balance };
     }

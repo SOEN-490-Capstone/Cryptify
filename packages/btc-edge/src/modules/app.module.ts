@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/btc-edge/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
-import {WalletsModule} from "@cryptify/btc-edge/src/modules/wallets.module";
+import { WalletsModule } from "@cryptify/btc-edge/src/modules/wallets.module";
 
 @Module({
     imports: [

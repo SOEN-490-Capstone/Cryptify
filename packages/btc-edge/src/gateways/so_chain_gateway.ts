@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AbstractServiceGateway } from "@cryptify/common/src/utils/gateway/abstract_service_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import {SoChainAddressBalanceResponse} from "@cryptify/btc-edge/src/types/address_balance_response";
+import { SoChainAddressBalanceResponse } from "@cryptify/btc-edge/src/types/address_balance_response";
 
 @Injectable()
 export class SoChainGateway extends AbstractServiceGateway {

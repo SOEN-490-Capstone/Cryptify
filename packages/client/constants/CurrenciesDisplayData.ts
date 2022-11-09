@@ -1,6 +1,6 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { faBitcoinCustom } from "../components/icons/faBitcoinCustom";
-import { faEthereumCustom } from "../components/icons/faEthereumCustom";
+import { faBitcoin } from "../components/icons/brands/faBitcoin";
+import { faEthereum } from "../components/icons/brands/faEthereum";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export type CurrencyDisplayData = {
@@ -16,7 +16,7 @@ export type CurrencyDisplayData = {
 export const currenciesDisplayData: CurrencyDisplayData[] = [
     {
         type: CurrencyType.BITCOIN,
-        icon: faBitcoinCustom,
+        icon: faBitcoin,
         style: "bitcoinIcon",
         title: "Add a Bitcoin Wallet",
         addressInput: "Wallet address (Begins with 1, 3, or bc1)",
@@ -25,7 +25,7 @@ export const currenciesDisplayData: CurrencyDisplayData[] = [
     },
     {
         type: CurrencyType.ETHEREUM,
-        icon: faEthereumCustom,
+        icon: faEthereum,
         style: "ethereumIcon",
         title: "Add an Ethereum Wallet",
         addressInput: "Wallet address (Begins with 0x)",

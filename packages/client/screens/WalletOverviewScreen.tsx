@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { faWalletCustom } from "../components/icons/faWalletCustom";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereumCustom } from "../components/icons/faEthereumCustom";
+import { faEthereum } from "../components/icons/brands/faEthereum";
 import { faArrowRightCustom } from "../components/icons/faArrowRightCustom";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { TransactionList } from "../components/TransactionList";
@@ -50,7 +50,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             <Text style={styles.walletAddress}>{formatAddress(address)}</Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={faEthereumCustom} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon icon={faEthereum} style={styles.ethereumIcon} size={40} />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">

@@ -14,7 +14,6 @@ export class TransactionsService {
 
     async backfillTransactions(address: string): Promise<void> {
         const transactions = await this.soChainGateway.getTransactions(address);
-
         // Save allows us to do a bulk insert without throwing an error on duplicate
         // transactions which can occur if the wallet involved in a transaction
         // has already been processed by the system

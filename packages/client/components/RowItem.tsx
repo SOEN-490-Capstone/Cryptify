@@ -9,7 +9,9 @@ type RowItemsProps = {
 export default function RowItem({ label, value }: RowItemsProps) {
     return (
         <>
-            <Text size={"subheadline"}>{label}</Text>
+            <Text size={"subheadline"} color={"text.500"}>
+                {label}
+            </Text>
             <Text>{value}</Text>
             <Box marginTop="20px"></Box>
         </>

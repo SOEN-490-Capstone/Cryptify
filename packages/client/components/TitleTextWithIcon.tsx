@@ -1,4 +1,3 @@
-import { StyleProp, TextStyle } from "react-native";
 import React from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon, FontAwesomeIconStyle } from "@fortawesome/react-native-fontawesome";
@@ -8,16 +7,16 @@ type Props = {
     icon: IconDefinition;
     iconStyles: FontAwesomeIconStyle;
     iconSize: number;
-    textStyles: StyleProp<TextStyle>;
+    textSize: string;
     space: number;
     children: React.ReactNode;
 };
 
-export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, space, children }: Props) {
+export function TitleTextWithIcon({ icon, iconStyles, iconSize, textSize, space, children }: Props) {
     return (
         <VStack space={`${space}px`} alignItems="center">
             <FontAwesomeIcon icon={icon} style={iconStyles} size={iconSize} />
-            <Text fontWeight={"semibold"} style={[textStyles]}>
+            <Text size={textSize} fontWeight={"semibold"}>
                 {children}
             </Text>
         </VStack>

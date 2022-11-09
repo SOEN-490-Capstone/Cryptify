@@ -61,7 +61,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                             <Text
                                 isTruncated
                                 fontWeight={"semibold"}
-                                color={isIncommingTransaction ? "success.600" : "text.700"}
+                                color={isIncommingTransaction ? "success.600" : undefined}
                                 style={styles.transactionAmountInOut}
                             >
                                 {isIncommingTransaction ? "+" : "-"}

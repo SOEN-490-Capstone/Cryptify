@@ -38,7 +38,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                 <Text
                     size={"title2"}
                     fontWeight={"semibold"}
-                    color={isIncommingTransaction ? "success.600" : "text.700"}
+                    color={isIncommingTransaction ? "success.600" : undefined}
                     style={styles.transactionAmountInOut}
                 >
                     {isIncommingTransaction ? "+" : "-"}

@@ -2,18 +2,18 @@ import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
-import { faWallet } from "../components/icons/light/faWallet";
+import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { faEthereum } from "../components/icons/brands/faEthereum";
-import { faArrowRight } from "../components/icons/regular/faArrowRight";
+import { farArrowRight } from "../components/icons/regular/farArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { faMagnifyingGlass } from "../components/icons/light/faMagnifyingGlass";
-import { faQrCode } from "../components/icons/regular/faQrCode";
+import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
+import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 
@@ -79,7 +79,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faWallet} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text style={styles.detailsText}>Details</Text>
@@ -91,7 +91,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faQrCode} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={farQrCode} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text style={styles.detailsText}>QR Code</Text>
@@ -111,13 +111,13 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                         style={styles.rightArrowIcon}
                     >
-                        <FontAwesomeIcon icon={faArrowRight} size={22} />
+                        <FontAwesomeIcon icon={farArrowRight} size={22} />
                     </Pressable>
                 )}
             </HStack>
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size={48} />
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
                     <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
                 </VStack>
             ) : (

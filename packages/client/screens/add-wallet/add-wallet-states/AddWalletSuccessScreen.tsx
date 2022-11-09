@@ -5,7 +5,7 @@ import { TitleTextWithIcon } from "../../../components/TitleTextWithIcon";
 import { Box, Button, Center, Link, View } from "native-base";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
-import { faCircleCheck } from "../../../components/icons/light/faCircleCheck";
+import { falCircleCheck } from "../../../components/icons/light/falCircleCheck";
 import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
@@ -22,7 +22,7 @@ export default function AddWalletSuccessScreen({ currencyType, setState, walletN
         <View style={styles.view} backgroundColor="success.50">
             <Box paddingTop="130px"></Box>
             <TitleTextWithIcon
-                icon={faCircleCheck}
+                icon={falCircleCheck}
                 iconSize={96}
                 iconStyles={styles.successIcon}
                 textStyles={styles.title}

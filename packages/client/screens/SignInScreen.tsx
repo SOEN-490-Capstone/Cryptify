@@ -4,8 +4,8 @@ import { Input, Button, VStack, FormControl, Pressable, Text } from "native-base
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEye } from "../components/icons/light/faEye";
-import { faEyeSlash } from "../components/icons/light/faEyeSlash";
+import { falEye } from "../components/icons/light/falEye";
+import { falEyeSlash } from "../components/icons/light/falEyeSlash";
 import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
@@ -69,7 +69,7 @@ export default function SignInScreen() {
                                 InputRightElement={
                                     <Pressable onPress={() => setShowPass(!showPassword)}>
                                         <FontAwesomeIcon
-                                            icon={showPassword ? faEye : faEyeSlash}
+                                            icon={showPassword ? falEye : falEyeSlash}
                                             style={styles.eyeIcon}
                                             size={20}
                                         />

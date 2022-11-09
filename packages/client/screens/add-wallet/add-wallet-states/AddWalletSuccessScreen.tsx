@@ -25,7 +25,7 @@ export default function AddWalletSuccessScreen({ currencyType, setState, walletN
                 icon={faCircleCheckCustom}
                 iconSize={96}
                 iconStyles={styles.successIcon}
-                textStyles={styles.title}
+                textSize={"title3"}
                 space={30}
             >
                 Added {titleCase(currencyType)} Wallet
@@ -33,18 +33,14 @@ export default function AddWalletSuccessScreen({ currencyType, setState, walletN
                 {walletName}
             </TitleTextWithIcon>
             <Center style={{ flex: 1 }}></Center>
-            <Button
-                _text={styles.successButtonText}
-                onPress={() => setState(AddWalletState.FORM)}
-                backgroundColor={"success.500"}
-            >
+            <Button onPress={() => setState(AddWalletState.FORM)} backgroundColor={"success.500"}>
                 {buttonText}
             </Button>
             <Center marginTop="20px" marginBottom="15px">
                 <Link
                     _text={{
                         color: "success.500",
-                        ...styles.backButtonText,
+                        fontWeight: "semibold",
                     }}
                     isUnderlined={false}
                     onPress={() => {
@@ -65,21 +61,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 15,
     },
-    title: {
-        fontSize: 20,
-        lineHeight: 27,
-        textAlign: "center",
-    },
     successIcon: {
         color: "#22C55E",
-    },
-    successButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-    backButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
-        fontWeight: "600",
     },
 });

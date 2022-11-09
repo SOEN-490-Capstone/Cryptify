@@ -43,8 +43,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     viewWalletsButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
         marginLeft: 15,
     },
     walletIcon: {

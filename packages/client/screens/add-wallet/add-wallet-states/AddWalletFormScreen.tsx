@@ -116,7 +116,7 @@ export default function AddWalletFormScreen({
                     icon={displayData.icon}
                     iconSize={64}
                     iconStyles={styles[displayData.style]}
-                    textStyles={styles.title}
+                    textSize={"title3"}
                     space={12}
                 >
                     {displayData.title}
@@ -151,7 +151,6 @@ export default function AddWalletFormScreen({
                             </FormControl>
                             <Button
                                 style={styles.addWalletFormButton}
-                                _text={styles.addWalletFormButtonText}
                                 onPress={submitForm}
                                 testID="submitAddWalletButton"
                             >
@@ -171,19 +170,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 15,
     },
-    title: {
-        fontSize: 20,
-        lineHeight: 27,
-    },
     addWalletForm: {
         marginTop: 35,
     },
     addWalletFormButton: {
         marginTop: 7,
-    },
-    addWalletFormButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
     },
     bitcoinIcon: {
         color: "#F7931A",

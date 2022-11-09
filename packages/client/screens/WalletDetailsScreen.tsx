@@ -22,19 +22,23 @@ export default function WalletDetailsScreen({ route }: Props) {
 
     return (
         <View style={styles.view}>
-            <Text style={styles.header}>Wallet Details</Text>
+            <Text size={"title3"} fontWeight={"semibold"}>
+                Wallet Details
+            </Text>
             <Box marginTop="20px"></Box>
             <RowItem label="Name" value={name} />
             <HStack space="10px">
-                <Text style={{ ...styles.address, color: "text.700" }}>{address}</Text>
+                <Text style={{ ...styles.address }}>{address}</Text>
                 <Copy label="Address" value={address} />
             </HStack>
             <Box marginTop="20px"></Box>
-            <Text style={styles.header}>Transaction Details</Text>
+            <Text size={"title3"} fontWeight={"semibold"}>
+                Transaction Details
+            </Text>
             <Box marginTop="20px"></Box>
             <HStack justifyContent="space-between">
-                <Text style={styles.value}>Transactions</Text>
-                <Text style={{ ...styles.value, color: "text.500" }}>{count}</Text>
+                <Text>Transactions</Text>
+                <Text color={"text.500"}>{count}</Text>
             </HStack>
             <Box marginTop="20px"></Box>
             <RowItem label="Total Received" value={totalReceived} />
@@ -51,22 +55,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingTop: 20,
     },
-    header: {
-        fontWeight: "600",
-        fontSize: 20,
-        lineHeight: 27,
-    },
-    label: {
-        fontSize: 15,
-        lineHeight: 20,
-    },
-    value: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
     address: {
-        fontSize: 17,
-        lineHeight: 23,
         flex: 1,
     },
 });

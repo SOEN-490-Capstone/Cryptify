@@ -24,7 +24,7 @@ export default function AddWalletLoadingScreen({ currencyType }: Props) {
                 icon={displayData.icon}
                 iconSize={48}
                 iconStyles={styles[displayData.style]}
-                textStyles={styles.title}
+                textSize={"title3"}
                 space={20}
             >
                 {displayData.loadingTitle}
@@ -39,10 +39,6 @@ export default function AddWalletLoadingScreen({ currencyType }: Props) {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-    },
-    title: {
-        fontSize: 20,
-        lineHeight: 27,
     },
     bitcoinIcon: {
         color: "#F7931A",

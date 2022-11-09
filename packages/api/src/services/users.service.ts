@@ -18,7 +18,8 @@ export class UsersService {
         }
 
         const createdUser = this.userRepository.create(signUpReq);
-        return this.userRepository.save(createdUser);
+        await this.userRepository.insert(createdUser);
+        return this.findOne(createdUser.email);
     }
 
     async findOne(email: string): Promise<User> {

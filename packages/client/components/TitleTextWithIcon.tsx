@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, TextStyle } from "react-native";
 import React from "react";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon, FontAwesomeIconStyle } from "@fortawesome/react-native-fontawesome";
@@ -17,13 +17,9 @@ export function TitleTextWithIcon({ icon, iconStyles, iconSize, textStyles, spac
     return (
         <VStack space={`${space}px`} alignItems="center">
             <FontAwesomeIcon icon={icon} style={iconStyles} size={iconSize} />
-            <Text style={[styles.title, textStyles]}>{children}</Text>
+            <Text fontWeight={"semibold"} style={[textStyles]}>
+                {children}
+            </Text>
         </VStack>
     );
 }
-
-const styles = StyleSheet.create({
-    title: {
-        fontWeight: "600",
-    },
-});

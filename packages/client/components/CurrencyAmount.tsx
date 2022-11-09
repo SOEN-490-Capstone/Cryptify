@@ -7,21 +7,25 @@ import { getFormattedAmount } from "../services/currency_service";
 type Props = {
     currency: CurrencyDisplayData;
     amount: string;
-    amountStyles: StyleProp<TextStyle>;
-    currencyCodeStyles: StyleProp<TextStyle>;
+    fontWeight?: string;
+    amountStyles?: StyleProp<TextStyle>;
+    currencyCodeStyles?: StyleProp<TextStyle>;
 };
 
-export function CurrencyAmount({ currency, amount, amountStyles, currencyCodeStyles }: Props) {
+export function CurrencyAmount({ currency, amount, fontWeight, amountStyles, currencyCodeStyles }: Props) {
     const formattedAmount = getFormattedAmount(amount, currency.type);
 
     return (
         <>
             <Box flex={1}>
-                <Text isTruncated style={amountStyles}>
+                <Text isTruncated fontWeight={fontWeight} style={amountStyles}>
                     {formattedAmount}
                 </Text>
             </Box>
-            <Text style={currencyCodeStyles}> {currency.currencyTag}</Text>
+            <Text fontWeight={fontWeight} style={currencyCodeStyles}>
+                {" "}
+                {currency.currencyTag}
+            </Text>
         </>
     );
 }

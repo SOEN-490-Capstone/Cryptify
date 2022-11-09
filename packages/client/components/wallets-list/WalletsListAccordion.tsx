@@ -50,12 +50,14 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                 testID={`walletsList${currency.type}`}
             >
                 <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
-                <Text style={styles.headerText}>{titleCase(currency.type)}</Text>
+                <Text fontWeight={"semibold"} style={styles.headerText}>
+                    {titleCase(currency.type)}
+                </Text>
                 {showCurrencyTotals ? (
                     <CurrencyAmount
                         currency={currency}
                         amount={amount}
-                        amountStyles={styles.walletTotal}
+                        fontWeight={"semibold"}
                         currencyCodeStyles={styles.walletTotalCurrencyCode}
                     />
                 ) : (
@@ -95,8 +97,10 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">
                             <VStack space="2px">
-                                <Text style={styles.walletName}>{wallet.name}</Text>
-                                <Text style={styles.walletAddress}>{formatAddress(wallet.address)}</Text>
+                                <Text>{wallet.name}</Text>
+                                <Text size={"footnote2"} color={"text.400"}>
+                                    {formatAddress(wallet.address)}
+                                </Text>
                             </VStack>
                             <CurrencyAmount
                                 currency={currency}
@@ -147,20 +151,9 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     headerText: {
-        fontSize: 17,
-        lineHeight: 23,
-        fontWeight: "600",
         marginHorizontal: 10,
     },
-    walletTotal: {
-        fontSize: 17,
-        lineHeight: 23,
-        fontWeight: "600",
-    },
     walletTotalCurrencyCode: {
-        fontSize: 17,
-        lineHeight: 23,
-        fontWeight: "600",
         marginRight: 5,
     },
     bitcoinIcon: {
@@ -184,18 +177,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#E5E5E5",
     },
-    walletName: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-    walletAddress: {
-        fontSize: 13,
-        lineHeight: 17,
-        color: "#A3A3A3",
-    },
     walletBalance: {
-        fontSize: 17,
-        lineHeight: 23,
         marginLeft: "auto",
     },
 });

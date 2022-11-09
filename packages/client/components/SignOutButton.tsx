@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "native-base";
-import { StyleSheet } from "react-native";
 import StorageService from "../services/storage_service";
 import { KEY_JWT } from "../constants/storage_keys";
 import { AuthContext } from "./contexts/AuthContext";
@@ -14,20 +13,8 @@ export default function SignOutButton() {
     }
 
     return (
-        <Button
-            variant="outline"
-            _text={{ ...styles.signOutButtonText, color: "error.500" }}
-            onPress={handleSignOut}
-            testID="signOutButton"
-        >
+        <Button variant="outline" _text={{ color: "error.500" }} onPress={handleSignOut} testID="signOutButton">
             Sign out
         </Button>
     );
 }
-
-const styles = StyleSheet.create({
-    signOutButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-});

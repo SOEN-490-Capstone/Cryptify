@@ -3,8 +3,8 @@ import { Text, HStack, Box, VStack, Badge } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Pressable, StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
-import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
+import { faCircleArrowDownLeft } from "./icons/light/faCircleArrowDownLeft";
+import { faCircleArrowUpRight } from "./icons/light/faCircleArrowUpRight";
 import { faCopyCustom } from "./icons/faCopyCustom";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount } from "../services/currency_service";
@@ -31,7 +31,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         <Box style={styles.itemWrapper} testID="transactionDetailsHeader">
             <VStack>
                 <FontAwesomeIcon
-                    icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                    icon={isIncommingTransaction ? faCircleArrowDownLeft : faCircleArrowUpRight}
                     style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
                     size={48}
                 />

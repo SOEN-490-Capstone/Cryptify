@@ -2,7 +2,7 @@ import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
-import { faWalletCustom } from "../components/icons/faWalletCustom";
+import { faWallet } from "../components/icons/light/faWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { faEthereum } from "../components/icons/brands/faEthereum";
@@ -12,7 +12,7 @@ import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
+import { faMagnifyingGlass } from "../components/icons/light/faMagnifyingGlass";
 import { faQrCodeCustom } from "../components/icons/faQrCodeCustom";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
@@ -79,7 +79,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={faWallet} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text style={styles.detailsText}>Details</Text>
@@ -117,7 +117,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
             </HStack>
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
-                    <FontAwesomeIcon icon={faMagnifyingGlassCustom} size={48} />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size={48} />
                     <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
                 </VStack>
             ) : (

@@ -6,7 +6,7 @@ import { Box, Button, Center, Link, View } from "native-base";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import { faCircleXMarkCustom } from "../../../components/icons/faCircleXMarkCustom";
+import { faCircleXMark } from "../../../components/icons/light/faCircleXMark";
 
 type Props = {
     currencyType: CurrencyType;
@@ -20,7 +20,7 @@ export default function AddWalletFailureScreen({ currencyType, setState, walletN
         <View style={styles.view} backgroundColor="error.50">
             <Box paddingTop="130px"></Box>
             <TitleTextWithIcon
-                icon={faCircleXMarkCustom}
+                icon={faCircleXMark}
                 iconSize={96}
                 iconStyles={styles.successIcon}
                 textStyles={styles.title}

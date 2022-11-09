@@ -5,7 +5,7 @@ import { Text, HStack, Pressable, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRightCustom } from "../components/icons/faChevronRightCustom";
 import { SettingsStackScreenProps } from "../types";
-import { faWalletCustom } from "../components/icons/faWalletCustom";
+import { faWallet } from "../components/icons/light/faWallet";
 import SignOutButton from "../components/SignOutButton";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
@@ -21,7 +21,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     testID="walletsButton"
                 >
                     <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={26} />
+                        <FontAwesomeIcon icon={faWallet} style={styles.walletIcon} size={26} />
                         <Text style={styles.viewWalletsButtonText}>Wallets</Text>
                         <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
                     </HStack>

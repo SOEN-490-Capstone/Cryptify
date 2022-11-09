@@ -3,8 +3,8 @@ import { Text, HStack, Box, VStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { faCircleArrowDownLeftCustom } from "./icons/faCircleArrowDownLeftCustom";
-import { faCircleArrowUpRightCustom } from "./icons/faCircleArrowUpRightCustom";
+import { faCircleArrowDownLeft } from "./icons/light/faCircleArrowDownLeft";
+import { faCircleArrowUpRight } from "./icons/light/faCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getFormattedAmount } from "../services/currency_service";
@@ -49,7 +49,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
             <Box style={styles.transactionItemWrapper}>
                 <HStack>
                     <FontAwesomeIcon
-                        icon={isIncommingTransaction ? faCircleArrowDownLeftCustom : faCircleArrowUpRightCustom}
+                        icon={isIncommingTransaction ? faCircleArrowDownLeft : faCircleArrowUpRight}
                         style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
                         size={30}
                     />

@@ -1,6 +1,6 @@
 import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 
-export const faEye: IconDefinition = {
+export const falEye: IconDefinition = {
     icon: [
         // SVG viewbox width (in pixels)
         576,

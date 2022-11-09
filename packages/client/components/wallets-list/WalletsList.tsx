@@ -5,7 +5,7 @@ import { WalletsListAccordion } from "./WalletsListAccordion";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { WalletsGateway } from "../../gateways/wallets_gateway";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faWallet } from "../icons/light/faWallet";
+import { falWallet } from "../icons/light/falWallet";
 import { AuthContext } from "../contexts/AuthContext";
 import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native";
 
@@ -46,7 +46,7 @@ export default function WalletsList(props: Props) {
     ) : (
         <Center alignItems="center" marginY="auto">
             <Box marginTop="-10px"></Box>
-            <FontAwesomeIcon icon={faWallet} style={styles.walletIcon} size={56} />
+            <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={56} />
             <Text style={styles.noWalletsText}>You do not have any wallets.</Text>
         </Center>
     );

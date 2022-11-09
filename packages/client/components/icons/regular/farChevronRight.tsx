@@ -1,6 +1,6 @@
 import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 
-export const faChevronRight: IconDefinition = {
+export const farChevronRight: IconDefinition = {
     icon: [
         // SVG viewbox width (in pixels)
         320,

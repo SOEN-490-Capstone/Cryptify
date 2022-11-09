@@ -4,7 +4,7 @@ import { Pressable } from "native-base";
 import React from "react";
 import { Share } from "react-native";
 import { currencyTagToName } from "../services/currency_service";
-import { faArrowUpBracket} from "./icons/regular/faArrowUpFromBracket";
+import { faArrowUpBracket } from "./icons/regular/farArrowUpFromBracket";
 
 type Props = {
     currencyType: string;

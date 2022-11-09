@@ -1,6 +1,6 @@
 import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 
-export const faCircleCheck: IconDefinition = {
+export const falCircleCheck: IconDefinition = {
     icon: [
         // SVG viewbox width (in pixels)
         512,

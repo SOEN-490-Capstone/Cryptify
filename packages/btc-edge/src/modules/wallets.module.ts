@@ -4,9 +4,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { WalletsService } from "../services/wallets.service";
 import { SoChainGateway } from "../gateways/so_chain_gateway";
+import { TransactionsModule } from "@cryptify/eth-edge/src/modules/transactions.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Wallet])],
+    imports: [TypeOrmModule.forFeature([Wallet]), TransactionsModule],
     controllers: [WalletsController],
     providers: [WalletsService, SoChainGateway],
 })

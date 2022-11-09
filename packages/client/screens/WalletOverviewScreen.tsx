@@ -6,14 +6,14 @@ import { faWallet } from "../components/icons/light/faWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { faEthereum } from "../components/icons/brands/faEthereum";
-import { faArrowRightCustom } from "../components/icons/faArrowRightCustom";
+import { faArrowRight } from "../components/icons/regular/faArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { faMagnifyingGlass } from "../components/icons/light/faMagnifyingGlass";
-import { faQrCodeCustom } from "../components/icons/faQrCodeCustom";
+import { faQrCode } from "../components/icons/regular/faQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 
@@ -91,7 +91,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faQrCodeCustom} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={faQrCode} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text style={styles.detailsText}>QR Code</Text>
@@ -111,7 +111,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                         style={styles.rightArrowIcon}
                     >
-                        <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
+                        <FontAwesomeIcon icon={faArrowRight} size={22} />
                     </Pressable>
                 )}
             </HStack>

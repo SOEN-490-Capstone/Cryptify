@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, Box, HStack, Text, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRightCustom } from "../icons/faChevronRightCustom";
+import { faChevronRight } from "../icons/regular/faChevronRight";
 import { faChevronDownCustom } from "../icons/faChevronDownCustom";
 import { StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
@@ -62,7 +62,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                     <Box flex={1}></Box>
                 )}
                 <FontAwesomeIcon
-                    icon={isActive ? faChevronDownCustom : faChevronRightCustom}
+                    icon={isActive ? faChevronDownCustom : faChevronRight}
                     style={styles.chevronIcon}
                     size={16}
                 />

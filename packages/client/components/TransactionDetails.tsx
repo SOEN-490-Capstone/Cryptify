@@ -5,7 +5,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { faCircleArrowDownLeft } from "./icons/light/faCircleArrowDownLeft";
 import { faCircleArrowUpRight } from "./icons/light/faCircleArrowUpRight";
-import { faCopyCustom } from "./icons/faCopyCustom";
+import { faCopy } from "./icons/regular/faCopy";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount } from "../services/currency_service";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
@@ -60,7 +60,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     <HStack space="10px">
                         <Text style={styles.elementInformationText}>{transaction.transactionAddress}</Text>
                         <Pressable onPress={() => copyToClipboard(transaction.transactionAddress)}>
-                            <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+                            <FontAwesomeIcon icon={faCopy} style={styles.copyIcon} size={20} />
                         </Pressable>
                     </HStack>
                 </Box>
@@ -80,7 +80,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         <Text style={styles.elementInformationText}>{transaction.walletIn}</Text>
                         {isIncommingTransaction ? (
                             <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
-                                <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+                                <FontAwesomeIcon icon={faCopy} style={styles.copyIcon} size={20} />
                             </Pressable>
                         ) : (
                             <></>
@@ -97,7 +97,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                             <></>
                         ) : (
                             <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
-                                <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+                                <FontAwesomeIcon icon={faCopy} style={styles.copyIcon} size={20} />
                             </Pressable>
                         )}
                     </HStack>

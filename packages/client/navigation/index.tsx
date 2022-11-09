@@ -25,10 +25,10 @@ import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionSc
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
 import { Pressable } from "native-base";
-import { faXMarkCustom } from "../components/icons/faXMarkCustom";
+import { faXMark } from "../components/icons/regular/faXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
-import { faPlusCustom } from "../components/icons/faPlusCustom";
+import { faPlus } from "../components/icons/regular/faPlus";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
@@ -103,7 +103,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                                 navigation.goBack();
                             }}
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={faXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -225,7 +225,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                     headerRight: () => (
                         <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
-                            <FontAwesomeIcon icon={faPlusCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={faPlus} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -258,7 +258,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                                 navigation.goBack();
                             }}
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={faXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -361,7 +361,7 @@ function GuestStackScreen() {
                             }}
                             testID="headerRightButton"
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={faXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}

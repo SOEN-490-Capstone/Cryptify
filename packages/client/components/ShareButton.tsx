@@ -4,7 +4,7 @@ import { Pressable } from "native-base";
 import React from "react";
 import { Share } from "react-native";
 import { currencyTagToName } from "../services/currency_service";
-import { faArrowUpBracketCustom } from "./icons/faArrowUpFromBracketCustom";
+import { faArrowUpBracket} from "./icons/regular/faArrowUpFromBracket";
 
 type Props = {
     currencyType: string;
@@ -22,7 +22,7 @@ export function AddressShareButton({ currencyType, address }: Props) {
 
     return (
         <Pressable onPress={onShare}>
-            <FontAwesomeIcon icon={faArrowUpBracketCustom} size={22} />
+            <FontAwesomeIcon icon={faArrowUpBracket} size={22} />
         </Pressable>
     );
 }

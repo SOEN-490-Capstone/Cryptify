@@ -19,8 +19,8 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHouseCustom } from "../components/icons/faHouseCustom";
-import { faBarsCustom } from "../components/icons/faBarsCustom";
+import { faHouse } from "../components/icons/solid/faHouse";
+import { faBars } from "../components/icons/solid/faBars";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
@@ -407,7 +407,7 @@ function BottomTabNavigator() {
                 component={HomeStackScreen}
                 options={{
                     title: "Home",
-                    tabBarIcon: tabBarIcon(faHouseCustom),
+                    tabBarIcon: tabBarIcon(faHouse),
                     tabBarTestID: "homeTab",
                 }}
             />
@@ -416,7 +416,7 @@ function BottomTabNavigator() {
                 component={SettingsStackScreen}
                 options={{
                     title: "Settings",
-                    tabBarIcon: tabBarIcon(faBarsCustom),
+                    tabBarIcon: tabBarIcon(faBars),
                     tabBarTestID: "settingsTab",
                 }}
             />

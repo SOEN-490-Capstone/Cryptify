@@ -27,31 +27,30 @@ export class SoChainGateway extends AbstractServiceGateway {
 
     async getTransactions(address: string): Promise<Transaction[]> {
         // Get the sent and received transactions from the API
-        const paths = [`get_tx_unspent/BTC/${address}`, `get_tx_received/BTC/${address}`];
-        const outAndInTransactions = await Promise.all(
-            paths.map(async (path) => this.request<TransactionsByWalletResponse>(Method.GET, {}, path, null)),
-        );
+        const path = `get_tx_received/BTC/${address}`;
+        const outAndInTransactions = await this.request<TransactionsByWalletResponse>(Method.GET, {}, path, null);
 
-        // Convert in and out transactions list to a single list of transaction addresses then
+        // Convert in and out transactions list to a list of transaction addresses then
         // hydrate each address with the rest of the transaction data from the API
         const transactionsData = await Promise.all(
-            outAndInTransactions
-                .flatMap((transactionsResponse) => transactionsResponse.data.txs)
+            outAndInTransactions.data.txs
                 .map((transaction) => transaction.txid)
                 .map((addr) => this.request<TransactionResponse>(Method.GET, {}, `tx/BTC/${addr}`, null)),
         );
 
-        // Cross the in and out wallets to form NxM number of transactions, filter out ones
-        // not involving the target wallet, and finally construct the transaction object
+        // Cross the in and out wallets to form NxM number of transactions, filter for
+        // address pairs that don't include the target address and finally construct the
+        // transaction object
         return transactionsData.flatMap((transaction) =>
             transaction.data.inputs
-                .flatMap((input) => transaction.data.outputs.map((output) => [input, output]))
-                .filter(([inWallet, outWallet]) => inWallet.address == address || outWallet.address == address)
+                .flatMap((input) => transaction.data.outputs.map((output) => [input, output] as const))
+                .filter(([inWallet, outWallet]) => inWallet.address === address || outWallet.address === address)
                 .map(([inWallet, outWallet]) => ({
+                    id: -1,
                     transactionAddress: transaction.data.txid,
                     walletIn: inWallet.address,
                     walletOut: outWallet.address,
-                    amount: address == inWallet.address ? outWallet.value : inWallet.value,
+                    amount: address === inWallet.address ? outWallet.value : inWallet.value,
                     createdAt: new Date(transaction.data.time),
                 })),
         );

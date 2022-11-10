@@ -40,32 +40,36 @@ export interface TransactionResponse {
         locktime: number;
         sent_value: string;
         fee: string;
-        inputs: {
-            input_no: number;
-            address: string;
-            value: string;
-            received_from: {
-                txid: string;
-                output_no: number;
-            };
-            script_asm: string;
-            script_hex: string;
-            witness: string[];
-        }[];
-        outputs: {
-            output_no: number;
-            address: string;
-            value: string;
-            type: string;
-            spent: {
-                txid: string;
-                input_no: number;
-            };
-            script_asm: string;
-            script_hex: string;
-        }[];
+        inputs: TransactionResponseInput[];
+        outputs: TransactionResponseOutput[];
         tx_hex: string;
     };
     code: number;
     message: string;
+}
+
+export interface TransactionResponseInput {
+    input_no: number;
+    address: string;
+    value: string;
+    received_from: {
+        txid: string;
+        output_no: number;
+    };
+    script_asm: string;
+    script_hex: string;
+    witness: string[];
+}
+
+export interface TransactionResponseOutput {
+    output_no: number;
+    address: string;
+    value: string;
+    type: string;
+    spent: {
+        txid: string;
+        input_no: number;
+    };
+    script_asm: string;
+    script_hex: string;
 }

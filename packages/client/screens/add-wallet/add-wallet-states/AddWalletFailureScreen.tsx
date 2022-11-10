@@ -23,7 +23,7 @@ export default function AddWalletFailureScreen({ currencyType, setState, walletN
                 icon={faCircleXMarkCustom}
                 iconSize={96}
                 iconStyles={styles.successIcon}
-                textStyles={styles.title}
+                textSize={"title3"}
                 space={30}
             >
                 Could Not Add {titleCase(currencyType)} Wallet
@@ -31,18 +31,14 @@ export default function AddWalletFailureScreen({ currencyType, setState, walletN
                 {walletName}
             </TitleTextWithIcon>
             <Center style={{ flex: 1 }}></Center>
-            <Button
-                _text={styles.successButtonText}
-                onPress={() => setState(AddWalletState.FORM)}
-                backgroundColor={"error.500"}
-            >
+            <Button onPress={() => setState(AddWalletState.FORM)} backgroundColor={"error.500"}>
                 Try again
             </Button>
             <Center marginTop="20px" marginBottom="15px">
                 <Link
                     _text={{
                         color: "error.500",
-                        ...styles.backButtonText,
+                        fontWeight: "semibold",
                     }}
                     isUnderlined={false}
                     onPress={() => {
@@ -62,21 +58,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 15,
     },
-    title: {
-        fontSize: 20,
-        lineHeight: 27,
-        textAlign: "center",
-    },
     successIcon: {
         color: "#EF4444",
-    },
-    successButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-    backButtonText: {
-        fontSize: 17,
-        lineHeight: 23,
-        fontWeight: "600",
     },
 });

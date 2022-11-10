@@ -55,25 +55,24 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                     />
                     <VStack style={styles.verticalStack}>
                         <HStack>
-                            <Text style={styles.transactionsAddress}>
+                            <Text fontWeight={"semibold"} style={styles.transactionsAddress}>
                                 {formatAddress(transaction.transactionAddress)}
                             </Text>
                             <Text
                                 isTruncated
-                                color={isIncommingTransaction ? "success.600" : "text.700"}
-                                style={
-                                    isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut
-                                }
+                                fontWeight={"semibold"}
+                                color={isIncommingTransaction ? "success.600" : undefined}
+                                style={styles.transactionAmountInOut}
                             >
                                 {isIncommingTransaction ? "+" : "-"}
                                 {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)}
                             </Text>
                         </HStack>
                         <HStack>
-                            <Text color="text.500" style={styles.transactionDate}>
+                            <Text size={"subheadline"} color="text.500">
                                 {getFormattedDate(transaction.createdAt as any)}
                             </Text>
-                            <Text color="text.500" style={styles.transactionCurrency}>
+                            <Text size={"subheadline"} color="text.500" style={styles.transactionCurrency}>
                                 {getCurrencyType()}
                             </Text>
                         </HStack>
@@ -104,24 +103,11 @@ const styles = StyleSheet.create({
     },
     transactionsAddress: {
         paddingRight: 5,
-        fontSize: 17,
-        fontWeight: "600",
     },
-    transactionAmountOut: {
+    transactionAmountInOut: {
         marginLeft: "auto",
-        fontSize: 17,
-        fontWeight: "600",
-    },
-    transactionAmountIn: {
-        marginLeft: "auto",
-        fontSize: 17,
-        fontWeight: "600",
-    },
-    transactionDate: {
-        fontSize: 15,
     },
     transactionCurrency: {
-        fontSize: 15,
         marginLeft: "auto",
     },
     transactionItemWrapper: {

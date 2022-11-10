@@ -22,7 +22,7 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
         savedDate = date;
         return (
             <Box key={+date} backgroundColor="text.100" testID="transactionsDateSeparator">
-                <Text color="text.500" style={styles.dateSeparator}>
+                <Text fontWeight={"semibold"} color="text.500" style={styles.dateSeparator}>
                     {date.toLocaleString("en-US", { month: "long" }) + " " + date.getFullYear()}
                 </Text>
             </Box>
@@ -72,8 +72,6 @@ export function TransactionList({ transactions, walletAddress, displaySeparation
 
 const styles = StyleSheet.create({
     dateSeparator: {
-        fontSize: 17,
-        fontWeight: "600",
         paddingHorizontal: 15,
         paddingVertical: 5,
     },

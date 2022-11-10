@@ -47,7 +47,9 @@ export default function SignInScreen() {
 
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={styles.title}>Welcome back</Text>
+            <Text size={"title1"} fontWeight={"bold"} style={styles.title}>
+                Welcome back
+            </Text>
             <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
@@ -93,9 +95,6 @@ export default function SignInScreen() {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 28,
-        lineHeight: 32,
-        fontWeight: "bold",
         textAlign: "center",
     },
     eyeIcon: {

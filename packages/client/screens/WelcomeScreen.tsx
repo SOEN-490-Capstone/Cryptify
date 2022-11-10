@@ -11,7 +11,9 @@ export default function WelcomeScreen({ navigation }: GuestStackScreenProps<"Wel
         <View style={styles.view}>
             <VStack safeArea space="20px" style={styles.titleContainer}>
                 <Logo testID="logo" />
-                <Text style={styles.subtext}>Crypto asset management{"\n"}made simple</Text>
+                <Text size={"title3"} style={styles.subtext}>
+                    Crypto asset management{"\n"}made simple
+                </Text>
             </VStack>
             <VStack space="15px" marginBottom="20px">
                 <Button onPress={() => navigation.navigate("SignUpScreen")} testID="signUpButton">
@@ -37,8 +39,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     subtext: {
-        fontSize: 20,
-        lineHeight: 27,
         textAlign: "center",
     },
     background: {

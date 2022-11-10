@@ -57,8 +57,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     noWalletsText: {
-        fontSize: 17,
-        lineHeight: 23,
         marginTop: 15,
     },
     walletIcon: {

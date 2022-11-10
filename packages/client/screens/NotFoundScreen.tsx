@@ -6,7 +6,9 @@ import { Text } from "native-base";
 export default function NotFoundScreen() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>This screen doesn't exist.</Text>
+            <Text size={"title3"} fontWeight={"semibold"}>
+                This screen doesn't exist.
+            </Text>
         </View>
     );
 }
@@ -17,10 +19,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         padding: 20,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
     },
     link: {
         marginTop: 15,

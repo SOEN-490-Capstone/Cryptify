@@ -12,7 +12,9 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
         <View style={styles.view}>
             <VStack space="15px" flex={1}>
                 <HStack style={styles.walletsListTitleContainer} justifyContent="space-between" alignItems="center">
-                    <Text style={styles.walletsListTitle}>Wallets</Text>
+                    <Text size={"title3"} fontWeight={"semibold"}>
+                        Wallets
+                    </Text>
                     <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")} testID="addWalletButton">
                         <FontAwesomeIcon icon={fasCirclePlusSolid} style={styles.addWalletIcon} size={22} />
                     </Pressable>
@@ -30,11 +32,6 @@ const styles = StyleSheet.create({
     walletsListTitleContainer: {
         paddingHorizontal: 15,
         marginTop: 20,
-    },
-    walletsListTitle: {
-        fontSize: 20,
-        lineHeight: 27,
-        fontWeight: "600",
     },
     addWalletIcon: {
         color: "#404040",

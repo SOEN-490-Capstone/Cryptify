@@ -36,13 +36,15 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     size={48}
                 />
                 <Text
-                    color={isIncommingTransaction ? "success.600" : "text.700"}
-                    style={isIncommingTransaction ? styles.transactionAmountIn : styles.transactionAmountOut}
+                    size={"title2"}
+                    fontWeight={"semibold"}
+                    color={isIncommingTransaction ? "success.600" : undefined}
+                    style={styles.transactionAmountInOut}
                 >
                     {isIncommingTransaction ? "+" : "-"}
                     {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM) + " "} {getCurrencyType()}
                 </Text>
-                <Text color="text.500" style={styles.transactionsAddress}>
+                <Text fontWeight={"semibold"} color="text.500" style={styles.transactionsAddress}>
                     {formatAddress(transaction.transactionAddress)}
                 </Text>
             </VStack>
@@ -54,7 +56,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         <Box style={styles.itemWrapper} testID="transactionDetailsBasicInfo">
             <VStack>
                 <Box>
-                    <Text color="text.500" style={styles.elementInformationTitle}>
+                    <Text size={"subheadline"} color="text.500">
                         Transaction ID
                     </Text>
                     <HStack space="10px">
@@ -68,12 +70,14 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     <HStack>
                         <Text style={styles.elementInformationText}>Status</Text>
                         <Badge colorScheme="success" style={styles.transactionStatus}>
-                            <Text color="success.600">Confirmed</Text>
+                            <Text size={"subheadline"} fontWeight={"semibold"} color="success.600">
+                                Confirmed
+                            </Text>
                         </Badge>
                     </HStack>
                 </Box>
                 <Box style={styles.subItemWrapper}>
-                    <Text color="text.500" style={styles.elementInformationTitle}>
+                    <Text size={"subheadline"} color="text.500">
                         From
                     </Text>
                     <HStack space="10px">
@@ -88,7 +92,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     </HStack>
                 </Box>
                 <Box style={styles.subItemWrapper}>
-                    <Text color="text.500" style={styles.elementInformationTitle}>
+                    <Text size={"subheadline"} color="text.500">
                         To
                     </Text>
                     <HStack space="10px">
@@ -111,9 +115,11 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         // Get Gas Limit
         <Box style={styles.itemWrapper} testID="transactionDetailsFee">
             <VStack>
-                <Text style={styles.categoryTitle}>Transaction Fee</Text>
+                <Text size={"title3"} fontWeight={"semibold"}>
+                    Transaction Fee
+                </Text>
                 <Box style={styles.subItemWrapper}>
-                    <Text color="text.500" style={styles.elementInformationTitle}>
+                    <Text size={"subheadline"} color="text.500">
                         Gas Price
                     </Text>
                     <Text>0.0000000000012323 ETH</Text>
@@ -135,7 +141,9 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
         <Box style={styles.itemWrapper} testID="transactionDetailsOtherDetails">
             <VStack>
                 <Box>
-                    <Text style={styles.categoryTitle}>Other Details</Text>
+                    <Text size={"title3"} fontWeight={"semibold"}>
+                        Other Details
+                    </Text>
                 </Box>
                 <Box style={styles.subItemWrapper}>
                     <HStack>
@@ -204,41 +212,19 @@ const styles = StyleSheet.create({
     transactionsAddress: {
         paddingRight: 5,
         fontSize: 18,
-        fontWeight: "600",
         textAlign: "center",
     },
-    transactionAmountOut: {
-        fontSize: 22,
-        fontWeight: "600",
+    transactionAmountInOut: {
         textAlign: "center",
         marginBottom: 10,
-    },
-    transactionAmountIn: {
-        fontSize: 22,
-        fontWeight: "600",
-        textAlign: "center",
-        marginBottom: 10,
-    },
-    elementInformationTitle: {
-        fontSize: 15,
     },
     elementInformationText: {
-        fontSize: 17,
         flex: 1,
     },
     transactionStatus: {
         marginLeft: "auto",
     },
-    transactionStatusText: {
-        fontSize: 15,
-        fontWeight: "600",
-    },
     gasLimit: {
         marginLeft: "auto",
-        fontSize: 17,
-    },
-    categoryTitle: {
-        fontSize: 20,
-        fontWeight: "600",
     },
 });

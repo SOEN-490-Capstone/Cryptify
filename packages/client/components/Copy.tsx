@@ -16,7 +16,7 @@ export function Copy({ label, value }: Props) {
         await Clipboard.setStringAsync(valueToCopy);
     }
 
-    // To do Refactor Toast styling and custom render to overide native base to avoid code duplicates.
+    // TODO Refactor Toast styling and custom render to override native base to avoid code duplicates.
     return (
         <Pressable
             onPress={() => {
@@ -27,7 +27,14 @@ export function Copy({ label, value }: Props) {
                     render: () => {
                         return (
                             <Box style={styles.toastBox}>
-                                <Text style={styles.toastText}>{label} copied to clipboard</Text>
+                                <Text
+                                    size={"footnote1"}
+                                    fontWeight={"semibold"}
+                                    color={"white"}
+                                    style={styles.toastText}
+                                >
+                                    {label} copied to clipboard
+                                </Text>
                             </Box>
                         );
                     },
@@ -50,9 +57,6 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     toastText: {
-        color: "#FFFFFF",
-        fontWeight: "600",
-        fontSize: 14,
         paddingHorizontal: 25.5,
         paddingVertical: 10.5,
     },

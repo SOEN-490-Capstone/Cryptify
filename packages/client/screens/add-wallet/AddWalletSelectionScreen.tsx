@@ -1,6 +1,5 @@
 import React from "react";
 import { View } from "../../components/Themed";
-import { TitleText } from "../../components/TitleText";
 import { StyleSheet } from "react-native";
 import { VStack, Text, HStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -18,7 +17,9 @@ type Props = CompositeScreenProps<
 export default function AddWalletSelectionScreen({ navigation }: Props) {
     return (
         <View style={styles.view}>
-            <TitleText>Add a Wallet</TitleText>
+            <Text size={"title1"} fontWeight={"semibold"}>
+                Add a Wallet
+            </Text>
             <VStack style={styles.currencyTypeStack} space="2px">
                 {currenciesDisplayData.map((currency, i) => (
                     <Pressable
@@ -56,8 +57,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     currencyTypeText: {
-        fontSize: 17,
-        lineHeight: 23,
         marginLeft: 15,
     },
     bitcoinIcon: {

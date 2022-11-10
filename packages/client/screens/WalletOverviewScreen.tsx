@@ -45,9 +45,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <VStack style={styles.walletDetails}>
                     <HStack justifyContent="space-between">
                         <VStack>
-                            <Text style={styles.walletName}>{name}</Text>
+                            <Text>{name}</Text>
                             <Box marginTop="2px"></Box>
-                            <Text style={styles.walletAddress}>{formatAddress(address)}</Text>
+                            <Text size={"subheadline"} color={"text.500"}>
+                                {formatAddress(address)}
+                            </Text>
                         </VStack>
                         <VStack>
                             <FontAwesomeIcon icon={faEthereum} style={styles.ethereumIcon} size={40} />
@@ -56,8 +58,10 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     <HStack alignItems="center">
                         <VStack>
                             <Box marginTop="40px" marginBottom="0"></Box>
-                            <Text style={styles.currencyType}>{currencyType}</Text>
-                            <Text style={styles.walletBalance}>{balance}</Text>
+                            <Text size={"subheadline"} color={"text.500"}>
+                                {currencyType}
+                            </Text>
+                            <Text size={"title3"}>{balance}</Text>
                         </VStack>
                     </HStack>
                 </VStack>
@@ -82,7 +86,9 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
-                    <Text style={styles.detailsText}>Details</Text>
+                    <Text size={"subheadline"} fontWeight={"semibold"}>
+                        Details
+                    </Text>
                 </VStack>
                 <VStack space="4px">
                     <Pressable
@@ -94,11 +100,15 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             <FontAwesomeIcon icon={farQrCode} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
-                    <Text style={styles.detailsText}>QR Code</Text>
+                    <Text size={"subheadline"} fontWeight={"semibold"}>
+                        QR Code
+                    </Text>
                 </VStack>
             </HStack>
             <HStack style={styles.transactionBox} testID="transactionsListHeader">
-                <Text style={styles.transactions}>Transactions</Text>
+                <Text size={"title3"} fontWeight={"semibold"} style={styles.transactions}>
+                    Transactions
+                </Text>
                 {transactions.length != 0 && (
                     <Pressable
                         testID="transactionsListButton"
@@ -154,27 +164,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#E5E5E5",
     },
-    walletName: {
-        fontSize: 17,
-        lineHeight: 23,
-    },
-    walletAddress: {
-        fontSize: 15,
-        lineHeight: 20,
-        color: "#737373",
-    },
-    currencyType: {
-        fontSize: 15,
-        lineHeight: 20,
-        color: "#737373",
-    },
-    walletBalance: {
-        fontSize: 20,
-        lineHeight: 27,
-    },
     walletIcon: {
         color: "#404040",
-        fontWeight: "400",
         lineHeight: 20,
     },
     walletIconBackground: {
@@ -186,18 +177,11 @@ const styles = StyleSheet.create({
         alignContent: "center",
         alignItems: "center",
     },
-    detailsText: {
-        fontWeight: "600",
-        fontSize: 15,
-        lineHeight: 20,
-    },
     transactionBox: {
         marginBottom: 20,
         marginTop: 30,
     },
     transactions: {
-        fontWeight: "600",
-        fontSize: 20,
         paddingLeft: 15,
     },
     rightArrowIcon: {
@@ -209,6 +193,5 @@ const styles = StyleSheet.create({
     },
     magnifyingGlassText: {
         marginTop: 15,
-        fontSize: 17,
     },
 });

@@ -23,7 +23,7 @@ export default function WalletQRCodeScreen({ route }: Props) {
 
     return (
         <View style={styles.view}>
-            <Text style={styles.text} testID="QRCodeHeader">
+            <Text size={"subheadline"} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
                     {titleCase(currencyName ? currencyName : "")} ({currencyType}){" "}
@@ -42,17 +42,19 @@ export default function WalletQRCodeScreen({ route }: Props) {
             <RowItem label="Name" value={name} />
             <VStack>
                 <HStack>
-                    <Text style={styles.label}>Address</Text>
+                    <Text size={"subheadline"} color={"text.500"}>
+                        Address
+                    </Text>
                 </HStack>
                 <HStack space="10px">
-                    <Text style={{ ...styles.address, color: "text.700" }}>{address}</Text>
+                    <Text style={{ ...styles.address }}>{address}</Text>
                     <Copy label="Address" value={address} />
                 </HStack>
             </VStack>
 
             <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={farCircleInfo} size={16} />
-                <Text style={styles.infoText}>
+                <Text size={"footnote2"} style={styles.infoText}>
                     Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (
                     {currencyType}) to this address.
                 </Text>
@@ -68,11 +70,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingTop: 20,
     },
-    text: {
-        fontWeight: "400",
-        fontSize: 15,
-        lineHeight: 20,
-    },
     qrCode: {
         paddingVertical: 20,
     },
@@ -85,9 +82,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     infoText: {
-        fontSize: 13,
-        lineHeight: 17,
-        fontWeight: "400",
         paddingLeft: 10,
     },
     copyIcon: {
@@ -95,13 +89,7 @@ const styles = StyleSheet.create({
         color: "#0077E6",
         paddingHorizontal: 10,
     },
-    label: {
-        fontSize: 15,
-        lineHeight: 20,
-    },
     address: {
-        fontSize: 17,
-        lineHeight: 23,
         flex: 1,
     },
 });

@@ -8,7 +8,7 @@ import { currencyTagToName } from "../services/currency_service";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import RowItem from "../components/RowItem";
-import { faCircleInfoCustom } from "../components/icons/faCircleInfoCustom";
+import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Copy } from "../components/Copy";
 
@@ -53,7 +53,7 @@ export default function WalletQRCodeScreen({ route }: Props) {
             </VStack>
 
             <HStack style={styles.info} testID="QRCodeWarning">
-                <FontAwesomeIcon icon={faCircleInfoCustom} size={16} />
+                <FontAwesomeIcon icon={farCircleInfo} size={16} />
                 <Text size={"footnote2"} style={styles.infoText}>
                     Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (
                     {currencyType}) to this address.

@@ -5,7 +5,7 @@ import { HomeStackScreenProps } from "../types";
 import WalletsList from "../components/wallets-list/WalletsList";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCirclePlusSolidCustom } from "../components/icons/faCirclePlusSolidCustom";
+import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid";
 
 export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScreen">) {
     return (
@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
                         Wallets
                     </Text>
                     <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")} testID="addWalletButton">
-                        <FontAwesomeIcon icon={faCirclePlusSolidCustom} style={styles.addWalletIcon} size={22} />
+                        <FontAwesomeIcon icon={fasCirclePlusSolid} style={styles.addWalletIcon} size={22} />
                     </Pressable>
                 </HStack>
                 <WalletsList navigation={navigation} showCurrencyTotals={true} />

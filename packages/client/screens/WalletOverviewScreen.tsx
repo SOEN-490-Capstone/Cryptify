@@ -2,18 +2,18 @@ import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
-import { faWalletCustom } from "../components/icons/faWalletCustom";
+import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereumCustom } from "../components/icons/faEthereumCustom";
-import { faArrowRightCustom } from "../components/icons/faArrowRightCustom";
+import { faEthereum } from "../components/icons/brands/faEthereum";
+import { farArrowRight } from "../components/icons/regular/farArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { faMagnifyingGlassCustom } from "../components/icons/faMagnifyingGlassCustom";
-import { faQrCodeCustom } from "../components/icons/faQrCodeCustom";
+import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
+import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 
@@ -52,7 +52,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={faEthereumCustom} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon icon={faEthereum} style={styles.ethereumIcon} size={40} />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">
@@ -83,7 +83,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faWalletCustom} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text size={"subheadline"} fontWeight={"semibold"}>
@@ -97,7 +97,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={faQrCodeCustom} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={farQrCode} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text size={"subheadline"} fontWeight={"semibold"}>
@@ -121,13 +121,13 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                         style={styles.rightArrowIcon}
                     >
-                        <FontAwesomeIcon icon={faArrowRightCustom} size={22} />
+                        <FontAwesomeIcon icon={farArrowRight} size={22} />
                     </Pressable>
                 )}
             </HStack>
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
-                    <FontAwesomeIcon icon={faMagnifyingGlassCustom} size={48} />
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
                     <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
                 </VStack>
             ) : (

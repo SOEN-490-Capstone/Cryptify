@@ -5,8 +5,8 @@ import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEyeCustom } from "../components/icons/faEyeCustom";
-import { faEyeSlashCustom } from "../components/icons/faEyeSlashCustom";
+import { falEye } from "../components/icons/light/falEye";
+import { falEyeSlash } from "../components/icons/light/falEyeSlash";
 import { AuthGateway } from "../gateways/auth_gateway";
 import StorageService from "../services/storage_service";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
@@ -92,7 +92,7 @@ export default function SignUpScreen() {
                                 InputRightElement={
                                     <Pressable onPress={() => setShowPass(!showPassword)}>
                                         <FontAwesomeIcon
-                                            icon={showPassword ? faEyeCustom : faEyeSlashCustom}
+                                            icon={showPassword ? falEye : falEyeSlash}
                                             style={styles.eyeIcon}
                                             size={20}
                                         />
@@ -112,7 +112,7 @@ export default function SignUpScreen() {
                                 InputRightElement={
                                     <Pressable onPress={() => setShowConfirmPass(!showConfirmPassword)}>
                                         <FontAwesomeIcon
-                                            icon={showConfirmPassword ? faEyeCustom : faEyeSlashCustom}
+                                            icon={showConfirmPassword ? falEye : falEyeSlash}
                                             style={styles.eyeIcon}
                                             size={20}
                                         />

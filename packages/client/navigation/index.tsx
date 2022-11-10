@@ -19,16 +19,16 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import SignInScreen from "../screens/SignInScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHouseCustom } from "../components/icons/faHouseCustom";
-import { faBarsCustom } from "../components/icons/faBarsCustom";
+import { fasHouse } from "../components/icons/solid/fasHouse";
+import { fasBars } from "../components/icons/solid/fasBars";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
 import { Pressable } from "native-base";
-import { faXMarkCustom } from "../components/icons/faXMarkCustom";
+import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
-import { faPlusCustom } from "../components/icons/faPlusCustom";
+import { farPlus } from "../components/icons/regular/farPlus";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
@@ -103,7 +103,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                                 navigation.goBack();
                             }}
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -225,7 +225,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                     headerRight: () => (
                         <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
-                            <FontAwesomeIcon icon={faPlusCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -258,7 +258,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                                 navigation.goBack();
                             }}
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -361,7 +361,7 @@ function GuestStackScreen() {
                             }}
                             testID="headerRightButton"
                         >
-                            <FontAwesomeIcon icon={faXMarkCustom} color="#404040" size={22} />
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
                         </Pressable>
                     ),
                 })}
@@ -407,7 +407,7 @@ function BottomTabNavigator() {
                 component={HomeStackScreen}
                 options={{
                     title: "Home",
-                    tabBarIcon: tabBarIcon(faHouseCustom),
+                    tabBarIcon: tabBarIcon(fasHouse),
                     tabBarTestID: "homeTab",
                 }}
             />
@@ -416,7 +416,7 @@ function BottomTabNavigator() {
                 component={SettingsStackScreen}
                 options={{
                     title: "Settings",
-                    tabBarIcon: tabBarIcon(faBarsCustom),
+                    tabBarIcon: tabBarIcon(fasBars),
                     tabBarTestID: "settingsTab",
                 }}
             />

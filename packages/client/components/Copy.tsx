@@ -3,7 +3,7 @@ import { Box, Pressable, Text, useToast } from "native-base";
 import React from "react";
 import * as Clipboard from "expo-clipboard";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCopyCustom } from "./icons/faCopyCustom";
+import { farCopy } from "./icons/regular/farCopy";
 type Props = {
     label: string;
     value: string;
@@ -41,7 +41,7 @@ export function Copy({ label, value }: Props) {
                 });
             }}
         >
-            <FontAwesomeIcon icon={faCopyCustom} style={styles.copyIcon} size={20} />
+            <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
         </Pressable>
     );
 }

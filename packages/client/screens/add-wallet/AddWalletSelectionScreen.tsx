@@ -3,7 +3,7 @@ import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
 import { VStack, Text, HStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRightCustom } from "../../components/icons/faChevronRightCustom";
+import { farChevronRight } from "../../components/icons/regular/farChevronRight";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -34,7 +34,7 @@ export default function AddWalletSelectionScreen({ navigation }: Props) {
                         <HStack height="50px" alignItems="center">
                             <FontAwesomeIcon icon={currency.icon} style={styles[currency.style]} size={26} />
                             <Text style={styles.currencyTypeText}>{titleCase(currency.type)}</Text>
-                            <FontAwesomeIcon icon={faChevronRightCustom} style={styles.chevronRightIcon} size={16} />
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                         </HStack>
                     </Pressable>
                 ))}

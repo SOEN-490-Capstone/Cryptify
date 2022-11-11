@@ -4,6 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { token } from "@cryptify/api/test/fixtures/token_fixtures";
 import fetch from "node-fetch";
+import { seedDB } from "@cryptify/common/src/db/seed_db";
 
 const { Response } = jest.requireActual("node-fetch");
 jest.mock("node-fetch", () => jest.fn());
@@ -18,6 +19,10 @@ describe("Wallets", () => {
 
         app = moduleFixture.createNestApplication();
         await app.init();
+    });
+
+    beforeEach(async () => {
+        await seedDB();
     });
 
     describe("POST /users/:id/wallets", () => {

@@ -6,6 +6,7 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/abstract_edge_gateway_strategy";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
@@ -15,9 +16,9 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
         super(`http://${host}:${port}`);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async createWallet(_req: CreateWalletRequest): Promise<WalletWithBalance> {
-        throw new Error();
+    async createWallet(req: CreateWalletRequest): Promise<WalletWithBalance> {
+        const path = `users/${req.userId}/wallets`;
+        return this.request<WalletWithBalance>(Method.POST, {}, path, req);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -57,6 +57,7 @@ export class AlchemyNodeServiceFacade {
         // some alchemy transactions then convert all transaction amounts
         // from ETHER to WEI so we can represent them as BigIntegers
         return transfers.map((transfer) => ({
+            id: -1,
             transactionAddress: transfer.hash,
             walletIn: transfer.from,
             walletOut: transfer.to,

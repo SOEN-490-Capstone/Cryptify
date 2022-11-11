@@ -27,6 +27,7 @@ describe("WalletsController", () => {
     };
 
     const transaction = {
+        id: 1,
         transactionAddress: "string",
         walletIn: "string",
         walletOut: "string",

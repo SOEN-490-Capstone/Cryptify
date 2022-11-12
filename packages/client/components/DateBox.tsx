@@ -4,6 +4,7 @@ import React, { useState} from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
+import { falCalendar } from "./icons/light/falCalendar";
 
 type DateBoxProps = {
     label: string,
@@ -35,7 +36,7 @@ export default function DateBox({label, style, date, setDate, maximumDate, minim
         <Pressable onPress={showDatePicker}>
             <HStack justifyContent="space-between">
                 <Text color={date ? "text.600" : "text.300"}>{date ? date.toLocaleDateString([], {year: "2-digit", month: "2-digit", day: "2-digit"}): label}</Text>
-                <FontAwesomeIcon icon={farBarsFilter} size={20}/>
+                <FontAwesomeIcon icon={falCalendar} size={20}/>
             </HStack>
         </Pressable>
         <DateTimePickerModal

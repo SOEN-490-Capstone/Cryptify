@@ -1,11 +1,13 @@
 import { View } from "../components/Themed";
-import { Pressable, StyleSheet} from "react-native";
-import { Text, Radio, Box, Button} from "native-base";
+import { Pressable, StyleProp, StyleSheet, ViewStyle} from "react-native";
+import { Text, Radio, Box, Button, HStack} from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React, { useState} from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
-//import RNDateTimePicker from '@react-native-community/datetimepicker';
-import DatePicker from 'react-native-date-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
+import DateBox from "../components/DateBox";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"FilterScreen">,
@@ -41,44 +43,22 @@ export default function FilterScreen({ route, navigation }: Props) {
             setValue(nextValue);
         }}
         >
-            { options.map((option) => (<Box style={styles.RadioItem}><Radio key={option} value={option}>{option}</Radio></Box>))}
+            { options.map((option) => (<Box style={styles.RadioItem} key={option}><Radio key={option} value={option}>{option}</Radio></Box>))}
         </Radio.Group>
         )
     }
 
-    // const [fromDate, setFromDate] = useState(new Date());
-    // const [toDate, setToDate] = useState(null);
+     const [fromDate, setFromDate] = React.useState<Date | null>(null);
+     const [toDate, setToDate] = React.useState<Date | null>(null);
 
-    // function CustomDatePicker(){
-    //    return (
-    //         <Pressable style={styles.Date}>
-    //             <RNDateTimePicker value={new Date()}/>
-    //         </Pressable>
-    //     )
-    // }
-    const DateC = () => {
-        const [date, setDate] = useState(new Date())
-        const [open, setOpen] = useState(false)
-      
-        return (
-          <>
-            <Button onPress={() => setOpen(true)}>TEST</Button>
-            <DatePicker
-              modal
-              open={open}
-              date={date}
-              mode="date"
-              onConfirm={(date) => {
-                setOpen(false)
-                setDate(date)
-              }}
-              onCancel={() => {
-                setOpen(false)
-              }}
-            />
-          </>
+     function CustomDates(){
+        return (            
+        <HStack>
+            <DateBox label="from" style={{ marginRight:13 }} date={fromDate} maximumDate={toDate} setDate={setFromDate}/>
+            <DateBox label="to" date={toDate} minimumDate={fromDate} setDate={setToDate}/>
+        </HStack>
         )
-      }
+    }
 
     return (
         <View style={styles.view}>
@@ -87,7 +67,7 @@ export default function FilterScreen({ route, navigation }: Props) {
             <Text marginTop="20px" fontWeight={"semibold"}>Filter by date</Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate}/>
             <Box marginTop="26px"/>
-            <DateC/>
+            {filterByDate == filtersByDate.at(filtersByDate.length - 1) ? <CustomDates/> : null}
             <Button style={styles.applyButton} onPress={()=> navigation.goBack()}>Apply filters</Button>
         </View>
     );
@@ -106,5 +86,5 @@ const styles = StyleSheet.create({
     applyButton: {
         marginTop: "auto",
         marginBottom: 36,
-    }
+    },
 });

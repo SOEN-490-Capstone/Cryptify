@@ -1733,6 +1733,7 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": ^6.2.0
     "@fortawesome/react-native-fontawesome": ^0.3.0
     "@react-native-async-storage/async-storage": ^1.17.10
+    "@react-native-community/datetimepicker": 6.2.0
     "@react-navigation/bottom-tabs": ^6.0.5
     "@react-navigation/native": ^6.0.2
     "@react-navigation/native-stack": ^6.1.0
@@ -1762,9 +1763,9 @@ __metadata:
     react-dom: 18.0.0
     react-native: 0.69.6
     react-native-collapsible: ^1.6.0
-    react-native-date-picker: ^4.2.6
     react-native-dotenv: ^3.3.1
     react-native-get-random-values: ^1.8.0
+    react-native-modal-datetime-picker: ^14.0.0
     react-native-qrcode-svg: ^6.1.2
     react-native-reanimated: ^2.10.0
     react-native-safe-area-context: 4.3.1
@@ -4720,6 +4721,15 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 88cb297408e90f5b7f9858014cc74717553ad85f53fd84683dea6b2aa27cfde2203b4c43f89f9a6ead1a8493494d234e6861929c4d7628d1363ea0ec50e9efcb
+  languageName: node
+  linkType: hard
+
+"@react-native-community/datetimepicker@npm:6.2.0":
+  version: 6.2.0
+  resolution: "@react-native-community/datetimepicker@npm:6.2.0"
+  dependencies:
+    invariant: ^2.2.4
+  checksum: 5afda05288ff10c4d346cb7070c411e38dfbe54b375766d3c71c90da5f02731bcf0d37ea72134af1cee29e82b4bf60242e15781a2b50fccb2d8b8c0e82f2a77f
   languageName: node
   linkType: hard
 
@@ -19975,7 +19985,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -20428,15 +20438,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-date-picker@npm:^4.2.6":
-  version: 4.2.6
-  resolution: "react-native-date-picker@npm:4.2.6"
-  dependencies:
-    prop-types: ^15.8.1
-  checksum: 654c804e6b1ee0c0a6bb200c87eb4cdf520db901b0f75518a63f556eb753cb7ba521461691ea9f8c89542ab8c3862c5520e4b512252b3e19556eb512a5872ca4
-  languageName: node
-  linkType: hard
-
 "react-native-dotenv@npm:^3.3.1":
   version: 3.4.0
   resolution: "react-native-dotenv@npm:3.4.0"
@@ -20482,6 +20483,18 @@ __metadata:
   peerDependencies:
     react-native: ">=0.48.4"
   checksum: 5eec2aedb886213dfed4c8428a443b565dce80ba9fcf5897171e4c8829d4dd64c5011ac004d93f29adfc83ad6f88c2838d1a5b45255dc4a49bd1c0a169245800
+  languageName: node
+  linkType: hard
+
+"react-native-modal-datetime-picker@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "react-native-modal-datetime-picker@npm:14.0.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@react-native-community/datetimepicker": ">=3.0.0"
+    react-native: ">=0.65.0"
+  checksum: 8a3742ca17356ed2a305094625bc9707d94e583d7f06c41532a768e3c32252133205b9bd7bfd058fc3a4ad70db10146ac7c773d590f54c5680f7b0bd19fbfa58
   languageName: node
   linkType: hard
 

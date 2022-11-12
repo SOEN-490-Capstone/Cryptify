@@ -11,6 +11,7 @@ import {
 } from "@cryptify/common/src/errors/error_messages";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { TransactionsService } from "@cryptify/btc-edge/src/services/transactions_service";
+import { TransactionWatcherService } from "@cryptify/btc-edge/src/services/transaction_watcher_service";
 
 @Injectable()
 export class WalletsService {
@@ -19,6 +20,7 @@ export class WalletsService {
         private readonly walletRepository: Repository<Wallet>,
         private readonly transactionsService: TransactionsService,
         private readonly soChainGateway: SoChainGateway,
+        private readonly transactionWatcherService: TransactionWatcherService,
     ) {}
 
     async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
@@ -35,12 +37,13 @@ export class WalletsService {
 
         await this.walletRepository.insert(this.walletRepository.create(createWalletReq));
 
-        // Parallelize getting the wallet balance and backfilling the transactions in the db
-        // is fine since there are no shared resources, once everything resolves the wallet
-        // with the balance will be returned
+        // Parallelize getting the wallet balance, backfilling the transactions in the db, and
+        // subscribing to the transaction messages for the new wallet is fine since there are
+        // no shared resources, once everything resolves the wallet with the balance will be returned
         const [balance] = await Promise.all([
             this.soChainGateway.getBalance(address),
             this.transactionsService.backfillTransactions(address),
+            this.transactionWatcherService.subscribeAddress(address),
         ]);
 
         const wallet = await this.walletRepository.findOneBy({

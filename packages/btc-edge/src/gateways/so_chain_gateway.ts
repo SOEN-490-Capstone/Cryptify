@@ -8,10 +8,16 @@ import {
     TransactionsByWalletResponse,
 } from "@cryptify/btc-edge/src/types/so_chain_responses";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class SoChainGateway extends AbstractServiceGateway {
-    constructor(private configService: ConfigService) {
+    constructor(
+        private readonly configService: ConfigService,
+        @InjectRepository(Transaction)
+        private readonly transactionsRepository: Repository<Transaction>,
+    ) {
         super(`https://${configService.get<string>("SO_CHAIN_HOST")}`);
     }
 
@@ -51,8 +57,27 @@ export class SoChainGateway extends AbstractServiceGateway {
                     walletIn: inWallet.address,
                     walletOut: outWallet.address,
                     amount: address === inWallet.address ? outWallet.value : inWallet.value,
-                    createdAt: new Date(transaction.data.time),
+                    createdAt: new Date(transaction.data.time * 1000),
                 })),
         );
+    }
+
+    async getTransactionsByTxAddress(txAddress: string): Promise<Transaction[]> {
+        const path = `get_tx/BTC/${txAddress}`;
+        const txData = await this.request<TransactionResponse>(Method.GET, {}, path, null);
+
+        // Cross the in and out wallets to form NxM number of transactions then construct the
+        // transaction object, note: wallet in amounts + fee = wallet out amount
+        return txData.data.inputs
+            .flatMap((input) => txData.data.outputs.map((output) => [input, output] as const))
+            .map(([inWallet, outWallet]) =>
+                this.transactionsRepository.create({
+                    transactionAddress: txData.data.txid,
+                    walletIn: inWallet.address,
+                    walletOut: outWallet.address,
+                    amount: inWallet.value,
+                    createdAt: new Date(txData.data.time * 1000),
+                }),
+            );
     }
 }

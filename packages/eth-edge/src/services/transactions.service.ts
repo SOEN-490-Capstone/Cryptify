@@ -19,7 +19,7 @@ export class TransactionsService {
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
-        // Getting the transactions from for a specific wallet from alchemy
+        // Get the transactions for a specific wallet from alchemy.
         // Filter for only the attributes we want and save it to the database
         const transactions = await this.alchemyNodeServiceFacade.getTransactions(address);
 

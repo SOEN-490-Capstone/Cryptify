@@ -1762,6 +1762,7 @@ __metadata:
     react-dom: 18.0.0
     react-native: 0.69.6
     react-native-collapsible: ^1.6.0
+    react-native-date-picker: ^4.2.6
     react-native-dotenv: ^3.3.1
     react-native-get-random-values: ^1.8.0
     react-native-qrcode-svg: ^6.1.2
@@ -19974,7 +19975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -20424,6 +20425,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: a804072e05b2e4e41d54cb44bec4b63d27a88075e4e54359208c2f0e53cdbd8c5d6090e150ff88faa24b76b022b1ba51952cb60432e44d8114f9c73feb175db3
+  languageName: node
+  linkType: hard
+
+"react-native-date-picker@npm:^4.2.6":
+  version: 4.2.6
+  resolution: "react-native-date-picker@npm:4.2.6"
+  dependencies:
+    prop-types: ^15.8.1
+  checksum: 654c804e6b1ee0c0a6bb200c87eb4cdf520db901b0f75518a63f556eb753cb7ba521461691ea9f8c89542ab8c3862c5520e4b512252b3e19556eb512a5872ca4
   languageName: node
   linkType: hard
 

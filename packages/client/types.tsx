@@ -77,6 +77,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
+    FilterScreen: undefined;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -96,6 +97,7 @@ export type SettingsStackParamList = {
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
     TagsSettingsScreen: undefined;
+    FilterScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

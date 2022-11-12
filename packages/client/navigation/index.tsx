@@ -29,6 +29,7 @@ import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { farPlus } from "../components/icons/regular/farPlus";
+import { farBarsFilter } from "../components/icons/regular/farBarsFilter"  
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
@@ -40,6 +41,7 @@ import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
 import { AddressShareButton } from "../components/AddressShareButton";
 import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 import TagsSettingsScreen from "../screens/TagsSettingsScreen";
+import FilterScreen from "../screens/FilterScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -152,11 +154,30 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleAlign: "center",
                 }}
             />
-            <HomeStack.Screen
+             <HomeStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "Transactions",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => {navigation.navigate("FilterScreen")}}>
+                            <FontAwesomeIcon icon={farBarsFilter} size={20}/>
+                        </Pressable>
+                    )
+                })}
+            />
+            <HomeStack.Screen
+                name="FilterScreen"
+                component={FilterScreen}
+                options={{
+                    title: "Filter",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,
@@ -344,8 +365,27 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "Transactions",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={()=> {navigation.navigate("FilterScreen")}}>
+                            <FontAwesomeIcon icon={farBarsFilter} size={20}/>
+                        </Pressable>
+                    )
+                })}
+            />
+            <SettingsStack.Screen
+                name="FilterScreen"
+                component={FilterScreen}
+                options={{
+                    title: "Filter",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

@@ -29,7 +29,7 @@ import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { farPlus } from "../components/icons/regular/farPlus";
-import { farBarsFilter } from "../components/icons/regular/farBarsFilter"  
+import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
@@ -154,7 +154,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleAlign: "center",
                 }}
             />
-             <HomeStack.Screen
+            <HomeStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
                 options={({ navigation }) => ({
@@ -167,10 +167,14 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => {navigation.navigate("FilterScreen")}}>
-                            <FontAwesomeIcon icon={farBarsFilter} size={20}/>
+                        <Pressable
+                            onPress={() => {
+                                navigation.navigate("FilterScreen");
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farBarsFilter} size={20} />
                         </Pressable>
-                    )
+                    ),
                 })}
             />
             <HomeStack.Screen
@@ -375,10 +379,14 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={()=> {navigation.navigate("FilterScreen")}}>
-                            <FontAwesomeIcon icon={farBarsFilter} size={20}/>
+                        <Pressable
+                            onPress={() => {
+                                navigation.navigate("FilterScreen");
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farBarsFilter} size={20} />
                         </Pressable>
-                    )
+                    ),
                 })}
             />
             <SettingsStack.Screen

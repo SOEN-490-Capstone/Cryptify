@@ -1,7 +1,6 @@
 import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 
 export const farBarsFilter: IconDefinition = {
-
     icon: [
         // SVG viewbox width (in pixels)
         448,

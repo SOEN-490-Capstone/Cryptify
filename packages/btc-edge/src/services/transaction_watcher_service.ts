@@ -20,7 +20,7 @@ export class TransactionWatcherService {
     ) {}
 
     @OnOpen()
-    async open(): Promise<void> {
+    protected async open(): Promise<void> {
         this.ws.send(JSON.stringify({ op: "ping" }));
 
         // Fetch bitcoin wallets from db and subscribe the web socket watcher to each of them to track new transactions
@@ -29,15 +29,25 @@ export class TransactionWatcherService {
     }
 
     @OnMessage()
-    async message(data: WebSocketClient.Data): Promise<void> {
+    protected async message(data: WebSocketClient.Data): Promise<void> {
         const res = JSON.parse(data.toString()) as WSMessage;
         if (res.op === "utx") {
-            // Build and hydrate domain transactions using incoming tx address then save all
-            // transactions in db
-            const txAddress = (res as WSTransaction).x.hash;
-            const transactions = await this.soChainGateway.getTransactionsByTxAddress(txAddress);
-            await this.transactionsRepository.save(transactions);
-            return;
+            // Insert a 10 second delay before processing a new transaction message
+            // this gives the data API enough time to process that transaction for
+            // querying
+            await new Promise((resolve) => setTimeout(resolve, 10000));
+
+            try {
+                // Build and hydrate domain transactions using incoming tx address then save all
+                // transactions in db
+                const txAddress = (res as WSTransaction).x.hash;
+                const transactions = await this.soChainGateway.getTransactionsByTxAddress(txAddress);
+                await this.transactionsRepository.save(transactions);
+                return;
+            } catch (_) {
+                // In the case that the set delay was not enough to avoid a system failure we will
+                // just catch the error and continue processing
+            }
         }
     }
 

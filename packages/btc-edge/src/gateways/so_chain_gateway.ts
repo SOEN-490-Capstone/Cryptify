@@ -63,7 +63,7 @@ export class SoChainGateway extends AbstractServiceGateway {
     }
 
     async getTransactionsByTxAddress(txAddress: string): Promise<Transaction[]> {
-        const path = `tx/BTC/${txAddress}`;
+        const path = `get_tx/BTC/${txAddress}`;
         const txData = await this.request<TransactionResponse>(Method.GET, {}, path, null);
 
         // Cross the in and out wallets to form NxM number of transactions then construct the

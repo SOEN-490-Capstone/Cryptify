@@ -19,6 +19,6 @@ import { ConfigService } from "@nestjs/config";
         }),
     ],
     providers: [TransactionsService, SoChainGateway, TransactionWatcherService],
-    exports: [TransactionsService],
+    exports: [TransactionsService, TransactionWatcherService],
 })
 export class TransactionsModule {}

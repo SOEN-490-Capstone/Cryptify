@@ -38,6 +38,7 @@ export class WalletsService {
         // Parallelize getting the wallet balance and backfilling the transactions in the db
         // is fine since there are no shared resources, once everything resolves the wallet
         // with the balance will be returned
+        // TODO subscribe new addresses to watch transactions
         const [balance] = await Promise.all([
             this.soChainGateway.getBalance(address),
             this.transactionsService.backfillTransactions(address),

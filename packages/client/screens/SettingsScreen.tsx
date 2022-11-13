@@ -13,7 +13,9 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
         <View style={styles.view}>
             <VStack space="15px">
                 <Pressable
-                    onPress={() => navigation.navigate("ViewWalletsScreen")}
+                    onPress={() => navigation.navigate("ViewWalletsScreen", {
+                        isSettingsTab: true,
+                    })}
                     style={styles.viewWalletsButton}
                     _pressed={{
                         background: "text.200",

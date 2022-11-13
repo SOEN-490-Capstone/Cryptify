@@ -22,7 +22,7 @@ type Props = {
 };
 
 export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
-    const isIncomingTransaction = walletAddress == transaction.walletIn;
+    const isIncomingTransaction = walletAddress == transaction.walletOut;
 
 <<<<<<< HEAD
 =======

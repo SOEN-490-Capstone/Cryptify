@@ -56,6 +56,10 @@ type TransactionsListScreenProps = {
     displaySeparation: boolean;
 };
 
+type ViewWalletsScreenProps = {
+    isSettingsTab: boolean;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -65,6 +69,7 @@ export type HomeStackParamList = {
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
+    ViewWalletsScreen: ViewWalletsScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -74,7 +79,6 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
-    ViewWalletsScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
     TransactionDetailsScreen: TransactionDetailsProps;
@@ -82,6 +86,8 @@ export type SettingsStackParamList = {
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
+    ViewWalletsScreen: ViewWalletsScreenProps;
+    WalletSettingsScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

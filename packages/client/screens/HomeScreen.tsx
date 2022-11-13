@@ -19,7 +19,7 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
                         <FontAwesomeIcon icon={fasCirclePlusSolid} style={styles.addWalletIcon} size={22} />
                     </Pressable>
                 </HStack>
-                <WalletsList navigation={navigation} showCurrencyTotals={true} />
+                <WalletsList navigation={navigation} showCurrencyTotals={true} isSettingsTab={false} />
             </VStack>
         </View>
     );

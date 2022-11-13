@@ -38,6 +38,7 @@ import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 import TransactionsListScreen from "../screens/TransactionsListScreen";
 import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
 import { AddressShareButton } from "../components/AddressShareButton";
+import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -214,6 +215,25 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="ViewWalletsScreen"
                 component={ViewWalletsScreen}
+                options={({ navigation }) => ({
+                    title: "Wallets",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="WalletSettingsScreen"
+                component={WalletSettingsScreen}
                 options={({ navigation }) => ({
                     title: "Wallets",
                     headerTintColor: "#404040",

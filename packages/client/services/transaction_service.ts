@@ -16,7 +16,7 @@ export function getTransactionCount(transactions: Transaction[]): number {
 export function getTransactionTotalReceived(address: string, transactions: Transaction[], type: CurrencyType): string {
     if (type == CurrencyType.ETHEREUM) {
         const totalInWei = transactions
-            .filter((transaction) => transaction.walletOut == address)
+            .filter((transaction) => transaction.walletIn == address)
             .map((transaction) => Web3.utils.toBN(transaction.amount))
             .reduce((total, balance) => total.add(balance), Web3.utils.toBN(0))
             .toString();
@@ -26,7 +26,7 @@ export function getTransactionTotalReceived(address: string, transactions: Trans
 
     if (type == CurrencyType.BITCOIN) {
         const totalInBtc = transactions
-            .filter((transaction) => transaction.walletOut == address)
+            .filter((transaction) => transaction.walletIn == address)
             .map((transaction) => parseFloat(transaction.amount))
             .reduce((total, balance) => total + balance, 0)
             .toString();
@@ -41,7 +41,7 @@ export function getTransactionTotalReceived(address: string, transactions: Trans
 export function getTransactionTotalSent(address: string, transactions: Transaction[], type: CurrencyType): string {
     if (type == CurrencyType.ETHEREUM) {
         const totalInWei = transactions
-            .filter((transaction) => transaction.walletIn == address)
+            .filter((transaction) => transaction.walletOut == address)
             .map((transaction) => Web3.utils.toBN(transaction.amount))
             .reduce((total, balance) => total.add(balance), Web3.utils.toBN(0))
             .toString();
@@ -50,7 +50,7 @@ export function getTransactionTotalSent(address: string, transactions: Transacti
     }
     if (type == CurrencyType.BITCOIN) {
         const totalInBtc = transactions
-            .filter((transaction) => transaction.walletIn == address)
+            .filter((transaction) => transaction.walletOut == address)
             .map((transaction) => parseFloat(transaction.amount))
             .reduce((total, balance) => total + balance, 0)
             .toString();

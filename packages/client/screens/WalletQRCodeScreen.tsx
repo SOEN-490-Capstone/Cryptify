@@ -4,7 +4,7 @@ import { Text, HStack, Center, VStack } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { currencyTagToName } from "../services/currency_service";
+import { typeToISOCode } from "../services/currency_service";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import RowItem from "../components/RowItem";
@@ -19,14 +19,13 @@ type Props = CompositeScreenProps<
 
 export default function WalletQRCodeScreen({ route }: Props) {
     const { address, name, currencyType } = route.params;
-    const currencyName = currencyTagToName.get(currencyType);
 
     return (
         <View style={styles.view}>
             <Text size={"subheadline"} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
-                    {titleCase(currencyName ? currencyName : "")} ({currencyType}){" "}
+                    {titleCase(currencyType)} ({typeToISOCode[currencyType]}){" "}
                 </Text>
                 from another source. A{" "}
                 <Text style={{ fontWeight: "600" }} underline>
@@ -55,8 +54,8 @@ export default function WalletQRCodeScreen({ route }: Props) {
             <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={farCircleInfo} size={16} />
                 <Text size={"footnote2"} style={styles.infoText}>
-                    Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (
-                    {currencyType}) to this address.
+                    Never enter this address by hand and only send {titleCase(currencyType)} (
+                    {typeToISOCode[currencyType]}) to this address.
                 </Text>
             </HStack>
         </View>

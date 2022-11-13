@@ -54,6 +54,16 @@ jobs:
               run: docker run --entrypoint yarn cryptify-btc-edge lint:check
             - name: Unit test
               run: docker run --entrypoint yarn cryptify-btc-edge workspace @cryptify/btc-edge test:unit
+    common:
+        name: Common
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Build image
+              run: docker build -t cryptify-api -f packages/docker/api.Dockerfile --target development .
+            - name: Unit test
+              run: docker run --entrypoint yarn cryptify-api workspace @cryptify/common test:unit
     integration-tests:
         name: Integration Tests
         runs-on: ubuntu-latest

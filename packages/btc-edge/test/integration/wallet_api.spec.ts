@@ -5,6 +5,8 @@ import { INestApplication } from "@nestjs/common";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
 
 describe("Wallets", () => {
+    jest.setTimeout(10000);
+
     let app: INestApplication;
 
     beforeAll(async () => {

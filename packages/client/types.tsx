@@ -32,14 +32,14 @@ type WalletOverviewScreenProps = {
     title: string;
     address: string;
     name: string;
-    currencyType: string;
+    currencyType: CurrencyType;
     balance: string;
 };
 
 type WalletDetailsScreenProps = {
     address: string;
     name: string;
-    currencyType: string;
+    currencyType: CurrencyType;
     balance: string;
     transactions: Transaction[];
 };
@@ -47,7 +47,7 @@ type WalletDetailsScreenProps = {
 type WalletQRCodeProps = {
     address: string;
     name: string;
-    currencyType: string;
+    currencyType: CurrencyType;
 };
 
 type TransactionsListScreenProps = {

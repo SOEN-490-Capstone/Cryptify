@@ -1,6 +1,6 @@
 import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
+import { Pressable, Box, Text, HStack, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -15,7 +15,7 @@ import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass
 import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
-import {TransactionsList} from "../components/transactions-list/TransactionsList";
+import { TransactionsList } from "../components/transactions-list/TransactionsList";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,

@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, Box, FlatList} from "native-base";
+import { Text, Box, FlatList } from "native-base";
 import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionListItem } from "./TransactionListItem";
@@ -29,20 +29,25 @@ export function TransactionsList({ transactions, walletAddress, displaySeparatio
         );
     }
 
-    return <FlatList data={transactions} renderItem={({ item }) => {
-        return (
-            <>
-                {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
-                <Box style={styles.transactionWrapper}>
-                    <TransactionListItem
-                        transaction={item}
-                        walletAddress={walletAddress}
-                        navigation={navigation}
-                    />
-                </Box>
-            </>
-        )
-    }}/>
+    return (
+        <FlatList
+            data={transactions}
+            renderItem={({ item }) => {
+                return (
+                    <>
+                        {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
+                        <Box style={styles.transactionWrapper}>
+                            <TransactionListItem
+                                transaction={item}
+                                walletAddress={walletAddress}
+                                navigation={navigation}
+                            />
+                        </Box>
+                    </>
+                );
+            }}
+        />
+    );
 }
 
 const styles = StyleSheet.create({

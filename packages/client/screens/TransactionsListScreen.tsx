@@ -1,10 +1,9 @@
 import React from "react";
-import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import {View} from "../components/Themed";
-import {TransactionsList} from "../components/transactions-list/TransactionsList";
+import { View } from "../components/Themed";
+import { TransactionsList } from "../components/transactions-list/TransactionsList";
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<

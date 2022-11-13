@@ -5,7 +5,6 @@ import { StyleSheet } from "react-native";
 import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereum } from "../components/icons/brands/faEthereum";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -37,7 +36,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
 
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const type = currencyTagToName.get(currencyTag);
-    const currencyIcon = currencyTypeToIcon.get(type? type: "");
+    const currencyIcon = currencyTypeToIcon.get(type ? type : "");
 
     React.useEffect(() => {
         (async () => {
@@ -60,7 +59,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={currencyIcon? currencyIcon: faBitcoin} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon
+                                icon={currencyIcon ? currencyIcon : faBitcoin}
+                                style={styles.ethereumIcon}
+                                size={40}
+                            />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">

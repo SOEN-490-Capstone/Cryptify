@@ -3,12 +3,12 @@ import { Text, HStack, Box, VStack, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { falCircleArrowDownLeft } from "./icons/light/falCircleArrowDownLeft";
-import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
+import { falCircleArrowDownLeft } from "../icons/light/falCircleArrowDownLeft";
+import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { getFormattedAmount } from "../services/currency_service";
-import { formatAddress } from "../services/address_service";
+import { getFormattedAmount } from "../../services/currency_service";
+import { formatAddress } from "../../services/address_service";
 
 type Props = {
     transaction: Transaction;
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
-    const isIncommingTransaction = walletAddress == transaction.walletIn;
+    const isIncomingTransaction = walletAddress == transaction.walletIn;
 
     function getCurrencyType(): string {
         return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
@@ -49,8 +49,8 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
             <Box style={styles.transactionItemWrapper}>
                 <HStack>
                     <FontAwesomeIcon
-                        icon={isIncommingTransaction ? falCircleArrowDownLeft : falCircleArrowUpRight}
-                        style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
+                        icon={isIncomingTransaction ? falCircleArrowDownLeft : falCircleArrowUpRight}
+                        style={isIncomingTransaction ? styles.receiveIcon : styles.sendIcon}
                         size={30}
                     />
                     <VStack style={styles.verticalStack}>
@@ -61,10 +61,10 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                             <Text
                                 isTruncated
                                 fontWeight={"semibold"}
-                                color={isIncommingTransaction ? "success.600" : undefined}
+                                color={isIncomingTransaction ? "success.600" : undefined}
                                 style={styles.transactionAmountInOut}
                             >
-                                {isIncommingTransaction ? "+" : "-"}
+                                {isIncomingTransaction ? "+" : "-"}
                                 {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)}
                             </Text>
                         </HStack>

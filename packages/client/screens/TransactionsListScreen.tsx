@@ -1,9 +1,9 @@
 import React from "react";
-import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { TransactionList } from "../components/TransactionList";
+import { View } from "../components/Themed";
+import { TransactionsList } from "../components/transactions-list/TransactionsList";
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<
@@ -12,14 +12,14 @@ export default function TransactionsListScreen(
     >,
 ) {
     return (
-        <ScrollView style={styles.view}>
-            <TransactionList
+        <View style={styles.view}>
+            <TransactionsList
                 transactions={props.route.params.transactions}
                 walletAddress={props.route.params.walletAddress}
                 displaySeparation={true}
                 navigation={props.navigation}
             />
-        </ScrollView>
+        </View>
     );
 }
 

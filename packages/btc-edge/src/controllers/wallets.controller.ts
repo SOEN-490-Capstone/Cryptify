@@ -20,7 +20,6 @@ export class WalletsController {
     @Get("users/:id/wallets")
     async findAll(@Param() params: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const getWalletReq = await useValidate(getWalletsSchema, params);
-        console.log(getWalletReq);
         return this.walletsService.findAll(getWalletReq.id);
     }
 }

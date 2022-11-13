@@ -244,6 +244,11 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
                 })}
             />
             <SettingsStack.Screen

@@ -39,7 +39,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     style={styles.transactionAmountInOut}
                 >
                     {isIncomingTransaction ? "+" : "-"}
-                    {`${getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)} ${
+                    {`${getFormattedAmount(transaction.amount, getCurrencyType(transaction.transactionAddress))} ${
                         typeToISOCode[getCurrencyType(transaction.transactionAddress)]
                     }`}
                 </Text>

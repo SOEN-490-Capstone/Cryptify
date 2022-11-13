@@ -7,7 +7,11 @@ import { falCircleArrowDownLeft } from "../icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+<<<<<<< HEAD
 import { getFormattedAmount, typeToISOCode } from "../../services/currency_service";
+=======
+import { currencyTagToName, getFormattedAmount } from "../../services/currency_service";
+>>>>>>> c922712 (added bitcoin)
 import { formatAddress } from "../../services/address_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
@@ -20,6 +24,15 @@ type Props = {
 export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
 
+<<<<<<< HEAD
+=======
+    function getCurrencyTag(): string {
+        return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
+    }
+
+    const type = currencyTagToName.get(getCurrencyTag());
+
+>>>>>>> c922712 (added bitcoin)
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);
         const datePart = date.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -62,7 +75,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                                 style={styles.transactionAmountInOut}
                             >
                                 {isIncomingTransaction ? "+" : "-"}
-                                {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)}
+                                {getFormattedAmount(transaction.amount, type ? type : CurrencyType.BITCOIN)}
                             </Text>
                         </HStack>
                         <HStack>
@@ -70,7 +83,11 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                                 {getFormattedDate(transaction.createdAt as any)}
                             </Text>
                             <Text size={"subheadline"} color="text.500" style={styles.transactionCurrency}>
+<<<<<<< HEAD
                                 {typeToISOCode[getCurrencyType(transaction.transactionAddress)]}
+=======
+                                {getCurrencyTag()}
+>>>>>>> c922712 (added bitcoin)
                             </Text>
                         </HStack>
                     </VStack>

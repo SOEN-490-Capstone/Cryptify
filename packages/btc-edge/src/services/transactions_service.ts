@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
+import { WalletsService } from "./wallets.service";
 
 @Injectable()
 export class TransactionsService {
@@ -10,6 +11,8 @@ export class TransactionsService {
         @InjectRepository(Transaction)
         private readonly transactionsRepository: Repository<Transaction>,
         private readonly soChainGateway: SoChainGateway,
+        @Inject(forwardRef(() => WalletsService))
+        private readonly walletsService: WalletsService,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
@@ -18,5 +21,14 @@ export class TransactionsService {
         // transactions which can occur if the wallet involved in a transaction
         // has already been processed by the system
         await this.transactionsRepository.save(this.transactionsRepository.create(transactions));
+    }
+
+    async findAll(userId: number): Promise<Transaction[]> {
+        const wallets = await this.walletsService.findAll(userId);
+        const addresses = wallets.map((wallet) => wallet.address.toLowerCase());
+
+        return this.transactionsRepository.find({
+            where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
+        });
     }
 }

@@ -12,6 +12,8 @@ import {
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { TransactionsService } from "@cryptify/btc-edge/src/services/transactions_service";
 import { TransactionWatcherService } from "@cryptify/btc-edge/src/services/transaction_watcher_service";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { zip } from "@cryptify/common/src/utils/function_utils";
 
 @Injectable()
 export class WalletsService {
@@ -51,5 +53,21 @@ export class WalletsService {
             userId,
         });
         return { ...wallet, balance };
+    }
+
+    async findAll(userId: number): Promise<WalletWithBalance[]> {
+        const wallets = await this.walletRepository.find({ where: { currencyType: CurrencyType.BITCOIN, userId } });
+        // For each wallet owned by the user get the wallets balance from soChain, we can parallelize these requests
+        // to speed up the processing time
+        const balances = await Promise.all(
+            wallets.map(async (wallet) => this.soChainGateway.getBalance(wallet.address)),
+        );
+        // Once all the balances have been retrieved zip the lists together and map through them to construct the final
+        // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
+        // will line up when we zip them
+        return zip(wallets, balances).map(([wallet, balance]) => ({
+            ...wallet,
+            balance,
+        }));
     }
 }

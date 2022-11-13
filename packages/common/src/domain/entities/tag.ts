@@ -1,5 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Transaction } from "./transaction";
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./user";
 
 @Entity()
@@ -13,5 +12,4 @@ export class Tag {
     @ManyToOne(() => User, (user) => user.tags)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
-
 }

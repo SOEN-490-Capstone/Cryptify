@@ -3,7 +3,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsService } from "../services/tags.service";
 import { TagsController } from "../controllers/tags.controller";
-import { UsersService } from "../services/users.service";
 import { UsersModule } from "./users.module";
 
 @Module({

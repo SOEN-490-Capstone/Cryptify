@@ -8,7 +8,6 @@ import { View } from "../components/Themed";
 import { faEthereum } from "../components/icons/brands/faEthereum";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { TransactionList } from "../components/TransactionList";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
@@ -16,6 +15,7 @@ import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass
 import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
+import {TransactionsList} from "../components/transactions-list/TransactionsList";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -131,14 +131,12 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
                 </VStack>
             ) : (
-                <ScrollView testID="transactionsList">
-                    <TransactionList
-                        transactions={transactions}
-                        walletAddress={address}
-                        displaySeparation={false}
-                        navigation={navigation}
-                    />
-                </ScrollView>
+                <TransactionsList
+                    transactions={transactions}
+                    walletAddress={address}
+                    displaySeparation={false}
+                    navigation={navigation}
+                />
             )}
         </View>
     );

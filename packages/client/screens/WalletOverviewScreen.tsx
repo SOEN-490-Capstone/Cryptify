@@ -16,6 +16,7 @@ import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
+import { typeToISOCode } from "../services/currency_service";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -59,7 +60,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         <VStack>
                             <Box marginTop="40px" marginBottom="0"></Box>
                             <Text size={"subheadline"} color={"text.500"}>
-                                {currencyType}
+                                {typeToISOCode[currencyType]}
                             </Text>
                             <Text size={"title3"}>{balance}</Text>
                         </VStack>

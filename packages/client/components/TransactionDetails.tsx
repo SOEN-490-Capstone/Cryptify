@@ -7,9 +7,10 @@ import { falCircleArrowDownLeft } from "./icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
 import { farCopy } from "./icons/regular/farCopy";
 import * as Clipboard from "expo-clipboard";
-import { getFormattedAmount } from "../services/currency_service";
+import { getFormattedAmount, typeToISOCode } from "../services/currency_service";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { formatAddress } from "../services/address_service";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {
     transaction: Transaction;
@@ -17,32 +18,30 @@ type Props = {
 };
 
 export function TransactionDetails({ transaction, walletAddress }: Props) {
-    const isIncommingTransaction = walletAddress == transaction.walletIn;
+    const isIncomingTransaction = walletAddress == transaction.walletIn;
 
     const copyToClipboard = async (valueToCopy: string) => {
         await Clipboard.setStringAsync(valueToCopy);
     };
 
-    function getCurrencyType(): string {
-        return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
-    }
-
     const renderHeader = (
         <Box style={styles.itemWrapper} testID="transactionDetailsHeader">
             <VStack>
                 <FontAwesomeIcon
-                    icon={isIncommingTransaction ? falCircleArrowDownLeft : falCircleArrowUpRight}
-                    style={isIncommingTransaction ? styles.receiveIcon : styles.sendIcon}
+                    icon={isIncomingTransaction ? falCircleArrowDownLeft : falCircleArrowUpRight}
+                    style={isIncomingTransaction ? styles.receiveIcon : styles.sendIcon}
                     size={48}
                 />
                 <Text
                     size={"title2"}
                     fontWeight={"semibold"}
-                    color={isIncommingTransaction ? "success.600" : undefined}
+                    color={isIncomingTransaction ? "success.600" : undefined}
                     style={styles.transactionAmountInOut}
                 >
-                    {isIncommingTransaction ? "+" : "-"}
-                    {getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM) + " "} {getCurrencyType()}
+                    {isIncomingTransaction ? "+" : "-"}
+                    {`${getFormattedAmount(transaction.amount, CurrencyType.ETHEREUM)} ${
+                        typeToISOCode[getCurrencyType(transaction.transactionAddress)]
+                    }`}
                 </Text>
                 <Text fontWeight={"semibold"} color="text.500" style={styles.transactionsAddress}>
                     {formatAddress(transaction.transactionAddress)}
@@ -82,7 +81,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     </Text>
                     <HStack space="10px">
                         <Text style={styles.elementInformationText}>{transaction.walletIn}</Text>
-                        {isIncommingTransaction ? (
+                        {isIncomingTransaction ? (
                             <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
                             </Pressable>
@@ -97,7 +96,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                     </Text>
                     <HStack space="10px">
                         <Text style={styles.elementInformationText}>{transaction.walletOut}</Text>
-                        {isIncommingTransaction ? (
+                        {isIncomingTransaction ? (
                             <></>
                         ) : (
                             <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>

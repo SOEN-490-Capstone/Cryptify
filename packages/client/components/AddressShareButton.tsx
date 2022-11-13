@@ -3,20 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Pressable } from "native-base";
 import React from "react";
 import { Share } from "react-native";
-import { currencyTagToName } from "../services/currency_service";
 import { faArrowUpBracket } from "./icons/regular/farArrowUpFromBracket";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
-    currencyType: string;
+    currencyType: CurrencyType;
     address: string;
 };
 
 export function AddressShareButton({ currencyType, address }: Props) {
-    const currencyName = currencyTagToName.get(currencyType);
-
     async function onShare() {
         await Share.share({
-            message: `${titleCase(currencyName ? currencyName : "")} Wallet Address:\r\n${address}`,
+            message: `${titleCase(currencyType)} Wallet Address:\r\n${address}`,
         });
     }
 

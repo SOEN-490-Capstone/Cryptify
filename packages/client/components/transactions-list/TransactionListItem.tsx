@@ -7,8 +7,9 @@ import { falCircleArrowDownLeft } from "../icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { getFormattedAmount } from "../../services/currency_service";
+import { getFormattedAmount, typeToISOCode } from "../../services/currency_service";
 import { formatAddress } from "../../services/address_service";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {
     transaction: Transaction;
@@ -18,10 +19,6 @@ type Props = {
 
 export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
-
-    function getCurrencyType(): string {
-        return transaction.transactionAddress.substring(0, 2) == "0x" ? "ETH" : "BTC";
-    }
 
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);
@@ -73,7 +70,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                                 {getFormattedDate(transaction.createdAt as any)}
                             </Text>
                             <Text size={"subheadline"} color="text.500" style={styles.transactionCurrency}>
-                                {getCurrencyType()}
+                                {typeToISOCode[getCurrencyType(transaction.transactionAddress)]}
                             </Text>
                         </HStack>
                     </VStack>

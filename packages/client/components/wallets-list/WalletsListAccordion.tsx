@@ -31,7 +31,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
         [CurrencyType.ETHEREUM]: [],
     });
 
-    function formatTitle(currencyType: string, address: string): string {
+    function formatTitle(currencyType: CurrencyType, address: string): string {
         return `${titleCase(currencyType)} ${formatAddress(address)}`;
     }
 
@@ -90,7 +90,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                                 title: formatTitle(wallet.currencyType, wallet.address),
                                 address: wallet.address.toLowerCase(),
                                 name: wallet.name,
-                                currencyType: currency.currencyTag,
+                                currencyType: currency.type,
                                 balance: getFormattedAmount(wallet.balance, currency.type),
                             });
                         }}

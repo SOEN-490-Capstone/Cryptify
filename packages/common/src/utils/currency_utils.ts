@@ -12,7 +12,6 @@ export function getCurrencyType(address: string): CurrencyType {
         return CurrencyType.ETHEREUM;
     }
 
-    console.log(address.length);
     throw new Error("Currency type not supported");
 }
 

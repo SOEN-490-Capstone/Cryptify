@@ -37,7 +37,7 @@ import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 import TransactionsListScreen from "../screens/TransactionsListScreen";
 import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
-import { AddressShareButton } from "../components/ShareButton";
+import { AddressShareButton } from "../components/AddressShareButton";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between

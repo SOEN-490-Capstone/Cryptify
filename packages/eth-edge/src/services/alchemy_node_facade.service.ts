@@ -59,8 +59,8 @@ export class AlchemyNodeServiceFacade {
         return transfers.map((transfer) => ({
             id: -1,
             transactionAddress: transfer.hash,
-            walletIn: transfer.from,
-            walletOut: transfer.to,
+            walletIn: transfer.to,
+            walletOut: transfer.from,
             amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
             createdAt: new Date(transfer.metadata.blockTimestamp),
         }));

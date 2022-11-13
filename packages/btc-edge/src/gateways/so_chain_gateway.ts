@@ -54,8 +54,8 @@ export class SoChainGateway extends AbstractServiceGateway {
                 .map(([inWallet, outWallet]) => ({
                     id: -1,
                     transactionAddress: transaction.data.txid,
-                    walletIn: inWallet.address,
-                    walletOut: outWallet.address,
+                    walletIn: outWallet.address,
+                    walletOut: inWallet.address,
                     amount: address === inWallet.address ? outWallet.value : inWallet.value,
                     createdAt: new Date(transaction.data.time * 1000),
                 })),
@@ -67,14 +67,18 @@ export class SoChainGateway extends AbstractServiceGateway {
         const txData = await this.request<TransactionResponse>(Method.GET, {}, path, null);
 
         // Cross the in and out wallets to form NxM number of transactions then construct the
-        // transaction object, note: wallet in amounts + fee = wallet out amount
+        // transaction object
+        // Note: wallet in amounts + fee = wallet out amount
+        // Note: inWallet refers to a wallet that is putting money in (inputting) bitcoin into the transaction pool
+        // and outWallet refers to a wallet that is taking money out from the transaction pool, our domain transaction
+        // has the reverse where a walletIn takes money out of the pool, and a walletOut puts money into the pool
         return txData.data.inputs
             .flatMap((input) => txData.data.outputs.map((output) => [input, output] as const))
             .map(([inWallet, outWallet]) =>
                 this.transactionsRepository.create({
                     transactionAddress: txData.data.txid,
-                    walletIn: inWallet.address,
-                    walletOut: outWallet.address,
+                    walletIn: outWallet.address,
+                    walletOut: inWallet.address,
                     amount: inWallet.value,
                     createdAt: new Date(txData.data.time * 1000),
                 }),

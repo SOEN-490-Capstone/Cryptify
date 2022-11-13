@@ -90,7 +90,11 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                                 title: formatTitle(wallet.currencyType, wallet.address),
                                 address: wallet.address.toLowerCase(),
                                 name: wallet.name,
+<<<<<<< HEAD
                                 currencyType: currency.type,
+=======
+                                currencyTag: currency.currencyTag,
+>>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
                                 balance: getFormattedAmount(wallet.balance, currency.type),
                             });
                         }}

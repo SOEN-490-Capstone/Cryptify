@@ -16,7 +16,12 @@ import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
+<<<<<<< HEAD
 import { typeToISOCode } from "../services/currency_service";
+=======
+import { currencyTagToName, currencyTypeToIcon } from "../services/currency_service";
+import { faBitcoin } from "../components/icons/brands/faBitcoin";
+>>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -24,13 +29,15 @@ type Props = CompositeScreenProps<
 >;
 
 export default function WalletOverviewScreen({ route, navigation }: Props) {
-    const { address, name, currencyType, balance } = route.params;
+    const { address, name, currencyTag, balance } = route.params;
 
     const transactionGateway = new TransactionsGateway();
 
     const { token, user } = React.useContext(AuthContext);
 
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+    const type = currencyTagToName.get(currencyTag);
+    const currencyIcon = currencyTypeToIcon.get(type? type: "");
 
     React.useEffect(() => {
         (async () => {
@@ -53,14 +60,18 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={faEthereum} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon icon={currencyIcon? currencyIcon: faBitcoin} style={styles.ethereumIcon} size={40} />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">
                         <VStack>
                             <Box marginTop="40px" marginBottom="0"></Box>
                             <Text size={"subheadline"} color={"text.500"}>
+<<<<<<< HEAD
                                 {typeToISOCode[currencyType]}
+=======
+                                {currencyTag}
+>>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
                             </Text>
                             <Text size={"title3"}>{balance}</Text>
                         </VStack>
@@ -77,7 +88,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             navigation.navigate("WalletDetailsScreen", {
                                 address,
                                 name,
-                                currencyType,
+                                currencyTag,
                                 balance,
                                 transactions,
                             })
@@ -95,7 +106,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     <Pressable
                         testID="walletQRCodeButton"
                         style={styles.button}
-                        onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
+                        onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyTag })}
                     >
                         <Box style={styles.walletIconBackground}>
                             <FontAwesomeIcon icon={farQrCode} style={styles.walletIcon} size={20} />

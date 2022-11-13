@@ -32,20 +32,18 @@ export function TransactionsList({ transactions, walletAddress, displaySeparatio
     return (
         <FlatList
             data={transactions}
-            renderItem={({ item }) => {
-                return (
-                    <>
-                        {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
-                        <Box style={styles.transactionWrapper}>
-                            <TransactionListItem
-                                transaction={item}
-                                walletAddress={walletAddress}
-                                navigation={navigation}
-                            />
-                        </Box>
-                    </>
-                );
-            }}
+            renderItem={({ item }) => (
+                <>
+                    {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
+                    <Box
+                        style={styles.transactionWrapper}
+                        testID={displaySeparation ? "transactionWithSepartion" : "transactionWithoutSeparation"}
+                    >
+                        <TransactionListItem transaction={item} walletAddress={walletAddress} navigation={navigation} />
+                    </Box>
+                </>
+            )}
+            testID="transactionsList"
         />
     );
 }

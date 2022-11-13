@@ -1,12 +1,12 @@
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {validate} from "wallet-address-validator";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { validate } from "wallet-address-validator";
 
 export function getCurrencyType(address: string): CurrencyType {
-    if (validate(address, 'BTC')) {
-        return CurrencyType.BITCOIN
+    if (validate(address, "BTC")) {
+        return CurrencyType.BITCOIN;
     }
-    if (validate(address, 'ETH')) {
-        return CurrencyType.ETHEREUM
+    if (validate(address, "ETH")) {
+        return CurrencyType.ETHEREUM;
     }
 
     throw new Error("Currency type not supported");

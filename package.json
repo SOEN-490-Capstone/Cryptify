@@ -16,7 +16,6 @@
         "eth-edge:test": "yarn workspace @cryptify/eth-edge test",
         "btc-edge:dev": "yarn workspace @cryptify/btc-edge start:dev",
         "btc-edge:test": "yarn workspace @cryptify/btc-edge test",
-        "common:test": "yarn workspace @cryptify/common test",
         "lint:check": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --max-warnings=0",
         "lint:fix": "eslint '*/**/*.{js,jsx,ts,tsx,json}' --fix"
     },

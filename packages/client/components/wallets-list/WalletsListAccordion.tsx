@@ -90,16 +90,16 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
                             isSettingsTab
                                 ? navigation.navigate("WalletSettingsScreen", {
                                       title: formatTitle(wallet.currencyType, wallet.address),
-                                      address: wallet.address.toLowerCase(),
+                                      address: wallet.address,
                                       name: wallet.name,
-                                      currencyType: currency.currencyTag,
+                                      currencyType: currency.type,
                                       balance: getFormattedAmount(wallet.balance, currency.type),
                                   })
                                 : navigation.navigate("WalletOverviewScreen", {
                                       title: formatTitle(wallet.currencyType, wallet.address),
                                       address: wallet.address.toLowerCase(),
                                       name: wallet.name,
-                                      currencyType: currency.currencyTag,
+                                      currencyType: currency.type,
                                       balance: getFormattedAmount(wallet.balance, currency.type),
                                   });
                         }}

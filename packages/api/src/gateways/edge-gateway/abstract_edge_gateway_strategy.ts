@@ -5,6 +5,7 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 export abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     protected constructor(uri: string) {
@@ -12,7 +13,7 @@ export abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway
     }
 
     abstract createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>;
-    abstract deleteWallet(req: DeleteWalletRequest): Promise<void>;
+    abstract deleteWallet(req: DeleteWalletRequest): Promise<Wallet>;
     abstract getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>;
     abstract getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>;
 }

@@ -190,7 +190,8 @@ const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
+        const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen","WalletSettingsScreen",
+    ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {

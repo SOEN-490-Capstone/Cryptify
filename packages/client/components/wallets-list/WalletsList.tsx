@@ -11,7 +11,7 @@ import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native"
 
 type Props = {
     showCurrencyTotals: boolean;
-    isSettingsTab: boolean
+    isSettingsTab: boolean;
     navigation: CompositeNavigationProp<any, any>;
 };
 
@@ -41,9 +41,9 @@ export default function WalletsList(props: Props) {
             <WalletsListAccordion
                 wallets={wallets}
                 navigation={props.navigation}
-                showCurrencyTotals={props.showCurrencyTotals} 
-                isSettingsTab= {props.isSettingsTab}          
-                />
+                showCurrencyTotals={props.showCurrencyTotals}
+                isSettingsTab={props.isSettingsTab}
+            />
         </ScrollView>
     ) : (
         <Center alignItems="center" marginY="auto">

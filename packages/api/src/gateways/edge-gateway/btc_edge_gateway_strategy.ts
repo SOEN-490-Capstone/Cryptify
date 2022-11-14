@@ -7,17 +7,10 @@ import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gat
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { MixedSchema } from "yup/lib/mixed";
-import { RequiredNumberSchema } from "yup/lib/number";
-import { AssertsShape } from "yup/lib/object";
-import { RequiredStringSchema } from "yup/lib/string";
-import { AnyObject } from "yup/lib/types";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
-    
     constructor(private configService: ConfigService) {
         const host = configService.get<string>("BTC_EDGE_HOST");
         const port = configService.get<string>("BTC_EDGE_PORT");

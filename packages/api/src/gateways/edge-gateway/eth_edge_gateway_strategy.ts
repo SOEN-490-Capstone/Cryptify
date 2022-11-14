@@ -1,5 +1,5 @@
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
-import { Body, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";

@@ -1,4 +1,5 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { validate } from "./wav";
 

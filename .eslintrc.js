@@ -23,5 +23,5 @@ module.exports = {
         ],
         "@typescript-eslint/no-explicit-any": 0,
     },
-    ignorePatterns: ["dist", "android", "ios", "coverage"],
+    ignorePatterns: ["dist", "android", "ios", "coverage", "wav-in.js", "wav.ts"],
 };

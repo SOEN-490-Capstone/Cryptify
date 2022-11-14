@@ -18,23 +18,15 @@ type Props = CompositeScreenProps<
 >;
 
 export default function WalletQRCodeScreen({ route }: Props) {
-<<<<<<< HEAD
+    
     const { address, name, currencyType } = route.params;
-=======
-    const { address, name, currencyTag } = route.params;
-    const currencyName = currencyTagToName.get(currencyTag);
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
 
     return (
         <View style={styles.view}>
             <Text size={"subheadline"} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
-<<<<<<< HEAD
                     {titleCase(currencyType)} ({typeToISOCode[currencyType]}){" "}
-=======
-                    {titleCase(currencyName ? currencyName : "")} ({currencyTag}){" "}
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
                 </Text>
                 from another source. A{" "}
                 <Text style={{ fontWeight: "600" }} underline>
@@ -63,13 +55,8 @@ export default function WalletQRCodeScreen({ route }: Props) {
             <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={farCircleInfo} size={16} />
                 <Text size={"footnote2"} style={styles.infoText}>
-<<<<<<< HEAD
                     Never enter this address by hand and only send {titleCase(currencyType)} (
                     {typeToISOCode[currencyType]}) to this address.
-=======
-                    Never enter this address by hand and only send {titleCase(currencyName ? currencyName : "")} (
-                    {currencyTag}) to this address.
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
                 </Text>
             </HStack>
         </View>

@@ -177,7 +177,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <AddressShareButton currencyTag={route.params.currencyTag} address={route.params.address} />
+                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
                     ),
                 })}
             />
@@ -332,7 +332,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <AddressShareButton currencyTag={route.params.currencyTag} address={route.params.address} />
+                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
                     ),
                 })}
             />

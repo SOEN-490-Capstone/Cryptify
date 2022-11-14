@@ -1,5 +1,5 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { validate } from "wallet-address-validator";
+import { validate } from "./wav.js";
 
 const btcTxRegex = /^[a-fA-F0-9]{64}$/;
 const ethTxRegex = /^0x([A-Fa-f0-9]{64})$/;

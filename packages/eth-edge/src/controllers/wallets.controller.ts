@@ -9,6 +9,7 @@ import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_s
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
 import { stringify } from "querystring";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Controller()
 export class WalletsController {
@@ -26,10 +27,10 @@ export class WalletsController {
         return this.walletsService.findAll(getWalletReq.id);
     }
 
-    @Delete("/users/:id/wallets")
-    async delete(@Param() params: DeleteWalletRequest): Promise<void> {
-        const deleteWalletReq = await useValidate(deleteWalletSchema, params);
-
+    @Delete("/users/:UserId/deleteWallet")
+    async delete(@Body() body: DeleteWalletRequest): Promise<void> {
+        body.currencyType = CurrencyType.ETHEREUM;
+        const deleteWalletReq = await useValidate(deleteWalletSchema, body);
         return this.walletsService.delete(deleteWalletReq.address, deleteWalletReq.userId);
     }
 }

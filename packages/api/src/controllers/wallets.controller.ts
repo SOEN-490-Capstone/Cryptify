@@ -31,12 +31,9 @@ export class WalletsController {
         return this.walletsService.findAll(getWalletsReq);
     }
 
-    @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
-    @Delete("users/:userId/deleteWallet/:address")
+    @Delete("/users/:userId/deleteWallet")
     async delete(@Body() body: DeleteWalletRequest): Promise<void> {
-        console.log(body)
         const deleteWalletReq = await useValidate(deleteWalletSchema, body);
-
         return this.walletsService.delete(deleteWalletReq);
     }
 }

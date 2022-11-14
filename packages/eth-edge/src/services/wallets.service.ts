@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import {
     ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
+    ERROR_WALLET_NAME_DOES_NOT_EXIST,
 } from "@cryptify/common/src/errors/error_messages";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
@@ -78,7 +79,7 @@ export class WalletsService {
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<Wallet> {
         const walletToDelete = await this.findOne(deleteWalletReq.address, deleteWalletReq.userId);
         if (!walletToDelete) {
-            throw new BadRequestException("Wallet does not Exist");
+            throw new BadRequestException(ERROR_WALLET_NAME_DOES_NOT_EXIST);
         }
         await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.userId });
         await this.transactionsService.delete(deleteWalletReq.address);

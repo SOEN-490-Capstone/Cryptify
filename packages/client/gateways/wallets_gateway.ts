@@ -1,4 +1,5 @@
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
@@ -25,5 +26,15 @@ export class WalletsGateway extends AbstractApiGateway {
         };
 
         return this.request<WalletWithBalance[]>(Method.GET, headers, path, null);
+    }
+
+    async deleteWallet(req: DeleteWalletRequest, token: string): Promise<void> {
+        console.log("help")
+        const path = `users/${req.userId}/deleteWallet/${req.address}`;
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+
+        return this.request<void>(Method.DELETE, headers, path, req);
     }
 }

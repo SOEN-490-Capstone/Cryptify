@@ -12,6 +12,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
+    
     constructor(private configService: ConfigService) {
         const host = configService.get<string>("BTC_EDGE_HOST");
         const port = configService.get<string>("BTC_EDGE_PORT");
@@ -34,6 +35,10 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     }
 
     async deleteWallet(_req: DeleteWalletRequest): Promise<Wallet> {
+        return;
+    }
+
+    async deleteWallet(_req: DeleteWalletRequest): Promise<void> {
         return;
     }
 }

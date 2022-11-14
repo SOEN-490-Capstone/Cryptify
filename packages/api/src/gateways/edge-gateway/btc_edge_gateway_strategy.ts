@@ -12,7 +12,6 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
-    
     constructor(private configService: ConfigService) {
         const host = configService.get<string>("BTC_EDGE_HOST");
         const port = configService.get<string>("BTC_EDGE_PORT");

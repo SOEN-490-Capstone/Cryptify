@@ -56,6 +56,7 @@ type TransactionsListScreenProps = {
     displaySeparation: boolean;
 };
 
+// TODO: find a way to dynamically get the first element of stack instead of carrying a boolean
 type ViewWalletsScreenProps = {
     isSettingsTab: boolean;
 };

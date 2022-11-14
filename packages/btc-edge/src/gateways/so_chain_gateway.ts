@@ -4,7 +4,10 @@ import { AbstractServiceGateway } from "@cryptify/common/src/utils/gateway/abstr
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import {
     AddressBalanceResponse,
+    PairsWithAmount,
     TransactionResponse,
+    TransactionResponseInput,
+    TransactionResponseOutput,
     TransactionsByWalletResponse,
 } from "@cryptify/btc-edge/src/types/so_chain_responses";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -21,8 +24,8 @@ export class SoChainGateway extends AbstractServiceGateway {
         super(`https://${configService.get<string>("SO_CHAIN_HOST")}`);
     }
 
-    async getBalance(address: string): Promise<string> {
-        const path = `get_address_balance/BTC/${address}`;
+    async getBalance(walletAddress: string): Promise<string> {
+        const path = `get_address_balance/BTC/${walletAddress}`;
         const res = await this.request<AddressBalanceResponse>(Method.GET, {}, path, null);
 
         // Bitcoin only supports 8 decimal places meaning it can be safely represented as a javascript number
@@ -31,57 +34,62 @@ export class SoChainGateway extends AbstractServiceGateway {
         return res.data.confirmed_balance;
     }
 
-    async getTransactions(address: string): Promise<Transaction[]> {
+    async getTransactions(walletAddress: string): Promise<Transaction[]> {
         // Get the sent and received transactions from the API
-        const path = `get_tx_received/BTC/${address}`;
+        const path = `get_tx_received/BTC/${walletAddress}`;
         const outAndInTransactions = await this.request<TransactionsByWalletResponse>(Method.GET, {}, path, null);
 
         // Convert in and out transactions list to a list of transaction addresses then
         // hydrate each address with the rest of the transaction data from the API
-        const transactionsData = await Promise.all(
+        const transactions = await Promise.all(
             outAndInTransactions.data.txs
                 .map((transaction) => transaction.txid)
-                .map((addr) => this.request<TransactionResponse>(Method.GET, {}, `tx/BTC/${addr}`, null)),
+                .map((address) => this.getTransactionsByTxAddress(address)),
         );
 
-        // Cross the in and out wallets to form NxM number of transactions, filter for
-        // address pairs that don't include the target address and finally construct the
-        // transaction object
-        return transactionsData.flatMap((transaction) =>
-            transaction.data.inputs
-                .flatMap((input) => transaction.data.outputs.map((output) => [input, output] as const))
-                .filter(([inWallet, outWallet]) => inWallet.address === address || outWallet.address === address)
-                .map(([inWallet, outWallet]) => ({
-                    id: -1,
-                    transactionAddress: transaction.data.txid,
-                    walletIn: outWallet.address,
-                    walletOut: inWallet.address,
-                    amount: address === inWallet.address ? outWallet.value : inWallet.value,
-                    createdAt: new Date(transaction.data.time * 1000),
-                })),
-        );
+        // Since we have access to the wallet address of the user we can filter out the transaction pairs that aren't
+        // associated to the target wallet
+        return transactions
+            .flat()
+            .filter((transaction) => walletAddress === transaction.walletIn || walletAddress === transaction.walletOut);
     }
 
     async getTransactionsByTxAddress(txAddress: string): Promise<Transaction[]> {
         const path = `get_tx/BTC/${txAddress}`;
         const txData = await this.request<TransactionResponse>(Method.GET, {}, path, null);
 
-        // Cross the in and out wallets to form NxM number of transactions then construct the
-        // transaction object
-        // Note: wallet in amounts + fee = wallet out amount
+        // Reverse the pool transaction to get NxM pairs and then construct the transaction entity from each
+        // pair + amount tuple
+        // Note: wallet out amounts + fee = wallet in amount
         // Note: inWallet refers to a wallet that is putting money in (inputting) bitcoin into the transaction pool
         // and outWallet refers to a wallet that is taking money out from the transaction pool, our domain transaction
         // has the reverse where a walletIn takes money out of the pool, and a walletOut puts money into the pool
-        return txData.data.inputs
-            .flatMap((input) => txData.data.outputs.map((output) => [input, output] as const))
-            .map(([inWallet, outWallet]) =>
+        return this.reversePoolMIMOTransaction(txData.data.inputs, txData.data.outputs).map(
+            ([inWallet, outWallet, amount]) =>
                 this.transactionsRepository.create({
                     transactionAddress: txData.data.txid,
                     walletIn: outWallet.address,
                     walletOut: inWallet.address,
-                    amount: inWallet.value,
+                    amount,
                     createdAt: new Date(txData.data.time * 1000),
                 }),
-            );
+        );
+    }
+
+    private reversePoolMIMOTransaction(
+        inputs: TransactionResponseInput[],
+        outputs: TransactionResponseOutput[],
+    ): PairsWithAmount {
+        // Get the total amount of BTC taken out of the transaction pool, this will exclude the amount spent in fees
+        const totalOut = outputs.reduce((sum, output) => sum + +output.value, 0);
+        // Cross the inputs and outputs to produce NxM pairs of transactions, then reverse the transaction MIMO pool
+        // amount by taking the input amount times proportional output (output / total output) this will nicely split
+        // the MIMO transaction to multiple domain transactions
+        return inputs.flatMap((input) =>
+            outputs.map((output) => {
+                const amount = (+input.value * (+output.value / totalOut)).toString();
+                return [input, output, amount] as const;
+            }),
+        );
     }
 }

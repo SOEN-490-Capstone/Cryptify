@@ -36,7 +36,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
     }
 
     function renderHeader(currency: CurrencyDisplayData, _: number, isActive: boolean) {
-        const amount = getWalletsTotal(wallets);
+        const amount = getWalletsTotal(wallets, currency.type);
         return (
             <HStack
                 height="66px"

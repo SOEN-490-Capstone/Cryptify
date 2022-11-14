@@ -10,15 +10,16 @@ import {
 import React from "react";
 import RowItem from "../components/RowItem";
 import { Copy } from "../components/Copy";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
 export default function WalletDetailsScreen({ route }: Props) {
     const { address, name, balance, transactions } = route.params;
-
     const count = getTransactionCount(transactions);
-    const totalReceived = getTransactionTotalReceived(transactions);
-    const totalSent = getTransactionTotalSent(transactions);
+    const type = getCurrencyType(address);
+    const totalReceived = getTransactionTotalReceived(address, transactions, type);
+    const totalSent = getTransactionTotalSent(address, transactions, type);
 
     return (
         <View style={styles.view}>

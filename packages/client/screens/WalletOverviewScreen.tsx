@@ -5,7 +5,6 @@ import { StyleSheet } from "react-native";
 import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereum } from "../components/icons/brands/faEthereum";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -16,7 +15,7 @@ import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { typeToISOCode } from "../services/currency_service";
+import { typeToISOCode, currencyTypeToIcon } from "../services/currency_service";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -31,6 +30,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     const { token, user } = React.useContext(AuthContext);
 
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+    const currencyIcon = currencyTypeToIcon[currencyType];
 
     React.useEffect(() => {
         (async () => {
@@ -53,7 +53,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={faEthereum} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon icon={currencyIcon} style={styles.ethereumIcon} size={40} />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">

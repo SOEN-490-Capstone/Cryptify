@@ -29,8 +29,7 @@ export class WalletsGateway extends AbstractApiGateway {
     }
 
     async deleteWallet(req: DeleteWalletRequest, token: string): Promise<void> {
-        console.log("help");
-        const path = `users/${req.userId}/deleteWallet`;
+        const path = `users/${req.userId}/wallets/${req.address}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

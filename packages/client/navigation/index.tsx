@@ -234,8 +234,8 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="WalletSettingsScreen"
                 component={WalletSettingsScreen}
-                options={({ navigation }) => ({
-                    title: "Wallets",
+                options={({ route }) => ({
+                    title: route.params.title,
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,
@@ -243,11 +243,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
-                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
-                        </Pressable>
-                    ),
                 })}
             />
             <SettingsStack.Screen

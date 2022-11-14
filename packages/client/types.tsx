@@ -60,6 +60,13 @@ type ViewWalletsScreenProps = {
     isSettingsTab: boolean;
 };
 
+
+type WalletSettingsScreenProps = {
+    title: string;
+    address: string;
+    currencyType: CurrencyType;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -87,7 +94,7 @@ export type SettingsStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
-    WalletSettingsScreen: undefined;
+    WalletSettingsScreen: WalletSettingsScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

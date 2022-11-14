@@ -8,7 +8,6 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
-import { stringify } from "querystring";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Controller()

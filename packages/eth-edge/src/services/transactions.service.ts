@@ -60,7 +60,7 @@ export class TransactionsService {
     }
 
     async delete(walletAdress: string): Promise<void> {
-        this.transactionsRepository.delete({ walletIn: walletAdress })
-        this.transactionsRepository.delete({ walletOut: walletAdress })
+        this.transactionsRepository.delete({ walletIn: walletAdress });
+        this.transactionsRepository.delete({ walletOut: walletAdress });
     }
 }

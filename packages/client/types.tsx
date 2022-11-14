@@ -60,7 +60,6 @@ type ViewWalletsScreenProps = {
     isSettingsTab: boolean;
 };
 
-
 type WalletSettingsScreenProps = {
     title: string;
     address: string;

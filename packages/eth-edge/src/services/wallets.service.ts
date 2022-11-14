@@ -74,11 +74,11 @@ export class WalletsService {
         }));
     }
 
-    async delete(address: string, userId: number): Promise<void>{
+    async delete(address: string, userId: number): Promise<void> {
         //Even if address is the primary key, we might want to consider going with a model
-        //where we have a primary ket composed of userId and address. This can be done in case 
+        //where we have a primary ket composed of userId and address. This can be done in case
         //a user decides to claim addresses that are not actually theirs.
-        this.walletRepository.delete({userId: userId, address: address})
-        this.transactionsService.delete(address)
+        this.walletRepository.delete({ userId: userId, address: address });
+        this.transactionsService.delete(address);
     }
 }

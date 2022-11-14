@@ -1,22 +1,10 @@
 import React from "react";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import { Pressable, Box, Text, HStack, VStack, Button } from "native-base";
+import { SettingsStackScreenProps } from "../types";
+import { Button } from "native-base";
 import { Alert, StyleSheet } from "react-native";
-import { falWallet } from "../components/icons/light/falWallet";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
-import { faEthereum } from "../components/icons/brands/faEthereum";
-import { farArrowRight } from "../components/icons/regular/farArrowRight";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
-import { farQrCode } from "../components/icons/regular/farQrCode";
-import { getTransactionByWallet } from "../services/transaction_service";
-import { formatAddress } from "../services/address_service";
-import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { WalletsGateway } from "../gateways/wallets_gateway";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = SettingsStackScreenProps<"WalletSettingsScreen">;
@@ -27,19 +15,20 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
     const walletsGateway = new WalletsGateway();
 
     function handleDeleteWallet(): void {
-        Alert.alert(
-            "Do you want to remove this wallet?",
-            "You cannot undo this action.",
-            [
-                { text: "Cancel", style: "cancel" },
-                { text: "Remove", style: "destructive",
+        Alert.alert("Do you want to remove this wallet?", "You cannot undo this action.", [
+            { text: "Cancel", style: "cancel" },
+            {
+                text: "Remove",
+                style: "destructive",
                 onPress: () => {
-                    walletsGateway.deleteWallet({"userId": user.id, "address": address, "currencyType": getCurrencyType(address)}, token)
-                    navigation.goBack()
-                }
-                }
-            ]
-          );
+                    walletsGateway.deleteWallet(
+                        { userId: user.id, address: address, currencyType: getCurrencyType(address) },
+                        token,
+                    );
+                    navigation.goBack();
+                },
+            },
+        ]);
     }
 
     return (
@@ -58,7 +47,7 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingTop: 20,
     },
-    buttonStyle:{
-        color: "white"
-    }
+    buttonStyle: {
+        color: "white",
+    },
 });

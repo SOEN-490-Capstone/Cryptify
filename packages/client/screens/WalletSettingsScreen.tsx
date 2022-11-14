@@ -5,7 +5,6 @@ import { Alert, StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = SettingsStackScreenProps<"WalletSettingsScreen">;
 
@@ -20,9 +19,9 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
             {
                 text: "Remove",
                 style: "destructive",
-                onPress: () => {
-                    walletsGateway.deleteWallet(
-                        { userId: user.id, address: address, currencyType: currencyType},
+                onPress: async () => {
+                    await walletsGateway.deleteWallet(
+                        { userId: user.id, address: address, currencyType: currencyType },
                         token,
                     );
                     navigation.goBack();

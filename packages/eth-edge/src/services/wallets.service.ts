@@ -76,15 +76,12 @@ export class WalletsService {
     }
 
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<Wallet> {
-        //Even if address is the primary key, we might want to consider going with a model
-        //where we have a primary ket composed of userId and address. This can be done in case
-        //a user decides to claim addresses that are not actually theirs.
         const walletToDelete = await this.findOne(deleteWalletReq.address, deleteWalletReq.userId);
-        if(!walletToDelete){
+        if (!walletToDelete) {
             throw new BadRequestException("Wallet does not Exist");
         }
-        await this.walletRepository.delete({address: deleteWalletReq.address, userId: deleteWalletReq.userId});
-        await this.transactionsService.delete(deleteWalletReq.address); 
+        await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.userId });
+        await this.transactionsService.delete(deleteWalletReq.address);
         return walletToDelete;
     }
 }

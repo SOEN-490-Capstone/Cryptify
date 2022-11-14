@@ -8,8 +8,6 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { STATUS_CODES } from "http";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Controller()
@@ -28,11 +26,10 @@ export class WalletsController {
         return this.walletsService.findAll(getWalletReq.id);
     }
 
-    @Delete("/users/:UserId/deleteWallet")
+    @Delete("/users/:UserId/wallets/:address")
     async delete(@Body() body: DeleteWalletRequest): Promise<Wallet> {
         const deleteWalletReq = await useValidate(deleteWalletSchema, body);
-        console.log(deleteWalletReq)
+        console.log(deleteWalletReq);
         return await this.walletsService.delete(deleteWalletReq);
-        
     }
 }

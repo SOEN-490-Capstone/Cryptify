@@ -11,7 +11,6 @@ export abstract class AbstractGateway {
             },
             body: body ? JSON.stringify(body) : null,
         });
-
         if (response.status >= 300) {
             await this.handleError(response);
         }

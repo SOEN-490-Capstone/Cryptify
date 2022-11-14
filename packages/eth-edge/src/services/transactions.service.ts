@@ -58,4 +58,9 @@ export class TransactionsService {
             where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
         });
     }
+
+    async delete(walletAdress: string): Promise<void> {
+        this.transactionsRepository.delete({ walletIn: walletAdress })
+        this.transactionsRepository.delete({ walletOut: walletAdress })
+    }
 }

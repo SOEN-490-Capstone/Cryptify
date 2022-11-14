@@ -33,8 +33,7 @@ export class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     }
 
     async deleteWallet(req: DeleteWalletRequest): Promise<void> {
-        console.log("help")
-        const path = `users/${req.userId}/deleteWallet/${req.address}`;
+        const path = `users/${req.userId}/deleteWallet`;
         return this.request<void>(Method.DELETE, {}, path, req);
     }
 }

@@ -17,6 +17,7 @@ import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { WalletsGateway } from "../gateways/wallets_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = SettingsStackScreenProps<"WalletSettingsScreen">;
 
@@ -33,7 +34,7 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
                 { text: "Cancel", style: "cancel" },
                 { text: "Remove", style: "destructive",
                 onPress: () => {
-                    walletsGateway.deleteWallet({userId: user.id, address: address, currencyType: currencyType}, token)
+                    walletsGateway.deleteWallet({"userId": user.id, "address": address, "currencyType": getCurrencyType(address)}, token)
                     navigation.goBack()
                 }
                 }

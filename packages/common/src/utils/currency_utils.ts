@@ -1,5 +1,7 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { validate } from "wallet-address-validator";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { validate } from "./wav";
 
 const btcTxRegex = /^[a-fA-F0-9]{64}$/;
 const ethTxRegex = /^0x([A-Fa-f0-9]{64})$/;

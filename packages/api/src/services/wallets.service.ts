@@ -8,6 +8,7 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class WalletsService {
@@ -24,13 +25,7 @@ export class WalletsService {
         return edgeGatewayStrategy.createWallet(req);
     }
 
-    async delete(req: DeleteWalletRequest): Promise<void> {
-        if (req.currencyType != getCurrencyType(req.address)) {
-            throw new BadRequestException(ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(req.currencyType)));
-        }
-
-        // Get the edge gateway strategy associated to the currency type in the request
-        // then using this gateway create the wallet in the appropriate edge service
+    async delete(req: DeleteWalletRequest): Promise<Wallet> {
         const edgeGatewayStrategy = this.edgeGatewayStrategyFactory.get(req.currencyType);
         return edgeGatewayStrategy.deleteWallet(req);
     }

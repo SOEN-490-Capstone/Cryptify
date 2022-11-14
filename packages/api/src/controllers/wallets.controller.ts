@@ -11,6 +11,7 @@ import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_s
 import { CanAccessResourceGuard } from "@cryptify/api/src/guards/can_access_resource.guard";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Controller()
 export class WalletsController {
@@ -32,8 +33,9 @@ export class WalletsController {
     }
 
     @Delete("/users/:userId/deleteWallet")
-    async delete(@Body() body: DeleteWalletRequest): Promise<void> {
+    async delete(@Body() body: DeleteWalletRequest): Promise<Wallet> {
         const deleteWalletReq = await useValidate(deleteWalletSchema, body);
-        return this.walletsService.delete(deleteWalletReq);
+        console.log(deleteWalletReq)
+        return await this.walletsService.delete(deleteWalletReq);
     }
 }

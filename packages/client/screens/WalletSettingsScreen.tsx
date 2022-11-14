@@ -22,7 +22,7 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
                 style: "destructive",
                 onPress: () => {
                     walletsGateway.deleteWallet(
-                        { userId: user.id, address: address, currencyType: getCurrencyType(address) },
+                        { userId: user.id, address: address, currencyType: currencyType},
                         token,
                     );
                     navigation.goBack();

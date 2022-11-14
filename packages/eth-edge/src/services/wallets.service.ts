@@ -14,6 +14,7 @@ import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
 import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
 import { zip } from "@cryptify/common/src/utils/function_utils";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 
 @Injectable()
 export class WalletsService {
@@ -74,11 +75,16 @@ export class WalletsService {
         }));
     }
 
-    async delete(address: string, userId: number): Promise<void> {
+    async delete(deleteWalletReq: DeleteWalletRequest): Promise<Wallet> {
         //Even if address is the primary key, we might want to consider going with a model
         //where we have a primary ket composed of userId and address. This can be done in case
         //a user decides to claim addresses that are not actually theirs.
-        this.walletRepository.delete({ userId: userId, address: address });
-        this.transactionsService.delete(address);
+        const walletToDelete = await this.findOne(deleteWalletReq.address, deleteWalletReq.userId);
+        if(!walletToDelete){
+            throw new BadRequestException("Wallet does not Exist");
+        }
+        await this.walletRepository.delete({address: deleteWalletReq.address, userId: deleteWalletReq.userId});
+        await this.transactionsService.delete(deleteWalletReq.address); 
+        return walletToDelete;
     }
 }

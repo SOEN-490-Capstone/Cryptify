@@ -37,8 +37,4 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     async deleteWallet(_req: DeleteWalletRequest): Promise<Wallet> {
         return;
     }
-
-    async deleteWallet(_req: DeleteWalletRequest): Promise<void> {
-        return;
-    }
 }

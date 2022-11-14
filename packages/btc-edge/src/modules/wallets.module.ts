@@ -8,11 +8,7 @@ import { TransactionsModule } from "./transactions.module";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Wallet, Transaction]),
-        TransactionsModule,
-        forwardRef(() => TransactionsModule),
-    ],
+    imports: [TypeOrmModule.forFeature([Wallet, Transaction]), forwardRef(() => TransactionsModule)],
     controllers: [WalletsController],
     providers: [WalletsService, SoChainGateway],
     exports: [WalletsService],

@@ -73,3 +73,5 @@ export interface TransactionResponseOutput {
     script_asm: string;
     script_hex: string;
 }
+
+export type PairsWithAmount = (readonly [TransactionResponseInput, TransactionResponseOutput, string])[];

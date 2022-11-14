@@ -48,4 +48,3 @@ export const currencyTypeToIcon: { [key in CurrencyType]: IconDefinition } = {
     [CurrencyType.ETHEREUM]: faEthereum,
     [CurrencyType.BITCOIN]: faBitcoin,
 };
-

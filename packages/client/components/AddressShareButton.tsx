@@ -12,7 +12,6 @@ type Props = {
 };
 
 export function AddressShareButton({ currencyType, address }: Props) {
-
     async function onShare() {
         await Share.share({
             message: `${titleCase(currencyType)} Wallet Address:\r\n${address}`,

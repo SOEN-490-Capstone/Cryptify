@@ -53,11 +53,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon
-                                icon={currencyIcon}
-                                style={styles.ethereumIcon}
-                                size={40}
-                            />
+                            <FontAwesomeIcon icon={currencyIcon} style={styles.ethereumIcon} size={40} />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">

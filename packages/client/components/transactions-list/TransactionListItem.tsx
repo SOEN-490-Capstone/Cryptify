@@ -6,7 +6,6 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { falCircleArrowDownLeft } from "../icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getFormattedAmount, typeToISOCode } from "../../services/currency_service";
 import { formatAddress } from "../../services/address_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
@@ -62,7 +61,10 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                                 style={styles.transactionAmountInOut}
                             >
                                 {isIncomingTransaction ? "+" : "-"}
-                                {getFormattedAmount(transaction.amount, getCurrencyType(transaction.transactionAddress))}
+                                {getFormattedAmount(
+                                    transaction.amount,
+                                    getCurrencyType(transaction.transactionAddress),
+                                )}
                             </Text>
                         </HStack>
                         <HStack>

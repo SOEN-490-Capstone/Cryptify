@@ -18,7 +18,6 @@ type Props = CompositeScreenProps<
 >;
 
 export default function WalletQRCodeScreen({ route }: Props) {
-    
     const { address, name, currencyType } = route.params;
 
     return (

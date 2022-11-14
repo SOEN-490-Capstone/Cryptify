@@ -32,22 +32,14 @@ type WalletOverviewScreenProps = {
     title: string;
     address: string;
     name: string;
-<<<<<<< HEAD
     currencyType: CurrencyType;
-=======
-    currencyTag: string;
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
     balance: string;
 };
 
 type WalletDetailsScreenProps = {
     address: string;
     name: string;
-<<<<<<< HEAD
     currencyType: CurrencyType;
-=======
-    currencyTag: string;
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
     balance: string;
     transactions: Transaction[];
 };
@@ -55,11 +47,7 @@ type WalletDetailsScreenProps = {
 type WalletQRCodeProps = {
     address: string;
     name: string;
-<<<<<<< HEAD
     currencyType: CurrencyType;
-=======
-    currencyTag: string;
->>>>>>> 4a434f0 (renamed type to tag fixed overview icon)
 };
 
 type TransactionsListScreenProps = {

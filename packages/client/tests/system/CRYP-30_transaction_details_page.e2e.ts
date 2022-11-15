@@ -41,7 +41,6 @@ describe("CRYP-30 Transaction details", () => {
         await element(by.id("transactionsListItem")).atIndex(0).tap();
         await expect(element(by.id("transactionDetailsHeader"))).toExist();
         await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
-        await expect(element(by.id("transactionDetailsFee"))).toExist();
         await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
 
         await pause();

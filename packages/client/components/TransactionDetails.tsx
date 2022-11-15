@@ -107,35 +107,11 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
             </VStack>
         </Box>
     );
-    const renderTransactionFee = (
-        // TODO
-        // Get Gas
-        // Get Gas Limit
-        <Box style={styles.itemWrapper} testID="transactionDetailsFee">
-            <VStack>
-                <Text size={"title3"} fontWeight={"semibold"}>
-                    Transaction Fee
-                </Text>
-                <Box style={styles.subItemWrapper}>
-                    <Text size={"subheadline"} color="text.500">
-                        Gas Price
-                    </Text>
-                    <Text>0.0000000000012323 ETH</Text>
-                </Box>
-                <Box style={styles.subItemWrapper}>
-                    <HStack>
-                        <Text style={styles.elementInformationText}>Gas Limit</Text>
-                        <Text color="text.500" style={styles.gasLimit}>
-                            100 000
-                        </Text>
-                    </HStack>
-                </Box>
-            </VStack>
-        </Box>
-    );
     const renderOtherDetails = (
         // TODO
         // Add block number, position in block and nonce
+        // Get Gas Limit
+        // Get Gas Price
         <Box style={styles.itemWrapper} testID="transactionDetailsOtherDetails">
             <VStack>
                 <Box>
@@ -167,6 +143,20 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
+                <Box style={styles.subItemWrapper}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Gas Limit (Units)</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            100,000
+                        </Text>
+                    </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <Text size={"subheadline"} color="text.500">
+                        Gas Price
+                    </Text>
+                    <Text>0.0000000000012323 ETH</Text>
+                </Box>
             </VStack>
         </Box>
     );
@@ -176,7 +166,6 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
             {renderHeader}
             <Box>
                 {renderBasicInfo}
-                {renderTransactionFee}
                 {renderOtherDetails}
             </Box>
         </>

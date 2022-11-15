@@ -13,7 +13,7 @@ export abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway
     }
 
     abstract createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>;
-    abstract deleteWallet(req: DeleteWalletRequest): Promise<Wallet>;
+    abstract deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>;
     abstract getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>;
     abstract getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>;
 }

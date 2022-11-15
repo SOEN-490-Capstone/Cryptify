@@ -6,6 +6,5 @@ export const ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY = (currency: string) =>
 export const ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT = (currency: string) =>
     `address:This wallet address is already associated with another ${currency} wallet.`;
 export const ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT = "name:This name is already associated with another wallet.";
-export const ERROR_WALLET_NAME_DOES_NOT_EXIST = "Wallet does not Exist";
 
 export const ERROR_NOP = "nop";

@@ -1,0 +1,34 @@
+@startuml
+title Cryptify Use Case Diagram
+
+left to right direction
+actor User
+actor Blockchain
+rectangle Cryptify {
+  usecase "Manage wallets (CRUD)" as UC1
+  usecase "View wallet details" as UC2
+  usecase "View transactions" as UC3
+  usecase "View transaction details" as UC4
+  UC2 .> UC1 : extends
+  UC4 .> UC3 : extends
+  usecase "Manage wallet contacts (CRUD)" as UC5
+  usecase "Manage transaction categories (CRUD)" as UC6
+  usecase "Generate reports" as UC7
+  usecase "Receive notifications" as UC8
+  usecase "Budget management" as UC9
+}
+
+User -- UC1
+UC1 -- Blockchain
+User -- UC2
+UC2 -- Blockchain
+User -- UC3
+UC3 -- Blockchain
+User -- UC4
+UC4 -- Blockchain
+User -- UC5
+User -- UC6
+User -- UC7
+User -- UC8
+User -- UC9
+@enduml

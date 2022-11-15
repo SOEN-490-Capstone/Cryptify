@@ -22,7 +22,7 @@ describe("Wallets", () => {
         await seedDB();
     });
 
-    describe("POST /users/:id/wallets", () => {
+    describe.skip("POST /users/:id/wallets", () => {
         const wallet = {
             address: "bc1q22jrgjeg5mm9zuzlxv90snrfhelm0hy76hsra2",
             userId: 1,

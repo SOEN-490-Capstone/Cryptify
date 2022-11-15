@@ -4,7 +4,6 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 export class WalletsGateway extends AbstractApiGateway {
     constructor() {

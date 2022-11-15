@@ -8,7 +8,6 @@ import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/abstract_edge_gateway_strategy";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {

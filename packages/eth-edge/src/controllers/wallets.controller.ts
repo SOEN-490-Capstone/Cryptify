@@ -26,10 +26,9 @@ export class WalletsController {
         return this.walletsService.findAll(getWalletReq.id);
     }
 
-    @Delete("/users/:UserId/wallets/:address")
-    async delete(@Body() body: DeleteWalletRequest): Promise<Wallet> {
-        const deleteWalletReq = await useValidate(deleteWalletSchema, body);
-        console.log(deleteWalletReq);
+    @Delete("/users/:id/wallets/:address")
+    async delete(@Param() params: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const deleteWalletReq = await useValidate(deleteWalletSchema, params);
         return await this.walletsService.delete(deleteWalletReq);
     }
 }

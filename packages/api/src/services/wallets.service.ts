@@ -25,8 +25,8 @@ export class WalletsService {
         return edgeGatewayStrategy.createWallet(req);
     }
 
-    async delete(req: DeleteWalletRequest): Promise<Wallet> {
-        const edgeGatewayStrategy = this.edgeGatewayStrategyFactory.get(req.currencyType);
+    async delete(req: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const edgeGatewayStrategy = this.edgeGatewayStrategyFactory.get(getCurrencyType(req.address));
         return edgeGatewayStrategy.deleteWallet(req);
     }
 

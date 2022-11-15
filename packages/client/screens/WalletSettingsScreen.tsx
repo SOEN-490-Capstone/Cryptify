@@ -21,7 +21,7 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
                 style: "destructive",
                 onPress: async () => {
                     await walletsGateway.deleteWallet(
-                        { userId: user.id, address: address, currencyType: currencyType },
+                        { id: user.id, address: address},
                         token,
                     );
                     navigation.goBack();

@@ -11,7 +11,6 @@ import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_s
 import { CanAccessResourceGuard } from "@cryptify/api/src/guards/can_access_resource.guard";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Controller()
 export class WalletsController {

@@ -8,7 +8,6 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class WalletsService {

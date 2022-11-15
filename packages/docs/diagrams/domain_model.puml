@@ -1,29 +1,41 @@
 @startuml
 title Cryptify Domain Model
 
-class User {}
+class User {
+}
 
-class ProUser extends User {}
+class ProUser extends User {
+}
 
-class Transaction {}
+class Transaction {
+}
 
-class EthereumTransaction extends Transaction {}
+class EthereumTransaction extends Transaction {
+}
 
-class BitcoinTransaction extends Transaction {}
+class BitcoinTransaction extends Transaction {
+}
 
-class TransactionTag {}
+class TransactionTag {
+}
 
-class Wallet {}
+class Wallet {
+}
 
-class EthereumWallet extends Wallet {}
+class EthereumWallet extends Wallet {
+}
 
-class BitcoinWallet extends Wallet {}
+class BitcoinWallet extends Wallet {
+}
 
-class WalletTag {}
+class WalletTag {
+}
 
-class EthereumBlockchain {}
+class EthereumBlockchain {
+}
 
-class BitcoinBlockchain {}
+class BitcoinBlockchain {
+}
 
 hide circle
 skinparam linetype ortho

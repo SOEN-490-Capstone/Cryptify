@@ -76,19 +76,20 @@ export class WalletsService {
     }
 
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance> {
-        const walletToDelete = await this.findOne(deleteWalletReq.address, deleteWalletReq.id);
-        const balance = await this.alchemyNodeServiceFacade.getBalance(deleteWalletReq.address);
+        const wallet = await this.findOne(deleteWalletReq.address, deleteWalletReq.id);
+        const [balance, count] = await Promise.all([
+            this.alchemyNodeServiceFacade.getBalance(deleteWalletReq.address),
+            this.walletRepository.countBy({ address: deleteWalletReq.address }),
+        ]);
 
-        //This is a necessary step since walletToDelete will become null after the walletRepository.remove
-        //That means we cannot pass it to the delete method from transactionService
-        const deepCopy = new Wallet();
-        deepCopy.address = walletToDelete.address;
-        deepCopy.userId = walletToDelete.userId;
-        deepCopy.name = walletToDelete.name;
-        deepCopy.currencyType = walletToDelete.currencyType;
+        await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id });
 
-        await this.walletRepository.remove(walletToDelete);
-        await this.transactionsService.delete(deepCopy);
-        return { ...deepCopy, balance };
+        if (count == 1) {
+            // If count is 1 then this was the only user who had this wallet and so we can proceed with the transaction clean up,
+            // the cleanup process can also be done asynchronously because we don't have to worry about UI issue because no users
+            // will see those transactions anyways
+            this.transactionsService.cleanup(deleteWalletReq.address);
+        }
+        return { ...wallet, balance };
     }
 }

@@ -10,6 +10,7 @@ export class CanMutateResourceGuard implements CanActivate {
      */
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const { body, params, user, method } = context.switchToHttp().getRequest();
+
         if (!body.userId && method !== "DELETE") {
             throw new BadRequestException();
         }
@@ -17,6 +18,7 @@ export class CanMutateResourceGuard implements CanActivate {
         if (params.id != user.id || (params.id != body.userId && method !== "DELETE")) {
             throw new UnauthorizedException();
         }
+
         return true;
     }
 }

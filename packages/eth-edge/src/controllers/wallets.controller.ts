@@ -28,6 +28,6 @@ export class WalletsController {
     @Delete("/users/:id/wallets/:address")
     async delete(@Param() params: DeleteWalletRequest): Promise<WalletWithBalance> {
         const deleteWalletReq = await useValidate(deleteWalletSchema, params);
-        return await this.walletsService.delete(deleteWalletReq);
+        return this.walletsService.delete(deleteWalletReq);
     }
 }

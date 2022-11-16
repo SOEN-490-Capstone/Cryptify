@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Tag } from "./tag";
+import { TransactionTag } from "./TransactionTag";
 
 @Entity()
 export class Transaction {
@@ -20,7 +20,7 @@ export class Transaction {
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
-    
-    @ManyToMany(() => Tag)
-    tags: Tag[];
+
+    @ManyToMany(() => TransactionTag)
+    tags: TransactionTag[];
 }

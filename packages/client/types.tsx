@@ -56,6 +56,17 @@ type TransactionsListScreenProps = {
     displaySeparation: boolean;
 };
 
+// TODO: find a way to dynamically get the first element of stack instead of carrying a boolean
+type ViewWalletsScreenProps = {
+    isSettingsTab: boolean;
+};
+
+type WalletSettingsScreenProps = {
+    title: string;
+    address: string;
+    currencyType: CurrencyType;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -65,6 +76,7 @@ export type HomeStackParamList = {
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
+    ViewWalletsScreen: ViewWalletsScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -74,7 +86,6 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
-    ViewWalletsScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
     TransactionDetailsScreen: TransactionDetailsProps;
@@ -82,6 +93,8 @@ export type SettingsStackParamList = {
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
+    ViewWalletsScreen: ViewWalletsScreenProps;
+    WalletSettingsScreen: WalletSettingsScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

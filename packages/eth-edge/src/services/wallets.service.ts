@@ -14,6 +14,7 @@ import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { TransactionsService } from "@cryptify/eth-edge/src/services/transactions.service";
 import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
 import { zip } from "@cryptify/common/src/utils/function_utils";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 
 @Injectable()
 export class WalletsService {
@@ -72,5 +73,23 @@ export class WalletsService {
             ...wallet,
             balance,
         }));
+    }
+
+    async delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const wallet = await this.findOne(deleteWalletReq.address, deleteWalletReq.id);
+        const [balance, count] = await Promise.all([
+            this.alchemyNodeServiceFacade.getBalance(deleteWalletReq.address),
+            this.walletRepository.countBy({ address: deleteWalletReq.address }),
+        ]);
+
+        await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id });
+
+        if (count == 1) {
+            // If count is 1 then this was the only user who had this wallet and so we can proceed with the transaction clean up,
+            // the cleanup process can also be done asynchronously because we don't have to worry about UI issue because no users
+            // will see those transactions anyways
+            this.transactionsService.cleanup(deleteWalletReq.address);
+        }
+        return { ...wallet, balance };
     }
 }

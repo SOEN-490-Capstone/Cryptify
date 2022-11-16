@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/abstract_edge_gateway_strategy";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -29,5 +30,10 @@ export class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     async getTransactions(req: GetTransactionsRequest): Promise<Transaction[]> {
         const path = `users/${req.id}/transactions`;
         return this.request<Transaction[]>(Method.GET, {}, path, null);
+    }
+
+    async deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const path = `users/${req.id}/wallets/${req.address}`;
+        return this.request<WalletWithBalance>(Method.DELETE, {}, path, null);
     }
 }

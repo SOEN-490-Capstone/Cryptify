@@ -38,6 +38,7 @@ import WalletOverviewScreen from "../screens/WalletOverviewScreen";
 import TransactionsListScreen from "../screens/TransactionsListScreen";
 import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
 import { AddressShareButton } from "../components/AddressShareButton";
+import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -189,7 +190,12 @@ const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["ViewWalletsScreen", "AddWalletSelectionScreen", "AddWalletScreen"];
+        const tabHiddenRoutes = [
+            "ViewWalletsScreen",
+            "AddWalletSelectionScreen",
+            "AddWalletScreen",
+            "WalletSettingsScreen",
+        ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
         } else {
@@ -228,6 +234,20 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="WalletSettingsScreen"
+                component={WalletSettingsScreen}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
                 })}
             />
             <SettingsStack.Screen

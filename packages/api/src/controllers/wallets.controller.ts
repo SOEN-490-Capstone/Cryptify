@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { createWalletSchema } from "@cryptify/common/src/validations/create_wallet_schema";
@@ -9,6 +9,8 @@ import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balan
 import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_request";
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
 import { CanAccessResourceGuard } from "@cryptify/api/src/guards/can_access_resource.guard";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
+import { deleteWalletSchema } from "@cryptify/common/src/validations/delete_wallet_schema";
 
 @Controller()
 export class WalletsController {
@@ -27,5 +29,12 @@ export class WalletsController {
         const getWalletsReq = await useValidate(getWalletsSchema, params);
 
         return this.walletsService.findAll(getWalletsReq);
+    }
+
+    @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
+    @Delete("/users/:id/wallets/:address")
+    async delete(@Param() params: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const deleteWalletReq = await useValidate(deleteWalletSchema, params);
+        return this.walletsService.delete(deleteWalletReq);
     }
 }

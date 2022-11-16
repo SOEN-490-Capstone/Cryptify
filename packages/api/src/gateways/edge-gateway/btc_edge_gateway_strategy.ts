@@ -7,6 +7,7 @@ import { AbstractEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gat
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
+import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
 
 @Injectable()
 export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
@@ -29,5 +30,10 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     async getTransactions(req: GetTransactionsRequest): Promise<Transaction[]> {
         const path = `users/${req.id}/transactions`;
         return this.request<Transaction[]>(Method.GET, {}, path, null);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async deleteWallet(_req: DeleteWalletRequest): Promise<WalletWithBalance> {
+        return;
     }
 }

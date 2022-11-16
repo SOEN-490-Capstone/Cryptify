@@ -34,7 +34,7 @@ describe("WalletsController", () => {
         walletOut: "string",
         amount: "string",
         createdAt: new Date(),
-        tags: []
+        tags: [],
     };
 
     const walletWithBalance: WalletWithBalance = {

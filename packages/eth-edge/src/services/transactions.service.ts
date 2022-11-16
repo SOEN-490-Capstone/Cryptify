@@ -7,6 +7,7 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { WalletsService } from "./wallets.service";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class TransactionsService {
@@ -59,8 +60,19 @@ export class TransactionsService {
         });
     }
 
-    async delete(walletAdress: string): Promise<void> {
-        await this.transactionsRepository.delete({ walletIn: walletAdress });
-        await this.transactionsRepository.delete({ walletOut: walletAdress });
+    async delete(wallet: Wallet): Promise<Transaction[]> {
+        //Here we get all the transactions that are part part of the wallet we want to remove
+        //and that are not part of any othe wallet stored in the system
+        // TODO find a better way because this is very slow and not scallable
+
+        const transactionToDelete = await this.transactionsRepository.query(
+            `select * from transaction as t
+        where t."walletOut" = $1
+        and t."walletIn" not in (select lower(address) from wallet)
+        or t."walletIn" = $1
+        and t."walletOut" not in (select lower(address) from wallet)`,
+            [wallet.address.toLowerCase()],
+        );
+        return await this.transactionsRepository.remove(transactionToDelete);
     }
 }

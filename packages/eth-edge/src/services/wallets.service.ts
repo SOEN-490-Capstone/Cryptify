@@ -78,8 +78,17 @@ export class WalletsService {
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance> {
         const walletToDelete = await this.findOne(deleteWalletReq.address, deleteWalletReq.id);
         const balance = await this.alchemyNodeServiceFacade.getBalance(deleteWalletReq.address);
-        await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id });
-        await this.transactionsService.delete(deleteWalletReq.address);
-        return { ...walletToDelete, balance };
+
+        //This is a necessary step since walletToDelete will become null after the walletRepository.remove
+        //That means we cannot pass it to the delete method from transactionService
+        const deepCopy = new Wallet();
+        deepCopy.address = walletToDelete.address;
+        deepCopy.userId = walletToDelete.userId;
+        deepCopy.name = walletToDelete.name;
+        deepCopy.currencyType = walletToDelete.currencyType;
+
+        await this.walletRepository.remove(walletToDelete);
+        await this.transactionsService.delete(deepCopy);
+        return { ...deepCopy, balance };
     }
 }

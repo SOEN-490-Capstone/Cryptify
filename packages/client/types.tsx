@@ -70,7 +70,7 @@ type WalletSettingsScreenProps = {
 type FilterScreenProps = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     walletAddress: string;
-}
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;

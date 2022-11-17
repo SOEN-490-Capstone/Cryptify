@@ -13,7 +13,7 @@ type Props = {
     filters?: string[];
 };
 
-export function TransactionsList({ transactions, walletAddress, displaySeparation, navigation, filters }: Props) {
+export function TransactionsList({ transactions, walletAddress, displaySeparation, navigation }: Props) {
     let savedDate = new Date();
     function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {

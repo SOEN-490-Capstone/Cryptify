@@ -10,8 +10,7 @@ import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"FilterScreen">, SettingsStackScreenProps<"FilterScreen">>;
 
-export default function FilterScreen({ route , navigation }: Props) {
-
+export default function FilterScreen({ route, navigation }: Props) {
     const type = getCurrencyType(route.params.walletAddress);
     const filtersByTransaction = getFiltersByTransactionStrings(type);
 
@@ -74,28 +73,28 @@ export default function FilterScreen({ route , navigation }: Props) {
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="26px" />
             {filterByDate == filtersByDate.at(filtersByDate.length - 1) ? <CustomDates /> : null}
-            <Button style={styles.applyButton} onPress={
-                () => 
-                    {
-                        const filters = [filterByTransaction];
-                    
-                        // this checks if the filter selected for the date is "custom date"
-                        // since we need to have special logic that would add the two dates selected
-                        if(filterByDate === "Custom Dates" && (fromDate && toDate)){
-                            let dateFormate = new Intl.DateTimeFormat("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "2-digit",
-                              })
+            <Button
+                style={styles.applyButton}
+                onPress={() => {
+                    const filters = [filterByTransaction];
 
-                            filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
-                        }else{
-                            filters.push(filterByDate);
-                        }
-                        route.params.setFilters(filters);
-                        navigation.goBack();
+                    // this checks if the filter selected for the date is "custom date"
+                    // since we need to have special logic that would add the two dates selected
+                    if (filterByDate === "Custom Dates" && fromDate && toDate) {
+                        const dateFormate = new Intl.DateTimeFormat("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                        });
+
+                        filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+                    } else {
+                        filters.push(filterByDate);
                     }
-                }>
+                    route.params.setFilters(filters);
+                    navigation.goBack();
+                }}
+            >
                 Apply filters
             </Button>
         </View>

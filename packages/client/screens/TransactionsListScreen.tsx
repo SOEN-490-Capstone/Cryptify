@@ -4,10 +4,9 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { Pressable, Box, Text, HStack, VStack, ScrollView } from "native-base";
+import { Pressable, Text, HStack, ScrollView } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
-import { farXMark } from "../components/icons/regular/farXMark";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransction } from "../services/filter_service";
@@ -18,22 +17,24 @@ export default function TransactionsListScreen(
         SettingsStackScreenProps<"TransactionsListScreen">
     >,
 ) {
-
     const [filters, setFilters] = React.useState<string[]>([]);
 
     props.navigation.setOptions({
         headerRight: () => (
             <Pressable
                 onPress={() => {
-                    props.navigation.navigate("FilterScreen", {setFilters, walletAddress: props.route.params.walletAddress});
+                    props.navigation.navigate("FilterScreen", {
+                        setFilters,
+                        walletAddress: props.route.params.walletAddress,
+                    });
                 }}
             >
                 <FontAwesomeIcon icon={farBarsFilter} size={20} />
             </Pressable>
         ),
-    })
+    });
 
-    const filtersDisplayed = filters.filter(f => f !== "All transactions");
+    const filtersDisplayed = filters.filter((f) => f !== "All transactions");
 
     const transactions = props.route.params.transactions;
     const walletAddress = props.route.params.walletAddress;
@@ -41,27 +42,26 @@ export default function TransactionsListScreen(
 
     const DisplayedTransaction = filterTransction(type, walletAddress, transactions, filtersDisplayed);
 
-    function FiltersBadges(){
+    function FiltersBadges() {
         return (
-        <View style={{height: 50}}>
-            <ScrollView horizontal>
-                {filtersDisplayed.map((filter) => (
-                    <HStack key={filter} style={styles.badge}>
-                        <Text style={styles.badgeText}>{filter}</Text>
-                        <Pressable onPress={() => {
-                            setFilters(filtersDisplayed.filter(f => f !== filter));
-                        }}>
-                            <FontAwesomeIcon style={{color: "#0077E6"}} icon={facCircleXMark} size={14} />
-                        </Pressable>
-        
-                    </HStack>
-                ))}
-            </ScrollView>
-        </View>
-        )
+            <View style={{ height: 50 }}>
+                <ScrollView horizontal>
+                    {filtersDisplayed.map((filter) => (
+                        <HStack key={filter} style={styles.badge}>
+                            <Text style={styles.badgeText}>{filter}</Text>
+                            <Pressable
+                                onPress={() => {
+                                    setFilters(filtersDisplayed.filter((f) => f !== filter));
+                                }}
+                            >
+                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                            </Pressable>
+                        </HStack>
+                    ))}
+                </ScrollView>
+            </View>
+        );
     }
-
-
 
     return (
         <View style={styles.view}>
@@ -94,6 +94,5 @@ const styles = StyleSheet.create({
     badgeText: {
         paddingRight: 10,
         color: "#0077E6",
-    }
-
+    },
 });

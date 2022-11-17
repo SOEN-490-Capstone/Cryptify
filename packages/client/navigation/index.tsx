@@ -29,7 +29,6 @@ import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
 import { farPlus } from "../components/icons/regular/farPlus";
-import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
 import HomeHeader from "../components/HomeHeader";
@@ -157,7 +156,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             <HomeStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
-                options={({ route, navigation }) => ({
+                options={{
                     title: "Transactions",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -166,7 +165,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                })}
+                }}
             />
             <HomeStack.Screen
                 name="FilterScreen"
@@ -360,7 +359,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
-                options={({ navigation }) => ({
+                options={{
                     title: "Transactions",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -369,7 +368,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                })}
+                }}
             />
             <SettingsStack.Screen
                 name="FilterScreen"

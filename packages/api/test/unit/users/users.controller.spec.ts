@@ -18,6 +18,7 @@ describe("UsersController", () => {
         password: "",
         createdAt: new Date(),
         wallets: [],
+        tags: [],
     };
 
     beforeEach(async () => {

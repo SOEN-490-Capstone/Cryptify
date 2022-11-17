@@ -19,20 +19,24 @@ export default function TransactionsListScreen(
 ) {
     const [filters, setFilters] = React.useState<string[]>([]);
 
-    props.navigation.setOptions({
-        headerRight: () => (
-            <Pressable
-                onPress={() => {
-                    props.navigation.navigate("FilterScreen", {
-                        setFilters,
-                        walletAddress: props.route.params.walletAddress,
-                    });
-                }}
-            >
-                <FontAwesomeIcon icon={farBarsFilter} size={20} />
-            </Pressable>
-        ),
-    });
+    React.useEffect(() => {
+        (() => {
+            props.navigation.setOptions({
+                headerRight: () => (
+                    <Pressable
+                        onPress={() => {
+                            props.navigation.navigate("FilterScreen", {
+                                setFilters,
+                                walletAddress: props.route.params.walletAddress,
+                            });
+                        }}
+                    >
+                        <FontAwesomeIcon icon={farBarsFilter} size={20} />
+                    </Pressable>
+                ),
+            });
+        })();
+    }, []);
 
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
 

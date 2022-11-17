@@ -29,8 +29,6 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
 
     const { token, user } = React.useContext(AuthContext);
 
-    const [filters, setFilters] = React.useState([""]);
-
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const currencyIcon = currencyTypeToIcon[currencyType];
 
@@ -120,8 +118,6 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                                 transactions: transactions,
                                 walletAddress: address,
                                 displaySeparation: true,
-                                filters: filters,
-                                setFilters: setFilters,
                             })
                         }
                         style={styles.rightArrowIcon}

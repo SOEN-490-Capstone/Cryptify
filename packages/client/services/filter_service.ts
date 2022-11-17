@@ -36,9 +36,7 @@ export function filterTransction(
         // filter for transactions that happened the passed 90 days
         if (filtersByDate[1] === filter) {
             transactions = transactions.filter(
-                (transaction) =>
-                    new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDay() - 90) <=
-                    transaction.createdAt,
+                (transaction) => new Date(dateToday.getDate() - 90) <= new Date(transaction.createdAt),
             );
         }
 
@@ -61,7 +59,8 @@ export function filterTransction(
             const [fromDate, toDate] = filter.split("-");
             transactions = transactions.filter(
                 (transaction) =>
-                    new Date(fromDate) <= transaction.createdAt && new Date(toDate) >= transaction.createdAt,
+                    new Date(fromDate) <= new Date(transaction.createdAt) &&
+                    new Date(toDate) >= new Date(transaction.createdAt),
             );
         }
     });

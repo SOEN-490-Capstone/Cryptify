@@ -75,7 +75,6 @@ export default function TransactionsListScreen(
                 walletAddress={props.route.params.walletAddress}
                 displaySeparation={true}
                 navigation={props.navigation}
-                filters={filters}
             />
         </View>
     );

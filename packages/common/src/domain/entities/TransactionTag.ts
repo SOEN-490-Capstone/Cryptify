@@ -16,5 +16,5 @@ export class TransactionTag {
 
     @ManyToMany(() => Transaction)
     @JoinTable()
-    Transactions: Transaction[];
+    transactions: Transaction[];
 }

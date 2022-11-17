@@ -25,6 +25,6 @@ export class User {
     @OneToMany(() => Wallet, (wallet) => wallet.user)
     wallets: Wallet[];
 
-    @OneToMany(() => TransactionTag, (transactionTag) => transactionTag.user)
+    @OneToMany(() => TransactionTag, (tag) => tag.user)
     tags: TransactionTag[];
 }

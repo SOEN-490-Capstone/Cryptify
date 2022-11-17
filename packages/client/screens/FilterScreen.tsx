@@ -8,8 +8,10 @@ import DateBox from "../components/DateBox";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"FilterScreen">, SettingsStackScreenProps<"FilterScreen">>;
 
-export default function FilterScreen({ navigation }: Props) {
+export default function FilterScreen({route , navigation }: Props) {
     const filtersByTransaction = ["All transactions", "Ethereum in", "Ethereum out"];
+
+    route.params.setFilters(["test"]);
 
     const currentYear = new Date().getFullYear();
     const previousYear = currentYear - 1;

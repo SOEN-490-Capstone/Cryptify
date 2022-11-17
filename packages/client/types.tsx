@@ -54,6 +54,8 @@ type TransactionsListScreenProps = {
     transactions: Transaction[];
     walletAddress: string;
     displaySeparation: boolean;
+    filters: string[];
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 // TODO: find a way to dynamically get the first element of stack instead of carrying a boolean
@@ -67,6 +69,10 @@ type WalletSettingsScreenProps = {
     currencyType: CurrencyType;
 };
 
+type FilterScreenProps = {
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -77,7 +83,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
-    FilterScreen: undefined;
+    FilterScreen: FilterScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -97,7 +103,7 @@ export type SettingsStackParamList = {
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
     TagsSettingsScreen: undefined;
-    FilterScreen: undefined;
+    FilterScreen: FilterScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

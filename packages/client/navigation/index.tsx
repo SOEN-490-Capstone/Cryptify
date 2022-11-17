@@ -157,7 +157,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             <HomeStack.Screen
                 name="TransactionsListScreen"
                 component={TransactionsListScreen}
-                options={({ navigation }) => ({
+                options={({ route, navigation }) => ({
                     title: "Transactions",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -169,7 +169,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
-                                navigation.navigate("FilterScreen");
+                                navigation.navigate("FilterScreen", {setFilters: route.params.setFilters});
                             }}
                         >
                             <FontAwesomeIcon icon={farBarsFilter} size={20} />

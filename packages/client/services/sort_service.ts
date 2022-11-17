@@ -1,11 +1,11 @@
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
  
-function sort_date_newest(transactions: Transaction[]): Transaction[] {
-   return transactions.sort((a,b) => Number(b.createdAt) - Number(a.createdAt));
+function sort_date_newest(transactions: Transaction[]){
+   return transactions.sort((a,b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
 }
  
 function sort_date_oldest(transactions: Transaction[]){
-    return transactions.sort((a,b) => Number(a.createdAt) - Number(b.createdAt));
+    return transactions.sort((a,b) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf());
    
 }
  

@@ -166,15 +166,6 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() => {
-                                navigation.navigate("FilterScreen", {setFilters: route.params.setFilters});
-                            }}
-                        >
-                            <FontAwesomeIcon icon={farBarsFilter} size={20} />
-                        </Pressable>
-                    ),
                 })}
             />
             <HomeStack.Screen
@@ -378,15 +369,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() => {
-                                navigation.navigate("FilterScreen");
-                            }}
-                        >
-                            <FontAwesomeIcon icon={farBarsFilter} size={20} />
-                        </Pressable>
-                    ),
                 })}
             />
             <SettingsStack.Screen

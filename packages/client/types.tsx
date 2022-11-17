@@ -67,6 +67,10 @@ type WalletSettingsScreenProps = {
     currencyType: CurrencyType;
 };
 
+type TagsSettingsScreenProps = {
+
+}
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -95,6 +99,7 @@ export type SettingsStackParamList = {
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
+    TagsSettingsScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

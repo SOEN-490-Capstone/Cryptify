@@ -1,8 +1,9 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 export function getFiltersByTransactionStrings(currencyType: CurrencyType): string[] {
-    return ["All transactions", `${currencyType} in`, `${currencyType} out`];
+    return ["All transactions", `${titleCase(currencyType)} in`, `${titleCase(currencyType)} out`];
 }
 
 export function getFiltersByDateStrings(): string[] {

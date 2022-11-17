@@ -55,7 +55,11 @@ export function filterTransction(
         }
 
         // filter for transactions that are between two given dates
-        if (filter.split("-").length == 2) {
+        if (
+            filter.split("-").length == 2 &&
+            new Date(filter.split("-")[0]).getDate() &&
+            new Date(filter.split("-")[1]).getDate()
+        ) {
             const [fromDate, toDate] = filter.split("-");
             transactions = transactions.filter(
                 (transaction) =>

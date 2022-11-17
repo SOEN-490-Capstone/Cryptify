@@ -89,7 +89,9 @@ export default function FilterScreen({ route, navigation }: Props) {
 
                         filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
                     } else {
-                        filters.push(filterByDate);
+                        if(filterByDate !== "Custom Dates"){
+                            filters.push(filterByDate);
+                        }
                     }
                     route.params.setFilters(filters);
                     navigation.goBack();

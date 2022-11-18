@@ -10,7 +10,7 @@ export class TagsService {
         private tagRepository: Repository<TransactionTag>,
     ) {}
 
-    async findAllTag(userId: number): Promise<TransactionTag[]> {
+    async findAll(userId: number): Promise<TransactionTag[]> {
         return this.tagRepository.findBy({ userId });
     }
 }

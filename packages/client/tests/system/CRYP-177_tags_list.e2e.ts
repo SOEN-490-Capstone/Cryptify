@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pause } from "./utils/test_utils";
 
-describe("CRYP-95 Settings page", () => {
+describe("CRYP-177 Tags list screen", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-95 Settings page", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to navigate to the settings page and view all the buttons", async () => {
+    it("Should be able to navigate to the tags settings page and view all the tags", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();

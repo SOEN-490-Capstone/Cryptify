@@ -22,10 +22,9 @@ export default function TagsSettingsScreen() {
         })();
     });
 
-    return tags.length == 0 ? (
+    return tags.length === 0 ? (
         <View style={styles.view}>
             <Center alignItems="center" marginY="auto">
-                <Box marginTop="-10px"></Box>
                 <FontAwesomeIcon icon={falTags} style={styles.tagIcon} size={56} />
                 <Text style={styles.noTagsText}>You do not have any tags.</Text>
             </Center>

@@ -1,18 +1,26 @@
 import React from "react";
 import { Actionsheet, useDisclose, Radio, Text, HStack, Pressable } from "native-base";
 import { StyleSheet } from "react-native";
-import { faSort } from "../components/icons/regular/faSort";
+import { faSort } from "../components/icons/regular/farSort";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 
- 
-function SortSelect() {
+// interface Props {
+//     setSortValue: [string, React.Dispatch<React.SetStateAction<string>>]; 
+//   }
+
+
+type Props  = {
+    sortTransactionListValue : string;
+    setTransactionListSortValue: React.Dispatch<React.SetStateAction<string>>
+}
+
+function SortTransactionListScreen({sortTransactionListValue, setTransactionListSortValue} : Props) {
+
     const { isOpen, onOpen, onClose } = useDisclose();
- 
-    const [value, setSortValue] = React.useState("sortDateNewest");
- 
-    const onPressRadio = () => {
-        setSortValue("sortDateNewest");
+
+    const onPressReset = () => {
+        setTransactionListSortValue("sortDateNewest");
     };
  
     return (
@@ -30,9 +38,9 @@ function SortSelect() {
                             <Text style={styles.headerStyle}>Sort</Text>
  
                             <Text
-                                onPress={onPressRadio}
+                                onPress={onPressReset}
                                 style={
-                                    value == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
+                                    sortTransactionListValue == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
                                 }
                             >
                                 Reset
@@ -42,9 +50,9 @@ function SortSelect() {
                         <Radio.Group
                             name="transactionSort"
                             accessibilityLabel="transSort"
-                            value={value}
+                            value={sortTransactionListValue}
                             onChange={(nextValue: string) => {
-                                setSortValue(nextValue);
+                              setTransactionListSortValue(nextValue);
                             }}
                         >
                             <Actionsheet.Item>
@@ -67,7 +75,7 @@ function SortSelect() {
     );
 }
  
-export default SortSelect;
+export default SortTransactionListScreen;
  
 const styles = StyleSheet.create({
     headerStack: {

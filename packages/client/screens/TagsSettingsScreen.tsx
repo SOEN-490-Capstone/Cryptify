@@ -35,7 +35,13 @@ export default function TagsSettingsScreen() {
             <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
                     // TODO: Create a custom badge component.
-                    <Badge rounded="md" color="gray.100" style={styles.badge} key={i} _text={{ fontSize: "subheadline", fontWeight:"semibold"}}>
+                    <Badge
+                        rounded="md"
+                        color="gray.100"
+                        style={styles.badge}
+                        key={i}
+                        _text={{ fontSize: "subheadline", fontWeight: "semibold" }}
+                    >
                         {tag.tagName}
                     </Badge>
                 ))}

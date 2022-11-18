@@ -19,7 +19,7 @@ export default function TransactionsListScreen(
     props: CompositeScreenProps<
         HomeStackScreenProps<"TransactionsListScreen">,
         SettingsStackScreenProps<"TransactionsListScreen">
-    >,
+    >, 
 ) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");

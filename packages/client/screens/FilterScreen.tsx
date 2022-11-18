@@ -59,7 +59,7 @@ export default function FilterScreen({ route, navigation }: Props) {
             >
                 {options.map((option) => (
                     <Box style={styles.RadioItem} key={option}>
-                        <Radio key={option} value={option}>
+                        <Radio key={option} value={option} color={"darkBlue.500"}>
                             {option}
                         </Radio>
                     </Box>
@@ -90,12 +90,12 @@ export default function FilterScreen({ route, navigation }: Props) {
         <View style={styles.view}>
             <Text fontWeight={"semibold"}>Filter by transaction</Text>
             <RadioGroup options={filtersByTransaction} value={filterByTransaction} setValue={setFilterByTransaction} />
-            <Text marginTop="20px" fontWeight={"semibold"}>
+            <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
                 Filter by date
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-            <Box marginTop="26px" />
-            {filterByDate == filtersByDate.at(filtersByDate.length - 1) ? <CustomDates /> : null}
+            <Box marginTop="20px" />
+            {filterByDate === filtersByDate.at(filtersByDate.length - 1) && <CustomDates />}
             <Button
                 style={
                     filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     RadioItem: {
-        marginTop: 10,
+        marginTop: 20,
     },
     applyButton: {
         marginTop: "auto",

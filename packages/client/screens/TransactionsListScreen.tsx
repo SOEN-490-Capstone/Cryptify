@@ -60,6 +60,7 @@ export default function TransactionsListScreen(
                             <Text style={styles.badgeText}>{filter}</Text>
                             <Pressable
                                 onPress={() => {
+                                    // This removes the current filter when the XMark is pressed.
                                     setFilters(filtersDisplayed.filter((f) => f !== filter));
                                 }}
                             >

@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Text, Box, HStack } from "native-base";
-import React, { useState } from "react";
+import React from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falCalendar } from "./icons/light/falCalendar";
 
-type DateBoxProps = {
+type Props = {
     label: string;
     date: Date | null;
     setDate: React.Dispatch<React.SetStateAction<Date | null>>;
@@ -14,8 +14,8 @@ type DateBoxProps = {
     style?: any;
 };
 
-export default function DateBox({ label, style, date, setDate, maximumDate, minimumDate }: DateBoxProps) {
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+export default function DateBox({ label, style, date, setDate, maximumDate, minimumDate }: Props) {
+    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -34,7 +34,7 @@ export default function DateBox({ label, style, date, setDate, maximumDate, mini
         <Box style={{ ...styles.box, ...style }}>
             <Pressable onPress={showDatePicker}>
                 <HStack justifyContent="space-between">
-                    <Text color={date ? "text.600" : "text.300"}>
+                    <Text color={date ? "text.700" : "text.300"}>
                         {date
                             ? date.toLocaleDateString([], { year: "2-digit", month: "2-digit", day: "2-digit" })
                             : label}

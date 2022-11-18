@@ -5,6 +5,7 @@ import { CanAccessResourceGuard } from "@cryptify/api/src/guards/can_access_reso
 import { getTagsSchema } from "@cryptify/common/src/validations/get_tags_schema";
 import { GetTagsRequest } from "@cryptify/common/src/requests/get_tag_request";
 import { TagsService } from "../services/tags.service";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 
 @Controller()
 export class TagsController {
@@ -12,9 +13,8 @@ export class TagsController {
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("/users/:id/tags")
-    async get(@Param() params: GetTagsRequest) {
-        console.log("here")
+    async get(@Param() params: GetTagsRequest): Promise<TransactionTag[]> {
         const postTagReq = await useValidate(getTagsSchema, params);
-        return this.tagsService.findTagsById(postTagReq.id);
+        return this.tagsService.findAllTag(postTagReq.id);
     }
 }

@@ -3,7 +3,7 @@ import { View } from "../components/Themed";
 import { Badge, Box, Center, HStack, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { falTags } from "../components/icons/light/falCircleArrowDownLeft copy";
+import { falTags } from "../components/icons/light/falTags";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { TagsGateway } from "../gateways/tags_gateway";
@@ -32,10 +32,11 @@ export default function TagsSettingsScreen() {
     ) : (
         <View style={styles.view}>
             <Box marginTop="10px"></Box>
-            <HStack flexWrap="wrap">
+            <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
-                    <Badge rounded="md" color="gray.100" style={styles.badge} key={i}>
-                        <Text style={styles.text}>{tag.tagName}</Text>
+                    // TODO: Create a custom badge component.
+                    <Badge rounded="md" color="gray.100" style={styles.badge} key={i} _text={{ fontSize: "subheadline", fontWeight:"semibold"}}>
+                        {tag.tagName}
                     </Badge>
                 ))}
             </HStack>
@@ -46,18 +47,12 @@ export default function TagsSettingsScreen() {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingHorizontal: 9.5,
-        paddingTop: 32.5,
+        paddingHorizontal: 15,
+        paddingTop: 30,
+        paddingBottom: 15,
     },
     badge: {
-        marginHorizontal: 6.5,
         marginBottom: 12,
-    },
-    text: {
-        marginHorizontal: 7.5,
-        marginVertical: 4,
-        fontSize: 15,
-        fontWeight: "600",
     },
     tagIcon: {
         color: "#404040",

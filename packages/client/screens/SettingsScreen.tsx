@@ -7,7 +7,7 @@ import { farChevronRight } from "../components/icons/regular/farChevronRight";
 import { SettingsStackScreenProps } from "../types";
 import { falWallet } from "../components/icons/light/falWallet";
 import SignOutButton from "../components/SignOutButton";
-import { falTags } from "../components/icons/light/falCircleArrowDownLeft copy";
+import { falTags } from "../components/icons/light/falTags";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (

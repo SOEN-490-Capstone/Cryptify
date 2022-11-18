@@ -16,6 +16,7 @@ import { getTransactionByWallet } from "../services/transaction_service";
 import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { typeToISOCode, currencyTypeToIcon } from "../services/currency_service";
+import SortService from "../services/sort_service";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -35,11 +36,10 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     React.useEffect(() => {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            //TODO sort the transactions by date
-            setTransactions(getTransactionByWallet(transactions, address));
+            // Transactions sorted based on newest transaction, remove "SortService.sort_date_newest" if unwanted.
+            setTransactions(SortService.sort_date_newest(getTransactionByWallet(transactions, address)));
         })();
     }, []);
-
     return (
         <View style={styles.view}>
             <Box style={styles.walletDetailsWrapper}>
@@ -138,7 +138,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     displaySeparation={false}
                     navigation={navigation}
                 />
-            )}
+            )}    
         </View>
     );
 }

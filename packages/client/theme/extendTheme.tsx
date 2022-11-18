@@ -4,7 +4,7 @@ import { text } from "./components/text";
 import { button } from "./components/button";
 import { input } from "./components/input";
 import { formControlErrorMessage } from "./components/form-control";
-import { Actionsheet, ActionsheetContent, ActionsheetItem } from "./components/actionSheet";
+import { Actionsheet, ActionsheetContent, ActionsheetItem } from "./components/actionsheet";
 import radio from "./components/radio";
 
 export default function () {

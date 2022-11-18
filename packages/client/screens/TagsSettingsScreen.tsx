@@ -34,7 +34,7 @@ export default function TagsSettingsScreen() {
             <Box marginTop="10px"></Box>
             <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
-                    // TODO: Create a custom badge component.
+                    // TODO: Create a custom badge component. More information can be found https://github.com/SOEN-490-Capstone/Cryptify/pull/113
                     <Badge
                         rounded="md"
                         color="gray.100"

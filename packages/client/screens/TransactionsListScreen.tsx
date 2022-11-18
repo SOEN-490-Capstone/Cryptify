@@ -4,12 +4,13 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { Pressable, Text, HStack, ScrollView } from "native-base";
+import { Pressable, Text, HStack, ScrollView, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransction } from "../services/filter_service";
+import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<
@@ -39,12 +40,16 @@ export default function TransactionsListScreen(
     }, []);
 
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
-
-    const transactions = props.route.params.transactions;
     const walletAddress = props.route.params.walletAddress;
     const type = getCurrencyType(walletAddress);
 
-    const DisplayedTransaction = filterTransction(type, walletAddress, transactions, filtersDisplayed);
+    React.useEffect(() => {
+        (() => {
+            props.route.params.setTransactions(
+                filterTransction(type, walletAddress, [...props.route.params.transactions], filtersDisplayed),
+            );
+        })();
+    }, [filtersDisplayed]);
 
     function FiltersBadges() {
         return (
@@ -70,12 +75,33 @@ export default function TransactionsListScreen(
     return (
         <View style={styles.view}>
             {filtersDisplayed.length > 0 ? <FiltersBadges /> : null}
-            <TransactionsList
-                transactions={DisplayedTransaction}
-                walletAddress={props.route.params.walletAddress}
-                displaySeparation={true}
-                navigation={props.navigation}
-            />
+            {props.route.params.transactions.length == 0 ? (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
+                    <Text style={styles.magnifyingGlassText}>
+                        We could not find any transactions matching your filters.
+                    </Text>
+                    <Pressable
+                        onPress={() => {
+                            props.navigation.navigate("FilterScreen", {
+                                setFilters,
+                                walletAddress: props.route.params.walletAddress,
+                            });
+                        }}
+                    >
+                        <Text style={styles.magnifyingGlassText} color={"darkBlue.500"} fontWeight={"semibold"}>
+                            Choose another filter
+                        </Text>
+                    </Pressable>
+                </VStack>
+            ) : (
+                <TransactionsList
+                    transactions={props.route.params.transactions}
+                    walletAddress={props.route.params.walletAddress}
+                    displaySeparation={true}
+                    navigation={props.navigation}
+                />
+            )}
         </View>
     );
 }
@@ -97,5 +123,13 @@ const styles = StyleSheet.create({
     badgeText: {
         paddingRight: 10,
         color: "#0077E6",
+    },
+    magnifyingGlass: {
+        alignItems: "center",
+    },
+    magnifyingGlassText: {
+        textAlign: "center",
+        maxWidth: 265,
+        marginTop: 15,
     },
 });

@@ -118,6 +118,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                                 transactions: transactions,
                                 walletAddress: address,
                                 displaySeparation: true,
+                                setTransactions: setTransactions,
                             })
                         }
                         style={styles.rightArrowIcon}

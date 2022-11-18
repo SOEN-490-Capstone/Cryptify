@@ -10,7 +10,6 @@ type Props = {
     walletAddress: string;
     displaySeparation: boolean;
     navigation: CompositeNavigationProp<any, any>;
-    filters?: string[];
 };
 
 export function TransactionsList({ transactions, walletAddress, displaySeparation, navigation }: Props) {

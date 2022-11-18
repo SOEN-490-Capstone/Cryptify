@@ -1,6 +1,6 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack } from "native-base";
+import { Text, Radio, Box, Button, HStack, Pressable } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -24,6 +24,29 @@ export default function FilterScreen({ route, navigation }: Props) {
         setValue: React.Dispatch<React.SetStateAction<string>>;
         options: string[];
     };
+
+    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+
+    function ResetButton() {
+        return (
+            <Pressable
+                onPress={() => {
+                    setFilterByTransaction(filtersByTransaction[0]);
+                    setFilterByDate(filtersByDate[0]);
+                }}
+            >
+                <Text>Reset</Text>
+            </Pressable>
+        );
+    }
+
+    React.useEffect(() => {
+        (() => {
+            navigation.setOptions({
+                headerRight: () => !areFiltersDefault && <ResetButton />,
+            });
+        })();
+    }, [filterByTransaction, filterByDate]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -74,7 +97,12 @@ export default function FilterScreen({ route, navigation }: Props) {
             <Box marginTop="26px" />
             {filterByDate == filtersByDate.at(filtersByDate.length - 1) ? <CustomDates /> : null}
             <Button
-                style={styles.applyButton}
+                style={
+                    filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]
+                        ? styles.applyButtonDisabled
+                        : styles.applyButton
+                }
+                disabled={filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]}
                 onPress={() => {
                     const filters = [filterByTransaction];
 
@@ -116,5 +144,10 @@ const styles = StyleSheet.create({
     applyButton: {
         marginTop: "auto",
         marginBottom: 36,
+    },
+    applyButtonDisabled: {
+        marginTop: "auto",
+        marginBottom: 36,
+        opacity: 0.6,
     },
 });

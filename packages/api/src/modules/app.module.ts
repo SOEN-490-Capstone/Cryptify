@@ -7,6 +7,7 @@ import { UsersModule } from "./users.module";
 import { WalletsModule } from "./wallets.module";
 import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_options";
 import { TransactionsModule } from "./transactions.module";
+import { TagsModule } from "./tags.module";
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { TransactionsModule } from "./transactions.module";
         UsersModule,
         WalletsModule,
         TransactionsModule,
+        TagsModule,
     ],
 })
 export class AppModule {}

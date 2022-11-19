@@ -4,11 +4,9 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { Pressable, Text, HStack, ScrollView } from "native-base";
 import SortActionSheet from "./SortTransactionListScreen";
 import SortService from "../services/sort_service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-
 import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
@@ -16,11 +14,7 @@ import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { Pressable, Text, HStack, ScrollView } from "native-base";
-import SortActionSheet from "./SortTransactionListScreen";
-import SortService from "../services/sort_service";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+
 
 
 export default function TransactionsListScreen(
@@ -31,51 +25,8 @@ export default function TransactionsListScreen(
 ) {
 
     const [sortedTransactions, setSort] = React.useState([...props.route.params.transactions])
-
-
     const [sortTransactionListValue, setTransactionListSortValue] = React.useState("sortDateNewest");
-
-
     const [showDateHeaders, setDateHeaders] = React.useState(true)
-
-    React.useEffect(() => {
-        (async () => {
-            props.navigation.setOptions({
-                headerRight: () => (
-                    <SortActionSheet setTransactionListSortValue={setTransactionListSortValue} sortTransactionListValue={sortTransactionListValue} />
-          ),
-            });
-        })();
-
-    }, );
-
-    React.useEffect(() => {
-        sortTransactions();
-    },[sortTransactionListValue]);
-
-    const sortTransactions = () => {
-
-        if (sortTransactionListValue === "sortDateNewest"){
-            setSort(SortService.sort_date_newest([...sortedTransactions]));
-                setDateHeaders(true);
-        }
-
-        if (sortTransactionListValue === "sortDateOldest"){
-            setSort(SortService.sort_date_oldest([...sortedTransactions]));
-                setDateHeaders(true);
-        }
-
-        if (sortTransactionListValue === "sortAmountHighest"){
-            setSort(SortService.sort_amount_highest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-
-        if (sortTransactionListValue === "sortAmountLowest"){
-            setSort(SortService.sort_amount_lowest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-    };
-
     const [filters, setFilters] = React.useState<string[]>([]);
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
 
@@ -97,6 +48,45 @@ export default function TransactionsListScreen(
             });
         })();
     }, []);
+
+    React.useEffect(() => {
+        (async () => {
+            props.navigation.setOptions({
+                headerRight: () => (
+                    <SortActionSheet setTransactionListSortValue={setTransactionListSortValue} sortTransactionListValue={sortTransactionListValue} />
+          ),
+            });
+        })();
+
+    }, );
+
+    React.useEffect(() => {
+        sortTransactions();
+    },[sortTransactionListValue]);
+
+    const sortTransactions = () => {
+
+        if (sortTransactionListValue === "sortDateNewest"){
+            setTransactions(SortService.sort_date_newest([...transactions]));
+                setDateHeaders(true);
+        }
+
+        if (sortTransactionListValue === "sortDateOldest"){
+            setTransactions(SortService.sort_date_oldest([...transactions]));
+                setDateHeaders(true);
+        }
+
+        if (sortTransactionListValue === "sortAmountHighest"){
+            setTransactions(SortService.sort_amount_highest([...transactions]));
+                setDateHeaders(false);
+        }
+
+        if (sortTransactionListValue === "sortAmountLowest"){
+            setTransactions(SortService.sort_amount_lowest([...transactions]));
+                setDateHeaders(false);
+        }
+    };
+
 
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
     const walletAddress = props.route.params.walletAddress;
@@ -141,53 +131,6 @@ export default function TransactionsListScreen(
             </View>
         );
     }
-
-
-    const [sortedTransactions, setSort] = React.useState([...props.route.params.transactions])
-
-
-    const [sortTransactionListValue, setTransactionListSortValue] = React.useState("sortDateNewest");
-
-
-    const [showDateHeaders, setDateHeaders] = React.useState(true)
-
-    React.useEffect(() => {
-        (async () => {
-            props.navigation.setOptions({
-                headerRight: () => (
-                    <SortActionSheet setTransactionListSortValue={setTransactionListSortValue} sortTransactionListValue={sortTransactionListValue} />
-          ),
-            });
-        })();
-
-    }, );
-
-    React.useEffect(() => {
-        sortTransactions();
-    },[sortTransactionListValue]);
-
-    const sortTransactions = () => {
-
-        if (sortTransactionListValue === "sortDateNewest"){
-            setSort(SortService.sort_date_newest([...sortedTransactions]));
-                setDateHeaders(true);
-        }
-
-        if (sortTransactionListValue === "sortDateOldest"){
-            setSort(SortService.sort_date_oldest([...sortedTransactions]));
-                setDateHeaders(true);
-        }
-
-        if (sortTransactionListValue === "sortAmountHighest"){
-            setSort(SortService.sort_amount_highest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-
-        if (sortTransactionListValue === "sortAmountLowest"){
-            setSort(SortService.sort_amount_lowest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-    };
 
     return (
         <View style={styles.view}>

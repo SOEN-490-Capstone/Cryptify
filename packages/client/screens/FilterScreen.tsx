@@ -1,6 +1,6 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Pressable } from "native-base";
+import { Text, Radio, Box, Button, HStack, Link } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -29,14 +29,19 @@ export default function FilterScreen({ route, navigation }: Props) {
 
     function ResetButton() {
         return (
-            <Pressable
+            <Link
+                isUnderlined={false}
+                _text={{
+                    color: "darkBlue.500",
+                    fontWeight: "semibold",
+                }}
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
                 }}
             >
-                <Text>Reset</Text>
-            </Pressable>
+                Reset
+            </Link>
         );
     }
 

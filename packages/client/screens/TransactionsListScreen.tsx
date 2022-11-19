@@ -4,7 +4,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { Pressable, Text, HStack, ScrollView, VStack } from "native-base";
+import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
@@ -45,11 +45,14 @@ export default function TransactionsListScreen(
     const walletAddress = props.route.params.walletAddress;
     const type = getCurrencyType(walletAddress);
 
-    React.useEffect(() =>{
-
-        const DisplayedTransaction = filterTransction(type, walletAddress, [...props.route.params.transactions], filtersDisplayed);
+    React.useEffect(() => {
+        const DisplayedTransaction = filterTransction(
+            type,
+            walletAddress,
+            [...props.route.params.transactions],
+            filtersDisplayed,
+        );
         setTransactions(DisplayedTransaction);
-
     }, [filters]);
 
     function FiltersBadges() {
@@ -83,18 +86,23 @@ export default function TransactionsListScreen(
                     <Text style={styles.magnifyingGlassText}>
                         We could not find any transactions matching your filters.
                     </Text>
-                    <Pressable
-                        onPress={() => {
-                            props.navigation.navigate("FilterScreen", {
-                                setFilters,
-                                walletAddress: props.route.params.walletAddress,
-                            });
-                        }}
-                    >
-                        <Text style={styles.magnifyingGlassText} color={"darkBlue.500"} fontWeight={"semibold"}>
+                    <Center marginTop="15">
+                        <Link
+                            _text={{
+                                color: "darkBlue.500",
+                                fontWeight: "semibold",
+                            }}
+                            isUnderlined={false}
+                            onPress={() => {
+                                props.navigation.navigate("FilterScreen", {
+                                    setFilters,
+                                    walletAddress: props.route.params.walletAddress,
+                                });
+                            }}
+                        >
                             Choose another filter
-                        </Text>
-                    </Pressable>
+                        </Link>
+                    </Center>
                 </VStack>
             ) : (
                 <TransactionsList

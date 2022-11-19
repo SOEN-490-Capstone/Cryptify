@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
 import { ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
+import { UpdateTagNameRequest } from "@cryptify/common/src/requests/update_tag_name_request";
 
 @Injectable()
 export class TagsService {
@@ -11,7 +12,6 @@ export class TagsService {
         @InjectRepository(TransactionTag)
         private tagRepository: Repository<TransactionTag>,
     ) {}
-
     async findAll(userId: number): Promise<TransactionTag[]> {
         return this.tagRepository.findBy({ userId });
     }
@@ -23,5 +23,17 @@ export class TagsService {
         const tag = this.tagRepository.create(req);
         await this.tagRepository.insert(tag);
         return this.tagRepository.findOneBy(tag);
+    }
+    
+    async update(updateTagNameRequest: UpdateTagNameRequest): Promise<TransactionTag> {
+        await this.tagRepository.update(
+            { userId: updateTagNameRequest.userId, tagName: updateTagNameRequest.currentName },
+            { tagName: updateTagNameRequest.newName },
+        );
+
+        return this.tagRepository.findOneBy({
+            userId: updateTagNameRequest.userId,
+            tagName: updateTagNameRequest.newName,
+        });
     }
 }

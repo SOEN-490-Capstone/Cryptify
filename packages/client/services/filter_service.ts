@@ -13,7 +13,7 @@ export function getFiltersByDateStrings(): string[] {
     return ["All transactions", "Past 90 days", currentYear.toString(), previousYear.toString(), "Custom Dates"];
 }
 
-export function filterTransction(
+export function filterTransctions(
     currencyType: CurrencyType,
     walletAddress: string,
     transactions: Transaction[],

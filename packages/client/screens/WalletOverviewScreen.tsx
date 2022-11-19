@@ -115,10 +115,9 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         testID="transactionsListButton"
                         onPress={() =>
                             navigation.navigate("TransactionsListScreen", {
-                                transactions: transactions,
+                                transactions: [...transactions],
                                 walletAddress: address,
                                 displaySeparation: true,
-                                setTransactions: setTransactions,
                             })
                         }
                         style={styles.rightArrowIcon}

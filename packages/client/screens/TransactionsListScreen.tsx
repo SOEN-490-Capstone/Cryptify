@@ -87,7 +87,7 @@ export default function TransactionsListScreen(
 
     return (
         <View style={styles.view}>
-            {filtersDisplayed.length > 0 ? <FiltersBadges /> : null}
+            {filtersDisplayed.length > 0 && <FiltersBadges />}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
-import { filterTransction } from "../services/filter_service";
+import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
@@ -46,7 +46,7 @@ export default function TransactionsListScreen(
     const type = getCurrencyType(walletAddress);
 
     React.useEffect(() => {
-        const DisplayedTransaction = filterTransction(
+        const DisplayedTransaction = filterTransctions(
             type,
             walletAddress,
             [...props.route.params.transactions],

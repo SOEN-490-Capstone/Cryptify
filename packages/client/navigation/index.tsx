@@ -370,20 +370,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 }}
             />
-            <SettingsStack.Screen
-                name="FilterScreen"
-                component={FilterScreen}
-                options={{
-                    title: "Filter",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                }}
-            />
             <HomeStack.Screen
                 name="WalletQRCodeScreen"
                 component={WalletQRCodeScreen}

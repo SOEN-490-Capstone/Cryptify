@@ -55,13 +55,21 @@ export default function TransactionsListScreen(
         setTransactions(DisplayedTransaction);
     }, [filters]);
 
+    // To Do Move into components folder for later use.
     function FiltersBadges() {
         return (
-            <View style={{ height: 50 }}>
+            <View style={{ height: 35 }}>
                 <ScrollView horizontal>
                     {filtersDisplayed.map((filter) => (
                         <HStack key={filter} style={styles.badge}>
-                            <Text style={styles.badgeText}>{filter}</Text>
+                            <Text
+                                size={"footnote1"}
+                                fontWeight={"semibold"}
+                                color={"darkBlue.500"}
+                                style={styles.badgeText}
+                            >
+                                {filter}
+                            </Text>
                             <Pressable
                                 onPress={() => {
                                     // This removes the current filter when the XMark is pressed.
@@ -123,16 +131,14 @@ const styles = StyleSheet.create({
     badge: {
         backgroundColor: "#DBF4FF",
         borderRadius: 100,
-        marginRight: 10,
+        marginRight: 15,
         paddingVertical: 8,
-        paddingLeft: 15,
-        paddingRight: 10.5,
+        paddingHorizontal: 15,
         height: 35,
         alignItems: "center",
     },
     badgeText: {
         paddingRight: 10,
-        color: "#0077E6",
     },
     magnifyingGlass: {
         alignItems: "center",

@@ -93,7 +93,9 @@ export default function FilterScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.view}>
-            <Text fontWeight={"semibold"}>Filter by transaction</Text>
+            <Text fontWeight={"semibold"} color={"text.500"}>
+                Filter by transaction
+            </Text>
             <RadioGroup options={filtersByTransaction} value={filterByTransaction} setValue={setFilterByTransaction} />
             <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
                 Filter by date
@@ -148,7 +150,6 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         marginTop: "auto",
-        marginBottom: 36,
     },
     applyButtonDisabled: {
         marginTop: "auto",

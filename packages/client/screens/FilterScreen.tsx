@@ -27,7 +27,7 @@ export default function FilterScreen({ route, navigation }: Props) {
 
     const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
 
-    function ResetButton() {
+    function ResetLink() {
         return (
             <Link
                 isUnderlined={false}
@@ -48,7 +48,7 @@ export default function FilterScreen({ route, navigation }: Props) {
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
-                headerRight: () => !areFiltersDefault && <ResetButton />,
+                headerRight: () => !areFiltersDefault && <ResetLink />,
             });
         })();
     }, [filterByTransaction, filterByDate]);

@@ -67,6 +67,11 @@ type WalletSettingsScreenProps = {
     currencyType: CurrencyType;
 };
 
+type FilterScreenProps = {
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    walletAddress: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -77,6 +82,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
+    FilterScreen: FilterScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -96,6 +102,7 @@ export type SettingsStackParamList = {
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
     TagsSettingsScreen: undefined;
+    FilterScreen: FilterScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

@@ -11,6 +11,7 @@ import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransction } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<
@@ -19,6 +20,7 @@ export default function TransactionsListScreen(
     >,
 ) {
     const [filters, setFilters] = React.useState<string[]>([]);
+    const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
 
     React.useEffect(() => {
         (() => {
@@ -43,13 +45,12 @@ export default function TransactionsListScreen(
     const walletAddress = props.route.params.walletAddress;
     const type = getCurrencyType(walletAddress);
 
-    React.useEffect(() => {
-        (() => {
-            props.route.params.setTransactions(
-                filterTransction(type, walletAddress, [...props.route.params.transactions], filtersDisplayed),
-            );
-        })();
-    }, [filtersDisplayed]);
+    React.useEffect(() =>{
+
+        const DisplayedTransaction = filterTransction(type, walletAddress, [...props.route.params.transactions], filtersDisplayed);
+        setTransactions(DisplayedTransaction);
+
+    }, [filters]);
 
     function FiltersBadges() {
         return (
@@ -76,7 +77,7 @@ export default function TransactionsListScreen(
     return (
         <View style={styles.view}>
             {filtersDisplayed.length > 0 ? <FiltersBadges /> : null}
-            {props.route.params.transactions.length == 0 ? (
+            {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
                     <Text style={styles.magnifyingGlassText}>
@@ -97,7 +98,7 @@ export default function TransactionsListScreen(
                 </VStack>
             ) : (
                 <TransactionsList
-                    transactions={props.route.params.transactions}
+                    transactions={transactions}
                     walletAddress={props.route.params.walletAddress}
                     displaySeparation={true}
                     navigation={props.navigation}

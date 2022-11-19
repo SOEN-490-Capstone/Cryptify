@@ -54,7 +54,6 @@ type TransactionsListScreenProps = {
     transactions: Transaction[];
     walletAddress: string;
     displaySeparation: boolean;
-    setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
 };
 
 // TODO: find a way to dynamically get the first element of stack instead of carrying a boolean

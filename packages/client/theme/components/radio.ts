@@ -1,5 +1,4 @@
-const baseStyle = (props: Record<string, any>) => {
-    
+const baseStyle = () => {
     return {
         borderWidth: 1,
         borderRadius: "full",

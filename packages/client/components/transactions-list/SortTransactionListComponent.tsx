@@ -29,10 +29,14 @@ function SortTransactionListComponent({ sortType, setSortType }: Props) {
                         <HStack style={styles.headerStack}>
                             <Text style={styles.resetStyleInvisible}>Reset</Text>
 
-                            <Text style={styles.headerStyle}>Sort</Text>
+                            <Text fontWeight={"semibold"} style={styles.headerStyle}>
+                                Sort
+                            </Text>
 
                             <Text
                                 onPress={onPressReset}
+                                fontWeight={"semibold"}
+                                color={"darkBlue.500"}
                                 style={
                                     sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
                                 }
@@ -80,20 +84,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 22,
     },
     headerStyle: {
-        fontWeight: "600",
         margin: "auto",
         color: "text.700",
     },
 
     resetStyleInvisible: {
-        fontWeight: "600",
-        color: "darkBlue.500",
         opacity: 0,
         height: 0,
     },
 
-    resetStyleVisible: {
-        fontWeight: "600",
-        color: "#0077E6",
-    },
+    resetStyleVisible: {},
 });

@@ -4,10 +4,10 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import SortActionSheet from "./SortTransactionListScreen";
+import SortActionSheet from "../components/transactions-list/SortTransactionListComponent";
 import SortService from "../services/sort_service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "native-base";
+import { Pressable, Text, HStack, ScrollView, VStack, Center, Link} from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
@@ -23,7 +23,6 @@ export default function TransactionsListScreen(
 ) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
-    const [previousSortType, setPreviousSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
     const walletAddress = props.route.params.walletAddress;
@@ -55,9 +54,9 @@ export default function TransactionsListScreen(
 
     // Updates transaction list everytime a new sorting option is selected
     React.useEffect(() => {
-        SortService.sort_Transactions(sortType, transactions, walletAddress, setTransactions);
+        setTransactions(SortService.sort_Transactions(sortType, transactions, walletAddress));
         setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest" ? true : false);
-        sortBadges();
+        FiltersBadges();
     }, [sortType]);
 
     React.useEffect(() => {
@@ -67,7 +66,9 @@ export default function TransactionsListScreen(
             [...props.route.params.transactions],
             filtersDisplayed,
         );
-        setTransactions(DisplayedTransaction);
+
+        setTransactions(SortService.sort_Transactions(sortType, DisplayedTransaction, walletAddress));
+        
     }, [filters]);
 
     // To Do Move into components folder for later use.
@@ -75,8 +76,29 @@ export default function TransactionsListScreen(
         return (
             <View style={{ height: 35 }}>
                 <ScrollView horizontal>
+
+                    <HStack  style={sortType === "sortDateNewest" ? {display:"none"} : styles.badge}>
+                            <Text
+                                size={"footnote1"}
+                                fontWeight={"semibold"}
+                                color={"darkBlue.500"}
+                                style={styles.badgeText}
+                            >
+                                {SortService.sort_badge_Values(sortType)}
+                            </Text>
+                            
+                            <Pressable
+                                onPress={() => {
+                                    setSortType( "sortDateNewest");
+                                }}
+                            >
+                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                            </Pressable>
+                    </HStack>
+                    
                     {filtersDisplayed.map((filter) => (
                         <HStack key={filter} style={styles.badge}>
+                            
                             <Text
                                 size={"footnote1"}
                                 fontWeight={"semibold"}
@@ -85,54 +107,25 @@ export default function TransactionsListScreen(
                             >
                                 {filter}
                             </Text>
+                            
                             <Pressable
                                 onPress={() => {
                                     // This removes the current filter when the XMark is pressed.
                                     setFilters(filtersDisplayed.filter((f) => f !== filter));
-                                    // resetSort(true);
-                                    setSortType("sortDateNewest");
                                 }}
                             >
                                 <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
                             </Pressable>
-                        </HStack>
+                        </HStack> 
                     ))}
                 </ScrollView>
             </View>
         );
     }
 
-    function sortBadges() {
-        const sortBadgeValues = [
-            "Date: newest first",
-            "Date: oldest first",
-            "Amount: highest first",
-            "Amount: lowest first",
-        ];
-
-        if (sortType !== "sortDateNewest") {
-            // Checks to see if a tag is already being displayed and replaces it
-            if (sortBadgeValues.some((e) => filters.includes(e))) {
-                filters.splice(filters.indexOf(previousSortType), 1);
-                filters.unshift(SortService.sort_badge_Values(sortType));
-                setPreviousSortType(sortType);
-
-                // Creates new tag if no tag is being displayed
-            } else {
-                filters.unshift(SortService.sort_badge_Values(sortType));
-                setPreviousSortType(sortType);
-            }
-            // Removes tags on reset
-        } else {
-            filters.splice(filters.indexOf(previousSortType), 1);
-            setSortType(sortType);
-            setPreviousSortType(sortType);
-        }
-    }
-
     return (
         <View style={styles.view}>
-            {filtersDisplayed.length > 0 && <FiltersBadges />}
+            {filtersDisplayed.length > 0}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
@@ -158,12 +151,15 @@ export default function TransactionsListScreen(
                     </Center>
                 </VStack>
             ) : (
+                <>
+                <FiltersBadges/>
                 <TransactionsList
                     transactions={transactions}
                     walletAddress={walletAddress}
                     displaySeparation={displaySeparation}
                     navigation={props.navigation}
                 />
+                </>
             )}
         </View>
     );

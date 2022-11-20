@@ -24,35 +24,32 @@ function sort_amount_highest(transactions: Transaction[], walletAddress: string)
 
 function sort_amount_lowest(transactions: Transaction[], walletAddress: string) {
     // Functions the same as described above
+
     return transactions
         .filter((transaction) => transaction.walletIn !== walletAddress)
-        .sort((a, b) => Number(a.amount) - Number(b.amount))
+        .sort((a, b) => Number(b.amount) - Number(a.amount))
         .concat(
             transactions
                 .filter((transaction) => transaction.walletIn === walletAddress)
-                .sort((a, b) => Number(b.amount) - Number(a.amount)),
+                .sort((a, b) => Number(a.amount) - Number(b.amount)),
         );
 }
 
 // Applying the sort functions based on which sort option is selected
-function sort_Transactions(
-    sortType: string,
-    transactions: Transaction[],
-    walletAddress: string,
-    setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>,
-) {
+function sort_Transactions(sortType: string, transactions: Transaction[], walletAddress: string): Transaction[] {
     if (sortType === "sortDateNewest") {
-        setTransactions(sort_date_newest([...transactions]));
+        return sort_date_newest([...transactions]);
     }
     if (sortType === "sortDateOldest") {
-        setTransactions(sort_date_oldest([...transactions]));
+        return sort_date_oldest([...transactions]);
     }
     if (sortType === "sortAmountHighest") {
-        setTransactions(sort_amount_highest([...transactions], walletAddress));
+        return sort_amount_highest([...transactions], walletAddress);
     }
     if (sortType === "sortAmountLowest") {
-        setTransactions(sort_amount_lowest([...transactions], walletAddress));
+        return sort_amount_lowest([...transactions], walletAddress);
     }
+    return [];
 }
 
 function sort_badge_Values(sortType: string) {

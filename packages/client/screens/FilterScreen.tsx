@@ -102,7 +102,7 @@ export default function FilterScreen({ route, navigation }: Props) {
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="20px" />
-            {filterByDate === filtersByDate.at(filtersByDate.length - 1) && <CustomDates />}
+            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Button
                 style={
                     filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]

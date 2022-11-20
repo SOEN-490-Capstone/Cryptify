@@ -29,7 +29,7 @@ export class TagsController {
         const createTagReq = await useValidate(createTagSchema, body);
         return this.tagsService.create(createTagReq);
     }
-    
+
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Patch("/users/:id/tags")
     async update(@Body() body: UpdateTagNameRequest): Promise<TransactionTag> {

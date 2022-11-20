@@ -2,9 +2,9 @@ const baseStyle = (props: Record<string, any>) => {
     const { colorScheme: c, theme } = props;
     const { colors } = theme;
     return {
-      borderWidth: 1.25,
+      borderWidth: 1,
       borderRadius: 'full',
-      p: 1.5,
+      p: 1,
      
  
       bg: 'white',
@@ -29,7 +29,7 @@ const baseStyle = (props: Record<string, any>) => {
   };
  
   const defaultProps = {
-    _icon: { size: 3 },
+    size: 'lg',
      _text: {
       color: 'text.700',
       fontSize: 'body',

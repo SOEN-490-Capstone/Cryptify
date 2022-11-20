@@ -11,44 +11,54 @@ import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { Pressable, Text, HStack, ScrollView } from "native-base";
-import SortActionSheet from "./SortTransactionListScreen";
+import SortActionSheet from "../components/transactions-list/SortTransactionListComponent";
 import SortService from "../services/sort_service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<
         HomeStackScreenProps<"TransactionsListScreen">,
         SettingsStackScreenProps<"TransactionsListScreen">
-    >, 
+    >,
 ) {
-    const [filters, setFilters] = React.useState<string[]>([]);
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
+    const [sortType, setSortType] = React.useState("sortDateNewest");
+    const [previousSortType, setPreviousSortType] = React.useState("sortDateNewest");
+    const [filters, setFilters] = React.useState<string[]>([]);
+    const filtersDisplayed = filters.filter((f) => f !== "All transactions");
+    const walletAddress = props.route.params.walletAddress;
+    const type = getCurrencyType(walletAddress);
+    const [displaySeparation, setDisplaySeparation] = React.useState(true);
 
+    // Places the sort and filter icons on the top navigation bar
     React.useEffect(() => {
         (() => {
             props.navigation.setOptions({
                 headerRight: () => (
-                    <Pressable
-                        onPress={() => {
-                            props.navigation.navigate("FilterScreen", {
-                                setFilters,
-                                walletAddress: props.route.params.walletAddress,
-                            });
-                        }}
-                    >
-                        <FontAwesomeIcon icon={farBarsFilter} size={20} />
-                    </Pressable>
+                    <HStack>
+                        <SortActionSheet setSortType={setSortType} sortType={sortType} />
+                        <Pressable
+                            onPress={() => {
+                                props.navigation.navigate("FilterScreen", {
+                                    setFilters,
+                                    walletAddress: walletAddress,
+                                });
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farBarsFilter} size={20} />
+                        </Pressable>
+                    </HStack>
                 ),
             });
         })();
-    }, []);
+    });
 
-    const filtersDisplayed = filters.filter((f) => f !== "All transactions");
-    const walletAddress = props.route.params.walletAddress;
-    const type = getCurrencyType(walletAddress);
+    // Updates transaction list everytime a new sorting option is selected
+    React.useEffect(() => {
+        SortService.sort_Transactions(sortType, transactions, walletAddress, setTransactions);
+        setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest" ? true : false);
+        sortBadges();
+    }, [sortType]);
 
     React.useEffect(() => {
         const DisplayedTransaction = filterTransctions(
@@ -79,6 +89,8 @@ export default function TransactionsListScreen(
                                 onPress={() => {
                                     // This removes the current filter when the XMark is pressed.
                                     setFilters(filtersDisplayed.filter((f) => f !== filter));
+                                    // resetSort(true);
+                                    setSortType("sortDateNewest");
                                 }}
                             >
                                 <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
@@ -90,52 +102,34 @@ export default function TransactionsListScreen(
         );
     }
 
+    function sortBadges() {
 
-    const [sortedTransactions, setSort] = React.useState([...props.route.params.transactions])
+        let sortBadgeValues = [
+            "Date: newest first",
+            "Date: oldest first",
+            "Amount: highest first",
+            "Amount: lowest first",
+        ];
+        
+        if (sortType !== "sortDateNewest") {
+            // Checks to see if a tag is already being displayed and replaces it
+            if (sortBadgeValues.some((e) => filters.includes(e))) {
+                filters.splice(filters.indexOf(previousSortType), 1);
+                filters.unshift(SortService.sort_badge_Values(sortType));
+                setPreviousSortType(sortType);
 
-
-    const [sortTransactionListValue, setTransactionListSortValue] = React.useState("sortDateNewest");
-
-
-    const [showDateHeaders, setDateHeaders] = React.useState(true)
-
-    React.useEffect(() => {
-        (async () => {
-            props.navigation.setOptions({
-                headerRight: () => (
-                    <SortActionSheet setTransactionListSortValue={setTransactionListSortValue} sortTransactionListValue={sortTransactionListValue} />
-          ),
-            });
-        })();
-
-    }, );
-
-    React.useEffect(() => {
-        sortTransactions();
-    },[sortTransactionListValue]);
-
-    const sortTransactions = () => {
-
-        if (sortTransactionListValue === "sortDateNewest"){
-            setSort(SortService.sort_date_newest([...sortedTransactions]));
-                setDateHeaders(true);
+                // Creates new tag if no tag is being displayed
+            } else {
+                filters.unshift(SortService.sort_badge_Values(sortType));
+                setPreviousSortType(sortType);
+            }
+            // Removes tags on reset
+        } else {
+            filters.splice(filters.indexOf(previousSortType), 1);
+            setSortType(sortType);
+            setPreviousSortType(sortType);
         }
-
-        if (sortTransactionListValue === "sortDateOldest"){
-            setSort(SortService.sort_date_oldest([...sortedTransactions]));
-                setDateHeaders(true);
-        }
-
-        if (sortTransactionListValue === "sortAmountHighest"){
-            setSort(SortService.sort_amount_highest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-
-        if (sortTransactionListValue === "sortAmountLowest"){
-            setSort(SortService.sort_amount_lowest([...sortedTransactions]));
-                setDateHeaders(false);
-        }
-    };
+    }
 
     return (
         <View style={styles.view}>
@@ -156,7 +150,7 @@ export default function TransactionsListScreen(
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
                                     setFilters,
-                                    walletAddress: props.route.params.walletAddress,
+                                    walletAddress: walletAddress,
                                 });
                             }}
                         >
@@ -167,8 +161,8 @@ export default function TransactionsListScreen(
             ) : (
                 <TransactionsList
                     transactions={transactions}
-                    walletAddress={props.route.params.walletAddress}
-                    displaySeparation={true}
+                    walletAddress={walletAddress}
+                    displaySeparation={displaySeparation}
                     navigation={props.navigation}
                 />
             )}

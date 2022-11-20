@@ -1,58 +1,52 @@
 import React from "react";
 import { Actionsheet, useDisclose, Radio, Text, HStack, Pressable } from "native-base";
 import { StyleSheet } from "react-native";
-import { faSort } from "../components/icons/regular/farSort";
+import { faSort } from "../icons/regular/farSort";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View } from "../components/Themed";
+import { View } from "../Themed";
 
-// interface Props {
-//     setSortValue: [string, React.Dispatch<React.SetStateAction<string>>]; 
-//   }
+type Props = {
+    sortType: string;
+    setSortType: React.Dispatch<React.SetStateAction<string>>;
+};
 
-
-type Props  = {
-    sortTransactionListValue : string;
-    setTransactionListSortValue: React.Dispatch<React.SetStateAction<string>>
-}
-
-function SortTransactionListScreen({sortTransactionListValue, setTransactionListSortValue} : Props) {
-
+function SortTransactionListComponent({ sortType, setSortType }: Props) {
     const { isOpen, onOpen, onClose } = useDisclose();
 
     const onPressReset = () => {
-        setTransactionListSortValue("sortDateNewest");
+        setSortType("sortDateNewest");
     };
- 
+
     return (
         <>
             <View>
-                <Pressable onPress={onOpen}>
+                <Pressable onPress={onOpen} style={{ paddingRight: 4.5 }}>
                     <FontAwesomeIcon icon={faSort} size={19} />
                 </Pressable>
- 
+
                 <Actionsheet isOpen={isOpen} onClose={onClose}>
                     <Actionsheet.Content>
                         <HStack style={styles.headerStack}>
                             <Text style={styles.resetStyleInvisible}>Reset</Text>
- 
+
                             <Text style={styles.headerStyle}>Sort</Text>
- 
+
                             <Text
                                 onPress={onPressReset}
                                 style={
-                                    sortTransactionListValue == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
+                                    sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
                                 }
                             >
                                 Reset
                             </Text>
                         </HStack>
- 
+
                         <Radio.Group
                             name="transactionSort"
                             accessibilityLabel="transSort"
-                            value={sortTransactionListValue}
+                            value={sortType}
                             onChange={(nextValue: string) => {
-                              setTransactionListSortValue(nextValue);
+                                setSortType(nextValue);
                             }}
                         >
                             <Actionsheet.Item>
@@ -74,9 +68,9 @@ function SortTransactionListScreen({sortTransactionListValue, setTransactionList
         </>
     );
 }
- 
-export default SortTransactionListScreen;
- 
+
+export default SortTransactionListComponent;
+
 const styles = StyleSheet.create({
     headerStack: {
         minWidth: "100%",
@@ -90,14 +84,14 @@ const styles = StyleSheet.create({
         margin: "auto",
         color: "text.700",
     },
- 
+
     resetStyleInvisible: {
         fontWeight: "600",
         color: "darkBlue.500",
         opacity: 0,
         height: 0,
     },
- 
+
     resetStyleVisible: {
         fontWeight: "600",
         color: "#0077E6",

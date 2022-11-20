@@ -7,7 +7,7 @@ import { TransactionsList } from "../components/transactions-list/TransactionsLi
 import SortActionSheet from "../components/transactions-list/SortTransactionListComponent";
 import SortService from "../services/sort_service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { Pressable, Text, HStack, ScrollView, VStack, Center, Link} from "native-base";
+import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
@@ -68,7 +68,6 @@ export default function TransactionsListScreen(
         );
 
         setTransactions(SortService.sort_Transactions(sortType, DisplayedTransaction, walletAddress));
-        
     }, [filters]);
 
     // To Do Move into components folder for later use.
@@ -76,29 +75,27 @@ export default function TransactionsListScreen(
         return (
             <View style={{ height: 35 }}>
                 <ScrollView horizontal>
+                    <HStack style={sortType === "sortDateNewest" ? { display: "none" } : styles.badge}>
+                        <Text
+                            size={"footnote1"}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={styles.badgeText}
+                        >
+                            {SortService.sort_badge_Values(sortType)}
+                        </Text>
 
-                    <HStack  style={sortType === "sortDateNewest" ? {display:"none"} : styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {SortService.sort_badge_Values(sortType)}
-                            </Text>
-                            
-                            <Pressable
-                                onPress={() => {
-                                    setSortType( "sortDateNewest");
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
+                        <Pressable
+                            onPress={() => {
+                                setSortType("sortDateNewest");
+                            }}
+                        >
+                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                        </Pressable>
                     </HStack>
-                    
+
                     {filtersDisplayed.map((filter) => (
                         <HStack key={filter} style={styles.badge}>
-                            
                             <Text
                                 size={"footnote1"}
                                 fontWeight={"semibold"}
@@ -107,7 +104,7 @@ export default function TransactionsListScreen(
                             >
                                 {filter}
                             </Text>
-                            
+
                             <Pressable
                                 onPress={() => {
                                     // This removes the current filter when the XMark is pressed.
@@ -116,7 +113,7 @@ export default function TransactionsListScreen(
                             >
                                 <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
                             </Pressable>
-                        </HStack> 
+                        </HStack>
                     ))}
                 </ScrollView>
             </View>
@@ -152,13 +149,13 @@ export default function TransactionsListScreen(
                 </VStack>
             ) : (
                 <>
-                <FiltersBadges/>
-                <TransactionsList
-                    transactions={transactions}
-                    walletAddress={walletAddress}
-                    displaySeparation={displaySeparation}
-                    navigation={props.navigation}
-                />
+                    <FiltersBadges />
+                    <TransactionsList
+                        transactions={transactions}
+                        walletAddress={walletAddress}
+                        displaySeparation={displaySeparation}
+                        navigation={props.navigation}
+                    />
                 </>
             )}
         </View>

@@ -15,6 +15,7 @@ export class TagsService {
         @InjectRepository(TransactionTag)
         private tagRepository: Repository<TransactionTag>,
     ) {}
+
     async findAll(userId: number): Promise<TransactionTag[]> {
         return this.tagRepository.findBy({ userId });
     }
@@ -29,7 +30,7 @@ export class TagsService {
     }
 
     async update(updateTagNameRequest: UpdateTagNameRequest): Promise<TransactionTag> {
-        // This statement checks if the transaction that we are requesting to update
+        // This statement checks if the transactionTag that we are requesting to update
         // exists in the database
         if (
             !(await this.tagRepository.findOneBy({

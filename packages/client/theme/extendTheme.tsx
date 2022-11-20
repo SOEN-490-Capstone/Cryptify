@@ -18,8 +18,7 @@ export default function () {
             Actionsheet: Actionsheet,
             ActionsheetContent: ActionsheetContent,
             ActionsheetItem: ActionsheetItem,
-            Radio : radio,
+            Radio: radio,
         },
     });
 }
-

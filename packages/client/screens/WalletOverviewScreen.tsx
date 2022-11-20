@@ -138,7 +138,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     displaySeparation={false}
                     navigation={navigation}
                 />
-            )}    
+            )}
         </View>
     );
 }

@@ -14,15 +14,12 @@ import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
-import SortActionSheet from "../components/transactions-list/SortTransactionListComponent";
-import SortService from "../services/sort_service";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 export default function TransactionsListScreen(
     props: CompositeScreenProps<
         HomeStackScreenProps<"TransactionsListScreen">,
         SettingsStackScreenProps<"TransactionsListScreen">
-    >,  
+    >,
 ) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
@@ -106,14 +103,13 @@ export default function TransactionsListScreen(
     }
 
     function sortBadges() {
-
-        let sortBadgeValues = [
+        const sortBadgeValues = [
             "Date: newest first",
             "Date: oldest first",
             "Amount: highest first",
             "Amount: lowest first",
         ];
-        
+
         if (sortType !== "sortDateNewest") {
             // Checks to see if a tag is already being displayed and replaces it
             if (sortBadgeValues.some((e) => filters.includes(e))) {

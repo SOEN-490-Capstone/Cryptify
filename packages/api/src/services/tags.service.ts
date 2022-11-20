@@ -20,8 +20,8 @@ export class TagsService {
         if (await this.tagRepository.findOneBy(req)) {
             throw new BadRequestException(ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
-        const createdTag = this.tagRepository.create(req);
-        await this.tagRepository.insert(createdTag);
-        return await this.tagRepository.findOneBy(createdTag);
+        const tag = this.tagRepository.create(req);
+        await this.tagRepository.insert(tag);
+        return this.tagRepository.findOneBy(tag);
     }
 }

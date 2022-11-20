@@ -4,6 +4,9 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
+import SortActionSheet from "./SortTransactionListScreen";
+import SortService from "../services/sort_service";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
@@ -19,7 +22,7 @@ export default function TransactionsListScreen(
     props: CompositeScreenProps<
         HomeStackScreenProps<"TransactionsListScreen">,
         SettingsStackScreenProps<"TransactionsListScreen">
-    >, 
+    >,  
 ) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");

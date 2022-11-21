@@ -3,7 +3,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
-import { ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
+import {
+    ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,
+    ERROR_TAG_NAME_ALREADY_EXIST,
+    ERROR_TAG_NOT_FOUND,
+} from "@cryptify/common/src/errors/error_messages";
+import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 
 @Injectable()
 export class TagsService {
@@ -23,5 +28,23 @@ export class TagsService {
         const tag = this.tagRepository.create(req);
         await this.tagRepository.insert(tag);
         return this.tagRepository.findOneBy(tag);
+    }
+
+    async update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag> {
+        const userId = updateTagNameRequest.userId;
+        const currentName = updateTagNameRequest.currentName;
+        const newName = updateTagNameRequest.newName;
+
+        if (!(await this.tagRepository.findOneBy({ userId, tagName: currentName }))) {
+            throw new BadRequestException(ERROR_TAG_NOT_FOUND);
+        }
+
+        if (await this.tagRepository.findOneBy({ userId, tagName: newName })) {
+            throw new BadRequestException(ERROR_TAG_NAME_ALREADY_EXIST);
+        }
+
+        await this.tagRepository.update({ userId, tagName: currentName }, { tagName: newName });
+
+        return this.tagRepository.findOneBy({ userId, tagName: newName });
     }
 }

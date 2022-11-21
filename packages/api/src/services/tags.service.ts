@@ -7,7 +7,7 @@ import {
     ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_TAG_NAME_ALREADY_EXIST,
 } from "@cryptify/common/src/errors/error_messages";
-import { UpdateTagNameRequest } from "@cryptify/common/src/requests/update_tag_name_request";
+import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 
 @Injectable()
 export class TagsService {
@@ -29,35 +29,21 @@ export class TagsService {
         return this.tagRepository.findOneBy(tag);
     }
 
-    async update(updateTagNameRequest: UpdateTagNameRequest): Promise<TransactionTag> {
-        // This statement checks if the transactionTag that we are requesting to update
-        // exists in the database
-        if (
-            !(await this.tagRepository.findOneBy({
-                userId: updateTagNameRequest.userId,
-                tagName: updateTagNameRequest.currentName,
-            }))
-        ) {
-            throw new BadRequestException();
+    async update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag> {
+        const userId = updateTagNameRequest.userId;
+        const currentName = updateTagNameRequest.currentName;
+        const newName = updateTagNameRequest.newName;
+
+        if (!(await this.tagRepository.findOneBy({ userId, tagName: currentName }))) {
+            throw new BadRequestException("Transaction tag not found.");
         }
 
-        if (
-            await this.tagRepository.findOneBy({
-                userId: updateTagNameRequest.userId,
-                tagName: updateTagNameRequest.newName,
-            })
-        ) {
+        if (await this.tagRepository.findOneBy({ userId, tagName: newName })) {
             throw new BadRequestException(ERROR_TAG_NAME_ALREADY_EXIST);
         }
 
-        await this.tagRepository.update(
-            { userId: updateTagNameRequest.userId, tagName: updateTagNameRequest.currentName },
-            { tagName: updateTagNameRequest.newName },
-        );
+        await this.tagRepository.update({ userId, tagName: currentName }, { tagName: newName });
 
-        return this.tagRepository.findOneBy({
-            userId: updateTagNameRequest.userId,
-            tagName: updateTagNameRequest.newName,
-        });
+        return this.tagRepository.findOneBy({ userId, tagName: newName });
     }
 }

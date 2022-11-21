@@ -40,6 +40,7 @@ import WalletQRCodeScreen from "../screens/WalletQRCodeScreen";
 import { AddressShareButton } from "../components/AddressShareButton";
 import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 import TagsSettingsScreen from "../screens/TagsSettingsScreen";
+import AddTagsScreen from "../screens/AddTagsScreen";
 import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
 
@@ -213,6 +214,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             "AddWalletScreen",
             "WalletSettingsScreen",
             "TagsSettingsScreen",
+            "AddTagsScreen",
         ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
@@ -273,6 +275,25 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={TagsSettingsScreen}
                 options={{
                     title: "Tags",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddTagsScreen")}>
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddTagsScreen"
+                component={AddTagsScreen}
+                options={{
+                    title: "",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

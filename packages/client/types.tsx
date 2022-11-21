@@ -109,6 +109,7 @@ export type SettingsStackParamList = {
     TagsSettingsScreen: undefined;
     FilterScreen: FilterScreenProps;
     EditTagScreen: EditTagScreenProps;
+    AddTagsScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

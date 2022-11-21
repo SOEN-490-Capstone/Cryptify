@@ -3,6 +3,7 @@ import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_reque
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
 
 export class TagsGateway extends AbstractApiGateway {
     constructor() {
@@ -16,6 +17,15 @@ export class TagsGateway extends AbstractApiGateway {
         };
 
         return this.request<TransactionTag[]>(Method.GET, headers, path, null);
+    }
+
+    async createTags(req: CreateTagRequest, token: string): Promise<TransactionTag> {
+        const path = `users/${req.userId}/tags`;
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+
+        return this.request<TransactionTag>(Method.POST, headers, path, req);
     }
 
     async updateTag(req: UpdateTagRequest, token: string): Promise<TransactionTag> {

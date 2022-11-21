@@ -13,6 +13,7 @@ describe("TransactionController", () => {
         walletOut: "string",
         amount: "string",
         createdAt: new Date(),
+        tags: [],
     };
 
     beforeEach(async () => {

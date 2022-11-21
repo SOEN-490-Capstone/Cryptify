@@ -18,9 +18,10 @@ type Props = {
     wallets: WalletWithBalance[];
     showCurrencyTotals: boolean;
     navigation: CompositeNavigationProp<any, any>;
+    isSettingsTab: boolean;
 };
 
-export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }: Props) {
+export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, isSettingsTab }: Props) {
     const walletsByType = {
         [CurrencyType.BITCOIN]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.BITCOIN),
         [CurrencyType.ETHEREUM]: wallets.filter((wallet) => wallet.currencyType == CurrencyType.ETHEREUM),
@@ -86,13 +87,21 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation }
                         }}
                         testID={`walletsListItem${currency.type}`}
                         onPress={() => {
-                            navigation.navigate("WalletOverviewScreen", {
-                                title: formatTitle(wallet.currencyType, wallet.address),
-                                address: wallet.address.toLowerCase(),
-                                name: wallet.name,
-                                currencyType: currency.type,
-                                balance: getFormattedAmount(wallet.balance, currency.type),
-                            });
+                            isSettingsTab
+                                ? navigation.navigate("WalletSettingsScreen", {
+                                      title: formatTitle(wallet.currencyType, wallet.address),
+                                      address: wallet.address,
+                                      name: wallet.name,
+                                      currencyType: currency.type,
+                                      balance: getFormattedAmount(wallet.balance, currency.type),
+                                  })
+                                : navigation.navigate("WalletOverviewScreen", {
+                                      title: formatTitle(wallet.currencyType, wallet.address),
+                                      address: wallet.address.toLowerCase(),
+                                      name: wallet.name,
+                                      currencyType: currency.type,
+                                      balance: getFormattedAmount(wallet.balance, currency.type),
+                                  });
                         }}
                     >
                         <HStack style={styles.walletItem} alignItems="center" space="5px">

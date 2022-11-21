@@ -7,22 +7,41 @@ import { farChevronRight } from "../components/icons/regular/farChevronRight";
 import { SettingsStackScreenProps } from "../types";
 import { falWallet } from "../components/icons/light/falWallet";
 import SignOutButton from "../components/SignOutButton";
+import { falTags } from "../components/icons/light/falTags";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (
         <View style={styles.view}>
             <VStack space="15px">
                 <Pressable
-                    onPress={() => navigation.navigate("ViewWalletsScreen")}
-                    style={styles.viewWalletsButton}
+                    onPress={() =>
+                        navigation.navigate("ViewWalletsScreen", {
+                            isSettingsTab: true,
+                        })
+                    }
+                    style={styles.button}
                     _pressed={{
                         background: "text.200",
                     }}
                     testID="walletsButton"
                 >
                     <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={26} />
-                        <Text style={styles.viewWalletsButtonText}>Wallets</Text>
+                        <FontAwesomeIcon icon={falWallet} style={styles.icon} size={26} />
+                        <Text style={styles.buttonText}>Wallets</Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <Pressable
+                    onPress={() => navigation.navigate("TagsSettingsScreen")}
+                    style={styles.button}
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                    testID="tagsButton"
+                >
+                    <HStack height="50px" alignItems="center">
+                        <FontAwesomeIcon icon={falTags} style={styles.icon} size={26} />
+                        <Text style={styles.buttonText}>Tags</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
@@ -38,14 +57,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: 10,
     },
-    viewWalletsButton: {
+    button: {
         paddingHorizontal: 10,
         borderRadius: 10,
     },
-    viewWalletsButtonText: {
+    buttonText: {
         marginLeft: 15,
     },
-    walletIcon: {
+    icon: {
         color: "#404040",
     },
     chevronRightIcon: {

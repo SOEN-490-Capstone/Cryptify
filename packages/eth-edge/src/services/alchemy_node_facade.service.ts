@@ -63,6 +63,7 @@ export class AlchemyNodeServiceFacade {
             walletOut: transfer.from,
             amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
             createdAt: new Date(transfer.metadata.blockTimestamp),
+            tags: [],
         }));
     }
 }

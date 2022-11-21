@@ -6,6 +6,7 @@ import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_reque
 import {
     ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_TAG_NAME_ALREADY_EXIST,
+    ERROR_TAG_NOT_FOUND,
 } from "@cryptify/common/src/errors/error_messages";
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 
@@ -35,7 +36,7 @@ export class TagsService {
         const newName = updateTagNameRequest.newName;
 
         if (!(await this.tagRepository.findOneBy({ userId, tagName: currentName }))) {
-            throw new BadRequestException("Transaction tag not found.");
+            throw new BadRequestException(ERROR_TAG_NOT_FOUND);
         }
 
         if (await this.tagRepository.findOneBy({ userId, tagName: newName })) {

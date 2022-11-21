@@ -11,3 +11,4 @@ export const ERROR_NOP = "nop";
 
 export const ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT = "This tag has already been added.";
 export const ERROR_TAG_NAME_ALREADY_EXIST = "This tag already exists.";
+export const ERROR_TAG_NOT_FOUND = "Transaction tag not found.";

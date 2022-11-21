@@ -1,15 +1,15 @@
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
-function sort_date_newest(transactions: Transaction[]) {
+function sortDateNewest(transactions: Transaction[]) {
     return transactions.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
 }
 
-function sort_date_oldest(transactions: Transaction[]) {
+function sortDateOldest(transactions: Transaction[]) {
     return transactions.sort((a, b) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf());
 }
 
-function sort_amount_highest(transactions: Transaction[], walletAddress: string) {
-    // Filters the array of transactions based on if theyre deposits or withdrawls
+function sortAmountHighest(transactions: Transaction[], walletAddress: string) {
+    // Filters the array of transactions based on if they're deposits or withdrawals
     // Performs the sort on the two shallow copy arrays and then concats the two arrays
 
     return transactions
@@ -22,9 +22,7 @@ function sort_amount_highest(transactions: Transaction[], walletAddress: string)
         );
 }
 
-function sort_amount_lowest(transactions: Transaction[], walletAddress: string) {
-    // Functions the same as described above
-
+function sortAmountLowest(transactions: Transaction[], walletAddress: string) {
     return transactions
         .filter((transaction) => transaction.walletIn !== walletAddress)
         .sort((a, b) => Number(b.amount) - Number(a.amount))
@@ -36,49 +34,50 @@ function sort_amount_lowest(transactions: Transaction[], walletAddress: string) 
 }
 
 // Applying the sort functions based on which sort option is selected
-function sort_Transactions(sortType: string, transactions: Transaction[], walletAddress: string): Transaction[] {
-    if (sortType === "sortDateNewest") {
-        return sort_date_newest([...transactions]);
+function sortTransactions(sortType: string, transactions: Transaction[], walletAddress: string): Transaction[] {
+    switch (sortType) {
+        case "sortDateNewest":
+            return sortDateNewest([...transactions]);
+        case "sortDateOldest":
+            return sortDateOldest([...transactions]);
+        case "sortAmountHighest":
+            return sortAmountHighest([...transactions], walletAddress);
+        case "sortAmountLowest":
+            return sortAmountLowest([...transactions], walletAddress);
+        default:
+            return [];
     }
-    if (sortType === "sortDateOldest") {
-        return sort_date_oldest([...transactions]);
-    }
-    if (sortType === "sortAmountHighest") {
-        return sort_amount_highest([...transactions], walletAddress);
-    }
-    if (sortType === "sortAmountLowest") {
-        return sort_amount_lowest([...transactions], walletAddress);
-    }
-    return [];
 }
 
-function sort_badge_Values(sortType: string) {
+function sortBadgeValues(sortType: string) {
     let returnString = sortType;
 
-    if (sortType === "sortDateNewest") {
-        returnString = "Date: newest first";
-        return returnString;
+    switch (sortType) {
+        case "sortDateNewest":
+            returnString = "Date: newest first";
+            return returnString;
+
+        case "sortDateOldest":
+            returnString = "Date: oldest first";
+            return returnString;
+
+        case "sortAmountHighest":
+            returnString = "Amount: highest first";
+            return returnString;
+
+        case "sortAmountLowest":
+            returnString = "Amount: lowest first";
+            return returnString;
+        default:
+            return returnString;
     }
-    if (sortType === "sortDateOldest") {
-        returnString = "Date: oldest first";
-        return returnString;
-    }
-    if (sortType === "sortAmountHighest") {
-        returnString = "Amount: highest first";
-        return returnString;
-    }
-    if (sortType === "sortAmountLowest") {
-        returnString = "Amount: lowest first";
-        return returnString;
-    }
-    return returnString;
 }
 
 export default {
-    sort_date_newest,
-    sort_date_oldest,
-    sort_amount_highest,
-    sort_amount_lowest,
-    sort_Transactions,
-    sort_badge_Values,
+    sortDateNewest,
+    sortDateOldest,
+    sortAmountHighest,
+    sortAmountLowest,
+    sortTransactions,
+    sortBadgeValues,
 };

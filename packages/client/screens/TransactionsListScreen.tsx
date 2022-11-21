@@ -24,10 +24,6 @@ export default function TransactionsListScreen(
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
-    const filtersDisplayed = filters.filter((f) => f !== "All transactions");
-    const walletAddress = props.route.params.walletAddress;
-    const type = getCurrencyType(walletAddress);
-    const [displaySeparation, setDisplaySeparation] = React.useState(true);
 
     // Places the sort and filter icons on the top navigation bar
     React.useEffect(() => {
@@ -40,7 +36,7 @@ export default function TransactionsListScreen(
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
                                     setFilters,
-                                    walletAddress: walletAddress,
+                                    walletAddress: props.route.params.walletAddress,
                                 });
                             }}
                         >
@@ -52,22 +48,27 @@ export default function TransactionsListScreen(
         })();
     });
 
+    const [displaySeparation, setDisplaySeparation] = React.useState(true);
+
     // Updates transaction list everytime a new sorting option is selected
     React.useEffect(() => {
-        setTransactions(SortService.sort_Transactions(sortType, transactions, walletAddress));
-        setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest" ? true : false);
+        setTransactions(SortService.sortTransactions(sortType, transactions, props.route.params.walletAddress));
+        setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest");
         FiltersBadges();
     }, [sortType]);
+
+    const filtersDisplayed = filters.filter((f) => f !== "All transactions");
+    const type = getCurrencyType(props.route.params.walletAddress);
 
     React.useEffect(() => {
         const DisplayedTransaction = filterTransctions(
             type,
-            walletAddress,
+            props.route.params.walletAddress,
             [...props.route.params.transactions],
             filtersDisplayed,
         );
 
-        setTransactions(SortService.sort_Transactions(sortType, DisplayedTransaction, walletAddress));
+        setTransactions(SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.walletAddress));
     }, [filters]);
 
     // To Do Move into components folder for later use.
@@ -82,7 +83,7 @@ export default function TransactionsListScreen(
                             color={"darkBlue.500"}
                             style={styles.badgeText}
                         >
-                            {SortService.sort_badge_Values(sortType)}
+                            {SortService.sortBadgeValues(sortType)}
                         </Text>
 
                         <Pressable
@@ -122,7 +123,6 @@ export default function TransactionsListScreen(
 
     return (
         <View style={styles.view}>
-            {filtersDisplayed.length > 0}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
@@ -139,7 +139,7 @@ export default function TransactionsListScreen(
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
                                     setFilters,
-                                    walletAddress: walletAddress,
+                                    walletAddress: props.route.params.walletAddress,
                                 });
                             }}
                         >
@@ -152,7 +152,7 @@ export default function TransactionsListScreen(
                     <FiltersBadges />
                     <TransactionsList
                         transactions={transactions}
-                        walletAddress={walletAddress}
+                        walletAddress={props.route.params.walletAddress}
                         displaySeparation={displaySeparation}
                         navigation={props.navigation}
                     />

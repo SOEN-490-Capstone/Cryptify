@@ -36,8 +36,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     React.useEffect(() => {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            // Transactions sorted based on newest transaction, remove "SortService.sort_date_newest" if unwanted.
-            setTransactions(SortService.sort_date_newest(getTransactionByWallet(transactions, address)));
+            setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, address)));
         })();
     }, []);
     return (

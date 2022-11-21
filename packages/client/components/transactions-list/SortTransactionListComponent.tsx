@@ -13,15 +13,11 @@ type Props = {
 function SortTransactionListComponent({ sortType, setSortType }: Props) {
     const { isOpen, onOpen, onClose } = useDisclose();
 
-    const onPressReset = () => {
-        setSortType("sortDateNewest");
-    };
-
     return (
         <>
             <View>
                 <Pressable onPress={onOpen} style={{ paddingRight: 4.5 }}>
-                    <FontAwesomeIcon icon={faSort} size={19} />
+                    <FontAwesomeIcon icon={faSort} size={22} />
                 </Pressable>
 
                 <Actionsheet isOpen={isOpen} onClose={onClose}>
@@ -34,7 +30,7 @@ function SortTransactionListComponent({ sortType, setSortType }: Props) {
                             </Text>
 
                             <Text
-                                onPress={onPressReset}
+                                onPress={() => setSortType("sortDateNewest")}
                                 fontWeight={"semibold"}
                                 color={"darkBlue.500"}
                                 style={
@@ -85,7 +81,6 @@ const styles = StyleSheet.create({
     },
     headerStyle: {
         margin: "auto",
-        color: "text.700",
     },
 
     resetStyleInvisible: {

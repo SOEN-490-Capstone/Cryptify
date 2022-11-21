@@ -1,12 +1,10 @@
-const baseStyle = () => {
-    return {
+export const radio = {
+    baseStyle: {
         borderWidth: 1,
         borderRadius: "full",
         p: 1,
-
         bg: "white",
         borderColor: "text.200",
-
         _checked: {
             borderColor: `darkBlue.500`,
             _icon: {
@@ -21,19 +19,13 @@ const baseStyle = () => {
                 _icon: { color: `darkBlue.500` },
             },
         },
-    };
-};
-
-const defaultProps = {
-    size: "lg",
-    _text: {
-        color: "text.700",
-        fontSize: "body",
-        lineHeight: "body",
     },
-};
-
-export default {
-    baseStyle,
-    defaultProps,
+    defaultProps: {
+        size: "lg",
+        _text: {
+            color: "text.700",
+            fontSize: "body",
+            lineHeight: "body",
+        },
+    },
 };

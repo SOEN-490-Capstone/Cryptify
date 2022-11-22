@@ -1,51 +1,66 @@
 import { View } from "../components/Themed";
 import React from "react";
-import { Button, Center, FormControl, HStack, Input, Pressable, Text, VStack } from "native-base";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
-import WalletsList from "../components/wallets-list/WalletsList";
+import { Box, Button, Center, FormControl, Input, Text, useToast, VStack } from "native-base";
+import { SettingsStackScreenProps } from "../types";
 import { StyleSheet } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid";
 import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 
-export default function EditTagScreen({route, navigation }: SettingsStackScreenProps<"EditTagScreen">) {
-
+export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();
     const { token, user } = React.useContext(AuthContext);
 
+    const [currentTagName, SetCurrentTagName] = React.useState<string>(route.params.tag.tagName);
+
+    const toast = useToast();
+
     async function onSubmitEditTag(values: any, formikHelpers: FormikHelpers<any>) {
-        // try {
+        try {
+            const updatedTag = await tagsGateway.updateTag(
+                {
+                    userId: user.id,
+                    currentName: currentTagName,
+                    newName: values.tag,
+                },
+                token,
+            );
 
+            SetCurrentTagName(updatedTag.tagName);
+            
+            toast.show({
+                placement: "top",
+                duration: 2000,
+                render: () => {
+                    return (
+                        <Box style={styles.toastBox}>
+                            <Text size={"footnote1"} fontWeight={"semibold"} color={"white"} style={styles.toastText}>
+                                Tag changes saved successfully
+                            </Text>
+                        </Box>
+                    );
+                },
+            });
 
-        //     console.log(token);
-        //     await tagsGateway.updateTag(
-        //         {
-        //             userId: user.id,
-        //             currentName: route.params.tag.tagName,
-        //             newName: values.tag,
-        //         },
-        //         token,
-        //     );
-        //     formikHelpers.resetForm();
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         formikHelpers.setFieldError("tag", error.message);
-        //     }
-        // }
+        } catch (error) {
+            if (error instanceof Error) {
+                formikHelpers.setFieldError("tag", error.message);
+            }
+        }
     }
 
     const initialValues = {
-        tag: route.params.tag.tagName,
-    }
+        tag: currentTagName,
+    };
 
     return (
         <View style={styles.view}>
             <Center>
-                <Text fontWeight={"semibold"} size={"title3"} style={styles.title}>Edit Tag</Text>
+                <Text fontWeight={"semibold"} size={"title3"} style={styles.title}>
+                    Edit Tag
+                </Text>
             </Center>
-             <Formik initialValues={initialValues} onSubmit={onSubmitEditTag}>
+            <Formik initialValues={initialValues} onSubmit={onSubmitEditTag}>
                 {({ values, handleChange, errors, touched, submitForm }) => (
                     <VStack space={13}>
                         <FormControl isInvalid={!!(errors.tag && touched.tag)}>
@@ -62,7 +77,6 @@ export default function EditTagScreen({route, navigation }: SettingsStackScreenP
                             Save changes
                         </Button>
                     </VStack>
-                    
                 )}
             </Formik>
         </View>
@@ -76,5 +90,13 @@ const styles = StyleSheet.create({
     },
     title: {
         paddingVertical: 35,
-    }
+    },
+    toastBox: {
+        backgroundColor: "#404040",
+        borderRadius: 100,
+    },
+    toastText: {
+        paddingHorizontal: 25.5,
+        paddingVertical: 10.5,
+    },
 });

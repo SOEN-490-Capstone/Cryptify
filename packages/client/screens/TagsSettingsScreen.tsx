@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "../components/Themed";
-import {Pressable, Box, Center, HStack, Link, Text } from "native-base";
+import { Pressable, Box, Center, HStack, Link, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falTags } from "../components/icons/light/falTags";
@@ -54,20 +54,6 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
         })();
     }, [isEdit]);
 
-    type PencilIconProps = {
-        tag: TransactionTag;
-    }
-
-    function PencilIcon({tag}: PencilIconProps) {
-        return (
-            <Pressable onPress={()=> {
-                props.navigation.navigate("EditTagScreen", {tag})
-            }}>
-                <FontAwesomeIcon icon={farPencil} style={styles.pencilIcon} size={13} />
-            </Pressable>
-        );
-    }
-
     return tags.length === 0 ? (
         <View style={styles.view}>
             <Center alignItems="center" marginY="auto">
@@ -81,14 +67,24 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
             <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
                     // TODO: Create a custom badge component. More information can be found https://github.com/SOEN-490-Capstone/Cryptify/pull/113
-                    <Box rounded="md" backgroundColor="gray.100" style={styles.badge} key={i}>
+                    <Pressable
+                        onPress={() => {
+                            if (isEdit) {
+                                props.navigation.navigate("EditTagScreen", { tag });
+                            }
+                        }}
+                        rounded="md"
+                        backgroundColor="gray.100"
+                        style={styles.badge}
+                        key={i}
+                    >
                         <HStack style={styles.badgeContent}>
                             <Text style={styles.tagText} size={"subheadline"} fontWeight={"semibold"}>
                                 {tag.tagName}
                             </Text>
-                            {isEdit && <PencilIcon tag={tag}/>}
+                            {isEdit && <FontAwesomeIcon icon={farPencil} style={styles.pencilIcon} size={13} />}
                         </HStack>
-                    </Box>
+                    </Pressable>
                 ))}
             </HStack>
         </View>

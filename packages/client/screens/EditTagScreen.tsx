@@ -11,11 +11,15 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
     const tagsGateway = new TagsGateway();
     const { token, user } = React.useContext(AuthContext);
 
-    const [currentTagName, SetCurrentTagName] = React.useState<string>(route.params.tag.tagName);
+    const [currentTagName, setCurrentTagName] = React.useState<string>(route.params.tag.tagName);
 
     const toast = useToast();
 
-    async function onSubmitEditTag(values: any, formikHelpers: FormikHelpers<any>) {
+    type TagValue = {
+        tag: string,
+    }
+
+    async function onSubmitEditTag(values: TagValue, formikHelpers: FormikHelpers<TagValue>) {
         try {
             const updatedTag = await tagsGateway.updateTag(
                 {
@@ -26,8 +30,9 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
                 token,
             );
 
-            SetCurrentTagName(updatedTag.tagName);
-
+            setCurrentTagName(updatedTag.tagName);
+            
+            //TO DO refactor this into a separate toast component in the future.
             toast.show({
                 placement: "top",
                 duration: 2000,
@@ -69,6 +74,8 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
                                 placeholder=""
                                 testID="UpdatetagName"
                                 maxLength={20}
+                                keyboardType={"ascii-capable"}
+                                autoFocus={true}
                             />
                             <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
                         </FormControl>

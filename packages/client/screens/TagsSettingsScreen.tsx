@@ -23,16 +23,16 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
             setTags(tags);
         })();
     });
-    const [isEdit, setIsEdit] = React.useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         (() => {
             props.navigation.setOptions({
                 headerRight: () => {
-                    if (isEdit) {
+                    if (isEditMode) {
                         return (
                             <Link
-                                onPress={() => setIsEdit(false)}
+                                onPress={() => setIsEditMode(false)}
                                 isUnderlined={false}
                                 _text={{
                                     color: "darkBlue.500",
@@ -45,14 +45,14 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                     }
 
                     return (
-                        <Link onPress={() => setIsEdit(true)} isUnderlined={false}>
+                        <Link onPress={() => setIsEditMode(true)} isUnderlined={false}>
                             Edit
                         </Link>
                     );
                 },
             });
         })();
-    }, [isEdit]);
+    }, [isEditMode]);
 
     return tags.length === 0 ? (
         <View style={styles.view}>
@@ -66,10 +66,9 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
             <Box marginTop="10px"></Box>
             <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
-                    // TODO: Create a custom badge component. More information can be found https://github.com/SOEN-490-Capstone/Cryptify/pull/113
                     <Pressable
                         onPress={() => {
-                            if (isEdit) {
+                            if (isEditMode) {
                                 props.navigation.navigate("EditTagScreen", { tag });
                             }
                         }}
@@ -82,7 +81,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                             <Text style={styles.tagText} size={"subheadline"} fontWeight={"semibold"}>
                                 {tag.tagName}
                             </Text>
-                            {isEdit && <FontAwesomeIcon icon={farPencil} style={styles.pencilIcon} size={13} />}
+                            {isEditMode && <FontAwesomeIcon icon={farPencil} style={styles.pencilIcon} size={13} />}
                         </HStack>
                     </Pressable>
                 ))}

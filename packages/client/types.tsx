@@ -75,7 +75,7 @@ type FilterScreenProps = {
 
 type EditTagScreenProps = {
     tag: TransactionTag;
-}
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;

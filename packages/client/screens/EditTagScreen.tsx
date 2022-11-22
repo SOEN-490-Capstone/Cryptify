@@ -27,7 +27,7 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
             );
 
             SetCurrentTagName(updatedTag.tagName);
-            
+
             toast.show({
                 placement: "top",
                 duration: 2000,
@@ -41,7 +41,6 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
                     );
                 },
             });
-
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("tag", error.message);

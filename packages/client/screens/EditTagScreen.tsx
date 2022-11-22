@@ -16,8 +16,8 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
     const toast = useToast();
 
     type TagValue = {
-        tag: string,
-    }
+        tag: string;
+    };
 
     async function onSubmitEditTag(values: TagValue, formikHelpers: FormikHelpers<TagValue>) {
         try {
@@ -31,7 +31,7 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
             );
 
             setCurrentTagName(updatedTag.tagName);
-            
+
             //TO DO refactor this into a separate toast component in the future.
             toast.show({
                 placement: "top",

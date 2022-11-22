@@ -1,14 +1,16 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { Badge, Box, Center, HStack, Text } from "native-base";
+import { Pressable, Box, Center, HStack, Link, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falTags } from "../components/icons/light/falTags";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { TagsGateway } from "../gateways/tags_gateway";
+import { farPencil } from "../components/icons/regular/farPencil";
+import { SettingsStackScreenProps } from "../types";
 
-export default function TagsSettingsScreen() {
+export default function TagsSettingsScreen(props: SettingsStackScreenProps<"TagsSettingsScreen">) {
     const tagsGateway = new TagsGateway();
 
     const { token, user } = React.useContext(AuthContext);
@@ -21,6 +23,36 @@ export default function TagsSettingsScreen() {
             setTags(tags);
         })();
     });
+    const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        (() => {
+            props.navigation.setOptions({
+                headerRight: () => {
+                    if (isEditMode) {
+                        return (
+                            <Link
+                                onPress={() => setIsEditMode(false)}
+                                isUnderlined={false}
+                                _text={{
+                                    color: "darkBlue.500",
+                                    fontWeight: "semibold",
+                                }}
+                            >
+                                Done
+                            </Link>
+                        );
+                    }
+
+                    return (
+                        <Link onPress={() => setIsEditMode(true)} isUnderlined={false}>
+                            Edit
+                        </Link>
+                    );
+                },
+            });
+        })();
+    }, [isEditMode]);
 
     return tags.length === 0 ? (
         <View style={styles.view}>
@@ -34,16 +66,24 @@ export default function TagsSettingsScreen() {
             <Box marginTop="10px"></Box>
             <HStack flexWrap="wrap" space="13">
                 {tags.map((tag, i) => (
-                    // TODO: Create a custom badge component. More information can be found https://github.com/SOEN-490-Capstone/Cryptify/pull/113
-                    <Badge
+                    <Pressable
+                        onPress={() => {
+                            if (isEditMode) {
+                                props.navigation.navigate("EditTagScreen", { tag });
+                            }
+                        }}
                         rounded="md"
-                        color="gray.100"
+                        backgroundColor="gray.100"
                         style={styles.badge}
                         key={i}
-                        _text={{ fontSize: "subheadline", fontWeight: "semibold" }}
                     >
-                        {tag.tagName}
-                    </Badge>
+                        <HStack style={styles.badgeContent}>
+                            <Text style={styles.tagText} size={"subheadline"} fontWeight={"semibold"}>
+                                {tag.tagName}
+                            </Text>
+                            {isEditMode && <FontAwesomeIcon icon={farPencil} style={styles.pencilIcon} size={13} />}
+                        </HStack>
+                    </Pressable>
                 ))}
             </HStack>
         </View>
@@ -59,9 +99,23 @@ const styles = StyleSheet.create({
     },
     badge: {
         marginBottom: 12,
+        justifyContent: "center",
+    },
+    badgeContent: {
+        alignItems: "center",
     },
     tagIcon: {
         color: "#404040",
+    },
+    tagText: {
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+    },
+    pencilIcon: {
+        marginVertical: 10,
+        marginRight: 10,
+        // darkBlue.500
+        color: "#0077E6",
     },
     noTagsText: {
         marginTop: 15,

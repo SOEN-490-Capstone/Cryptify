@@ -41,6 +41,7 @@ import { AddressShareButton } from "../components/AddressShareButton";
 import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 import TagsSettingsScreen from "../screens/TagsSettingsScreen";
 import FilterScreen from "../screens/FilterScreen";
+import EditTagScreen from "../screens/EditTagScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -361,6 +362,20 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={TransactionsListScreen}
                 options={{
                     title: "Transactions",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="EditTagScreen"
+                component={EditTagScreen}
+                options={{
+                    title: "",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

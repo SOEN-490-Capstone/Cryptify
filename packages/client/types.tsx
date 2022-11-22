@@ -8,6 +8,7 @@ import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/n
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -72,6 +73,10 @@ type FilterScreenProps = {
     walletAddress: string;
 };
 
+type EditTagScreenProps = {
+    tag: TransactionTag;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -103,6 +108,7 @@ export type SettingsStackParamList = {
     WalletSettingsScreen: WalletSettingsScreenProps;
     TagsSettingsScreen: undefined;
     FilterScreen: FilterScreenProps;
+    EditTagScreen: EditTagScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

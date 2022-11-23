@@ -1,11 +1,12 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { Badge, Button, Center, FormControl, HStack, Input, Text } from "native-base";
+import { Badge, Center, FormControl, HStack, Input, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { Formik, FormikHelpers } from "formik";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function AddTagsScreen() {
     const tagsGateway = new TagsGateway();
@@ -27,7 +28,7 @@ export default function AddTagsScreen() {
                 },
                 token,
             );
-            setNewTags([...newTags, newlyCreatedTag]);
+            setNewTags([...newTags, newlyCreatedTag].sort((a, b) => (a.tagName > b.tagName ? 1 : -1)));
             formikHelpers.resetForm();
         } catch (error) {
             if (error instanceof Error) {
@@ -53,36 +54,41 @@ export default function AddTagsScreen() {
                                 placeholder="For e.g., Trip"
                                 testID="AddedtagName"
                                 maxLength={20}
+                                keyboardType={"ascii-capable"}
+                                onSubmitEditing={submitForm}
+                                enablesReturnKeyAutomatically={true}
+                                autoFocus={true}
+                                ref={(input) => input?.focus()}
                             />
                             <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Button onPress={submitForm} style={styles.addTagButton}>
-                            Add a tag
-                        </Button>
                     </HStack>
                 )}
             </Formik>
-            {newTags.length != 0 && 
+
+            {newTags.length != 0 && (
                 <>
                     <Text fontWeight={"semibold"} size={"title3"} style={styles.tagList}>
                         Tags Added
                     </Text>
-
-                    <HStack flexWrap="wrap" space="13">
-                        {newTags.map((tag, i) => (
-                            <Badge
-                                rounded="md"
-                                color="gray.100"
-                                style={styles.badge}
-                                key={i}
-                                _text={{ fontSize: "subheadline", fontWeight: "semibold" }}
-                            >
-                                {tag.tagName}
-                            </Badge>
-                        ))}
-                    </HStack>
+                    <KeyboardAwareScrollView>
+                        <HStack flexWrap="wrap" space="13">
+                            {newTags.map((tag, i) => (
+                                // TODO create a component and use it for both tags list
+                                <Badge
+                                    rounded="md"
+                                    color="gray.100"
+                                    style={styles.badge}
+                                    key={i}
+                                    _text={{ fontSize: "subheadline", fontWeight: "semibold" }}
+                                >
+                                    {tag.tagName}
+                                </Badge>
+                            ))}
+                        </HStack>
+                    </KeyboardAwareScrollView>
                 </>
-            }
+            )}
         </View>
     );
 }

@@ -57,7 +57,7 @@ export class TagsService {
             throw new BadRequestException(ERROR_TAG_NOT_FOUND);
         }
 
-        this.tagRepository.delete({ userId, tagName });
+        await this.tagRepository.delete({ userId, tagName });
 
         return tag;
     }

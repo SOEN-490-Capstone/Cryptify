@@ -81,7 +81,7 @@ export class WalletsService {
             this.alchemyNodeServiceFacade.getBalance(deleteWalletReq.address),
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
             this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
-            this.alchemyNodeGateway.updateWebhookAddresses([], [deleteWalletReq.address]), 
+            this.alchemyNodeGateway.updateWebhookAddresses([], [deleteWalletReq.address]),
         ]);
 
         if (count == 1) {

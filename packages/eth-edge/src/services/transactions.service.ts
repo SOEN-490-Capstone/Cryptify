@@ -70,8 +70,7 @@ export class TransactionsService {
             and t."walletIn" not in (select lower(address) from wallet)
             or t."walletIn" = $1
             and t."walletOut" not in (select lower(address) from wallet)
-        `
-        ,
+        `,
             [address.toLowerCase()],
         );
         return this.transactionsRepository.remove(transactions);

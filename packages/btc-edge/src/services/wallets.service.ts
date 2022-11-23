@@ -81,6 +81,10 @@ export class WalletsService {
         const [balance, count] = await Promise.all([
             this.soChainGateway.getBalance(deleteWalletReq.address),
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
+        ]);
+
+        //We delete the wallet the database and then we proceed to remove the webhook
+        await Promise.all([
             this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
             this.transactionWatcherService.unsubscribeAddress(deleteWalletReq.address),
         ]);

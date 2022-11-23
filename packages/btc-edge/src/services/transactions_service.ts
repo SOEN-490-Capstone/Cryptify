@@ -40,9 +40,9 @@ export class TransactionsService {
             `
             select id, "transactionAddress", "walletIn", "walletOut", amount, "createdAt" from transaction as t
             where t."walletOut" = $1
-            and t."walletIn" not in (select lower(address) from wallet)
+            and t."walletIn" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
             or t."walletIn" = $1
-            and t."walletOut" not in (select lower(address) from wallet)
+            and t."walletOut" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
         `,
             [address.toLowerCase()],
         );

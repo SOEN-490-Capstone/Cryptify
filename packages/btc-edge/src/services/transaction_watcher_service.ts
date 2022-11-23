@@ -59,6 +59,15 @@ export class TransactionWatcherService {
             }),
         );
     }
+
+    async unsubscribeAddress(address: string): Promise<void> {
+        this.ws.send(
+            JSON.stringify({
+                op: "addr_unsub",
+                add: address,
+            }),
+        );
+    }
 }
 
 interface WSMessage {

@@ -31,4 +31,21 @@ export class TransactionsService {
             where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
         });
     }
+
+    async cleanup(address: string): Promise<Transaction[]> {
+        // Here we get all the transactions that involve the wallet we are removing but that
+        // don't involve wallets still registered in our system
+        // TODO find a faster way to execute this query
+        const transactions = await this.transactionsRepository.query(
+            `
+            select id, "transactionAddress", "walletIn", "walletOut", amount, "createdAt" from transaction as t
+            where t."walletOut" = $1
+            and t."walletIn" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
+            or t."walletIn" = $1
+            and t."walletOut" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
+        `,
+            [address.toLowerCase()],
+        );
+        return this.transactionsRepository.remove(transactions);
+    }
 }

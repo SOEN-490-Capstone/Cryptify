@@ -82,7 +82,11 @@ export class WalletsService {
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
         ]);
 
-        await this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id });
+        //We delete the wallet the database and then we proceed to remove the webhook from alchemy
+        await Promise.all([
+            this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
+            this.alchemyNodeGateway.updateWebhookAddresses([], [deleteWalletReq.address]),
+        ]);
 
         if (count == 1) {
             // If count is 1 then this was the only user who had this wallet and so we can proceed with the transaction clean up,

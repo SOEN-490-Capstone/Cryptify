@@ -32,8 +32,8 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
         return this.request<Transaction[]>(Method.GET, {}, path, null);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async deleteWallet(_req: DeleteWalletRequest): Promise<WalletWithBalance> {
-        return;
+    async deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance> {
+        const path = `users/${req.id}/wallets/${req.address}`;
+        return this.request<WalletWithBalance>(Method.DELETE, {}, path, null);
     }
 }

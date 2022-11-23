@@ -9,6 +9,7 @@ import {
     ERROR_TAG_NOT_FOUND,
 } from "@cryptify/common/src/errors/error_messages";
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
+import { DeleteTagRequest } from "@cryptify/common/src/requests/delete_tag_request";
 
 @Injectable()
 export class TagsService {
@@ -46,5 +47,18 @@ export class TagsService {
         await this.tagRepository.update({ userId, tagName: currentName }, { tagName: newName });
 
         return this.tagRepository.findOneBy({ userId, tagName: newName });
+    }
+
+    async delete(deleteTagRequest: DeleteTagRequest) : Promise<TransactionTag> {
+        const userId = deleteTagRequest.id;
+        const tagName = deleteTagRequest.name;
+        const tag = await this.tagRepository.findOneBy({ userId, tagName});
+        if (!tag) {
+            throw new BadRequestException(ERROR_TAG_NOT_FOUND);
+        }
+
+        this.tagRepository.delete({userId, tagName});
+
+        return tag;
     }
 }

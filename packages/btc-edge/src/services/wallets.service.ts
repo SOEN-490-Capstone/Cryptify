@@ -82,6 +82,7 @@ export class WalletsService {
             this.soChainGateway.getBalance(deleteWalletReq.address),
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
             this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
+            this.transactionWatcherService.unsubscribeAddress(deleteWalletReq.address),
         ]);
 
         if (count == 1) {

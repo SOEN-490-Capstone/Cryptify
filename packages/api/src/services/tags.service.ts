@@ -49,15 +49,15 @@ export class TagsService {
         return this.tagRepository.findOneBy({ userId, tagName: newName });
     }
 
-    async delete(deleteTagRequest: DeleteTagRequest) : Promise<TransactionTag> {
+    async delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag> {
         const userId = deleteTagRequest.id;
         const tagName = deleteTagRequest.name;
-        const tag = await this.tagRepository.findOneBy({ userId, tagName});
+        const tag = await this.tagRepository.findOneBy({ userId, tagName });
         if (!tag) {
             throw new BadRequestException(ERROR_TAG_NOT_FOUND);
         }
 
-        this.tagRepository.delete({userId, tagName});
+        this.tagRepository.delete({ userId, tagName });
 
         return tag;
     }

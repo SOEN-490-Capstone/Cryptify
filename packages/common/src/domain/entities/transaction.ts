@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TransactionTag } from "./TransactionTag";
 
 @Entity()
@@ -21,6 +21,7 @@ export class Transaction {
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
+    @JoinTable()
     @ManyToMany(() => TransactionTag)
     tags: TransactionTag[];
 }

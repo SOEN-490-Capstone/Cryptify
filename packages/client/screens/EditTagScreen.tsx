@@ -72,7 +72,7 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
     const initialValues = {
         tag: currentTagName,
     };
-    const { values } = useFormikContext();
+    const { values } = useFormikContext<TagValue>();
 
     React.useEffect(() => {
         (() => {

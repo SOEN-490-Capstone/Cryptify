@@ -1,14 +1,13 @@
 import { View } from "../components/Themed";
 import React from "react";
-import {Box, Button, Center, FormControl, Input, Link, Pressable, Text, useToast, VStack} from "native-base";
+import { Box, Button, Center, FormControl, Input, Link, Pressable, Text, useToast, VStack } from "native-base";
 import { SettingsStackScreenProps } from "../types";
 import { Alert, StyleSheet } from "react-native";
-import { Formik, FormikHelpers } from "formik";
+import { Formik, FormikHelpers, useFormikContext } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {farPlus} from "../components/icons/regular/farPlus";
-
 
 export default function EditTagScreen({ navigation, route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();
@@ -73,10 +72,11 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
     const initialValues = {
         tag: currentTagName,
     };
+    const { values } = useFormikContext();
 
     React.useEffect(() => {
         (() => {
-            props.navigation.setOptions({
+            navigation.setOptions({
                 headerRight: () => {
                     if (initialValues.tag === values.tag) {
                         return (

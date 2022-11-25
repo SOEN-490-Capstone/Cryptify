@@ -2,14 +2,15 @@ import { View } from "../components/Themed";
 import React from "react";
 import {Box, Button, Center, FormControl, Input, Link, Pressable, Text, useToast, VStack} from "native-base";
 import { SettingsStackScreenProps } from "../types";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {farPlus} from "../components/icons/regular/farPlus";
 
-export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditTagScreen">) {
+
+export default function EditTagScreen({ navigation, route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();
     const { token, user } = React.useContext(AuthContext);
 
@@ -53,6 +54,20 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
                 formikHelpers.setFieldError("tag", error.message);
             }
         }
+    }
+
+    function handleDeleteTag(): void {
+        Alert.alert("Delete " + currentTagName + "?", "Are you sure you want to delete this tag?", [
+            { text: "Cancel", style: "cancel" },
+            {
+                text: "Delete",
+                style: "destructive",
+                onPress: async () => {
+                    await tagsGateway.deleteTag({ id: user.id, name: currentTagName }, token);
+                    navigation.goBack();
+                },
+            },
+        ]);
     }
 
     const initialValues = {

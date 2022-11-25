@@ -82,6 +82,7 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
                         return (
                             <>
                                 <Link
+                                    onPress={handleDeleteTag}
                                     isUnderlined={false}
                                     _text={{
                                         color: "red.500",

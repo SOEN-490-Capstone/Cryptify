@@ -1,11 +1,13 @@
 import { View } from "../components/Themed";
 import React from "react";
-import { Box, Button, Center, FormControl, Input, Text, useToast, VStack } from "native-base";
+import {Box, Button, Center, FormControl, Input, Link, Pressable, Text, useToast, VStack} from "native-base";
 import { SettingsStackScreenProps } from "../types";
 import { StyleSheet } from "react-native";
 import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {farPlus} from "../components/icons/regular/farPlus";
 
 export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();
@@ -57,36 +59,60 @@ export default function EditTagScreen({ route }: SettingsStackScreenProps<"EditT
         tag: currentTagName,
     };
 
-    return (
-        <View style={styles.view}>
-            <Center>
-                <Text fontWeight={"semibold"} size={"title3"} style={styles.title}>
-                    Edit Tag
-                </Text>
-            </Center>
-            <Formik initialValues={initialValues} onSubmit={onSubmitEditTag}>
-                {({ values, handleChange, errors, touched, submitForm }) => (
-                    <VStack space={13}>
-                        <FormControl isInvalid={!!(errors.tag && touched.tag)}>
-                            <Input
-                                value={values.tag}
-                                onChangeText={handleChange("tag")}
-                                placeholder=""
-                                testID="UpdatetagName"
-                                maxLength={20}
-                                keyboardType={"ascii-capable"}
-                                autoFocus={true}
-                            />
-                            <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
-                        </FormControl>
-                        <Button isDisabled={initialValues.tag === values.tag} onPress={submitForm}>
-                            Save changes
-                        </Button>
-                    </VStack>
-                )}
-            </Formik>
-        </View>
-    );
+    React.useEffect(() => {
+        (() => {
+            props.navigation.setOptions({
+                headerRight: () => {
+                    if (initialValues.tag === values.tag) {
+                        return (
+                            <>
+                                <Link
+                                    isUnderlined={false}
+                                    _text={{
+                                        color: "red.500",
+                                        fontWeight: "semi-bold",
+                                    }}
+                                >
+                                    Delete
+                                </Link>
+                            </>
+                        );
+                    }
+
+                    return (
+                        <View style={styles.view}>
+                            <Center>
+                                <Text fontWeight={"semibold"} size={"title3"} style={styles.title}>
+                                    Edit Tag
+                                </Text>
+                            </Center>
+                            <Formik initialValues={initialValues} onSubmit={onSubmitEditTag}>
+                                {({ values, handleChange, errors, touched, submitForm }) => (
+                                    <VStack space={13}>
+                                        <FormControl isInvalid={!!(errors.tag && touched.tag)}>
+                                            <Input
+                                                value={values.tag}
+                                                onChangeText={handleChange("tag")}
+                                                placeholder=""
+                                                testID="UpdatetagName"
+                                                maxLength={20}
+                                                keyboardType={"ascii-capable"}
+                                                autoFocus={true}
+                                            />
+                                            <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
+                                        </FormControl>
+                                        <Button isDisabled={initialValues.tag === values.tag} onPress={submitForm}>
+                                            Save changes
+                                        </Button>
+                                    </VStack>
+                                )}
+                            </Formik>
+                        </View>
+                    );
+                },
+            });
+        })();
+    });
 }
 
 const styles = StyleSheet.create({

@@ -54,7 +54,7 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
     }
 
     function handleDeleteTag(): void {
-        Alert.alert("Delete " + currentTagName + "?", "Are you sure you want to delete this tag?", [
+        Alert.alert(`Delete ${currentTagName} ?`, "Are you sure you want to delete this tag?", [
             { text: "Cancel", style: "cancel" },
             {
                 text: "Delete",
@@ -70,28 +70,25 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
     const initialValues = {
         tag: currentTagName,
     };
-    const { values } = useFormikContext<TagValue>();
 
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
                 headerRight: () => {
-                    if (initialValues.tag === values.tag) {
-                        return (
-                            <>
-                                <Link
-                                    onPress={handleDeleteTag}
-                                    isUnderlined={false}
-                                    _text={{
-                                        color: "red.500",
-                                        fontWeight: "semi-bold",
-                                    }}
-                                >
-                                    Delete
-                                </Link>
-                            </>
-                        );
-                    }
+                    return (
+                        <>
+                            <Link
+                                onPress={handleDeleteTag}
+                                isUnderlined={false}
+                                _text={{
+                                    color: "red.500",
+                                    fontWeight: "semi-bold",
+                                }}
+                            >
+                                Delete
+                            </Link>
+                        </>
+                    );
                 },
             });
         })();

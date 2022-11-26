@@ -37,7 +37,7 @@ export function filterTransctions(
         // filter for transactions that happened the passed 90 days
         if (filtersByDate[1] === filter) {
             transactions = transactions.filter(
-                (transaction) => new Date(dateToday.getDate() - 90) <= new Date(transaction.createdAt),
+                (transaction) => new Date(+dateToday - 1000 * 60 * 60 * 24 * 90) <= new Date(transaction.createdAt),
             );
         }
 

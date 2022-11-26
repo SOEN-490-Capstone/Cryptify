@@ -5,6 +5,22 @@ enum CurrencyType {
 }
 interface CreateWalletRequest extends InferType
 class JwtAuthGuard
+interface DeleteWalletRequest extends InferType
+class Transaction {
+    +id: number
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+    +tags: TransactionTag[]
+}
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
 class User {
     +id: number
     +firstName: string
@@ -13,13 +29,7 @@ class User {
     +password: string
     +createdAt: Date
     +wallets: Wallet[]
-}
-class Transaction {
-    +transactionAddress: string
-    +walletIn: string
-    +walletOut: string
-    +amount: string
-    +createdAt: Date
+    +tags: TransactionTag[]
 }
 class Wallet {
     +address: string
@@ -56,6 +66,7 @@ abstract class AbstractServiceGateway extends AbstractGateway {
 interface GetTransactionsRequest extends InferType
 abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +{abstract} deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
     +{abstract} getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +{abstract} getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
 }
@@ -64,12 +75,14 @@ class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
     +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
 }
 class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     -configService: ConfigService<Record<string, unknown>, false>
-    +createWallet(_req: CreateWalletRequest): Promise<WalletWithBalance>
-    +getWallets(_req: GetWalletsRequest): Promise<WalletWithBalance[]>
-    +getTransactions(_req: GetTransactionsRequest): Promise<Transaction[]>
+    +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
 }
 class EdgeGatewayStrategyFactory {
     -ethEdgeGatewayStrategy: EthEdgeGatewayStrategy
@@ -79,6 +92,7 @@ class EdgeGatewayStrategyFactory {
 class WalletsService {
     -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
     +create(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +delete(req: DeleteWalletRequest): Promise<WalletWithBalance>
     +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
 }
 class CanMutateResourceGuard implements CanActivate {
@@ -91,14 +105,20 @@ class WalletsController {
     -walletsService: WalletsService
     +create(body: CreateWalletRequest): Promise<WalletWithBalance>
     +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +delete(params: DeleteWalletRequest): Promise<WalletWithBalance>
 }
+Transaction --> "*" TransactionTag
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
 User --> "*" Wallet
+User --> "*" TransactionTag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 AbstractGateway --> "1" Method
 AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
 AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
+AbstractEdgeGatewayStrategy --> "1" DeleteWalletRequest
 AbstractEdgeGatewayStrategy --> "1" GetWalletsRequest
 AbstractEdgeGatewayStrategy --> "*" WalletWithBalance
 AbstractEdgeGatewayStrategy --> "1" GetTransactionsRequest
@@ -109,12 +129,14 @@ EthEdgeGatewayStrategy --> "1" GetWalletsRequest
 EthEdgeGatewayStrategy --> "*" WalletWithBalance
 EthEdgeGatewayStrategy --> "1" GetTransactionsRequest
 EthEdgeGatewayStrategy --> "*" Transaction
+EthEdgeGatewayStrategy --> "1" DeleteWalletRequest
 BtcEdgeGatewayStrategy --> "1" CreateWalletRequest
 BtcEdgeGatewayStrategy --> "1" WalletWithBalance
 BtcEdgeGatewayStrategy --> "1" GetWalletsRequest
 BtcEdgeGatewayStrategy --> "*" WalletWithBalance
 BtcEdgeGatewayStrategy --> "1" GetTransactionsRequest
 BtcEdgeGatewayStrategy --> "*" Transaction
+BtcEdgeGatewayStrategy --> "1" DeleteWalletRequest
 EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" CurrencyType
@@ -122,6 +144,7 @@ EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
 WalletsService --> "1" EdgeGatewayStrategyFactory
 WalletsService --> "1" CreateWalletRequest
 WalletsService --> "1" WalletWithBalance
+WalletsService --> "1" DeleteWalletRequest
 WalletsService --> "1" GetWalletsRequest
 WalletsService --> "*" WalletWithBalance
 WalletsController --> "1" WalletsService
@@ -129,4 +152,5 @@ WalletsController --> "1" CreateWalletRequest
 WalletsController --> "1" WalletWithBalance
 WalletsController --> "1" GetWalletsRequest
 WalletsController --> "*" WalletWithBalance
+WalletsController --> "1" DeleteWalletRequest
 @enduml

@@ -29,6 +29,21 @@ abstract class AbstractServiceGateway extends AbstractGateway {
     #handleError(response: any): Promise<void>
 }
 interface CreateWalletRequest extends InferType
+class Transaction {
+    +id: number
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+    +tags: TransactionTag[]
+}
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
 class User {
     +id: number
     +firstName: string
@@ -37,13 +52,7 @@ class User {
     +password: string
     +createdAt: Date
     +wallets: Wallet[]
-}
-class Transaction {
-    +transactionAddress: string
-    +walletIn: string
-    +walletOut: string
-    +amount: string
-    +createdAt: Date
+    +tags: TransactionTag[]
 }
 class Wallet {
     +address: string
@@ -57,8 +66,10 @@ interface WalletWithBalance extends Wallet {
     +balance: string
 }
 interface GetWalletsRequest extends InferType
+interface DeleteWalletRequest extends InferType
 abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +{abstract} deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
     +{abstract} getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +{abstract} getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
 }
@@ -67,12 +78,14 @@ class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
     +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
 }
 class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     -configService: ConfigService<Record<string, unknown>, false>
-    +createWallet(_req: CreateWalletRequest): Promise<WalletWithBalance>
-    +getWallets(_req: GetWalletsRequest): Promise<WalletWithBalance[]>
-    +getTransactions(_req: GetTransactionsRequest): Promise<Transaction[]>
+    +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
 }
 class EdgeGatewayStrategyFactory {
     -ethEdgeGatewayStrategy: EthEdgeGatewayStrategy
@@ -88,12 +101,17 @@ class TransactionsController {
     +findAll(params: GetTransactionsRequest): Promise<Transaction[]>
 }
 AbstractGateway --> "1" Method
+Transaction --> "*" TransactionTag
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
 User --> "*" Wallet
+User --> "*" TransactionTag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
 AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
+AbstractEdgeGatewayStrategy --> "1" DeleteWalletRequest
 AbstractEdgeGatewayStrategy --> "1" GetWalletsRequest
 AbstractEdgeGatewayStrategy --> "*" WalletWithBalance
 AbstractEdgeGatewayStrategy --> "1" GetTransactionsRequest
@@ -104,12 +122,14 @@ EthEdgeGatewayStrategy --> "1" GetWalletsRequest
 EthEdgeGatewayStrategy --> "*" WalletWithBalance
 EthEdgeGatewayStrategy --> "1" GetTransactionsRequest
 EthEdgeGatewayStrategy --> "*" Transaction
+EthEdgeGatewayStrategy --> "1" DeleteWalletRequest
 BtcEdgeGatewayStrategy --> "1" CreateWalletRequest
 BtcEdgeGatewayStrategy --> "1" WalletWithBalance
 BtcEdgeGatewayStrategy --> "1" GetWalletsRequest
 BtcEdgeGatewayStrategy --> "*" WalletWithBalance
 BtcEdgeGatewayStrategy --> "1" GetTransactionsRequest
 BtcEdgeGatewayStrategy --> "*" Transaction
+BtcEdgeGatewayStrategy --> "1" DeleteWalletRequest
 EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" CurrencyType

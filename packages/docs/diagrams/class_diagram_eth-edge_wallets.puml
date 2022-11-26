@@ -4,6 +4,21 @@ enum CurrencyType {
     BITCOIN
 }
 interface CreateWalletRequest extends InferType
+class Transaction {
+    +id: number
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+    +tags: TransactionTag[]
+}
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
 class User {
     +id: number
     +firstName: string
@@ -12,13 +27,7 @@ class User {
     +password: string
     +createdAt: Date
     +wallets: Wallet[]
-}
-class Transaction {
-    +transactionAddress: string
-    +walletIn: string
-    +walletOut: string
-    +amount: string
-    +createdAt: Date
+    +tags: TransactionTag[]
 }
 class Wallet {
     +address: string
@@ -28,22 +37,23 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
-class AlchemyNodeService {
+class AlchemyNodeServiceFacade {
     -alchemy: Alchemy
     -configService: ConfigService<Record<string, unknown>, false>
     +getBalance(address: string): Promise<string>
-    +getTransactions(wallet: string): Promise<AssetTransfersWithMetadataResult[]>
+    +getTransactions(wallet: string): Promise<Transaction[]>
 }
 interface WalletWithBalance extends Wallet {
     +balance: string
 }
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
-    -alchemyNodeService: AlchemyNodeService
+    -alchemyNodeServiceFacade: AlchemyNodeServiceFacade
     -walletsService: WalletsService
     +backfillTransactions(address: string): Promise<void>
     +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
     +findAll(userId: number): Promise<Transaction[]>
+    +cleanup(address: string): Promise<Transaction[]>
 }
 abstract class AbstractGateway {
     -uri: string
@@ -69,40 +79,50 @@ class AlchemyNodeGateway extends AbstractServiceGateway {
     -configService: ConfigService<Record<string, unknown>, false>
     +updateWebhookAddresses(addressesToAdd: string[], addressesToRemove: string[]): Promise<void>
 }
+interface DeleteWalletRequest extends InferType
 class WalletsService {
     -walletRepository: Repository<Wallet>
-    -alchemyNodeService: AlchemyNodeService
+    -alchemyNodeServiceFacade: AlchemyNodeServiceFacade
     -transactionsService: TransactionsService
     -alchemyNodeGateway: AlchemyNodeGateway
     +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
     +findOne(address: string, userId: number): Promise<Wallet>
     +findAll(userId: number): Promise<WalletWithBalance[]>
+    +delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance>
 }
 interface GetWalletsRequest extends InferType
 class WalletsController {
     -walletsService: WalletsService
     +create(body: CreateWalletRequest): Promise<WalletWithBalance>
     +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +delete(params: DeleteWalletRequest): Promise<WalletWithBalance>
 }
+Transaction --> "*" TransactionTag
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
 User --> "*" Wallet
+User --> "*" TransactionTag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+AlchemyNodeServiceFacade --> "*" Transaction
 TransactionsService --> "1" Transaction
-TransactionsService --> "1" AlchemyNodeService
+TransactionsService --> "1" AlchemyNodeServiceFacade
 TransactionsService --> "1" WalletsService
 TransactionsService --> "*" Transaction
 AbstractGateway --> "1" Method
 WalletsService --> "1" Wallet
-WalletsService --> "1" AlchemyNodeService
+WalletsService --> "1" AlchemyNodeServiceFacade
 WalletsService --> "1" TransactionsService
 WalletsService --> "1" AlchemyNodeGateway
 WalletsService --> "1" CreateWalletRequest
 WalletsService --> "1" WalletWithBalance
 WalletsService --> "*" WalletWithBalance
+WalletsService --> "1" DeleteWalletRequest
 WalletsController --> "1" WalletsService
 WalletsController --> "1" CreateWalletRequest
 WalletsController --> "1" WalletWithBalance
 WalletsController --> "1" GetWalletsRequest
 WalletsController --> "*" WalletWithBalance
+WalletsController --> "1" DeleteWalletRequest
 @enduml

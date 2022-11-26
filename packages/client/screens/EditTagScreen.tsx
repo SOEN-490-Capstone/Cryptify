@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Center, FormControl, Input, Link, Text, useToast, VStack } from "native-base";
 import { SettingsStackScreenProps } from "../types";
 import { Alert, StyleSheet } from "react-native";
-import { Formik, FormikHelpers, useFormikContext } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 

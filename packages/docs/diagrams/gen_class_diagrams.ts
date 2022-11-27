@@ -3,7 +3,7 @@ import { exec } from "node:child_process";
 
 console.log("Class diagram generation starting...");
 
-const services = ["api", "eth-edge"];
+const services = ["api", "eth-edge", "btc-edge"];
 services.forEach((service) => {
     const dir = `../${service}/src/controllers`;
     fs.readdirSync(dir).forEach((file) => {

@@ -1,0 +1,197 @@
+@startuml
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+interface CreateWalletRequest extends InferType
+class Transaction {
+    +id: number
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+    +tags: TransactionTag[]
+}
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+    +tags: TransactionTag[]
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+abstract class AbstractGateway {
+    -uri: string
+    -fetch: any
+    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
+    #{abstract} handleError(response: any): Promise<void>
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+abstract class AbstractServiceGateway extends AbstractGateway {
+    #handleError(response: any): Promise<void>
+}
+interface AddressBalanceResponse {
+    +status: string
+    +data: { network: string; address: string; confirmed_balance: string; unconfirmed_balance: string; }
+}
+interface TransactionsByWalletResponse {
+    +status: string
+    +data: { network: string; address: string; txs: {    txid: string;    output_no: number;    script_asm: string;    script_hex: string;    value: string;    confirmations: number;    time: number;}[]; }
+}
+interface TransactionResponse {
+    +status: string
+    +data: { network: string; txid: string; blockhash: string; block_no: number; confirmations: number; time: number; size: number; vsize: number; version: number; locktime: number; sent_value: string; fee: string; inputs: TransactionResponseInput[]; outputs: TransactionResponseOutput[]; tx_hex: string; }
+    +code: number
+    +message: string
+}
+interface TransactionResponseInput {
+    +input_no: number
+    +address: string
+    +value: string
+    +received_from: { txid: string; output_no: number; }
+    +script_asm: string
+    +script_hex: string
+    +witness: string[]
+}
+interface TransactionResponseOutput {
+    +output_no: number
+    +address: string
+    +value: string
+    +type: string
+    +spent: { txid: string; input_no: number; }
+    +script_asm: string
+    +script_hex: string
+}
+class SoChainGateway extends AbstractServiceGateway {
+    -configService: ConfigService<Record<string, unknown>, false>
+    -transactionsRepository: Repository<Transaction>
+    +getBalance(walletAddress: string): Promise<string>
+    +getTransactions(walletAddress: string): Promise<Transaction[]>
+    +getTransactionsByTxAddress(txAddress: string): Promise<Transaction[]>
+    -reversePoolMIMOTransaction(inputs: TransactionResponseInput[], outputs: TransactionResponseOutput[]): PairsWithAmount
+}
+class TransactionsService {
+    -transactionsRepository: Repository<Transaction>
+    -soChainGateway: SoChainGateway
+    -walletsService: WalletsService
+    +backfillTransactions(address: string): Promise<void>
+    +findAll(userId: number): Promise<Transaction[]>
+    +cleanup(address: string): Promise<Transaction[]>
+}
+class TransactionWatcherService {
+    -ws: WebSocketClient
+    -walletsRepository: Repository<Wallet>
+    -transactionsRepository: Repository<Transaction>
+    -soChainGateway: SoChainGateway
+    #open(): Promise<void>
+    #message(data: WebSocketClient.Data): Promise<void>
+    +subscribeAddress(address: string): Promise<void>
+    +unsubscribeAddress(address: string): Promise<void>
+}
+interface WSMessage {
+    +op: string
+}
+interface WSTransaction extends WSMessage {
+    +x: { lock_time: number; ver: number; size: number; inputs: Input[]; time: number; tx_index: number; vin_sz: number; hash: string; vout_sz: number; relayed_by: string; out: Out[]; }
+}
+interface Input {
+    +sequence: number
+    +prev_out: { spent: boolean; tx_index: number; type: number; addr: string; value: number; n: number; script: string; }
+    +script: string
+}
+interface Out {
+    +spent: boolean
+    +tx_index: number
+    +type: number
+    +addr: string
+    +value: number
+    +n: number
+    +script: string
+}
+interface DeleteWalletRequest extends InferType
+class WalletsService {
+    -walletRepository: Repository<Wallet>
+    -transactionsService: TransactionsService
+    -soChainGateway: SoChainGateway
+    -transactionWatcherService: TransactionWatcherService
+    +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
+    +findAll(userId: number): Promise<WalletWithBalance[]>
+    +findOne(address: string, userId: number): Promise<Wallet>
+    +delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance>
+}
+interface GetWalletsRequest extends InferType
+class WalletsController {
+    -walletsService: WalletsService
+    +create(body: CreateWalletRequest): Promise<WalletWithBalance>
+    +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +delete(params: DeleteWalletRequest): Promise<WalletWithBalance>
+}
+Transaction --> "*" TransactionTag
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
+User --> "*" Wallet
+User --> "*" TransactionTag
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+AbstractGateway --> "1" Method
+TransactionResponse --> "*" TransactionResponseInput
+TransactionResponse --> "*" TransactionResponseOutput
+SoChainGateway --> "1" Transaction
+SoChainGateway --> "*" Transaction
+SoChainGateway --> "1" TransactionResponseInput
+SoChainGateway --> "1" TransactionResponseOutput
+TransactionsService --> "1" Transaction
+TransactionsService --> "1" SoChainGateway
+TransactionsService --> "1" WalletsService
+TransactionsService --> "*" Transaction
+TransactionWatcherService --> "1" Wallet
+TransactionWatcherService --> "1" Transaction
+TransactionWatcherService --> "1" SoChainGateway
+WSTransaction --> "*" Input
+WSTransaction --> "*" Out
+WalletsService --> "1" Wallet
+WalletsService --> "1" TransactionsService
+WalletsService --> "1" SoChainGateway
+WalletsService --> "1" TransactionWatcherService
+WalletsService --> "1" CreateWalletRequest
+WalletsService --> "1" WalletWithBalance
+WalletsService --> "*" WalletWithBalance
+WalletsService --> "1" DeleteWalletRequest
+WalletsController --> "1" WalletsService
+WalletsController --> "1" CreateWalletRequest
+WalletsController --> "1" WalletWithBalance
+WalletsController --> "1" GetWalletsRequest
+WalletsController --> "*" WalletWithBalance
+WalletsController --> "1" DeleteWalletRequest
+@enduml

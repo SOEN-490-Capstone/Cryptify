@@ -1,4 +1,5 @@
 import { InferType } from "yup";
 import { deleteTagSchema } from "../validations/delete_tag_schema";
 
-export type DeleteTagRequest = InferType<typeof deleteTagSchema>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface DeleteTagRequest extends InferType<typeof deleteTagSchema> {}

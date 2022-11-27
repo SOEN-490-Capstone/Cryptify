@@ -1,11 +1,19 @@
 @startuml
 class JwtAuthGuard
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
 class Transaction {
+    +id: number
     +transactionAddress: string
     +walletIn: string
     +walletOut: string
     +amount: string
     +createdAt: Date
+    +tags: TransactionTag[]
 }
 enum CurrencyType {
     ETHEREUM
@@ -27,6 +35,7 @@ class User {
     +password: string
     +createdAt: Date
     +wallets: Wallet[]
+    +tags: TransactionTag[]
 }
 interface SignUpRequest extends InferType
 class UsersService {
@@ -39,10 +48,14 @@ class UsersController {
     -usersService: UsersService
     +whoami(req: any): Promise<User>
 }
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
+Transaction --> "*" TransactionTag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 User --> "*" Wallet
+User --> "*" TransactionTag
 UsersService --> "1" User
 UsersService --> "1" SignUpRequest
 UsersController --> "1" UsersService

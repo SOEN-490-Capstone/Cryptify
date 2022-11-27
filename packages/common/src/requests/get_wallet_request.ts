@@ -1,4 +1,5 @@
 import { InferType } from "yup";
 import { getWalletsSchema } from "@cryptify/common/src/validations/get_wallets_schema";
 
-export type GetWalletsRequest = InferType<typeof getWalletsSchema>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface GetWalletsRequest extends InferType<typeof getWalletsSchema> {}

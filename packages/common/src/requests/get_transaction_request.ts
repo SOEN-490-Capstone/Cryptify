@@ -1,4 +1,5 @@
 import { InferType } from "yup";
 import { getTransactionsSchema } from "../validations/get_transactions_schema";
 
-export type GetTransactionsRequest = InferType<typeof getTransactionsSchema>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface GetTransactionsRequest extends InferType<typeof getTransactionsSchema> {}

@@ -1,0 +1,84 @@
+@startuml
+class JwtAuthGuard
+class CanAccessResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
+interface GetTagsRequest extends InferType
+interface CreateTagRequest extends InferType
+interface UpdateTagRequest extends InferType
+interface DeleteTagRequest extends InferType
+class Transaction {
+    +id: number
+    +transactionAddress: string
+    +walletIn: string
+    +walletOut: string
+    +amount: string
+    +createdAt: Date
+    +tags: TransactionTag[]
+}
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+class Wallet {
+    +address: string
+    +userId: number
+    +name: string
+    +user: User
+    +currencyType: CurrencyType
+    +transactions: Transaction[]
+}
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +createdAt: Date
+    +wallets: Wallet[]
+    +tags: TransactionTag[]
+}
+class TransactionTag {
+    +tagName: string
+    +userId: number
+    +user: User
+    +transactions: Transaction[]
+}
+class TagsService {
+    -tagRepository: Repository<TransactionTag>
+    +findAll(userId: number): Promise<TransactionTag[]>
+    +create(req: CreateTagRequest): Promise<TransactionTag>
+    +update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag>
+    +delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag>
+}
+class CanMutateResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
+class TagsController {
+    -tagsService: TagsService
+    +get(params: GetTagsRequest): Promise<TransactionTag[]>
+    +create(body: CreateTagRequest): Promise<TransactionTag>
+    +update(body: UpdateTagRequest): Promise<TransactionTag>
+    +delete(params: DeleteTagRequest): Promise<TransactionTag>
+}
+Transaction --> "*" TransactionTag
+Wallet --> "1" User
+Wallet --> "1" CurrencyType
+Wallet --> "*" Transaction
+User --> "*" Wallet
+User --> "*" TransactionTag
+TransactionTag --> "1" User
+TransactionTag --> "*" Transaction
+TagsService --> "1" TransactionTag
+TagsService --> "*" TransactionTag
+TagsService --> "1" CreateTagRequest
+TagsService --> "1" UpdateTagRequest
+TagsService --> "1" DeleteTagRequest
+TagsController --> "1" TagsService
+TagsController --> "1" GetTagsRequest
+TagsController --> "*" TransactionTag
+TagsController --> "1" CreateTagRequest
+TagsController --> "1" TransactionTag
+TagsController --> "1" UpdateTagRequest
+TagsController --> "1" DeleteTagRequest
+@enduml

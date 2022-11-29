@@ -4,6 +4,7 @@ import { In, Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { WalletsService } from "./wallets.service";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class TransactionsService {
@@ -13,9 +14,16 @@ export class TransactionsService {
         private readonly soChainGateway: SoChainGateway,
         @Inject(forwardRef(() => WalletsService))
         private readonly walletsService: WalletsService,
+        @InjectRepository(Wallet)
+        private walletsRepository: Repository<Wallet>,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
+        // If wallet is already in system don't re-add the transactions
+        if ((await this.walletsRepository.countBy({ address })) > 0) {
+            return;
+        }
+
         const transactions = await this.soChainGateway.getTransactions(address);
         // Save allows us to do a bulk insert without throwing an error on duplicate
         // transactions which can occur if the wallet involved in a transaction

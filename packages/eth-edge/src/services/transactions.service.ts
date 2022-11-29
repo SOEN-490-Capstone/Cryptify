@@ -7,6 +7,7 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activity_event";
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { WalletsService } from "./wallets.service";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 
 @Injectable()
 export class TransactionsService {
@@ -16,9 +17,16 @@ export class TransactionsService {
         private alchemyNodeServiceFacade: AlchemyNodeServiceFacade,
         @Inject(forwardRef(() => WalletsService))
         private walletsService: WalletsService,
+        @InjectRepository(Wallet)
+        private walletsRepository: Repository<Wallet>,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
+        // If wallet is already in system don't re-add the transactions
+        if ((await this.walletsRepository.countBy({ address })) > 0) {
+            return;
+        }
+
         // Get the transactions for a specific wallet from alchemy.
         // Filter for only the attributes we want and save it to the database
         const transactions = await this.alchemyNodeServiceFacade.getTransactions(address);

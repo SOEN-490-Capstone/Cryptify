@@ -23,7 +23,7 @@ export class TransactionsService {
 
     async backfillTransactions(address: string): Promise<void> {
         // If wallet is already in system don't re-add the transactions
-        if ((await this.walletsRepository.countBy({ address })) > 0) {
+        if ((await this.walletsRepository.countBy({ address })) > 1) {
             return;
         }
 

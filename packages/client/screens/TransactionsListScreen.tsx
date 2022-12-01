@@ -123,6 +123,7 @@ export default function TransactionsListScreen(
 
     return (
         <View style={styles.view}>
+            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest") && <FiltersBadges />}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
@@ -149,7 +150,6 @@ export default function TransactionsListScreen(
                 </VStack>
             ) : (
                 <>
-                    <FiltersBadges />
                     <TransactionsList
                         transactions={transactions}
                         walletAddress={props.route.params.walletAddress}

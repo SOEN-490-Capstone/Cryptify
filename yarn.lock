@@ -1733,7 +1733,7 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": ^6.2.0
     "@fortawesome/react-native-fontawesome": ^0.3.0
     "@react-native-async-storage/async-storage": ^1.17.10
-    "@react-native-community/datetimepicker": ^6.2.0
+    "@react-native-community/datetimepicker": ~6.2.0
     "@react-navigation/bottom-tabs": ^6.0.5
     "@react-navigation/native": ^6.0.2
     "@react-navigation/native-stack": ^6.1.0
@@ -4725,12 +4725,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/datetimepicker@npm:^6.2.0":
-  version: 6.7.0
-  resolution: "@react-native-community/datetimepicker@npm:6.7.0"
+"@react-native-community/datetimepicker@npm:~6.2.0":
+  version: 6.2.2
+  resolution: "@react-native-community/datetimepicker@npm:6.2.2"
   dependencies:
     invariant: ^2.2.4
-  checksum: 21fc01cb62d2a0a9eeae7cac7e038e3ae59a01799c8f5bf8002cb7e81cb9435ec933c8719b26d92bba6ca25f64867c9da451adede428cfea9229a4178ee22ee1
+  checksum: 5602274aa5e507ab32e7307a53100fc704550de8eb993423ac00c0335ecfd326a5f0ef8235f4e0d78d52ed0482cfbd3983ad7434b715925f4e2a5d643feb57ea
   languageName: node
   linkType: hard
 

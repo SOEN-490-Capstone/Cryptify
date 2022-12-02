@@ -6,6 +6,7 @@ import { Alert, StyleSheet } from "react-native";
 import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
+import * as yup from "yup";
 
 export default function EditTagScreen({ navigation, route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();
@@ -26,6 +27,8 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
                     userId: user.id,
                     currentName: currentTagName,
                     newName: values.tag,
+                    addTransactions: undefined,
+                    removeTransactions: undefined,
                 },
                 token,
             );

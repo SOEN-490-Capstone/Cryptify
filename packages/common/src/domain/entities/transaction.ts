@@ -22,6 +22,6 @@ export class Transaction {
     createdAt: Date;
 
     @JoinTable()
-    @ManyToMany(() => TransactionTag)
+    @ManyToMany(() => TransactionTag, (tag) => tag.transactions, {onUpdate: "CASCADE", onDelete: "CASCADE"})
     tags: TransactionTag[];
 }

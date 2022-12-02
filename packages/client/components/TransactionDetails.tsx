@@ -10,13 +10,15 @@ import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount, typeToISOCode } from "../services/currency_service";
 import { formatAddress } from "../services/address_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     transaction: Transaction;
     walletAddress: string;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionDetails({ transaction, walletAddress }: Props) {
+export function TransactionDetails({ transaction, walletAddress, navigation }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
 
     const copyToClipboard = async (valueToCopy: string) => {
@@ -103,6 +105,17 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                             </Pressable>
                         )}
                     </HStack>
+                </Box>
+                <Box style={styles.subItemWrapper}>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate("TransactionTagsScreen", {
+                            transaction: transaction,
+                        })
+                      }
+                    >
+                        <Text>Tags</Text>
+                    </Pressable>
                 </Box>
             </VStack>
         </Box>

@@ -18,6 +18,7 @@ export default function TransactionDetailsScreen(
                 <TransactionDetails
                     transaction={props.route.params.transaction}
                     walletAddress={props.route.params.walletAddress}
+                    navigation={props.navigation}
                 />
             </ScrollView>
         </View>

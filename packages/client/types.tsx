@@ -29,6 +29,15 @@ type TransactionDetailsProps = {
     walletAddress: string;
 };
 
+type TransactionTagsScreenProps = {
+    transaction: Transaction;
+}
+
+type AddTransactionTagsScreenProps = {
+    transaction: Transaction;
+    allTags: TransactionTag[];
+}
+
 type WalletOverviewScreenProps = {
     title: string;
     address: string;
@@ -88,6 +97,8 @@ export type HomeStackParamList = {
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     FilterScreen: FilterScreenProps;
+    TransactionTagsScreen: TransactionTagsScreenProps;
+    AddTransactionTagsScreen: AddTransactionTagsScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<

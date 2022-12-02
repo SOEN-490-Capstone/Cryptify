@@ -11,7 +11,7 @@ export class TagsGateway extends AbstractApiGateway {
         super();
     }
 
-    async findAlTags(req: GetTagsRequest, token: string): Promise<TransactionTag[]> {
+    async findAllTags(req: GetTagsRequest, token: string): Promise<TransactionTag[]> {
         const path = `users/${req.id}/tags`;
         const headers = {
             Authorization: `Bearer ${token}`,

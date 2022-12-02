@@ -20,7 +20,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
 
     React.useEffect(() => {
         (async () => {
-            const tags = await tagsGateway.findAlTags({ id: user.id }, token);
+            const tags = await tagsGateway.findAllTags({ id: user.id }, token);
             setTags(tags);
         })();
     });

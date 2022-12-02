@@ -29,12 +29,6 @@ export class TransactionWatcherService {
         // Fetch bitcoin wallets from db and subscribe the web socket watcher to each of them to track new transactions
         const wallets = await this.walletsRepository.findBy({ currencyType: CurrencyType.BITCOIN });
         await Promise.all(wallets.map((wallet) => this.subscribeAddress(wallet.address)));
-
-        this.ws.send(
-            JSON.stringify({
-                op: "ping_tx",
-            }),
-        );
     }
 
     @OnMessage()
@@ -63,15 +57,13 @@ export class TransactionWatcherService {
         }
     }
 
-    async subscribeAddress(address: string): Promise<string> {
+    async subscribeAddress(address: string): Promise<void> {
         this.ws.send(
             JSON.stringify({
                 op: "addr_sub",
                 add: address,
             }),
         );
-
-        return address;
     }
 
     async unsubscribeAddress(address: string): Promise<void> {

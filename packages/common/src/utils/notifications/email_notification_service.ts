@@ -33,21 +33,33 @@ export class EmailNotificationService implements NotificationService {
     async sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void> {
         await Promise.all(
             transactions.map(async (transaction) => {
-                transaction.walletOut = "bc1q22jrgjeg5mm9zuzlxv90snrfhelm0hy76hsra2";
-                const wallets = await this.walletsRepository.find({
-                    where: { address: transaction.walletOut },
-                    relations: { user: true },
+                const keys = ["walletOut", "walletIn"] as const;
+                keys.map(async (key) => {
+                    const wallets = await this.walletsRepository.find({
+                        where: { address: transaction[key] },
+                        relations: { user: true },
+                    });
+
+                    const subject =
+                        key === "walletOut" ? `${titleCase(currencyType)} Sent` : `${titleCase(currencyType)} Received`;
+                    wallets.map(async (wallet) => {
+                        const text =
+                            key === "walletOut"
+                                ? `You sent ${transaction.amount} ${typeToISOCode[currencyType]} to ${formatAddress(
+                                      transaction.walletIn,
+                                  )} from ${wallet.name}`
+                                : `You received ${transaction.amount} ${
+                                      typeToISOCode[currencyType]
+                                  } from ${formatAddress(transaction.walletOut)} to ${wallet.name}`;
+
+                        this.transporter.sendMail({
+                            from: "noreply@cryptify.com",
+                            to: wallet.user.email,
+                            subject,
+                            text,
+                        });
+                    });
                 });
-                wallets.map((wallet) =>
-                    this.transporter.sendMail({
-                        from: "noreply@cryptify.com",
-                        to: wallet.user.email,
-                        subject: `${titleCase(currencyType)} Sent`,
-                        text: `You received ${transaction.amount} ${typeToISOCode[currencyType]} from ${formatAddress(
-                            transaction.walletIn,
-                        )} to ${wallet.name}`,
-                    }),
-                );
             }),
         );
     }

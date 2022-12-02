@@ -6,9 +6,9 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { falCircleArrowDownLeft } from "../icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import { getFormattedAmount, typeToISOCode } from "../../services/currency_service";
+import { getFormattedAmount } from "../../services/currency_service";
 import { formatAddress } from "../../services/address_service";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import {getCurrencyType, typeToISOCode} from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {
     transaction: Transaction;

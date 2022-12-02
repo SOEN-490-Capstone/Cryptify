@@ -5,12 +5,14 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
+import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
 
-export interface NotificationGateway {
-    sendNotification(notification: Notification): Promise<void>;
+export interface NotificationService {
+    sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>;
 }
 
 export interface Notification {
-    title: string,
-    body: string,
+    to: string;
+    title: string;
+    body: string;
 }

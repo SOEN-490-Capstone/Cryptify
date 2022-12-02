@@ -6,6 +6,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import {EmailNotificationService} from "@cryptify/common/src/utils/notifications/email_notification_service";
+import {NotificationService} from "@cryptify/common/src/utils/notifications/notification_service";
+import {getCurrencyType} from "@cryptify/common/src/utils/currency_utils";
 
 @Injectable()
 export class TransactionWatcherService {
@@ -17,6 +20,7 @@ export class TransactionWatcherService {
         @InjectRepository(Transaction)
         private readonly transactionsRepository: Repository<Transaction>,
         private readonly soChainGateway: SoChainGateway,
+        private readonly notificationService: EmailNotificationService,
     ) {}
 
     @OnOpen()
@@ -26,6 +30,12 @@ export class TransactionWatcherService {
         // Fetch bitcoin wallets from db and subscribe the web socket watcher to each of them to track new transactions
         const wallets = await this.walletsRepository.findBy({ currencyType: CurrencyType.BITCOIN });
         await Promise.all(wallets.map((wallet) => this.subscribeAddress(wallet.address)));
+
+        this.ws.send(
+            JSON.stringify({
+              "op": "ping_tx"
+            }),
+        );
     }
 
     @OnMessage()
@@ -43,6 +53,9 @@ export class TransactionWatcherService {
                 const txAddress = (res as WSTransaction).x.hash;
                 const transactions = await this.soChainGateway.getTransactionsByTxAddress(txAddress);
                 await this.transactionsRepository.save(transactions);
+
+                // Asynchronously send the notification to the users
+                this.notificationService.sendTransactionNotifications(transactions, getCurrencyType(txAddress));
                 return;
             } catch (_) {
                 // In the case that the set delay was not enough to avoid a system failure we will
@@ -51,13 +64,15 @@ export class TransactionWatcherService {
         }
     }
 
-    async subscribeAddress(address: string): Promise<void> {
+    async subscribeAddress(address: string): Promise<string> {
         this.ws.send(
             JSON.stringify({
                 op: "addr_sub",
                 add: address,
             }),
         );
+
+        return address;
     }
 
     async unsubscribeAddress(address: string): Promise<void> {

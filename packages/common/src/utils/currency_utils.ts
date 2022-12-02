@@ -1,7 +1,7 @@
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { validate } from "./wav";
+import {validate} from "./wav";
 
 const btcTxRegex = /^[a-fA-F0-9]{64}$/;
 const ethTxRegex = /^0x([A-Fa-f0-9]{64})$/;
@@ -27,3 +27,9 @@ export function normalizeCurrency(amount: number): string {
 
     return amountString;
 }
+
+type ISOCode = "ETH" | "BTC";
+export const typeToISOCode: { [key in CurrencyType]: ISOCode } = {
+    [CurrencyType.ETHEREUM]: "ETH",
+    [CurrencyType.BITCOIN]: "BTC",
+};

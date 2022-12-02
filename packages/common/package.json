@@ -13,6 +13,7 @@
         "@nestjs/core": "^9.0.0",
         "dotenv": "^16.0.3",
         "node-fetch": "^2.6.7",
+        "nodemailer": "^6.8.0",
         "typeorm": "^0.3.9",
         "wallet-address-validator": "^0.2.4",
         "yup": "^0.32.11"
@@ -20,6 +21,7 @@
     "devDependencies": {
         "@types/jest": "^28.1.4",
         "@types/node-fetch": "^2.6.2",
+        "@types/nodemailer": "^6.4.6",
         "jest": "^28.1.2",
         "ts-jest": "^28.0.5",
         "ts-node": "^10.9.1",

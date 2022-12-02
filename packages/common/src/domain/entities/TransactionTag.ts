@@ -14,6 +14,10 @@ export class TransactionTag {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    @ManyToMany(() => Transaction, (transaction) => transaction.tags, {onUpdate: "CASCADE", onDelete: "CASCADE", eager: true})
+    @ManyToMany(() => Transaction, (transaction) => transaction.tags, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+        eager: true,
+    })
     transactions: Transaction[];
 }

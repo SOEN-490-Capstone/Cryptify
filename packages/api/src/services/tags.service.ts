@@ -6,7 +6,8 @@ import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_reque
 import {
     ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_TAG_NAME_ALREADY_EXIST,
-    ERROR_TAG_NOT_FOUND, ERROR_TRANSACTIONS_NOT_FOUND
+    ERROR_TAG_NOT_FOUND,
+    ERROR_TRANSACTIONS_NOT_FOUND,
 } from "@cryptify/common/src/errors/error_messages";
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 import { DeleteTagRequest } from "@cryptify/common/src/requests/delete_tag_request";
@@ -23,8 +24,8 @@ export class TagsService {
 
     async findAll(userId: number): Promise<TransactionTag[]> {
         return this.tagRepository.find({
-            where: { userId},
-            order: { tagName: "ASC" }
+            where: { userId },
+            order: { tagName: "ASC" },
         });
     }
 
@@ -41,8 +42,8 @@ export class TagsService {
         const userId = updateTagNameRequest.userId;
         const currentName = updateTagNameRequest.currentName;
         const newName = updateTagNameRequest.newName;
-        const addTransactions: number[] = updateTagNameRequest.addTransactions ??= [];
-        const removeTransactions: number[] = updateTagNameRequest.removeTransactions ??= [];
+        const addTransactions: number[] = (updateTagNameRequest.addTransactions ??= []);
+        const removeTransactions: number[] = (updateTagNameRequest.removeTransactions ??= []);
         let transactionTag: TransactionTag;
 
         transactionTag = await this.tagRepository.findOne({ where: { userId, tagName: currentName } });
@@ -73,7 +74,9 @@ export class TagsService {
         }
 
         if (removeTransactions.length > 0) {
-            const transactionsAfterRemove = transactionTag.transactions.filter((transaction) => !removeTransactions.includes(transaction.id));
+            const transactionsAfterRemove = transactionTag.transactions.filter(
+                (transaction) => !removeTransactions.includes(transaction.id),
+            );
             transactionTag.transactions = [...transactionsAfterRemove];
         }
 
@@ -82,7 +85,6 @@ export class TagsService {
         return transactionTag;
     }
 
-    // TODO: Fix foreign key constraint when deleting a tag that is associated to a transaction
     async delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag> {
         const userId = deleteTagRequest.id;
         const tagName = deleteTagRequest.name;

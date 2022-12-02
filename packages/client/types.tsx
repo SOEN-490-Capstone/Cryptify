@@ -31,12 +31,12 @@ type TransactionDetailsProps = {
 
 type TransactionTagsScreenProps = {
     transaction: Transaction;
-}
+};
 
 type AddTransactionTagsScreenProps = {
     transaction: Transaction;
     allTags: TransactionTag[];
-}
+};
 
 type WalletOverviewScreenProps = {
     title: string;

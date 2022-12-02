@@ -6,7 +6,6 @@ import { Alert, StyleSheet } from "react-native";
 import { Formik, FormikHelpers } from "formik";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
-import * as yup from "yup";
 
 export default function EditTagScreen({ navigation, route }: SettingsStackScreenProps<"EditTagScreen">) {
     const tagsGateway = new TagsGateway();

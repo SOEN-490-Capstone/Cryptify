@@ -108,11 +108,11 @@ export function TransactionDetails({ transaction, walletAddress, navigation }: P
                 </Box>
                 <Box style={styles.subItemWrapper}>
                     <Pressable
-                      onPress={() =>
-                        navigation.navigate("TransactionTagsScreen", {
-                            transaction: transaction,
-                        })
-                      }
+                        onPress={() =>
+                            navigation.navigate("TransactionTagsScreen", {
+                                transaction: transaction,
+                            })
+                        }
                     >
                         <Text>Tags</Text>
                     </Pressable>

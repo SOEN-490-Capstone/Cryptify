@@ -6,9 +6,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import {EmailNotificationService} from "@cryptify/common/src/utils/notifications/email_notification_service";
-import {NotificationService} from "@cryptify/common/src/utils/notifications/notification_service";
-import {getCurrencyType} from "@cryptify/common/src/utils/currency_utils";
+import { EmailNotificationService } from "@cryptify/common/src/utils/notifications/email_notification_service";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 @Injectable()
 export class TransactionWatcherService {
@@ -33,7 +32,7 @@ export class TransactionWatcherService {
 
         this.ws.send(
             JSON.stringify({
-              "op": "ping_tx"
+                op: "ping_tx",
             }),
         );
     }

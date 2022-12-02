@@ -10,7 +10,7 @@ import RowItem from "../components/RowItem";
 import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Copy } from "../components/Copy";
-import {typeToISOCode} from "@cryptify/common/src/utils/currency_utils";
+import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletQRCodeScreen">,

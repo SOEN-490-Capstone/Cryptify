@@ -1,9 +1,9 @@
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import Web3 from "web3";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {faEthereum} from "../components/icons/brands/faEthereum";
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
-import {faBitcoin} from "../components/icons/brands/faBitcoin";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { faEthereum } from "../components/icons/brands/faEthereum";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faBitcoin } from "../components/icons/brands/faBitcoin";
 
 export function getWalletsTotal(wallets: WalletWithBalance[], type: CurrencyType): string {
     // After summing all the wallets together as a single BigNumber convert

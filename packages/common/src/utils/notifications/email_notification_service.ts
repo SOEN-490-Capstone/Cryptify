@@ -1,25 +1,24 @@
-import { NotificationService } from "@cryptify/common/src/utils/notifications/notification_service";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import nodemailer from "nodemailer";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
-import { formatAddress } from "@cryptify/common/src/utils/address_utils";
+import {
+    AbstractNotificationServiceTemplateMethod,
+    Notification,
+} from "@cryptify/common/src/utils/notifications/abstract_notification_service_template_method";
 
 @Injectable()
-export class EmailNotificationService implements NotificationService {
+export class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
     private readonly transporter: nodemailer.Transporter;
+    private readonly from: string = "noreply@cryptify.com";
 
     constructor(
         private readonly configService: ConfigService,
-        @InjectRepository(Wallet)
-        private readonly walletsRepository: Repository<Wallet>,
+        @InjectRepository(Wallet) walletsRepository: Repository<Wallet>,
     ) {
+        super(walletsRepository);
         this.transporter = nodemailer.createTransport({
             host: configService.get<string>("NODEMAILER_HOST"),
             port: +configService.get<number>("NODEMAILER_PORT"),
@@ -30,37 +29,12 @@ export class EmailNotificationService implements NotificationService {
         });
     }
 
-    async sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void> {
-        await Promise.all(
-            transactions.map(async (transaction) => {
-                const keys = ["walletOut", "walletIn"] as const;
-                keys.map(async (key) => {
-                    const wallets = await this.walletsRepository.find({
-                        where: { address: transaction[key] },
-                        relations: { user: true },
-                    });
-
-                    const subject =
-                        key === "walletOut" ? `${titleCase(currencyType)} Sent` : `${titleCase(currencyType)} Received`;
-                    wallets.map(async (wallet) => {
-                        const text =
-                            key === "walletOut"
-                                ? `You sent ${transaction.amount} ${typeToISOCode[currencyType]} to ${formatAddress(
-                                      transaction.walletIn,
-                                  )} from ${wallet.name}`
-                                : `You received ${transaction.amount} ${
-                                      typeToISOCode[currencyType]
-                                  } from ${formatAddress(transaction.walletOut)} to ${wallet.name}`;
-
-                        this.transporter.sendMail({
-                            from: "noreply@cryptify.com",
-                            to: wallet.user.email,
-                            subject,
-                            text,
-                        });
-                    });
-                });
-            }),
-        );
+    protected async sendNotification(notification: Notification): Promise<void> {
+        await this.transporter.sendMail({
+            from: this.from,
+            to: notification.to,
+            subject: notification.title,
+            text: notification.body,
+        });
     }
 }

@@ -4,30 +4,34 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { WalletsController } from "../../../src/controllers/wallets.controller";
 import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
+import { User } from "@cryptify/common/src/domain/entities/user";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
     let fakeWalletsService: Partial<WalletsService>;
 
-    const createWalletReq = {
+    const createWalletReq: CreateWalletRequest = {
         userId: 1,
         address: "address",
         name: "Andre",
         currencyType: CurrencyType.ETHEREUM,
     };
 
-    const user = {
+    const user: User = {
         id: 1,
         firstName: "fname",
         lastName: "lname",
         email: "email@email.com",
         password: "",
+        areNotificationsEnabled: false,
         createdAt: new Date(),
         wallets: [],
         tags: [],
     };
 
-    const transaction = {
+    const transaction: Transaction = {
         id: 1,
         transactionAddress: "string",
         walletIn: "string",

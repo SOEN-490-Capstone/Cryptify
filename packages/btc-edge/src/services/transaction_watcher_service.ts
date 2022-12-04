@@ -6,6 +6,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { EmailNotificationService } from "@cryptify/common/src/utils/notifications/email_notification_service";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 @Injectable()
 export class TransactionWatcherService {
@@ -17,6 +19,7 @@ export class TransactionWatcherService {
         @InjectRepository(Transaction)
         private readonly transactionsRepository: Repository<Transaction>,
         private readonly soChainGateway: SoChainGateway,
+        private readonly notificationService: EmailNotificationService,
     ) {}
 
     @OnOpen()
@@ -43,6 +46,9 @@ export class TransactionWatcherService {
                 const txAddress = (res as WSTransaction).x.hash;
                 const transactions = await this.soChainGateway.getTransactionsByTxAddress(txAddress);
                 await this.transactionsRepository.save(transactions);
+
+                // Asynchronously send the notification to the users
+                this.notificationService.sendTransactionNotifications(transactions, getCurrencyType(txAddress));
                 return;
             } catch (_) {
                 // In the case that the set delay was not enough to avoid a system failure we will

@@ -4,13 +4,13 @@ import { Text, HStack, Center, VStack } from "native-base";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { typeToISOCode } from "../services/currency_service";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import RowItem from "../components/RowItem";
 import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Copy } from "../components/Copy";
+import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletQRCodeScreen">,

@@ -93,9 +93,7 @@ export class TagsService {
             transactionTag.transactions = [...transactionsAfterRemove];
         }
 
-        transactionTag = await this.tagRepository.save(transactionTag);
-
-        return transactionTag;
+        return await this.tagRepository.save(transactionTag);
     }
 
     async delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag> {

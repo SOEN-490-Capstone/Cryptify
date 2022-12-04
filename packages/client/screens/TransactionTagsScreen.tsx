@@ -21,7 +21,6 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
         ...props.route.params.transaction.tags,
     ]);
     const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<TransactionTag[]>([]);
-    const [isAddTag, setIsAddTag] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         (async () => {
@@ -35,8 +34,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
     }, []);
 
     function removeTransactionTag(tag: TransactionTag) {
-        setIsAddTag(false);
-        updateTransactionTag(tag).then((updatedTag) => {
+        updateTransactionTag(tag, false).then((updatedTag) => {
             const updatedTransactionTags = transactionTags.filter((t) => t.tagName !== updatedTag.tagName);
 
             props.route.params.setTransaction({
@@ -50,8 +48,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
     }
 
     function addTransactionTag(tag: TransactionTag) {
-        setIsAddTag(true);
-        updateTransactionTag(tag).then((updatedTag) => {
+        updateTransactionTag(tag, true).then((updatedTag) => {
             props.route.params.setTransaction({
                 ...transaction,
                 tags: [...transaction.tags, updatedTag],
@@ -62,7 +59,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
         });
     }
 
-    async function updateTransactionTag(tag: TransactionTag): Promise<TransactionTag> {
+    async function updateTransactionTag(tag: TransactionTag, isAddTag: boolean): Promise<TransactionTag> {
         return await tagsGateway.updateTag(
             {
                 userId: user.id,

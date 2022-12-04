@@ -17,7 +17,6 @@ export class TransactionTag {
     @ManyToMany(() => Transaction, (transaction) => transaction.tags, {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
-        eager: true,
     })
     transactions: Transaction[];
 }

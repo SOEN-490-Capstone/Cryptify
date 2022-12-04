@@ -30,12 +30,22 @@ export class TagsService {
     }
 
     async create(req: CreateTagRequest): Promise<TransactionTag> {
-        if (await this.tagRepository.findOneBy(req)) {
+        const userId = req.userId;
+        const tagName = req.tagName;
+        const transactionIds: number[] = (req.transactionIds ??= []);
+
+        if (await this.tagRepository.findOneBy({ userId, tagName })) {
             throw new BadRequestException(ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
-        const tag = this.tagRepository.create(req);
-        await this.tagRepository.insert(tag);
-        return this.tagRepository.findOneBy(tag);
+
+        const transactions = await this.transactionRepository.findBy({ id: In(transactionIds) });
+
+        if (transactionIds.length !== transactions.length) {
+            throw new BadRequestException(ERROR_TRANSACTIONS_NOT_FOUND);
+        }
+
+        const tag = this.tagRepository.create({ userId, tagName, transactions });
+        return await this.tagRepository.save(tag);
     }
 
     async update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag> {
@@ -46,7 +56,10 @@ export class TagsService {
         const removeTransactions: number[] = (updateTagNameRequest.removeTransactions ??= []);
         let transactionTag: TransactionTag;
 
-        transactionTag = await this.tagRepository.findOne({ where: { userId, tagName: currentName } });
+        transactionTag = await this.tagRepository.findOne({
+            where: { userId, tagName: currentName },
+            relations: ["transactions"],
+        });
 
         if (!transactionTag) {
             throw new BadRequestException(ERROR_TAG_NOT_FOUND);

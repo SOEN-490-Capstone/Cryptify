@@ -14,11 +14,12 @@ import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     transaction: Transaction;
+    setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
     walletAddress: string;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionDetails({ transaction, walletAddress, navigation }: Props) {
+export function TransactionDetails({ transaction, setTransaction, walletAddress, navigation }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
 
     const copyToClipboard = async (valueToCopy: string) => {
@@ -111,6 +112,7 @@ export function TransactionDetails({ transaction, walletAddress, navigation }: P
                         onPress={() =>
                             navigation.navigate("TransactionTagsScreen", {
                                 transaction: transaction,
+                                setTransaction: setTransaction,
                             })
                         }
                     >

@@ -61,6 +61,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             "WalletOverviewScreen",
             "WalletDetailsScreen",
             "TransactionTagsScreen",
+            "AddTransactionTagsScreen",
         ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
@@ -160,12 +161,23 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={AddTransactionTagsScreen}
                 options={{
                     headerTintColor: "#404040",
+                    title: "",
                     headerTitleStyle: {
                         fontSize: 17,
                         fontWeight: "600",
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
+                    // TODO refactor to reduce code duplication and unify with other screens
+                    headerLeft: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farArrowLeft} color="#404040" size={22} />
+                        </Pressable>
+                    ),
                 }}
             />
             <HomeStack.Screen

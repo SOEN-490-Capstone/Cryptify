@@ -9,68 +9,67 @@ import { TagsGateway } from "../gateways/tags_gateway";
 import { HomeStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";
 import { farXMark } from "../components/icons/regular/farXMark";
+import SortService from "../services/sort_service";
 
 export default function TransactionTagsScreen(props: HomeStackScreenProps<"TransactionTagsScreen">) {
-    const { transaction } = props.route.params;
-
     const tagsGateway = new TagsGateway();
 
+    const transaction = props.route.params.transaction;
     const { token, user } = React.useContext(AuthContext);
 
-    const [allUserTags, setAllUserTags] = React.useState<TransactionTag[]>([]);
-    const [allTags, setAllTags] = React.useState<TransactionTag[]>([]);
-    const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([]);
-    let addTransactions: number[] = [];
-    let removeTransactions: number[] = [];
+    const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([
+        ...props.route.params.transaction.tags,
+    ]);
+    const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<TransactionTag[]>([]);
+    const [isAddTag, setIsAddTag] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         (async () => {
             const tags = await tagsGateway.findAllTags({ id: user.id }, token);
-            setAllUserTags(tags);
 
-            // TODO: This is a hack to get the tags associated to the transaction to show up on the screen
-            //       refactor when the transaction details screen is refactored with getting the transaction
-            //       from the backend on screen load instead of obtaining the transaction info when the
-            //       overview screen is loaded.
-            const transactionTags: TransactionTag[] = [];
-            tags.filter((tag) => tag.transactions.some((t) => t.id === transaction.id)).forEach((tag) => {
-                transactionTags.push(tag);
-            });
-            setTransactionTags(transactionTags);
-
-            // TODO: refactor by getting the difference between the transaction tags and all user tags
-            const allTags: TransactionTag[] = [];
-            tags.filter((tag) => tag.transactions.every((t) => t.id !== transaction.id)).forEach((tag) => {
-                allTags.push(tag);
-            });
-            setAllTags(allTags);
+            const transactionTagsNotAdded = tags.filter(
+                (tag) => !transactionTags.some((t) => t.tagName === tag.tagName),
+            );
+            setTransactionTagsNotAdded(transactionTagsNotAdded);
         })();
     }, []);
 
     function removeTransactionTag(tag: TransactionTag) {
-        removeTransactions = [transaction.id];
-        updateTransactionTag(tag).then(() => {
-            setTransactionTags(transactionTags.filter((t) => t !== tag));
-            setAllTags([...allTags, tag].sort((a, b) => (a.tagName > b.tagName ? 1 : -1)));
+        setIsAddTag(false);
+        updateTransactionTag(tag).then((updatedTag) => {
+            const updatedTransactionTags = transactionTags.filter((t) => t.tagName !== updatedTag.tagName);
+
+            props.route.params.setTransaction({
+                ...transaction,
+                tags: updatedTransactionTags,
+            });
+
+            setTransactionTags(updatedTransactionTags);
+            setTransactionTagsNotAdded([...transactionTagsNotAdded, updatedTag]);
         });
     }
 
     function addTransactionTag(tag: TransactionTag) {
-        addTransactions = [transaction.id];
-        updateTransactionTag(tag).then(() => {
-            setTransactionTags([...transactionTags, tag].sort((a, b) => (a.tagName > b.tagName ? 1 : -1)));
-            setAllTags(allTags.filter((t) => t !== tag));
+        setIsAddTag(true);
+        updateTransactionTag(tag).then((updatedTag) => {
+            props.route.params.setTransaction({
+                ...transaction,
+                tags: [...transaction.tags, updatedTag],
+            });
+
+            setTransactionTags([...transactionTags, updatedTag]);
+            setTransactionTagsNotAdded(transactionTagsNotAdded.filter((t) => t.tagName !== updatedTag.tagName));
         });
     }
 
-    async function updateTransactionTag(tag: TransactionTag): Promise<void> {
-        await tagsGateway.updateTag(
+    async function updateTransactionTag(tag: TransactionTag): Promise<TransactionTag> {
+        return await tagsGateway.updateTag(
             {
                 userId: user.id,
                 currentName: tag.tagName,
                 newName: undefined,
-                addTransactions: addTransactions,
-                removeTransactions: removeTransactions,
+                addTransactions: isAddTag ? [transaction.id] : undefined,
+                removeTransactions: !isAddTag ? [transaction.id] : undefined,
             },
             token,
         );
@@ -79,14 +78,14 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
-                <VStack space={"20px"} paddingBottom={"2px"}>
+                <VStack space={"20px"}>
                     <Text fontWeight={"semibold"} size={"title3"}>
                         Tags for This Transaction
                     </Text>
-                    <HStack flexWrap={"wrap"} space={"13px"}>
+                    <HStack flexWrap={"wrap"} style={styles.tagsAdded}>
                         {transactionTags.length != 0 && (
                             <>
-                                {transactionTags.map((tag, i) => (
+                                {SortService.sortTransactionTagsAlphabetically(transactionTags).map((tag, i) => (
                                     // TODO create a component and use it for both tags list
                                     <Pressable
                                         onPress={() => removeTransactionTag(tag)}
@@ -111,7 +110,11 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                                     onPress={() =>
                                         props.navigation.navigate("AddTransactionTagsScreen", {
                                             transaction: transaction,
-                                            allTags: allUserTags,
+                                            setTransaction: props.route.params.setTransaction,
+                                            transactionTags: transactionTags,
+                                            setTransactionTags: setTransactionTags,
+                                            transactionTagsNotAdded: transactionTagsNotAdded,
+                                            setTransactionTagsNotAdded: setTransactionTagsNotAdded,
                                         })
                                     }
                                     rounded="md"
@@ -132,36 +135,38 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                         )}
                     </HStack>
                 </VStack>
-                {allTags.length != 0 && (
+                {transactionTagsNotAdded.length != 0 && (
                     <>
-                        <VStack space={"20px"} marginTop={"40px"} paddingBottom={15}>
+                        <VStack space={"20px"} style={styles.allTags}>
                             <Text fontWeight={"semibold"} size={"title3"}>
                                 All Tags
                             </Text>
-                            <HStack flexWrap={"wrap"} space={"13px"}>
-                                {allTags.map((tag, i) => (
-                                    // TODO create a component and use it for both tags list
-                                    <Pressable
-                                        onPress={() => {
-                                            if (transactionTags.length < 10) {
-                                                addTransactionTag(tag);
-                                            }
-                                        }}
-                                        rounded="md"
-                                        backgroundColor="gray.100"
-                                        style={styles.badge}
-                                        key={i}
-                                    >
-                                        <HStack space={"10px"} style={styles.badgeContent}>
-                                            <Text size={"subheadline"} fontWeight={"semibold"}>
-                                                {tag.tagName}
-                                            </Text>
-                                            {transactionTags.length < 10 && (
-                                                <FontAwesomeIcon icon={farPlus} size={14} color="#404040" />
-                                            )}
-                                        </HStack>
-                                    </Pressable>
-                                ))}
+                            <HStack flexWrap={"wrap"}>
+                                {SortService.sortTransactionTagsAlphabetically(transactionTagsNotAdded).map(
+                                    (tag, i) => (
+                                        // TODO create a component and use it for both tags list
+                                        <Pressable
+                                            onPress={() => {
+                                                if (transactionTags.length < 10) {
+                                                    addTransactionTag(tag);
+                                                }
+                                            }}
+                                            rounded="md"
+                                            backgroundColor="gray.100"
+                                            style={styles.badge}
+                                            key={i}
+                                        >
+                                            <HStack space={"10px"} style={styles.badgeContent}>
+                                                <Text size={"subheadline"} fontWeight={"semibold"}>
+                                                    {tag.tagName}
+                                                </Text>
+                                                {transactionTags.length < 10 && (
+                                                    <FontAwesomeIcon icon={farPlus} size={14} color="#404040" />
+                                                )}
+                                            </HStack>
+                                        </Pressable>
+                                    ),
+                                )}
                             </HStack>
                         </VStack>
                     </>
@@ -182,6 +187,7 @@ const styles = StyleSheet.create({
     badge: {
         paddingHorizontal: 15,
         paddingVertical: 8,
+        marginRight: 13,
         marginBottom: 13,
         justifyContent: "center",
     },
@@ -194,5 +200,12 @@ const styles = StyleSheet.create({
     },
     badgeContent: {
         alignItems: "center",
+    },
+    allTags: {
+        marginTop: 40,
+        paddingBottom: 15,
+    },
+    tagsAdded: {
+        marginBottom: -13,
     },
 });

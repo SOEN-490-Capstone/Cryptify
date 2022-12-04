@@ -5,6 +5,9 @@ import { TransactionDetails } from "../components/TransactionDetails";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
+import { TransactionsGateway } from "../gateways/transactions_gateway";
+import { AuthContext } from "../components/contexts/AuthContext";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 export default function TransactionDetailsScreen(
     props: CompositeScreenProps<
@@ -12,11 +15,25 @@ export default function TransactionDetailsScreen(
         SettingsStackScreenProps<"TransactionDetailsScreen">
     >,
 ) {
+    const transactionGateway = new TransactionsGateway();
+
+    const { token, user } = React.useContext(AuthContext);
+
+    const [transaction, setTransaction] = React.useState<Transaction>(props.route.params.transaction);
+
+    React.useEffect(() => {
+        (async () => {
+            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
+            setTransaction(transactions.filter((t) => t.id === props.route.params.transaction.id)[0]);
+        })();
+    }, []);
+
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
                 <TransactionDetails
-                    transaction={props.route.params.transaction}
+                    transaction={transaction}
+                    setTransaction={setTransaction}
                     walletAddress={props.route.params.walletAddress}
                     navigation={props.navigation}
                 />

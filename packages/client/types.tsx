@@ -31,11 +31,16 @@ type TransactionDetailsProps = {
 
 type TransactionTagsScreenProps = {
     transaction: Transaction;
+    setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
 };
 
 type AddTransactionTagsScreenProps = {
     transaction: Transaction;
-    allTags: TransactionTag[];
+    setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
+    transactionTags: TransactionTag[];
+    setTransactionTags: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
+    transactionTagsNotAdded: TransactionTag[];
+    setTransactionTagsNotAdded: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
 };
 
 type WalletOverviewScreenProps = {

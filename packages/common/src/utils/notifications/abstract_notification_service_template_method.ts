@@ -21,6 +21,9 @@ export abstract class AbstractNotificationServiceTemplateMethod {
                     });
 
                     wallets.map(async (wallet) => {
+                        if (!wallet.user.areNotificationsEnabled) {
+                            return;
+                        }
                         // After all the processing is done to build the standard transaction notification we then
                         // delegate the actual sending of the notification to a concrete implementation using the
                         // template method design pattern. This allows us to centralize all the pre-processing and

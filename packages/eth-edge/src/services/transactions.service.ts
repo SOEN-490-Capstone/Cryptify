@@ -8,6 +8,8 @@ import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activ
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
+import { EmailNotificationService } from "@cryptify/common/src/utils/notifications/email_notification_service";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 @Injectable()
 export class TransactionsService {
@@ -19,6 +21,7 @@ export class TransactionsService {
         private walletsService: WalletsService,
         @InjectRepository(Wallet)
         private walletsRepository: Repository<Wallet>,
+        private readonly notificationService: EmailNotificationService,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
@@ -56,6 +59,17 @@ export class TransactionsService {
         // transactions which can occur if the other wallet involved in a transaction
         // has already been processed by the system
         await this.transactionsRepository.save(transactions);
+
+        // Asynchronously send the notification to the users
+        Promise.all(
+            transactions.map(
+                async (transaction) =>
+                    await this.notificationService.sendTransactionNotifications(
+                        [transaction],
+                        getCurrencyType(transaction.transactionAddress),
+                    ),
+            ),
+        );
     }
 
     async findAll(userId: number): Promise<Transaction[]> {

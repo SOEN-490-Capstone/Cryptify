@@ -19,7 +19,7 @@ export class User {
     @Column({ nullable: false })
     password: string;
 
-    @Column({nullable: false, default: false })
+    @Column({ nullable: false, default: false })
     areNotificationsEnabled: boolean;
 
     @CreateDateColumn({ type: "timestamp" })

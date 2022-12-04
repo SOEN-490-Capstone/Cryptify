@@ -10,12 +10,13 @@ describe("UsersController", () => {
     let fakeUsersService: Partial<UsersService>;
     let fakeUserRepository: Partial<Repository<User>>;
 
-    const user = {
+    const user: User = {
         id: 1,
         firstName: "fname",
         lastName: "lname",
         email: "email@email.com",
         password: "",
+        areNotificationsEnabled: false,
         createdAt: new Date(),
         wallets: [],
         tags: [],

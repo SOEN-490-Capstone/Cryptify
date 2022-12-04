@@ -4,6 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { WalletsController } from "../../../src/controllers/wallets.controller";
 import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
+import {User} from "@cryptify/common/src/domain/entities/user";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
@@ -16,12 +17,13 @@ describe("WalletsController", () => {
         currencyType: CurrencyType.ETHEREUM,
     };
 
-    const user = {
+    const user: User = {
         id: 1,
         firstName: "fname",
         lastName: "lname",
         email: "email@email.com",
         password: "",
+        areNotificationsEnabled: false,
         createdAt: new Date(),
         wallets: [],
         tags: [],
@@ -41,7 +43,7 @@ describe("WalletsController", () => {
         address: "string",
         userId: 1,
         name: "Andre",
-        user: user,
+        user,
         currencyType: CurrencyType.ETHEREUM,
         transactions: [transaction],
         balance: "111",

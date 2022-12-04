@@ -4,7 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { WalletsController } from "../../../src/controllers/wallets.controller";
 import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
-import {User} from "@cryptify/common/src/domain/entities/user";
+import { User } from "@cryptify/common/src/domain/entities/user";
 
 describe("WalletsController", () => {
     let controller: WalletsController;

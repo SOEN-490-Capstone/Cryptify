@@ -32,6 +32,7 @@ describe("Users", () => {
                 lastName: "Doe",
                 email: "john@example.com",
                 password: "$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22",
+                areNotificationsEnabled: false,
                 createdAt: "2022-10-20T20:12:19.693Z",
             });
         });

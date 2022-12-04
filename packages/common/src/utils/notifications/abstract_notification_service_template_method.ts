@@ -7,30 +7,23 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Repository } from "typeorm";
 
 export abstract class AbstractNotificationServiceTemplateMethod {
+    private static readonly keys = ["walletOut", "walletIn"] as const;
+
     protected constructor(private readonly walletsRepository: Repository<Wallet>) {}
 
     async sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void> {
         await Promise.all(
             transactions.map(async (transaction) => {
-                const keys = ["walletOut", "walletIn"] as const;
-                keys.map(async (key) => {
+                AbstractNotificationServiceTemplateMethod.keys.map(async (key) => {
                     const wallets = await this.walletsRepository.find({
                         where: { address: transaction[key] },
                         relations: { user: true },
                     });
 
-                    const title =
-                        key === "walletOut" ? `${titleCase(currencyType)} Sent` : `${titleCase(currencyType)} Received`;
                     wallets.map(async (wallet) => {
-                        const body =
-                            key === "walletOut"
-                                ? `You sent ${transaction.amount} ${typeToISOCode[currencyType]} to ${formatAddress(
-                                      transaction.walletIn,
-                                  )} from ${wallet.name}`
-                                : `You received ${transaction.amount} ${
-                                      typeToISOCode[currencyType]
-                                  } from ${formatAddress(transaction.walletOut)} to ${wallet.name}`;
-
+                        if (!wallet.user.areNotificationsEnabled) {
+                            return;
+                        }
                         // After all the processing is done to build the standard transaction notification we then
                         // delegate the actual sending of the notification to a concrete implementation using the
                         // template method design pattern. This allows us to centralize all the pre-processing and
@@ -40,8 +33,8 @@ export abstract class AbstractNotificationServiceTemplateMethod {
                         // for that platform
                         await this.sendNotification({
                             to: wallet.user.email,
-                            title,
-                            body,
+                            title: this.getTitle(key, currencyType),
+                            body: this.getBody(key, wallet, transaction, currencyType),
                         });
                     });
                 });
@@ -50,6 +43,30 @@ export abstract class AbstractNotificationServiceTemplateMethod {
     }
 
     protected abstract sendNotification(notification: Notification): Promise<void>;
+
+    private getBody(
+        key: "walletOut" | "walletIn",
+        wallet: Wallet,
+        transaction: Transaction,
+        currencyType: CurrencyType,
+    ): string {
+        const amount = `${transaction.amount} ${typeToISOCode[currencyType]}`;
+        switch (key) {
+            case "walletIn":
+                return `You received ${amount} from ${formatAddress(transaction.walletOut)} to ${wallet.name}`;
+            case "walletOut":
+                return `You sent ${amount} to ${formatAddress(transaction.walletIn)} from ${wallet.name}`;
+        }
+    }
+
+    private getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string {
+        switch (key) {
+            case "walletIn":
+                return `${titleCase(currencyType)} Received`;
+            case "walletOut":
+                return `${titleCase(currencyType)} Sent`;
+        }
+    }
 }
 
 export interface Notification {

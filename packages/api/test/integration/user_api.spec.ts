@@ -40,10 +40,13 @@ describe("Users", () => {
 
     describe("PATCH /users/:id", () => {
         it("should return an updated user", async () => {
-            const res = await agent(app.getHttpServer()).patch("/users/1").set("Authorization", `Bearer ${token}`).send({
-                userId: 1,
-                areNotificationsEnabled: true,
-            });
+            const res = await agent(app.getHttpServer())
+                .patch("/users/1")
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    userId: 1,
+                    areNotificationsEnabled: true,
+                });
 
             expect(res.status).toEqual(200);
             expect(res.body).toEqual({

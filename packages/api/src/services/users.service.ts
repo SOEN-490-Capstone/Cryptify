@@ -37,7 +37,7 @@ export class UsersService {
         if (!user) {
             throw new BadRequestException("User not found");
         }
-        
+
         if (updateUserRequest.firstName) {
             user.firstName = updateUserRequest.firstName;
         }

@@ -7,12 +7,12 @@ import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_req
 import { updateUserSchema } from "@cryptify/common/src/validations/update_user_schema";
 import { User } from "@cryptify/common/src/domain/entities/user";
 
-@Controller("users")
+@Controller()
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @UseGuards(JwtAuthGuard)
-    @Get("/whoami")
+    @Get("/users/whoami")
     async whoami(@Request() req): Promise<User> {
         const user = await this.usersService.findOneById(req.user.id);
 
@@ -25,7 +25,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Patch("/users/:id")
-    async create(@Body() body: UpdateUserRequest): Promise<User> {
+    async update(@Body() body: UpdateUserRequest): Promise<User> {
         const updateUserRequest = await useValidate(updateUserSchema, body);
         return this.usersService.update(updateUserRequest);
     }

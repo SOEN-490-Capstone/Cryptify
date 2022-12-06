@@ -38,6 +38,29 @@ describe("Users", () => {
         });
     });
 
+    describe("PATCH /users/:id", () => {
+        it("should return an updated user", async () => {
+            const res = await agent(app.getHttpServer())
+                .patch("/users/1")
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    userId: 1,
+                    areNotificationsEnabled: true,
+                });
+
+            expect(res.status).toEqual(200);
+            expect(res.body).toEqual({
+                id: 1,
+                firstName: "John",
+                lastName: "Doe",
+                email: "john@example.com",
+                password: "$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22",
+                areNotificationsEnabled: true,
+                createdAt: "2022-10-20T20:12:19.693Z",
+            });
+        });
+    });
+
     afterAll(async () => {
         await app.close();
     });

@@ -5,7 +5,7 @@ export async function seedDB() {
     const dataSource = await new DataSource(dataSourceOptionsProcess(process)).initialize();
 
     await dataSource.manager.query(`
-        INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457');
+        INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt", "areNotificationsEnabled") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457', 'false');
     `);
 
     await dataSource.manager.query(`

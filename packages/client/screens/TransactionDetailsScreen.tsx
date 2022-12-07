@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { TransactionDetails } from "../components/TransactionDetails";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
@@ -18,15 +18,18 @@ export default function TransactionDetailsScreen(
     const transactionGateway = new TransactionsGateway();
 
     const { token, user } = React.useContext(AuthContext);
+    const isFocused = useIsFocused();
 
     const [transaction, setTransaction] = React.useState<Transaction>(props.route.params.transaction);
 
     React.useEffect(() => {
-        (async () => {
-            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            setTransaction(transactions.filter((t) => t.id === props.route.params.transaction.id)[0]);
-        })();
-    }, []);
+        if (isFocused) {
+            (async () => {
+                const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
+                setTransaction(transactions.filter((t) => t.id === props.route.params.transaction.id)[0]);
+            })();
+        }
+    }, [isFocused]);
 
     return (
         <View style={styles.view}>

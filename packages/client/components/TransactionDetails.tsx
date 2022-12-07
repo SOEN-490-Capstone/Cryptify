@@ -8,7 +8,7 @@ import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
 import { farCopy } from "./icons/regular/farCopy";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount } from "../services/currency_service";
-import { formatAddress } from "../services/address_service";
+import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {

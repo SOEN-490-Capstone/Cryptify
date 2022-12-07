@@ -13,11 +13,11 @@ import { AuthContext } from "../components/contexts/AuthContext";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
-import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
+import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,

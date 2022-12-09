@@ -8,6 +8,7 @@ import { SettingsStackScreenProps } from "../types";
 import { falWallet } from "../components/icons/light/falWallet";
 import SignOutButton from "../components/SignOutButton";
 import { falTags } from "../components/icons/light/falTags";
+import { falBell } from "../components/icons/light/falBell";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (
@@ -42,6 +43,20 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     <HStack height="50px" alignItems="center">
                         <FontAwesomeIcon icon={falTags} style={styles.icon} size={26} />
                         <Text style={styles.buttonText}>Tags</Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <Pressable
+                    onPress={() => navigation.navigate("NotificationsScreen")}
+                    style={styles.button}
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                    testID="tagsButton"
+                >
+                    <HStack height="50px" alignItems="center">
+                        <FontAwesomeIcon icon={falBell} style={styles.icon} size={26} />
+                        <Text style={styles.buttonText}>Notifications</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>

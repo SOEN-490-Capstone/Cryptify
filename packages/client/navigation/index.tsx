@@ -43,6 +43,7 @@ import TagsSettingsScreen from "../screens/TagsSettingsScreen";
 import AddTagsScreen from "../screens/AddTagsScreen";
 import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -392,6 +393,20 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={EditTagScreen}
                 options={{
                     title: "",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="NotificationsScreen"
+                component={NotificationsScreen}
+                options={{
+                    title: "Notifications",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

@@ -47,7 +47,7 @@ export class UsersService {
         if (updateUserRequest.password) {
             user.password = updateUserRequest.password;
         }
-        if (updateUserRequest.areNotificationsEnabled) {
+        if (updateUserRequest.areNotificationsEnabled != null) {
             user.areNotificationsEnabled = updateUserRequest.areNotificationsEnabled;
         }
 

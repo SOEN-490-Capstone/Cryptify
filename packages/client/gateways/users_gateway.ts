@@ -18,14 +18,12 @@ export class UsersGateway extends AbstractApiGateway {
     }
 
     async update(req: UpdateUserRequest, token: string): Promise<User> {
-
-        const path = `users/${req.userId}`
+        const path = `users/${req.userId}`;
 
         const headers = {
             Authorization: `Bearer ${token}`,
         };
 
         return this.request<User>(Method.PATCH, headers, path, req);
-
-    } 
+    }
 }

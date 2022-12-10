@@ -18,6 +18,7 @@ type Props = {
 
 export function TransactionDetails({ transaction, walletAddress }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
+    const currencyTypeCheck = getCurrencyType(transaction.transactionAddress) == "BITCOIN";
 
     const copyToClipboard = async (valueToCopy: string) => {
         await Clipboard.setStringAsync(valueToCopy);
@@ -56,6 +57,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                 <Box>
                     <Text size={"subheadline"} color="text.500">
                         Transaction ID
+                        
                     </Text>
                     <HStack space="10px">
                         <Text style={styles.elementInformationText}>{transaction.transactionAddress}</Text>
@@ -73,6 +75,12 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                             </Text>
                         </Badge>
                     </HStack>
+                </Box>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : {display: "none"}}>
+                    <Text size={"subheadline"} color="text.500">
+                        Fee
+                    </Text>
+                    <Text>0.00002272 BTC</Text>
                 </Box>
                 <Box style={styles.subItemWrapper}>
                     <Text size={"subheadline"} color="text.500">
@@ -127,7 +135,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Position in Block</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -135,7 +143,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Nonce</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -143,7 +151,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Gas Limit (Units)</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -151,7 +159,15 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : {display: "none"} }>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Confirmations</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            35
+                        </Text>
+                    </HStack>
+                </Box>
+                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
                     <Text size={"subheadline"} color="text.500">
                         Gas Price
                     </Text>

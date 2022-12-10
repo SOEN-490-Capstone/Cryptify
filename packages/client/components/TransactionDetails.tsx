@@ -57,7 +57,6 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                 <Box>
                     <Text size={"subheadline"} color="text.500">
                         Transaction ID
-                        
                     </Text>
                     <HStack space="10px">
                         <Text style={styles.elementInformationText}>{transaction.transactionAddress}</Text>
@@ -76,7 +75,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Badge>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? styles.subItemWrapper : {display: "none"}}>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : { display: "none" }}>
                     <Text size={"subheadline"} color="text.500">
                         Fee
                     </Text>
@@ -135,7 +134,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Position in Block</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -143,7 +142,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Nonce</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -151,7 +150,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Gas Limit (Units)</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -159,7 +158,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? styles.subItemWrapper : {display: "none"} }>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : { display: "none" }}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Confirmations</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -167,7 +166,7 @@ export function TransactionDetails({ transaction, walletAddress }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={currencyTypeCheck ? {display: "none"} : styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <Text size={"subheadline"} color="text.500">
                         Gas Price
                     </Text>

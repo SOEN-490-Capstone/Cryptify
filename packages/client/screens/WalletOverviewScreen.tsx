@@ -42,7 +42,10 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     }, []);
     return (
         <View style={styles.view}>
-            <Box style={styles.walletDetailsWrapper} backgroundColor = {currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)":"rgba(60, 60, 61, 0.25)"}>
+            <Box
+                style={styles.walletDetailsWrapper}
+                backgroundColor={currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"}
+            >
                 <VStack style={styles.walletDetails}>
                     <HStack justifyContent="space-between">
                         <VStack>
@@ -53,7 +56,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={currencyIcon} color = {currencyType == "BITCOIN" ? "#F7931A":"#3C3C3D "} size={40} />
+                            <FontAwesomeIcon
+                                icon={currencyIcon}
+                                color={currencyType == "BITCOIN" ? "#F7931A" : "#3C3C3D"}
+                                size={40}
+                            />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">

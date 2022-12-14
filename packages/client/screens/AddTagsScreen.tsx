@@ -19,7 +19,7 @@ export default function AddTagsScreen() {
     const initialValues = {
         tag: "",
     };
-    
+
     async function onSubmitCreateTag(values: any, formikHelpers: FormikHelpers<any>): Promise<void> {
         try {
             const newlyCreatedTag = await tagsGateway.createTags(

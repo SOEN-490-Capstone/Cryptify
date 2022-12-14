@@ -37,13 +37,6 @@ export function getFormattedAmount(amount: string, type: CurrencyType): string {
     return parts.join(".");
 }
 
-type ISOCode = "ETH" | "BTC";
-
-export const typeToISOCode: { [key in CurrencyType]: ISOCode } = {
-    [CurrencyType.ETHEREUM]: "ETH",
-    [CurrencyType.BITCOIN]: "BTC",
-};
-
 export const currencyTypeToIcon: { [key in CurrencyType]: IconDefinition } = {
     [CurrencyType.ETHEREUM]: faEthereum,
     [CurrencyType.BITCOIN]: faBitcoin,

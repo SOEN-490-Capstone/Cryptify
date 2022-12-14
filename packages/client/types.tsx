@@ -126,6 +126,7 @@ export type SettingsStackParamList = {
     FilterScreen: FilterScreenProps;
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
+    NotificationsScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

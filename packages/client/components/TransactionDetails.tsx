@@ -8,14 +8,14 @@ import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
 import { farCopy } from "./icons/regular/farCopy";
 import * as Clipboard from "expo-clipboard";
 import { getFormattedAmount, typeToISOCode } from "../services/currency_service";
-import { formatAddress } from "../services/address_service";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native";
 import { farChevronRight } from "./icons/regular/farChevronRight";
 import SortService from "../services/sort_service";
 import { AuthContext } from "./contexts/AuthContext";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { formatAddress } from "@cryptify/common/src/utils/address_utils";
+import { getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {
     txn: Transaction;
@@ -38,6 +38,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
     const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([]);
     const isIncomingTransaction = walletAddress == transaction.walletIn;
+    const currencyTypeCheck = getCurrencyType(transaction.transactionAddress) == "BITCOIN";
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);
     const [tagsContainerWidth, setTagsContainerWidth] = React.useState<number>(0);
@@ -250,6 +251,12 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         </Badge>
                     </HStack>
                 </Box>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : { display: "none" }}>
+                    <Text size={"subheadline"} color="text.500">
+                        Fee
+                    </Text>
+                    <Text>0.00002272 BTC</Text>
+                </Box>
                 <Box style={styles.subItemWrapper}>
                     <Text size={"subheadline"} color="text.500">
                         From
@@ -304,7 +311,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Position in Block</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -312,7 +319,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Nonce</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -320,7 +327,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <HStack>
                         <Text style={styles.elementInformationText}>Gas Limit (Units)</Text>
                         <Text color="text.500" style={styles.gasLimit}>
@@ -328,7 +335,15 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         </Text>
                     </HStack>
                 </Box>
-                <Box style={styles.subItemWrapper}>
+                <Box style={currencyTypeCheck ? styles.subItemWrapper : { display: "none" }}>
+                    <HStack>
+                        <Text style={styles.elementInformationText}>Confirmations</Text>
+                        <Text color="text.500" style={styles.gasLimit}>
+                            35
+                        </Text>
+                    </HStack>
+                </Box>
+                <Box style={currencyTypeCheck ? { display: "none" } : styles.subItemWrapper}>
                     <Text size={"subheadline"} color="text.500">
                         Gas Price
                     </Text>

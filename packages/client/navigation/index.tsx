@@ -62,6 +62,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             "WalletDetailsScreen",
             "TransactionTagsScreen",
             "AddTransactionTagsScreen",
+            "TransactionDetailsScreen",
         ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });

@@ -13,10 +13,11 @@ import { AuthContext } from "../components/contexts/AuthContext";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
-import { formatAddress } from "../services/address_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { typeToISOCode, currencyTypeToIcon } from "../services/currency_service";
+import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
+import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
+import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -41,7 +42,10 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
     }, []);
     return (
         <View style={styles.view}>
-            <Box style={styles.walletDetailsWrapper}>
+            <Box
+                style={styles.walletDetailsWrapper}
+                backgroundColor={currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"}
+            >
                 <VStack style={styles.walletDetails}>
                     <HStack justifyContent="space-between">
                         <VStack>
@@ -52,7 +56,11 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             </Text>
                         </VStack>
                         <VStack>
-                            <FontAwesomeIcon icon={currencyIcon} style={styles.ethereumIcon} size={40} />
+                            <FontAwesomeIcon
+                                icon={currencyIcon}
+                                color={currencyType == "BITCOIN" ? "#F7931A" : "#3C3C3D"}
+                                size={40}
+                            />
                         </VStack>
                     </HStack>
                     <HStack alignItems="center">
@@ -146,14 +154,10 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
     },
-    ethereumIcon: {
-        color: "#3C3C3D",
-    },
     walletDetailsWrapper: {
         paddingLeft: 20,
         paddingRight: 20,
         marginHorizontal: 15,
-        backgroundColor: "rgba(60, 60, 61, 0.25)",
         borderRadius: 10,
     },
     walletDetails: {

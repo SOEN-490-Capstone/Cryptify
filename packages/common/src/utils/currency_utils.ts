@@ -27,3 +27,9 @@ export function normalizeCurrency(amount: number): string {
 
     return amountString;
 }
+
+type ISOCode = "ETH" | "BTC";
+export const typeToISOCode: { [key in CurrencyType]: ISOCode } = {
+    [CurrencyType.ETHEREUM]: "ETH",
+    [CurrencyType.BITCOIN]: "BTC",
+};

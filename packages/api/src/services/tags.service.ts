@@ -52,8 +52,8 @@ export class TagsService {
         const userId = updateTagNameRequest.userId;
         const currentName = updateTagNameRequest.currentName;
         const newName = updateTagNameRequest.newName;
-        const addTransactions: number[] = (updateTagNameRequest.addTransactions ??= []);
-        const removeTransactions: number[] = (updateTagNameRequest.removeTransactions ??= []);
+        const addTransactions = (updateTagNameRequest.addTransactions ??= []);
+        const removeTransactions = (updateTagNameRequest.removeTransactions ??= []);
         let transactionTag: TransactionTag;
 
         transactionTag = await this.tagRepository.findOne({

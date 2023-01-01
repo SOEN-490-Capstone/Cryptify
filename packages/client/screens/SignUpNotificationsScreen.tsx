@@ -6,13 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBell } from "../components/icons/regular/farBell";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { GuestStackScreenProps } from "../types";
-import { AuthGateway } from "../gateways/auth_gateway";
 import { UsersGateway } from "../gateways/users_gateway";
 import StorageService from "../services/storage_service";
 import { KEY_JWT } from "../constants/storage_keys";
 
 export default function SignUpNotificationsScreen(props: GuestStackScreenProps<"SignUpNotificationsScreen">) {
-    const authGateway = new AuthGateway();
     const usersGateway = new UsersGateway();
     const { setToken, setUser } = React.useContext(AuthContext);
 

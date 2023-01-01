@@ -18,7 +18,7 @@ export default function SignUpScreen({ navigation }: GuestStackScreenProps<"Sign
     const authGateway = new AuthGateway();
     const usersGateway = new UsersGateway();
 
-    const { setToken, setUser } = React.useContext(AuthContext);
+    const { setUser } = React.useContext(AuthContext);
     const [showPassword, setShowPass] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 

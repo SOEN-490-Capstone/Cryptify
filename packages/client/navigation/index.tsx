@@ -44,6 +44,7 @@ import AddTagsScreen from "../screens/AddTagsScreen";
 import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
+import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -466,6 +467,15 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="SignInScreen"
                 component={SignInScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <GuestStack.Screen
+                name="SignUpNotificationsScreen"
+                component={SignUpNotificationsScreen}
                 options={{
                     title: "",
                     headerTintColor: "#404040",

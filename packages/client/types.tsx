@@ -31,6 +31,20 @@ type TransactionDetailsProps = {
     walletAddress: string;
 };
 
+type TransactionTagsScreenProps = {
+    transaction: Transaction;
+    setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
+};
+
+type AddTransactionTagsScreenProps = {
+    transaction: Transaction;
+    setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
+    transactionTags: TransactionTag[];
+    setTransactionTags: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
+    transactionTagsNotAdded: TransactionTag[];
+    setTransactionTagsNotAdded: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
+};
+
 type WalletOverviewScreenProps = {
     title: string;
     address: string;
@@ -95,6 +109,8 @@ export type HomeStackParamList = {
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     FilterScreen: FilterScreenProps;
+    TransactionTagsScreen: TransactionTagsScreenProps;
+    AddTransactionTagsScreen: AddTransactionTagsScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<

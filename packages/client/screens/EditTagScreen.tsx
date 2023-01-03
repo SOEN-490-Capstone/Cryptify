@@ -26,6 +26,8 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
                     userId: user.id,
                     currentName: currentTagName,
                     newName: values.tag,
+                    addTransactions: undefined,
+                    removeTransactions: undefined,
                 },
                 token,
             );

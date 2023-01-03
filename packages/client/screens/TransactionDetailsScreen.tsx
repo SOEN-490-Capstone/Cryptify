@@ -16,8 +16,9 @@ export default function TransactionDetailsScreen(
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
                 <TransactionDetails
-                    transaction={props.route.params.transaction}
+                    txn={props.route.params.transaction}
                     walletAddress={props.route.params.walletAddress}
+                    navigation={props.navigation}
                 />
             </ScrollView>
         </View>
@@ -29,6 +30,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollView: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
     },
 });

@@ -43,6 +43,9 @@ import TagsSettingsScreen from "../screens/TagsSettingsScreen";
 import AddTagsScreen from "../screens/AddTagsScreen";
 import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
+import TransactionTagsScreen from "../screens/TransactionTagsScreen";
+import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
+import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 
@@ -59,6 +62,9 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             "AddWalletScreen",
             "WalletOverviewScreen",
             "WalletDetailsScreen",
+            "TransactionTagsScreen",
+            "AddTransactionTagsScreen",
+            "TransactionDetailsScreen",
         ];
         if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
             navigation.setOptions({ tabBarStyle: { display: "none" } });
@@ -128,6 +134,54 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 })}
+            />
+            <HomeStack.Screen
+                name="TransactionTagsScreen"
+                component={TransactionTagsScreen}
+                options={{
+                    title: "Tags",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    // TODO refactor to reduce code duplication and unify with other screens
+                    headerLeft: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farArrowLeft} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                }}
+            />
+            <HomeStack.Screen
+                name="AddTransactionTagsScreen"
+                component={AddTransactionTagsScreen}
+                options={{
+                    headerTintColor: "#404040",
+                    title: "",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    // TODO refactor to reduce code duplication and unify with other screens
+                    headerLeft: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farArrowLeft} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                }}
             />
             <HomeStack.Screen
                 name="WalletOverviewScreen"

@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { Transaction } from "./transaction";
 import { User } from "./user";
 
@@ -14,7 +14,9 @@ export class TransactionTag {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    @ManyToMany(() => Transaction)
-    @JoinTable()
+    @ManyToMany(() => Transaction, (transaction) => transaction.tags, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+    })
     transactions: Transaction[];
 }

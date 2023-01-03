@@ -78,6 +78,7 @@ export class TransactionsService {
 
         return this.transactionsRepository.find({
             where: [{ walletIn: In(addresses) }, { walletOut: In(addresses) }],
+            relations: ["tags"],
         });
     }
 

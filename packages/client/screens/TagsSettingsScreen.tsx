@@ -20,7 +20,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
 
     React.useEffect(() => {
         (async () => {
-            const tags = await tagsGateway.findAlTags({ id: user.id }, token);
+            const tags = await tagsGateway.findAllTags({ id: user.id }, token);
             setTags(tags);
         })();
     });
@@ -84,6 +84,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
         <View style={styles.view}>
             <Box marginTop="10px"></Box>
             <ScrollView>
+                {/*TODO: match style of TransactionTagsScreen.tsx*/}
                 <HStack flexWrap="wrap" space="13">
                     {tags.map((tag, i) => (
                         <Pressable

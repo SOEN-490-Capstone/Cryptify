@@ -8,18 +8,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falEye } from "../components/icons/light/falEye";
 import { falEyeSlash } from "../components/icons/light/falEyeSlash";
 import { AuthGateway } from "../gateways/auth_gateway";
-import StorageService from "../services/storage_service";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
-import { KEY_JWT } from "../constants/storage_keys";
 import { FormikHelpers } from "formik/dist/types";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { UsersGateway } from "../gateways/users_gateway";
+import { GuestStackScreenProps } from "../types";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }: GuestStackScreenProps<"SignUpScreen">) {
     const authGateway = new AuthGateway();
     const usersGateway = new UsersGateway();
 
-    const { setToken, setUser } = React.useContext(AuthContext);
+    const { setUser } = React.useContext(AuthContext);
     const [showPassword, setShowPass] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPass] = React.useState(false);
 
@@ -38,8 +37,10 @@ export default function SignUpScreen() {
             const user = await usersGateway.whoami(token.accessToken);
             setUser(user);
 
-            setToken(token.accessToken);
-            StorageService.put(KEY_JWT, token);
+            navigation.navigate("SignUpNotificationsScreen", {
+                user: user,
+                token: token,
+            });
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("email", error.message);

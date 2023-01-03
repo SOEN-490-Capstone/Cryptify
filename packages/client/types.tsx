@@ -9,6 +9,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { User } from "@cryptify/common/src/domain/entities/user";
+import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -77,6 +79,11 @@ type EditTagScreenProps = {
     tag: TransactionTag;
 };
 
+type SignUpNotificationsScreenProps = {
+    user: User;
+    token: JwtToken;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -122,6 +129,7 @@ export type GuestStackParamList = {
     WelcomeScreen: undefined;
     SignUpScreen: undefined;
     SignInScreen: undefined;
+    SignUpNotificationsScreen: SignUpNotificationsScreenProps;
 };
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<

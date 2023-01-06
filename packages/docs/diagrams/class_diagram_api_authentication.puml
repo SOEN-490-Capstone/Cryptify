@@ -32,16 +32,26 @@ class User {
     +lastName: string
     +email: string
     +password: string
+    +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
 }
 interface SignUpRequest extends InferType
+interface UpdateUserRequest {
+    +userId: number
+    +firstName?: string
+    +lastName?: string
+    +email?: string
+    +password?: string
+    +areNotificationsEnabled?: boolean
+}
 class UsersService {
     -userRepository: Repository<User>
     +create(signUpReq: SignUpRequest): Promise<User>
     +findOne(email: string): Promise<User>
     +findOneById(id: number): Promise<User>
+    +update(updateUserRequest: UpdateUserRequest): Promise<User>
 }
 interface SignInRequest extends InferType
 class AuthenticationService {
@@ -66,6 +76,7 @@ User --> "*" Wallet
 User --> "*" TransactionTag
 UsersService --> "1" User
 UsersService --> "1" SignUpRequest
+UsersService --> "1" UpdateUserRequest
 AuthenticationService --> "1" UsersService
 AuthenticationService --> "1" SignUpRequest
 AuthenticationService --> "1" SignInRequest

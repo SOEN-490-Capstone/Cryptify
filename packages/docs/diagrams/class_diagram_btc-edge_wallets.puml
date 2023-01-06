@@ -25,6 +25,7 @@ class User {
     +lastName: string
     +email: string
     +password: string
+    +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
@@ -104,15 +105,36 @@ class TransactionsService {
     -transactionsRepository: Repository<Transaction>
     -soChainGateway: SoChainGateway
     -walletsService: WalletsService
+    -walletsRepository: Repository<Wallet>
     +backfillTransactions(address: string): Promise<void>
     +findAll(userId: number): Promise<Transaction[]>
     +cleanup(address: string): Promise<Transaction[]>
+}
+abstract class AbstractNotificationServiceTemplateMethod {
+    -walletsRepository: Repository<Wallet>
+    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
+    #{abstract} sendNotification(notification: Notification): Promise<void>
+    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
+    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
+    -{static} keys: readonly ["walletOut", "walletIn"]
+}
+interface Notification {
+    +to: string
+    +title: string
+    +body: string
+}
+class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
+    -transporter: nodemailer.Transporter
+    -from: string
+    -configService: ConfigService<Record<string, unknown>, false>
+    #sendNotification(notification: Notification): Promise<void>
 }
 class TransactionWatcherService {
     -ws: WebSocketClient
     -walletsRepository: Repository<Wallet>
     -transactionsRepository: Repository<Transaction>
     -soChainGateway: SoChainGateway
+    -notificationService: EmailNotificationService
     #open(): Promise<void>
     #message(data: WebSocketClient.Data): Promise<void>
     +subscribeAddress(address: string): Promise<void>
@@ -174,10 +196,17 @@ SoChainGateway --> "1" TransactionResponseOutput
 TransactionsService --> "1" Transaction
 TransactionsService --> "1" SoChainGateway
 TransactionsService --> "1" WalletsService
+TransactionsService --> "1" Wallet
 TransactionsService --> "*" Transaction
+AbstractNotificationServiceTemplateMethod --> "1" Wallet
+AbstractNotificationServiceTemplateMethod --> "1" Transaction
+AbstractNotificationServiceTemplateMethod --> "1" CurrencyType
+AbstractNotificationServiceTemplateMethod --> "1" Notification
+EmailNotificationService --> "1" Notification
 TransactionWatcherService --> "1" Wallet
 TransactionWatcherService --> "1" Transaction
 TransactionWatcherService --> "1" SoChainGateway
+TransactionWatcherService --> "1" EmailNotificationService
 WSTransaction --> "*" Input
 WSTransaction --> "*" Out
 WalletsService --> "1" Wallet

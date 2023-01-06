@@ -9,6 +9,7 @@ participant EthEdge
 participant BtcEdge
 participant "Postgres DB"
 participant "Alchemy Eth Node"
+participant "SoChain Btc Node"
 
 User -> Client: Navigate to\nwallets list screen
 activate User
@@ -38,7 +39,13 @@ else
     BtcEdge -> "Postgres DB": select bitcoin wallets
     "Postgres DB" --> BtcEdge: wallets
     deactivate "Postgres DB"
-    note left: The architecture of BtcEdge\nis a WIP and other functions\nmay be added in the future
+    
+    loop foreach wallet
+        BtcEdge -> "SoChain Btc Node": getBalance(wallet.address)
+        activate "SoChain Btc Node"
+        "SoChain Btc Node" --> BtcEdge: walletBalance
+        deactivate "SoChain Btc Node"
+    end
 
     BtcEdge --> API: btcWallets
     deactivate BtcEdge

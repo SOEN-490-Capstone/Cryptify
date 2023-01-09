@@ -31,6 +31,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
 
     const { token, user } = React.useContext(AuthContext);
 
+    const [isLoading, setIsLoading] = React.useState(true);
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const currencyIcon = currencyTypeToIcon[currencyType];
 
@@ -38,6 +39,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
             setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, address)));
+            setIsLoading(false);
         })();
     }, []);
     return (
@@ -133,18 +135,18 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     </Pressable>
                 )}
             </HStack>
-            {transactions.length == 0 ? (
-                <VStack style={styles.magnifyingGlass} margin="auto">
-                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
-                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
-                </VStack>
-            ) : (
+            {isLoading || transactions.length > 0 ? (
                 <TransactionsList
                     transactions={transactions}
                     walletAddress={address}
                     displaySeparation={false}
                     navigation={navigation}
                 />
+            ) : (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
+                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
+                </VStack>
             )}
         </View>
     );

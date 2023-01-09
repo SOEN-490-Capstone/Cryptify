@@ -22,6 +22,7 @@ export default function WalletsList(props: Props) {
 
     const { token, user } = React.useContext(AuthContext);
 
+    const [isLoading, setIsLoading] = React.useState(true);
     const [wallets, setWallets] = React.useState<WalletWithBalance[]>([]);
 
     React.useEffect(() => {
@@ -32,11 +33,12 @@ export default function WalletsList(props: Props) {
             if (isFocused) {
                 const wallets = await walletsGateway.findAllWallets({ id: user.id }, token);
                 setWallets(wallets);
+                setIsLoading(false);
             }
         })();
     }, [isFocused]);
 
-    return wallets.length > 0 ? (
+    return isLoading || wallets.length > 0 ? (
         <ScrollView style={styles.scrollView}>
             <WalletsListAccordion
                 wallets={wallets}

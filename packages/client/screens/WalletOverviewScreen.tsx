@@ -135,18 +135,18 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     </Pressable>
                 )}
             </HStack>
-            {!isLoading && transactions.length === 0 ? (
-                <VStack style={styles.magnifyingGlass} margin="auto">
-                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
-                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
-                </VStack>
-            ) : (
+            {isLoading || transactions.length > 0 ? (
                 <TransactionsList
                     transactions={transactions}
                     walletAddress={address}
                     displaySeparation={false}
                     navigation={navigation}
                 />
+            ) : (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
+                    <Text style={styles.magnifyingGlassText}>We could not find any transactions.</Text>
+                </VStack>
             )}
         </View>
     );

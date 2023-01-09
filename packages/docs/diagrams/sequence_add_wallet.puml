@@ -9,6 +9,7 @@ participant EthEdge
 participant BtcEdge
 participant "Postgres DB"
 participant "Alchemy Eth Node"
+participant "SoChain Btc Node"
 
 User -> Client: Submit add wallet
 activate User
@@ -43,9 +44,20 @@ else walletType == Bitcoin
     API -> BtcEdge: POST /users/:id/wallets
     activate BtcEdge
     BtcEdge -> "Postgres DB": insert wallet
-    deactivate "Postgres DB"
-    note left: The architecture of BtcEdge\nis a WIP and other functions\nmay be added in the future
+    
+    par
+        BtcEdge -> "SoChain Btc Node": getBalance(address)
+        activate "SoChain Btc Node"
+        "SoChain Btc Node" --> BtcEdge: walletBalance
+    else
+        BtcEdge -> "SoChain Btc Node": getTransactions
+        "SoChain Btc Node" --> BtcEdge: txIds[]
+        BtcEdge -> "SoChain Btc Node": getTransactionsByTxAddress
+        "SoChain Btc Node" --> BtcEdge: transaction[]
+        BtcEdge ->> "Postgres DB": insert transactions
+    end
 
+    deactivate "Postgres DB"
     BtcEdge --> API: btcWallet
     deactivate BtcEdge
 end

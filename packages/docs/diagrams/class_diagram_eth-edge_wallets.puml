@@ -25,6 +25,7 @@ class User {
     +lastName: string
     +email: string
     +password: string
+    +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
@@ -46,10 +47,31 @@ class AlchemyNodeServiceFacade {
 interface WalletWithBalance extends Wallet {
     +balance: string
 }
+abstract class AbstractNotificationServiceTemplateMethod {
+    -walletsRepository: Repository<Wallet>
+    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
+    #{abstract} sendNotification(notification: Notification): Promise<void>
+    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
+    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
+    -{static} keys: readonly ["walletOut", "walletIn"]
+}
+interface Notification {
+    +to: string
+    +title: string
+    +body: string
+}
+class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
+    -transporter: nodemailer.Transporter
+    -from: string
+    -configService: ConfigService<Record<string, unknown>, false>
+    #sendNotification(notification: Notification): Promise<void>
+}
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
     -alchemyNodeServiceFacade: AlchemyNodeServiceFacade
     -walletsService: WalletsService
+    -walletsRepository: Repository<Wallet>
+    -notificationService: EmailNotificationService
     +backfillTransactions(address: string): Promise<void>
     +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
     +findAll(userId: number): Promise<Transaction[]>
@@ -106,9 +128,16 @@ Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 AlchemyNodeServiceFacade --> "*" Transaction
+AbstractNotificationServiceTemplateMethod --> "1" Wallet
+AbstractNotificationServiceTemplateMethod --> "1" Transaction
+AbstractNotificationServiceTemplateMethod --> "1" CurrencyType
+AbstractNotificationServiceTemplateMethod --> "1" Notification
+EmailNotificationService --> "1" Notification
 TransactionsService --> "1" Transaction
 TransactionsService --> "1" AlchemyNodeServiceFacade
 TransactionsService --> "1" WalletsService
+TransactionsService --> "1" Wallet
+TransactionsService --> "1" EmailNotificationService
 TransactionsService --> "*" Transaction
 AbstractGateway --> "1" Method
 WalletsService --> "1" Wallet

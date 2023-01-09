@@ -34,6 +34,7 @@ class User {
     +lastName: string
     +email: string
     +password: string
+    +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
@@ -46,6 +47,7 @@ class TransactionTag {
 }
 class TagsService {
     -tagRepository: Repository<TransactionTag>
+    -transactionRepository: Repository<Transaction>
     +findAll(userId: number): Promise<TransactionTag[]>
     +create(req: CreateTagRequest): Promise<TransactionTag>
     +update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag>
@@ -70,6 +72,7 @@ User --> "*" TransactionTag
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
 TagsService --> "1" TransactionTag
+TagsService --> "1" Transaction
 TagsService --> "*" TransactionTag
 TagsService --> "1" CreateTagRequest
 TagsService --> "1" UpdateTagRequest

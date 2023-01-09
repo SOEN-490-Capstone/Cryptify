@@ -27,6 +27,7 @@ class User {
     +lastName: string
     +email: string
     +password: string
+    +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]

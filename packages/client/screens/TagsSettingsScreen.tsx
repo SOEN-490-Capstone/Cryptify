@@ -52,11 +52,12 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                                     color: "darkBlue.500",
                                     fontWeight: "semibold",
                                 }}
+                                testID="editTagDone"
                             >
                                 Done
                             </Link>
                         ) : (
-                            <Link onPress={() => setIsEditMode(true)} isUnderlined={false}>
+                            <Link onPress={() => setIsEditMode(true)} isUnderlined={false} testID="editTagEdit">
                                 Edit
                             </Link>
                         )}
@@ -90,6 +91,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                             backgroundColor="gray.100"
                             style={styles.badge}
                             key={i}
+                            testID={`editTag-${i}`}
                         >
                             <HStack style={styles.badgeContent}>
                                 <Text style={styles.tagText} size={"subheadline"} fontWeight={"semibold"}>

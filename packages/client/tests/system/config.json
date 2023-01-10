@@ -3,7 +3,7 @@
     "testEnvironment": "./environment",
     "testRunner": "jest-circus/runner",
     "testTimeout": 120000,
-    "testRegex": "CRYP-35_add_tag.e2e.ts",
+    "testRegex": "CRYP-178_edit_tag.e2e.ts",
     "reporters": ["detox/runners/jest/streamlineReporter"],
     "verbose": true
 }

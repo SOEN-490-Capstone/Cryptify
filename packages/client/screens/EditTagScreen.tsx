@@ -34,7 +34,7 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
 
             setCurrentTagName(updatedTag.tagName);
 
-            //TO DO refactor this into a separate toast component in the future.
+            // TODO refactor this into a separate toast component in the future.
             toast.show({
                 placement: "top",
                 duration: 2000,
@@ -111,14 +111,14 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
                                 value={values.tag}
                                 onChangeText={handleChange("tag")}
                                 placeholder=""
-                                testID="UpdatetagName"
+                                testID="editTagInput"
                                 maxLength={20}
                                 keyboardType={"ascii-capable"}
                                 autoFocus={true}
                             />
                             <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Button isDisabled={initialValues.tag === values.tag} onPress={submitForm}>
+                        <Button isDisabled={initialValues.tag === values.tag} onPress={submitForm} testID="submit">
                             Save changes
                         </Button>
                     </VStack>

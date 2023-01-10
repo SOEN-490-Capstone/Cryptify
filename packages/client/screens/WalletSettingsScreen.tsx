@@ -29,7 +29,7 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
 
     return (
         <View style={styles.view}>
-            <Button variant="outline" _text={{ color: "error.500" }} onPress={handleDeleteWallet}>
+            <Button variant="outline" _text={{ color: "error.500" }} onPress={handleDeleteWallet} testID="removeWalletButton">
                 Remove wallet
             </Button>
         </View>

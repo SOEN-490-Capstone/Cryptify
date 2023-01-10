@@ -6,14 +6,12 @@ export async function seedDB() {
 
     await dataSource.manager.query(`
         INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt", "areNotificationsEnabled") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457', 'false');
-        INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt", "areNotificationsEnabled") VALUES ('John', 'Doe', 'john2@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457', 'true');
     `);
 
     await dataSource.manager.query(`
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c', 1, 'Ether Wallet Main', 'ETHEREUM');
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a', 1, 'Ether Savings', 'ETHEREUM');
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0x4a55474eacb48cefe25d7656db1976aa7ae70e3c', 1, 'Ethereum Checking Wallet', 'ETHEREUM');
-        INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0x4a55474eacb48cefe25d7656db1976aa7ae70e3c', 2, 'Ethereum Checking Wallet', 'ETHEREUM');
     `);
 
     await dataSource.manager.query(`

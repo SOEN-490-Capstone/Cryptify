@@ -10,7 +10,7 @@ export const addressActivityEventFixture = {
                 blockNum: "0xdf34a3",
                 hash: "0x7a4a39da2a3fa1fc2ef88fd1eaea070286ed2aba21e0419dcfb6d5c5d9f02a72",
                 fromAddress: "0x503828976d22510aad0201ac7ec88293211d23da",
-                toAddress: "0xbe3f4b43db5eb49d1f48f53443b9abce45da3b79",
+                toAddress: "0x4a55474eacb48cefe25d7656db1976aa7ae70e3c",
                 value: 293.092129,
                 erc721TokenId: null,
                 erc1155Metadata: null,
@@ -41,7 +41,7 @@ export const addressActivityEventFixture = {
             {
                 blockNum: "0xdf34a3",
                 hash: "0xc84eeeb72d2b23161fd93b088f304902cbd8b4510f1455a65fdac160e37b3173",
-                fromAddress: "0x71660c4005ba85c37ccec55d0c4493e66fe775d3",
+                fromAddress: "0x4a55474eacb48cefe25d7656db1976aa7ae70e3c",
                 toAddress: "0x7853b3736edba9d7ce681f2a90264307694f97f2",
                 value: 2400,
                 erc721TokenId: null,

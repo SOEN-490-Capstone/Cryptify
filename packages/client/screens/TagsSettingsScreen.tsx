@@ -10,9 +10,12 @@ import { TagsGateway } from "../gateways/tags_gateway";
 import { farPencil } from "../components/icons/regular/farPencil";
 import { SettingsStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function TagsSettingsScreen(props: SettingsStackScreenProps<"TagsSettingsScreen">) {
     const tagsGateway = new TagsGateway();
+
+    const isFocused = useIsFocused();
 
     const { token, user } = React.useContext(AuthContext);
 
@@ -20,55 +23,45 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
 
     React.useEffect(() => {
         (async () => {
-            const tags = await tagsGateway.findAllTags({ id: user.id }, token);
-            setTags(tags);
+            if (isFocused) {
+                const tags = await tagsGateway.findAllTags({ id: user.id }, token);
+                setTags(tags);
+            }
         })();
-    }, []);
+    }, [isFocused]);
+
     const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         (() => {
             props.navigation.setOptions({
-                headerRight: () => {
-                    if (isEditMode) {
-                        return (
-                            <>
-                                <Pressable
-                                    onPress={() => props.navigation.navigate("AddTagsScreen")}
-                                    style={styles.plusIcon}
-                                >
-                                    <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
-                                </Pressable>
-
-                                <Link
-                                    onPress={() => setIsEditMode(false)}
-                                    isUnderlined={false}
-                                    _text={{
-                                        color: "darkBlue.500",
-                                        fontWeight: "semibold",
-                                    }}
-                                >
-                                    Done
-                                </Link>
-                            </>
-                        );
-                    }
-
-                    return (
-                        <>
-                            <Pressable
-                                onPress={() => props.navigation.navigate("AddTagsScreen")}
-                                style={styles.plusIcon}
+                headerRight: () => (
+                    <>
+                        <Pressable
+                            onPress={() => props.navigation.navigate("AddTagsScreen")}
+                            style={styles.plusIcon}
+                            testID="addTagButton"
+                        >
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                        {isEditMode ? (
+                            <Link
+                                onPress={() => setIsEditMode(false)}
+                                isUnderlined={false}
+                                _text={{
+                                    color: "darkBlue.500",
+                                    fontWeight: "semibold",
+                                }}
                             >
-                                <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
-                            </Pressable>
-
+                                Done
+                            </Link>
+                        ) : (
                             <Link onPress={() => setIsEditMode(true)} isUnderlined={false}>
                                 Edit
                             </Link>
-                        </>
-                    );
-                },
+                        )}
+                    </>
+                ),
             });
         })();
     }, [isEditMode]);

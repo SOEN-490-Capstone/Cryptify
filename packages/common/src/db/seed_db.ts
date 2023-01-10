@@ -13,6 +13,15 @@ export async function seedDB() {
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a', 1, 'Ether Savings', 'ETHEREUM');
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0x4a55474eacb48cefe25d7656db1976aa7ae70e3c', 1, 'Ethereum Checking Wallet', 'ETHEREUM');
     `);
+    
+    await dataSource.manager.query(`
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Groceries', 1);
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Gifts', 1);
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Spring Break', 1);
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Gym and Workout', 1);
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Work', 1);
+        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Housing', 1);
+    `);
 
     await dataSource.manager.query(`
         insert into public.transaction ("transactionAddress", "walletIn", "walletOut", "amount", "createdAt") values

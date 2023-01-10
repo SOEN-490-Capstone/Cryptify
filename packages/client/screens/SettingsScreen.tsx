@@ -52,7 +52,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     _pressed={{
                         background: "text.200",
                     }}
-                    testID="tagsButton"
+                    testID="notificationButton"
                 >
                     <HStack height="50px" alignItems="center">
                         <FontAwesomeIcon icon={falBell} style={styles.icon} size={26} />

@@ -25,8 +25,8 @@ describe("CRYP-177 Tags list screen", () => {
         await expect(element(by.id("tagsButton"))).toBeVisible();
         await expect(element(by.id("signOutButton"))).toBeVisible();
 
-        // TODO add tags to the seed db in order to be able to test it
         await element(by.id("tagsButton")).tap();
+        await expect(element(by.text("Tags"))).toBeVisible();
 
         await pause();
     });

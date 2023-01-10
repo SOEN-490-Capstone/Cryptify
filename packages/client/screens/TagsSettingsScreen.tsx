@@ -23,7 +23,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
             const tags = await tagsGateway.findAllTags({ id: user.id }, token);
             setTags(tags);
         })();
-    });
+    }, []);
     const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
 
     React.useEffect(() => {

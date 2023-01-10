@@ -86,6 +86,7 @@ export default function EditTagScreen({ navigation, route }: SettingsStackScreen
                                     color: "red.500",
                                     fontWeight: "semi-bold",
                                 }}
+                                testID="deleteTagButton"
                             >
                                 Delete
                             </Link>

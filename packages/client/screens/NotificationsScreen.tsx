@@ -29,10 +29,10 @@ export default function NotificationsScreen() {
 
     return (
         <View style={styles.view}>
-            <HStack alignItems={"center"} space={"lg"}>
+            <HStack alignItems="center">
                 <FontAwesomeIcon icon={falArrowRightArrowLeft} size={26} />
-                <VStack>
-                    <Text>Trasactions</Text>
+                <VStack ml={15} flex={1}>
+                    <Text>Transactions</Text>
                     <Text color="text.500" size={"footnote1"}>
                         Send and receive transactions for all wallets
                     </Text>
@@ -42,6 +42,7 @@ export default function NotificationsScreen() {
                     thumbColor={"#FFFFFF"}
                     onValueChange={toggleSwitch}
                     value={isEnabled}
+                    style={{ marginLeft: "auto" }}
                 />
             </HStack>
         </View>

@@ -13,3 +13,5 @@ export const ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT = "This tag has already bee
 export const ERROR_TAG_NAME_ALREADY_EXIST = "This tag already exists.";
 export const ERROR_TAG_NOT_FOUND = "Transaction tag not found.";
 export const ERROR_TRANSACTIONS_NOT_FOUND = "One or more transactions not found.";
+
+export const ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT = "This name is already associated with another contact.";

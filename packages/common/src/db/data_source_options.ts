@@ -4,8 +4,9 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Transaction } from "../domain/entities/transaction";
 import { ConfigService } from "@nestjs/config";
 import { TransactionTag } from "../domain/entities/TransactionTag";
+import { Contact } from "../domain/entities/contact";
 
-const entities = [User, Wallet, Transaction, TransactionTag];
+const entities = [User, Wallet, Transaction, TransactionTag, Contact];
 
 export function dataSourceOptionsProcess(process: NodeJS.Process): DataSourceOptions {
     return dataSourceOptionsTemplateMethod(<T>(key: string) => process.env[key] as T, true);

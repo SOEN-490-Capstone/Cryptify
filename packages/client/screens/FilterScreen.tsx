@@ -16,7 +16,9 @@ export default function FilterScreen({ route, navigation }: Props) {
 
     const filtersByDate = getFiltersByDateStrings();
 
-    const [filterByTransaction, setFilterByTransaction] = React.useState(route.params.filters[0] || filtersByTransaction[0]);
+    const [filterByTransaction, setFilterByTransaction] = React.useState(
+        route.params.filters[0] || filtersByTransaction[0],
+    );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
     type RadioProps = {

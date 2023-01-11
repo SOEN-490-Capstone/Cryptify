@@ -1,8 +1,8 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pause } from "./utils/test_utils";
+import { pause, pressBackLeft } from "./utils/test_utils";
 
-describe("CRYP-177 Tags list screen", () => {
+describe("CRYP-35 Add tag", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-177 Tags list screen", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to navigate to the tags settings page and view all the tags", async () => {
+    it("Should be able to add a new tag", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -27,6 +27,11 @@ describe("CRYP-177 Tags list screen", () => {
 
         await element(by.id("tagsButton")).tap();
         await expect(element(by.text("Tags"))).toBeVisible();
+
+        await element(by.id("addTagButton")).tap();
+        await element(by.id("addTagInput")).typeText("New Tag\n");
+
+        await pressBackLeft();
 
         await pause();
     });

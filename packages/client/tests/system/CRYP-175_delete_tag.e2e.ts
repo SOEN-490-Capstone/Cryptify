@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pause } from "./utils/test_utils";
 
-describe("CRYP-177 Tags list screen", () => {
+describe("CRYP-175 Delete tag", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-177 Tags list screen", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to navigate to the tags settings page and view all the tags", async () => {
+    it("Should be able to delete a tag", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -27,6 +27,13 @@ describe("CRYP-177 Tags list screen", () => {
 
         await element(by.id("tagsButton")).tap();
         await expect(element(by.text("Tags"))).toBeVisible();
+
+        await element(by.id("editTagEdit")).tap();
+        await element(by.id("editTag-1")).tap();
+
+        await element(by.id("deleteTagButton")).tap();
+        await element(by.text("DELETE")).tap();
+        await element(by.id("editTagDone")).tap();
 
         await pause();
     });

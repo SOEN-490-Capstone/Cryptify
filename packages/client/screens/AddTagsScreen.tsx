@@ -55,7 +55,6 @@ export default function AddTagsScreen() {
                                     value={values.tag}
                                     onChangeText={handleChange("tag")}
                                     placeholder="For e.g., Trip"
-                                    testID="AddedtagName"
                                     maxLength={20}
                                     keyboardType={"ascii-capable"}
                                     onSubmitEditing={submitForm}
@@ -64,6 +63,7 @@ export default function AddTagsScreen() {
                                     ref={(input) => {
                                         isSubmitting && input?.focus();
                                     }}
+                                    testID="addTagInput"
                                 />
                                 <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
                             </FormControl>

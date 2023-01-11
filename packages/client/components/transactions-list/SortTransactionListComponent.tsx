@@ -29,9 +29,7 @@ function SortTransactionListComponent({ sortType, setSortType }: Props) {
                             onPress={() => setSortType("sortDateNewest")}
                             fontWeight={"semibold"}
                             color={"darkBlue.500"}
-                            style={
-                                sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
-                            }
+                            style={sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible}
                         >
                             Reset
                         </Text>
@@ -46,16 +44,24 @@ function SortTransactionListComponent({ sortType, setSortType }: Props) {
                         }}
                     >
                         <Actionsheet.Item>
-                            <Radio value="sortDateNewest" testID="newestFirstOption">Sort by date: newest first</Radio>
+                            <Radio value="sortDateNewest" testID="newestFirstOption">
+                                Sort by date: newest first
+                            </Radio>
                         </Actionsheet.Item>
                         <Actionsheet.Item>
-                            <Radio value="sortDateOldest" testID="oldestFirstOption">Sort by date: oldest first</Radio>
+                            <Radio value="sortDateOldest" testID="oldestFirstOption">
+                                Sort by date: oldest first
+                            </Radio>
                         </Actionsheet.Item>
                         <Actionsheet.Item>
-                            <Radio value="sortAmountHighest" testID="highestFirstOption">Sort by amount: highest first</Radio>
+                            <Radio value="sortAmountHighest" testID="highestFirstOption">
+                                Sort by amount: highest first
+                            </Radio>
                         </Actionsheet.Item>
                         <Actionsheet.Item>
-                            <Radio value="sortAmountLowest" testID="lowestFirstOption">Sort by amount : lowest first</Radio>
+                            <Radio value="sortAmountLowest" testID="lowestFirstOption">
+                                Sort by amount : lowest first
+                            </Radio>
                         </Actionsheet.Item>
                     </Radio.Group>
                 </Actionsheet.Content>

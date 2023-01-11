@@ -23,8 +23,8 @@ export class ContactsService {
             throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
-        const createdContact = this.contactRepository.create(createContactRequest);
-        this.contactRepository.insert(createdContact);
-        return createdContact;
+        const contact = this.contactRepository.create(createContactRequest);
+        this.contactRepository.insert(contact);
+        return contact;
     }
 }

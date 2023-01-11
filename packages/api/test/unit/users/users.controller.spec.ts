@@ -20,6 +20,7 @@ describe("UsersController", () => {
         createdAt: new Date(),
         wallets: [],
         tags: [],
+        contacts: [],
     };
 
     beforeEach(async () => {

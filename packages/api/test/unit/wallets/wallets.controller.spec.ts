@@ -27,6 +27,7 @@ describe("WalletsController", () => {
         createdAt: new Date(),
         wallets: [],
         tags: [],
+        contacts: [],
     };
 
     const transaction = {

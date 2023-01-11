@@ -12,14 +12,14 @@ export class ContactsService {
     ){}
 
     async findAll(userId: number): Promise<Contact[]>{
-        return this.contactRepository.find({ where: { userId }, order: { name: "ASC" }});
+        return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" }});
     }
 
     async create(createContactRequest: CreateContactRequest): Promise<Contact>{
 
-        const { userId, name } = createContactRequest;
+        const { userId, contactName } = createContactRequest;
         
-        if(this.contactRepository.find({where: { userId, name }})){
+        if(this.contactRepository.find({where: { userId, contactName }})){
             throw new BadRequestException();
         }
 

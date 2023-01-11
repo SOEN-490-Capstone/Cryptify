@@ -4,15 +4,15 @@ import { User } from "./user";
 @Entity()
 export class Contact {
     @PrimaryColumn()
-    name: string;
+    contactName: string;
 
     @PrimaryColumn()
     userId: number;
 
-    @Column()
+    @Column('simple-array', { nullable: true })
     ethWallets: string[];
 
-    @Column()
+    @Column('simple-array', { nullable: true })
     btcWallets: string[];
 
     @ManyToOne(() => User, (user) => user.contacts)

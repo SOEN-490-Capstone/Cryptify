@@ -1,6 +1,7 @@
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -8,21 +9,22 @@ import { Repository } from "typeorm";
 export class ContactsService {
     constructor(
         @InjectRepository(Contact)
-        private contactRepository: Repository<Contact>
-    ){}
+        private contactRepository: Repository<Contact>,
+    ) {}
 
-    async findAll(userId: number): Promise<Contact[]>{
-        return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" }});
+    async findAll(userId: number): Promise<Contact[]> {
+        return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
-    async create(createContactRequest: CreateContactRequest): Promise<Contact>{
-
+    async create(createContactRequest: CreateContactRequest): Promise<Contact> {
         const { userId, contactName } = createContactRequest;
-        
-        if(this.contactRepository.find({where: { userId, contactName }})){
-            throw new BadRequestException();
+
+        if (await this.contactRepository.findOneBy({ userId, contactName })) {
+            throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
-        return this.contactRepository.create(createContactRequest);
+        const createdContact = this.contactRepository.create(createContactRequest);
+        this.contactRepository.insert(createdContact);
+        return createdContact;
     }
 }

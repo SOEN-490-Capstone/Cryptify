@@ -11,23 +11,19 @@ import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
 
 @Controller()
 export class ContactsController {
-
-    constructor(
-        private contactsService: ContactsService,
-    ){}
+    constructor(private contactsService: ContactsService) {}
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("users/:id/contacts")
-    async get(@Param() params: GetContactsRequest){
+    async get(@Param() params: GetContactsRequest) {
         const getContactsRequest = await useValidate(getContactsSchema, params);
         return this.contactsService.findAll(getContactsRequest.id);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("users/:id/contact")
-    async create(@Body() body: CreateContactRequest){
+    async create(@Body() body: CreateContactRequest) {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
     }
-
 }

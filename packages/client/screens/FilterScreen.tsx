@@ -5,7 +5,7 @@ import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
 import DateBox from "../components/DateBox";
-import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
+import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filterService/filter_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = CompositeScreenProps<HomeStackScreenProps<"FilterScreen">, SettingsStackScreenProps<"FilterScreen">>;

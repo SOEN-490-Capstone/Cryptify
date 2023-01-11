@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
-import { filterTransctions } from "../services/filter_service";
+import { filterTransctions } from "../services/filterService/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(

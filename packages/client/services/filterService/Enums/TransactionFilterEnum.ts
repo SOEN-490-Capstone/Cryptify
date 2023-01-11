@@ -1,0 +1,4 @@
+enum TransactionFilterEnum {
+    CurrencyIn,
+    CurrencyOut,
+}

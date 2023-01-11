@@ -133,6 +133,7 @@ export default function FilterScreen({ route, navigation }: Props) {
                     route.params.setFilters(filters);
                     navigation.goBack();
                 }}
+                testID="applyFiltersSubmit"
             >
                 Apply filters
             </Button>

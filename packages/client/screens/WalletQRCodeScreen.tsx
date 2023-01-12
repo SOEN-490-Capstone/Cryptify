@@ -6,10 +6,9 @@ import React from "react";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
-import RowItem from "../components/RowItem";
+import MultiLineListItem from "../components/list/MultiLineListItem";
 import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Copy } from "../components/Copy";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = CompositeScreenProps<
@@ -38,17 +37,9 @@ export default function WalletQRCodeScreen({ route }: Props) {
                 <QRCode value={address} size={200} logoMargin={0} />
             </Center>
 
-            <RowItem label="Name" value={name} />
-            <VStack>
-                <HStack>
-                    <Text size={"subheadline"} color={"text.500"}>
-                        Address
-                    </Text>
-                </HStack>
-                <HStack space="10px">
-                    <Text style={{ ...styles.address }}>{address}</Text>
-                    <Copy label="Address" value={address} />
-                </HStack>
+            <VStack space={"15px"}>
+                <MultiLineListItem label="Name" value={name} />
+                <MultiLineListItem label="Address" value={address} copy={true} />
             </VStack>
 
             <HStack style={styles.info} testID="QRCodeWarning">
@@ -87,8 +78,5 @@ const styles = StyleSheet.create({
         //darkBlue.500
         color: "#0077E6",
         paddingHorizontal: 10,
-    },
-    address: {
-        flex: 1,
     },
 });

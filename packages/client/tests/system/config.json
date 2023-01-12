@@ -3,7 +3,7 @@
     "testEnvironment": "./environment",
     "testRunner": "jest-circus/runner",
     "testTimeout": 120000,
-    "testRegex": "CRYP-28_ethereum_transaction_list.e2e.ts",
+    "testRegex": "CRYP-162_bitcoin_transaction_details.e2e.ts",
     "reporters": ["detox/runners/jest/streamlineReporter"],
     "verbose": true
 }

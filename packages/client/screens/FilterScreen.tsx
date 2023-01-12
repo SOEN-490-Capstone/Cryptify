@@ -16,8 +16,10 @@ export default function FilterScreen({ route, navigation }: Props) {
 
     const filtersByDate = getFiltersByDateStrings();
 
-    const [filterByTransaction, setFilterByTransaction] = React.useState(filtersByTransaction[0]);
-    const [filterByDate, setFilterByDate] = React.useState(filtersByDate[0]);
+    const [filterByTransaction, setFilterByTransaction] = React.useState(
+        route.params.filters[0] || filtersByTransaction[0],
+    );
+    const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
     type RadioProps = {
         value: string;
@@ -38,6 +40,8 @@ export default function FilterScreen({ route, navigation }: Props) {
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
+                    route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
+                    navigation.goBack();
                 }}
             >
                 Reset
@@ -105,11 +109,11 @@ export default function FilterScreen({ route, navigation }: Props) {
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Button
                 style={
-                    filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]
+                    filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]
                         ? styles.applyButtonDisabled
                         : styles.applyButton
                 }
-                disabled={filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]}
+                disabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
                 onPress={() => {
                     const filters = [filterByTransaction];
 
@@ -131,6 +135,7 @@ export default function FilterScreen({ route, navigation }: Props) {
                     route.params.setFilters(filters);
                     navigation.goBack();
                 }}
+                testID="applyFiltersSubmit"
             >
                 Apply filters
             </Button>
@@ -153,7 +158,6 @@ const styles = StyleSheet.create({
     },
     applyButtonDisabled: {
         marginTop: "auto",
-        marginBottom: 36,
         opacity: 0.6,
     },
 });

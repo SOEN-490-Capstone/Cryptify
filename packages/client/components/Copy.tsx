@@ -21,24 +21,28 @@ export function Copy({ label, value }: Props) {
         <Pressable
             onPress={() => {
                 copyToClipboard(value);
-                toast.show({
-                    placement: "top",
-                    duration: 2000,
-                    render: () => {
-                        return (
-                            <Box style={styles.toastBox}>
-                                <Text
-                                    size={"footnote1"}
-                                    fontWeight={"semibold"}
-                                    color={"white"}
-                                    style={styles.toastText}
-                                >
-                                    {label} copied to clipboard
-                                </Text>
-                            </Box>
-                        );
-                    },
-                });
+
+                if (!toast.isActive(toastId)) {
+                    toast.show({
+                        id: toastId,
+                        placement: "top",
+                        duration: 2000,
+                        render: () => {
+                            return (
+                                <Box style={styles.toastBox}>
+                                    <Text
+                                        size={"footnote1"}
+                                        fontWeight={"semibold"}
+                                        color={"white"}
+                                        style={styles.toastText}
+                                    >
+                                        {label} copied to clipboard
+                                    </Text>
+                                </Box>
+                            );
+                        },
+                    });
+                }
             }}
         >
             <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />

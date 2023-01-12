@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { TransactionTag } from "./TransactionTag";
+import { Contact } from "./contact";
 
 @Entity()
 export class User {
@@ -30,4 +31,7 @@ export class User {
 
     @OneToMany(() => TransactionTag, (tag) => tag.user)
     tags: TransactionTag[];
+
+    @OneToMany(() => Contact, (contact) => contact.user)
+    contacts: Contact[];
 }

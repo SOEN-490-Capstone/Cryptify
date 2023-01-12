@@ -1,6 +1,6 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Box, HStack } from "native-base";
+import { Text, VStack } from "native-base";
 import { HomeStackScreenProps } from "../types";
 import {
     getTransactionCount,
@@ -8,9 +8,9 @@ import {
     getTransactionTotalSent,
 } from "../services/transaction_service";
 import React from "react";
-import RowItem from "../components/RowItem";
-import { Copy } from "../components/Copy";
+import MultiLineListItem from "../components/list/MultiLineListItem";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import SingleLineListItem from "../components/list/SingleLineListItem";
 
 type Props = HomeStackScreenProps<"WalletDetailsScreen">;
 
@@ -23,28 +23,26 @@ export default function WalletDetailsScreen({ route }: Props) {
 
     return (
         <View style={styles.view}>
-            <Text size={"title3"} fontWeight={"semibold"}>
-                Wallet Details
-            </Text>
-            <Box marginTop="20px"></Box>
-            <RowItem label="Name" value={name} />
-            <HStack space="10px">
-                <Text style={{ ...styles.address }}>{address}</Text>
-                <Copy label="Address" value={address} />
-            </HStack>
-            <Box marginTop="20px"></Box>
-            <Text size={"title3"} fontWeight={"semibold"}>
-                Transaction Details
-            </Text>
-            <Box marginTop="20px"></Box>
-            <HStack justifyContent="space-between">
-                <Text>Transactions</Text>
-                <Text color={"text.500"}>{count}</Text>
-            </HStack>
-            <Box marginTop="20px"></Box>
-            <RowItem label="Total Received" value={totalReceived} />
-            <RowItem label="Total Sent" value={totalSent} />
-            <RowItem label="Final Balance" value={balance} />
+            <VStack space={"40px"}>
+                <VStack space={"20px"}>
+                    <Text size={"title3"} fontWeight={"semibold"}>
+                        Wallet Details
+                    </Text>
+
+                    <MultiLineListItem label="Name" value={name} />
+                    <MultiLineListItem label="Address" value={address} copy={true} />
+                </VStack>
+                <VStack space={"20px"}>
+                    <Text size={"title3"} fontWeight={"semibold"}>
+                        Transaction Details
+                    </Text>
+
+                    <SingleLineListItem label="Transactions" value={count.toString()} />
+                    <MultiLineListItem label="Total Received" value={totalReceived} />
+                    <MultiLineListItem label="Total Sent" value={totalSent} />
+                    <MultiLineListItem label="Final Balance" value={balance} />
+                </VStack>
+            </VStack>
         </View>
     );
 }
@@ -55,8 +53,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingBottom: 15,
         paddingTop: 20,
-    },
-    address: {
-        flex: 1,
     },
 });

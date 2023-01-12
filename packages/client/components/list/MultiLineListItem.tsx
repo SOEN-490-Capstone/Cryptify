@@ -2,14 +2,14 @@ import React from "react";
 import { HStack, Text, VStack } from "native-base";
 import { Copy } from "../Copy";
 
-type RowItemsProps = {
+type MultiLineListItemProps = {
     label: string;
     value: string;
     copy?: boolean;
     labelCopy?: string;
 };
 
-export default function MultiLineListItem({ label, value, copy, labelCopy }: RowItemsProps) {
+export default function MultiLineListItem({ label, value, copy, labelCopy }: MultiLineListItemProps) {
     return (
         <>
             <VStack space={"3px"}>

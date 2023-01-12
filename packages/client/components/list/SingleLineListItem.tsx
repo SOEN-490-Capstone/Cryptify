@@ -1,12 +1,12 @@
 import React from "react";
 import { HStack, Text } from "native-base";
 
-type ListItemsProps = {
+type SingleLineListItemProps = {
     label: string;
     value: string;
 };
 
-export default function SingleLineListItem({ label, value }: ListItemsProps) {
+export default function SingleLineListItem({ label, value }: SingleLineListItemProps) {
     return (
         <>
             <HStack justifyContent="space-between">

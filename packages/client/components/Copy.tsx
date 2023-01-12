@@ -11,6 +11,7 @@ type Props = {
 
 export function Copy({ label, value }: Props) {
     const toast = useToast();
+    const toastId = label + value;
 
     async function copyToClipboard(valueToCopy: string) {
         await Clipboard.setStringAsync(valueToCopy);

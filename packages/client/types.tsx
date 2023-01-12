@@ -85,6 +85,7 @@ type WalletSettingsScreenProps = {
 };
 
 type FilterScreenProps = {
+    filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     walletAddress: string;
 };

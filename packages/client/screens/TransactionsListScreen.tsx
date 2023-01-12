@@ -35,10 +35,12 @@ export default function TransactionsListScreen(
                         <Pressable
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
+                                    filters,
                                     setFilters,
                                     walletAddress: props.route.params.walletAddress,
                                 });
                             }}
+                            testID="filterTransactionsButton"
                         >
                             <FontAwesomeIcon icon={farBarsFilter} size={20} />
                         </Pressable>
@@ -139,6 +141,7 @@ export default function TransactionsListScreen(
                             isUnderlined={false}
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
+                                    filters,
                                     setFilters,
                                     walletAddress: props.route.params.walletAddress,
                                 });

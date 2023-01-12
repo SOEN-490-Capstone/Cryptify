@@ -3,7 +3,6 @@ import { Actionsheet, useDisclose, Radio, Text, HStack, Pressable } from "native
 import { StyleSheet } from "react-native";
 import { faSort } from "../icons/regular/farSort";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View } from "../Themed";
 
 type Props = {
     sortType: string;
@@ -15,56 +14,58 @@ function SortTransactionListComponent({ sortType, setSortType }: Props) {
 
     return (
         <>
-            <View>
-                <Pressable onPress={onOpen} style={{ paddingRight: 4.5 }}>
-                    <FontAwesomeIcon icon={faSort} size={22} />
-                </Pressable>
+            <Pressable onPress={onOpen} style={{ paddingRight: 4.5 }} testID="sortTransactionsButton">
+                <FontAwesomeIcon icon={faSort} size={22} />
+            </Pressable>
+            <Actionsheet isOpen={isOpen} onClose={onClose}>
+                <Actionsheet.Content>
+                    <HStack style={styles.headerStack}>
+                        <Text style={styles.resetStyleInvisible}>Reset</Text>
+                        <Text fontWeight={"semibold"} style={styles.headerStyle}>
+                            Sort
+                        </Text>
 
-                <Actionsheet isOpen={isOpen} onClose={onClose}>
-                    <Actionsheet.Content>
-                        <HStack style={styles.headerStack}>
-                            <Text style={styles.resetStyleInvisible}>Reset</Text>
-
-                            <Text fontWeight={"semibold"} style={styles.headerStyle}>
-                                Sort
-                            </Text>
-
-                            <Text
-                                onPress={() => setSortType("sortDateNewest")}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={
-                                    sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible
-                                }
-                            >
-                                Reset
-                            </Text>
-                        </HStack>
-
-                        <Radio.Group
-                            name="transactionSort"
-                            accessibilityLabel="transSort"
-                            value={sortType}
-                            onChange={(nextValue: string) => {
-                                setSortType(nextValue);
-                            }}
+                        <Text
+                            onPress={() => setSortType("sortDateNewest")}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={sortType == "sortDateNewest" ? styles.resetStyleInvisible : styles.resetStyleVisible}
                         >
-                            <Actionsheet.Item>
-                                <Radio value="sortDateNewest">Sort by date: newest first</Radio>
-                            </Actionsheet.Item>
-                            <Actionsheet.Item>
-                                <Radio value="sortDateOldest">Sort by date: oldest first</Radio>
-                            </Actionsheet.Item>
-                            <Actionsheet.Item>
-                                <Radio value="sortAmountHighest">Sort by amount: highest first</Radio>
-                            </Actionsheet.Item>
-                            <Actionsheet.Item>
-                                <Radio value="sortAmountLowest">Sort by amount : lowest first</Radio>
-                            </Actionsheet.Item>
-                        </Radio.Group>
-                    </Actionsheet.Content>
-                </Actionsheet>
-            </View>
+                            Reset
+                        </Text>
+                    </HStack>
+                    <Radio.Group
+                        name="transactionSort"
+                        accessibilityLabel="transSort"
+                        value={sortType}
+                        onChange={(nextValue: string) => {
+                            setSortType(nextValue);
+                            onClose();
+                        }}
+                    >
+                        <Actionsheet.Item>
+                            <Radio value="sortDateNewest" testID="newestFirstOption">
+                                Sort by date: newest first
+                            </Radio>
+                        </Actionsheet.Item>
+                        <Actionsheet.Item>
+                            <Radio value="sortDateOldest" testID="oldestFirstOption">
+                                Sort by date: oldest first
+                            </Radio>
+                        </Actionsheet.Item>
+                        <Actionsheet.Item>
+                            <Radio value="sortAmountHighest" testID="highestFirstOption">
+                                Sort by amount: highest first
+                            </Radio>
+                        </Actionsheet.Item>
+                        <Actionsheet.Item>
+                            <Radio value="sortAmountLowest" testID="lowestFirstOption">
+                                Sort by amount : lowest first
+                            </Radio>
+                        </Actionsheet.Item>
+                    </Radio.Group>
+                </Actionsheet.Content>
+            </Actionsheet>
         </>
     );
 }
@@ -82,11 +83,9 @@ const styles = StyleSheet.create({
     headerStyle: {
         margin: "auto",
     },
-
     resetStyleInvisible: {
         opacity: 0,
         height: 0,
     },
-
     resetStyleVisible: {},
 });

@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pause, pressBackLeft } from "./utils/test_utils";
 
-describe("CRYP-26 Wallet details", () => {
+describe("CRYP-169 Bitcoin wallet details", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-26 Wallet details", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view details of a wallet", async () => {
+    it("Should be able to view details of a Bitcoin wallet", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -21,29 +21,22 @@ describe("CRYP-26 Wallet details", () => {
         // Assert home page header
         await expect(element(by.text("John"))).toBeVisible();
 
-        // Assert add wallet button works
-        await element(by.id("addWalletButton")).tap();
-        await expect(element(by.text("Add a Wallet"))).toBeVisible();
-        await pressBackLeft();
-
-        // Assert ethereum wallets
-        await element(by.id("walletsListETHEREUM")).tap();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(0)).toBeVisible();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
+        // Assert bitcoin wallets
+        await element(by.id("walletsListBITCOIN")).tap();
+        await expect(element(by.id("walletsListItemBITCOIN")).atIndex(0)).toBeVisible();
+        await expect(element(by.id("walletsListItemBITCOIN")).atIndex(1)).toBeVisible();
 
         // Assert wallet details are visible
-        await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
-        await expect(element(by.text("Ether Wallet Main"))).toBeVisible();
+        await element(by.id("walletsListItemBITCOIN")).atIndex(0).tap();
+        await expect(element(by.text("Main Bitcoin"))).toBeVisible();
         await expect(element(by.text("Details"))).toBeVisible();
-        await expect(element(by.id("walletDetailsButton"))).toExist();
+        await expect(element(by.text("QR Code"))).toBeVisible();
 
-        // Assert wallet details page contains the proper information
+        // Assert wallet details
         await element(by.id("walletDetailsButton")).tap();
-        await expect(element(by.text("Wallet Details"))).toBeVisible();
         await expect(element(by.text("Name"))).toBeVisible();
-        await expect(element(by.text("0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c"))).toBeVisible();
-        await expect(element(by.text("Transaction Details"))).toBeVisible();
+        await expect(element(by.text("Main Bitcoin"))).toBeVisible();
+        await expect(element(by.text("bc1qe4zsm2eeus8j7xqluprkud88wsrhrz8j9vlhqzdzq3e9eq4ygw8qazc3cn"))).toBeVisible();
         await expect(element(by.text("Transactions"))).toBeVisible();
         await expect(element(by.text("Total Received"))).toBeVisible();
         await expect(element(by.text("Total Sent"))).toBeVisible();

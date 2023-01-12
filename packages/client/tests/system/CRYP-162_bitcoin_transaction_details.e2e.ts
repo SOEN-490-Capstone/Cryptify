@@ -1,8 +1,8 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pause, pressBackLeft } from "./utils/test_utils";
+import { pause } from "./utils/test_utils";
 
-describe("CRYP-30 Transaction details", () => {
+describe("CRYP-162 Bitcoin transaction details", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-30 Transaction details", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view details of a transaction", async () => {
+    it("Should be able to view details of an Bitcoin transaction", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();
@@ -21,19 +21,13 @@ describe("CRYP-30 Transaction details", () => {
         // Assert home page header
         await expect(element(by.text("John"))).toBeVisible();
 
-        // Assert add wallet button works
-        await element(by.id("addWalletButton")).tap();
-        await expect(element(by.text("Add a Wallet"))).toBeVisible();
-        await pressBackLeft();
-
         // Assert ethereum wallets
-        await element(by.id("walletsListETHEREUM")).tap();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(0)).toBeVisible();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(1)).toBeVisible();
-        await expect(element(by.id("walletsListItemETHEREUM")).atIndex(2)).toBeVisible();
+        await element(by.id("walletsListBITCOIN")).tap();
+        await expect(element(by.id("walletsListItemBITCOIN")).atIndex(0)).toBeVisible();
+        await expect(element(by.id("walletsListItemBITCOIN")).atIndex(1)).toBeVisible();
 
         // Assert transaction details are visible
-        await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
+        await element(by.id("walletsListItemBITCOIN")).atIndex(0).tap();
         await waitFor(element(by.id("transactionsList")))
             .toExist()
             .withTimeout(5000);

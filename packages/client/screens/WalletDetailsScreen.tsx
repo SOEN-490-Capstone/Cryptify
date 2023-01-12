@@ -28,8 +28,8 @@ export default function WalletDetailsScreen({ route }: Props) {
                     <Text size={"title3"} fontWeight={"semibold"}>
                         Wallet Details
                     </Text>
-                    <MultiLineListItem label="Name" value={name} />
 
+                    <MultiLineListItem label="Name" value={name} />
                     <MultiLineListItem label="Address" value={address} copy={true} />
                 </VStack>
                 <VStack space={"20px"}>

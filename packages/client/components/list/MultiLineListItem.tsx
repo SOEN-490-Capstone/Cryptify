@@ -6,10 +6,10 @@ type RowItemsProps = {
     label: string;
     value: string;
     copy?: boolean;
-    copyLabel?: string;
+    labelCopy?: string;
 };
 
-export default function MultiLineListItem({ label, value, copy, copyLabel }: RowItemsProps) {
+export default function MultiLineListItem({ label, value, copy, labelCopy }: RowItemsProps) {
     return (
         <>
             <VStack space={"3px"}>
@@ -18,7 +18,7 @@ export default function MultiLineListItem({ label, value, copy, copyLabel }: Row
                 </Text>
                 <HStack space="10px">
                     <Text flex={1}>{value}</Text>
-                    {copy && <Copy label={copyLabel ? copyLabel : label} value={value} />}
+                    {copy && <Copy label={labelCopy ? labelCopy : label} value={value} />}
                 </HStack>
             </VStack>
         </>

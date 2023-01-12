@@ -31,11 +31,6 @@ export default function WalletDetailsScreen({ route }: Props) {
                     <MultiLineListItem label="Name" value={name} />
 
                     <MultiLineListItem label="Address" value={address} copy={true} />
-                    {/*<HStack space="10px">*/}
-                    {/*    <Text flex={1}>{address}</Text>*/}
-                    {/*    <Copy label="Address" value={address} />*/}
-                    {/*</HStack>*/}
-                    {/*</MultiLineListItem>*/}
                 </VStack>
                 <VStack space={"20px"}>
                     <Text size={"title3"} fontWeight={"semibold"}>

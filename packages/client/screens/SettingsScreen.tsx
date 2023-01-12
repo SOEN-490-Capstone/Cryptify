@@ -33,6 +33,20 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     </HStack>
                 </Pressable>
                 <Pressable
+                    onPress={() => navigation.navigate("ContactsSettingsScreen")}
+                    style={styles.button}
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                    testID="contactsButton"
+                >
+                    <HStack height="50px" alignItems="center">
+                        <FontAwesomeIcon icon={falTags} style={styles.icon} size={26} />
+                        <Text style={styles.buttonText}>Contacts</Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <Pressable
                     onPress={() => navigation.navigate("TagsSettingsScreen")}
                     style={styles.button}
                     _pressed={{

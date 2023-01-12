@@ -1,6 +1,6 @@
 import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
-import { pause, pressBackLeft } from "./utils/test_utils";
+import { pause } from "./utils/test_utils";
 
 describe("CRYP-169 Bitcoin wallet details", () => {
     beforeEach(async () => {

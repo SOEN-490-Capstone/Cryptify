@@ -35,10 +35,7 @@ export function TransactionsList({ transactions, walletAddress, displaySeparatio
             renderItem={({ item }) => (
                 <>
                     {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
-                    <Box
-                        style={styles.transactionWrapper}
-                        testID={displaySeparation ? "transactionWithSepartion" : "transactionWithoutSeparation"}
-                    >
+                    <Box style={styles.transactionWrapper}>
                         <TransactionListItem transaction={item} walletAddress={walletAddress} navigation={navigation} />
                     </Box>
                 </>

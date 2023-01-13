@@ -1,7 +1,7 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
-import { FieldArray, Formik, FormikErrors, FormikHelpers } from "formik";
+import { FieldArray, Formik, FormikErrors, FormikHelpers, FormikTouched } from "formik";
 import { Button, FormControl, HStack, Input, ScrollView, Text } from "native-base";
 import Collapsible from "react-native-collapsible";
 import { Pressable, StyleSheet } from "react-native";
@@ -20,7 +20,6 @@ import { ContactsGateway } from "../gateways/contacts_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 
 export default function AddContactScreen(props: SettingsStackScreenProps<"ContactsSettingsScreen">) {
-
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);
@@ -42,13 +41,16 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
         handleChange: any;
         currencyType: CurrencyType;
         errors: FormikErrors<IValue>;
+        touched: FormikTouched<IValue>;
     };
 
-    function AddWalletFieldArray({ values, handleChange, currencyType, errors }: addWalletFieldArrayProps) {
+    function AddWalletFieldArray({ values, handleChange, currencyType, errors, touched }: addWalletFieldArrayProps) {
         const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
         const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
         const iconColor = currencyType === CurrencyType.BITCOIN ? "#F7931A" : "#3C3C3D";
+        const currencyErrors = currencyType === CurrencyType.BITCOIN ? errors.btcWallets : errors.ethWallets;
+        const currencyTouched = currencyType === CurrencyType.BITCOIN ? touched.btcWallets : touched.ethWallets;
 
         const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true);
 
@@ -79,26 +81,33 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                             <View>
                                 {wallets.map((wallet, i) => (
                                     <View style={{ marginTop: 20 }} key={i}>
-                                        <Input
-                                            value={wallet}
-                                            onChangeText={handleChange(`${walletListString}[${i}]`)}
-                                            rightElement={
-                                                <Pressable
-                                                    onPress={() => {
-                                                        console.log(values);
-                                                        arrayHelpers.remove(i);
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon
-                                                        color={"#EF4444"}
-                                                        style={{ marginRight: 12 }}
-                                                        size={20}
-                                                        icon={falCircleXMark}
-                                                    />
-                                                </Pressable>
+                                        <FormControl
+                                            isInvalid={
+                                                !!(currencyErrors ? currencyErrors[i] : false && currencyTouched)
                                             }
-                                        />
-                                        <FormControl.ErrorMessage>{`${walletListString}[${i}]`}</FormControl.ErrorMessage>
+                                        >
+                                            <Input
+                                                value={wallet}
+                                                onChangeText={handleChange(`${walletListString}[${i}]`)}
+                                                rightElement={
+                                                    <Pressable
+                                                        onPress={() => {
+                                                            arrayHelpers.remove(i);
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            color={"#EF4444"}
+                                                            style={{ marginRight: 12 }}
+                                                            size={20}
+                                                            icon={falCircleXMark}
+                                                        />
+                                                    </Pressable>
+                                                }
+                                            />
+                                            <FormControl.ErrorMessage>
+                                                {currencyErrors ? currencyErrors[i] : ""}
+                                            </FormControl.ErrorMessage>
+                                        </FormControl>
                                     </View>
                                 ))}
                                 <View>
@@ -128,34 +137,32 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     }
 
     async function onAddContactSubmit(values: IValue, formikHelpers: FormikHelpers<IValue>) {
-
-        if(values.contactName.length < 2){
-            console.log("should show error");
-            formikHelpers.setFieldError("contactName", "test error.");
-        }
-
         values.btcWallets.map((walletAddress, i) => {
-            try
-            {
-                if(walletAddress.length > 0){
+            try {
+                if (walletAddress.length > 0) {
                     const isAddressValid = CurrencyType.BITCOIN === getCurrencyType(walletAddress);
-                    if(!isAddressValid){
-                        formikHelpers.setFieldError(`btcWallets[${i}]`, ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1]);
+                    if (!isAddressValid) {
+                        formikHelpers.setFieldError(
+                            `btcWallets[${i}]`,
+                            ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                        );
                         return;
                     }
                 }
-            } catch(e){
-                console.log(`btcWallets[${i}]`)
-                formikHelpers.setFieldError(`btcWallets[${i}]`, ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1])
+            } catch (e) {
+                formikHelpers.setFieldError(
+                    `btcWallets[${i}]`,
+                    ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                );
                 return;
             }
-        })
+        });
 
         try {
-            await contactsGateway.createContact({userId: user.id , ...values}, token);
+            await contactsGateway.createContact({ userId: user.id, ...values }, token);
+            props.navigation.navigate("ContactsSettingsScreen");
         } catch (error) {
             if (error instanceof Error) {
-                console.log(error.message);
                 formikHelpers.setFieldError("contactName", error.message);
             }
         }
@@ -164,9 +171,9 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     return (
         <View style={styles.view}>
             <Formik initialValues={initialValues} onSubmit={onAddContactSubmit}>
-                {({ values, errors, handleChange, submitForm }) => (
-                    <FormControl style={{ flex: 1 }}>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                {({ values, errors, touched, handleChange, submitForm }) => (
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
                             <Input
                                 value={values.contactName}
                                 onChangeText={handleChange("contactName")}
@@ -176,29 +183,33 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                                 testID="contactNameInput"
                             />
                             <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
-                            <AddWalletFieldArray
-                                values={values}
-                                handleChange={handleChange}
-                                currencyType={CurrencyType.BITCOIN}
-                                errors={errors}
-                            />
-                            <AddWalletFieldArray
-                                values={values}
-                                handleChange={handleChange}
-                                currencyType={CurrencyType.ETHEREUM}
-                                errors={errors}
-                            />
+                        </FormControl>
+                        <AddWalletFieldArray
+                            values={values}
+                            handleChange={handleChange}
+                            currencyType={CurrencyType.BITCOIN}
+                            errors={errors}
+                            touched={touched}
+                        />
+                        <AddWalletFieldArray
+                            values={values}
+                            handleChange={handleChange}
+                            currencyType={CurrencyType.ETHEREUM}
+                            errors={errors}
+                            touched={touched}
+                        />
 
-                            <Button
-                                style={
-                                    values.contactName.length > 0 ? styles.addContactButton : styles.addContactButtonDisabled
-                                }
-                                onPress={submitForm}
-                            >
-                                Add Contact
-                            </Button>
-                        </ScrollView>
-                    </FormControl>
+                        <Button
+                            style={
+                                values.contactName.length > 0
+                                    ? styles.addContactButton
+                                    : styles.addContactButtonDisabled
+                            }
+                            onPress={submitForm}
+                        >
+                            Add Contact
+                        </Button>
+                    </ScrollView>
                 )}
             </Formik>
         </View>

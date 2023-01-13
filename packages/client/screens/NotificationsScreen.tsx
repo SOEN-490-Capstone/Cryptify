@@ -43,6 +43,7 @@ export default function NotificationsScreen() {
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                     style={{ marginLeft: "auto" }}
+                    testID="toggleNotificationsSwitch"
                 />
             </HStack>
         </View>

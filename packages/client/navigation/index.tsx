@@ -53,25 +53,29 @@ import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 // there is a way to centralize some of the styling between
 // navigation stacks
 
+type TabBarHookProps = {
+    route: RouteProp<any, any>;
+    navigation: any;
+    initialScreenName: string;
+};
+
+function useTabBarHook({ navigation, route, initialScreenName }: TabBarHookProps) {
+    React.useLayoutEffect(() => {
+        const tabBarRoutes = ["HomeScreen", "SettingsScreen"];
+        const routeName = getFocusedRouteNameFromRoute(route) ?? initialScreenName;
+
+        if (tabBarRoutes.includes(routeName)) {
+            navigation.setOptions({ tabBarStyle: { display: "flex", position: "absolute" } });
+        } else {
+            navigation.setOptions({ tabBarStyle: { display: "none" } });
+        }
+    }, [navigation, route]);
+}
+
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    React.useLayoutEffect(() => {
-        const tabHiddenRoutes = [
-            "AddWalletSelectionScreen",
-            "AddWalletScreen",
-            "WalletOverviewScreen",
-            "WalletDetailsScreen",
-            "TransactionTagsScreen",
-            "AddTransactionTagsScreen",
-            "TransactionDetailsScreen",
-        ];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
-            navigation.setOptions({ tabBarStyle: { display: "none" } });
-        } else {
-            navigation.setOptions({ tabBarStyle: { display: "flex" } });
-        }
-    }, [navigation, route]);
+    useTabBarHook({ navigation, route, initialScreenName: "HomeScreen" });
 
     return (
         <HomeStack.Navigator>
@@ -263,21 +267,8 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    React.useLayoutEffect(() => {
-        const tabHiddenRoutes = [
-            "ViewWalletsScreen",
-            "AddWalletSelectionScreen",
-            "AddWalletScreen",
-            "WalletSettingsScreen",
-            "TagsSettingsScreen",
-            "AddTagsScreen",
-        ];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
-            navigation.setOptions({ tabBarStyle: { display: "none" } });
-        } else {
-            navigation.setOptions({ tabBarStyle: { display: "flex" } });
-        }
-    }, [navigation, route]);
+    useTabBarHook({ navigation, route, initialScreenName: "SettingsScreen" });
+
     return (
         <SettingsStack.Navigator>
             <SettingsStack.Screen

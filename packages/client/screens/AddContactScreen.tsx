@@ -1,7 +1,7 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import { FormControl, HStack, Input, Text } from "native-base";
 import Collapsible from "react-native-collapsible";
 import { Pressable, StyleSheet } from "react-native";
@@ -11,22 +11,110 @@ import { farChevronUp } from "../components/icons/regular/farChevronUp";
 import { farChevronDown } from "../components/icons/regular/farChevronDown";
 import { falCircleXMark } from "../components/icons/light/falCircleXMark";
 import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { faEthereum } from "../components/icons/brands/faEthereum";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 export default function AddContactScreen(props: SettingsStackScreenProps<"ContactsSettingsScreen">) {
-    const initialValues = {
+    type IValue = {
+        name: string;
+        ethWallets: string[];
+        btcWallets: string[];
+    };
+
+    const initialValues: IValue = {
         name: "",
         ethWallets: [],
         btcWallets: [],
     };
 
-    type walletListItem = {
-        walletAddress: string,
-        listItemId: number,
+    type addWalletFieldArrayProps = {
+        values: IValue;
+        handleChange: any;
+        currencyType: CurrencyType;
     };
 
-    const [btcWallets, setBtcWallets] = React.useState<walletListItem[]>([]);
+    function AddWalletFieldArray({ values, handleChange, currencyType }: addWalletFieldArrayProps) {
+        const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
+        const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
+        const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
+        const iconColor = currencyType === CurrencyType.BITCOIN ? "#F7931A" : "#3C3C3D";
 
-    const [isBtcCollapsed, setIsBtcCollapsed] = React.useState<boolean>(true);
+        const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true);
+
+        return (
+            <>
+                <Pressable
+                    onPress={() => {
+                        setIsCollapsed(!isCollapsed);
+                    }}
+                >
+                    <HStack style={{ marginTop: 40 }}>
+                        <FontAwesomeIcon style={{ marginRight: 10 }} color={iconColor} icon={currencyIcon} size={26} />
+                        <Text fontWeight={"semibold"} size={"title3"}>
+                            {titleCase(currencyType)} Wallets
+                        </Text>
+                        {isCollapsed ? (
+                            <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronUp} />
+                        ) : (
+                            <FontAwesomeIcon style={styles.chevronIcon} icon={farChevronDown} size={18} />
+                        )}
+                    </HStack>
+                </Pressable>
+                {/* @ts-expect-error */}
+                <Collapsible collapsed={isCollapsed}>
+                    <FieldArray
+                        name={walletListString}
+                        render={(arrayHelpers) => (
+                            <View>
+                                {wallets.map((wallet, i) => (
+                                    <View style={{ marginTop: 20 }} key={i}>
+                                        <Input
+                                            value={wallet}
+                                            onChangeText={handleChange(`${walletListString}[${i}]`)}
+                                            rightElement={
+                                                <Pressable
+                                                    onPress={() => {
+                                                        console.log(values);
+                                                        arrayHelpers.remove(i);
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon
+                                                        color={"#EF4444"}
+                                                        style={{ marginRight: 12 }}
+                                                        size={20}
+                                                        icon={falCircleXMark}
+                                                    />
+                                                </Pressable>
+                                            }
+                                        />
+                                    </View>
+                                ))}
+                                <View>
+                                    <Pressable
+                                        onPress={() => {
+                                            arrayHelpers.push("");
+                                        }}
+                                    >
+                                        <HStack style={{ marginTop: 14 }}>
+                                            <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
+                                            <Text
+                                                style={{ marginLeft: 10 }}
+                                                color={"darkBlue.500"}
+                                                fontWeight={"semibold"}
+                                            >
+                                                Add another {titleCase(currencyType)} wallet
+                                            </Text>
+                                        </HStack>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        )}
+                    />
+                </Collapsible>
+            </>
+        );
+    }
 
     function onAddContactSubmit() {}
 
@@ -37,76 +125,24 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                     {({ values, errors, touched, handleChange, submitForm }) => (
                         <FormControl>
                             <Input
+                                value={values.name}
+                                onChangeText={handleChange("name")}
                                 placeholder="Name"
                                 maxLength={20}
                                 keyboardType={"ascii-capable"}
                                 testID="contactNameInput"
                             />
                             <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
-                            <></>
-                            <Pressable
-                                onPress={() => {
-                                    setIsBtcCollapsed(!isBtcCollapsed);
-                                }}
-                            >
-                                <HStack style={{ marginTop: 40 }}>
-                                    <FontAwesomeIcon
-                                        style={{ marginRight: 10 }}
-                                        color={"#F7931A"}
-                                        icon={faBitcoin}
-                                        size={26}
-                                    />
-                                    <Text fontWeight={"semibold"} size={"title3"}>
-                                        Bitcoin Wallets
-                                    </Text>
-                                    {isBtcCollapsed ? (
-                                        <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronUp} />
-                                    ) : (
-                                        <FontAwesomeIcon style={styles.chevronIcon} icon={farChevronDown} size={18} />
-                                    )}
-                                </HStack>
-                            </Pressable>
-                            <Collapsible collapsed={isBtcCollapsed}>
-                                <View>
-                                    {btcWallets.map((wallet) => (
-                                        <View style={{marginTop: 20}}>
-                                            <Input
-                                                rightElement={
-                                                    <Pressable onPress={()=>{}}>
-                                                        <FontAwesomeIcon
-                                                        color={"#EF4444"}
-                                                        style={{ marginRight: 12 }}
-                                                        size={20}
-                                                        icon={falCircleXMark}
-                                                        />
-                                                    </Pressable>
-                                                }
-                                            />
-                                        </View>
-                                    ))}
-                                    <Pressable onPress={() => {
-
-                                        const lastWallet = btcWallets.at(btcWallets.length - 1);
-                                        if(lastWallet){
-                                            setBtcWallets([...btcWallets, {walletAddress: "", listItemId: lastWallet.listItemId++}])
-                                        }else {
-                                            setBtcWallets([...btcWallets, {walletAddress: "", listItemId: 0}]);
-                                        }
-
-                                    }}>
-                                        <HStack style={{ marginTop: 14 }}>
-                                            <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
-                                            <Text
-                                                style={{ marginLeft: 10 }}
-                                                color={"darkBlue.500"}
-                                                fontWeight={"semibold"}
-                                            >
-                                                Add another Ethereum wallet
-                                            </Text>
-                                        </HStack>
-                                    </Pressable>
-                                </View>
-                            </Collapsible>
+                            <AddWalletFieldArray
+                                values={values}
+                                handleChange={handleChange}
+                                currencyType={CurrencyType.BITCOIN}
+                            />
+                            <AddWalletFieldArray
+                                values={values}
+                                handleChange={handleChange}
+                                currencyType={CurrencyType.ETHEREUM}
+                            />
                         </FormControl>
                     )}
                 </Formik>

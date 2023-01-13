@@ -1,8 +1,8 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
-import { FieldArray, Formik } from "formik";
-import { FormControl, HStack, Input, Text } from "native-base";
+import { FieldArray, Formik, FormikErrors, FormikHelpers } from "formik";
+import { Button, FormControl, HStack, Input, ScrollView, Text } from "native-base";
 import Collapsible from "react-native-collapsible";
 import { Pressable, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,16 +14,25 @@ import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { faEthereum } from "../components/icons/brands/faEthereum";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
+import { ContactsGateway } from "../gateways/contacts_gateway";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 export default function AddContactScreen(props: SettingsStackScreenProps<"ContactsSettingsScreen">) {
+
+    const contactsGateway = new ContactsGateway();
+
+    const { token, user } = React.useContext(AuthContext);
+
     type IValue = {
-        name: string;
+        contactName: string;
         ethWallets: string[];
         btcWallets: string[];
     };
 
     const initialValues: IValue = {
-        name: "",
+        contactName: "",
         ethWallets: [],
         btcWallets: [],
     };
@@ -32,9 +41,10 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
         values: IValue;
         handleChange: any;
         currencyType: CurrencyType;
+        errors: FormikErrors<IValue>;
     };
 
-    function AddWalletFieldArray({ values, handleChange, currencyType }: addWalletFieldArrayProps) {
+    function AddWalletFieldArray({ values, handleChange, currencyType, errors }: addWalletFieldArrayProps) {
         const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
         const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
@@ -61,7 +71,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                         )}
                     </HStack>
                 </Pressable>
-                {/* @ts-expect-error */}
+                {/* @ts-expect-error this is a known type error in the dependency a pr was made to address the issue but never merged */}
                 <Collapsible collapsed={isCollapsed}>
                     <FieldArray
                         name={walletListString}
@@ -88,6 +98,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                                                 </Pressable>
                                             }
                                         />
+                                        <FormControl.ErrorMessage>{`${walletListString}[${i}]`}</FormControl.ErrorMessage>
                                     </View>
                                 ))}
                                 <View>
@@ -116,38 +127,81 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
         );
     }
 
-    function onAddContactSubmit() {}
+    async function onAddContactSubmit(values: IValue, formikHelpers: FormikHelpers<IValue>) {
+
+        if(values.contactName.length < 2){
+            console.log("should show error");
+            formikHelpers.setFieldError("contactName", "test error.");
+        }
+
+        values.btcWallets.map((walletAddress, i) => {
+            try
+            {
+                if(walletAddress.length > 0){
+                    const isAddressValid = CurrencyType.BITCOIN === getCurrencyType(walletAddress);
+                    if(!isAddressValid){
+                        formikHelpers.setFieldError(`btcWallets[${i}]`, ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1]);
+                        return;
+                    }
+                }
+            } catch(e){
+                console.log(`btcWallets[${i}]`)
+                formikHelpers.setFieldError(`btcWallets[${i}]`, ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1])
+                return;
+            }
+        })
+
+        try {
+            await contactsGateway.createContact({userId: user.id , ...values}, token);
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log(error.message);
+                formikHelpers.setFieldError("contactName", error.message);
+            }
+        }
+    }
 
     return (
-        <>
-            <View style={styles.view}>
-                <Formik initialValues={initialValues} onSubmit={onAddContactSubmit}>
-                    {({ values, errors, touched, handleChange, submitForm }) => (
-                        <FormControl>
+        <View style={styles.view}>
+            <Formik initialValues={initialValues} onSubmit={onAddContactSubmit}>
+                {({ values, errors, handleChange, submitForm }) => (
+                    <FormControl style={{ flex: 1 }}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                             <Input
-                                value={values.name}
-                                onChangeText={handleChange("name")}
+                                value={values.contactName}
+                                onChangeText={handleChange("contactName")}
                                 placeholder="Name"
                                 maxLength={20}
                                 keyboardType={"ascii-capable"}
                                 testID="contactNameInput"
                             />
-                            <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
+                            <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
                             <AddWalletFieldArray
                                 values={values}
                                 handleChange={handleChange}
                                 currencyType={CurrencyType.BITCOIN}
+                                errors={errors}
                             />
                             <AddWalletFieldArray
                                 values={values}
                                 handleChange={handleChange}
                                 currencyType={CurrencyType.ETHEREUM}
+                                errors={errors}
                             />
-                        </FormControl>
-                    )}
-                </Formik>
-            </View>
-        </>
+
+                            <Button
+                                style={
+                                    values.contactName.length > 0 ? styles.addContactButton : styles.addContactButtonDisabled
+                                }
+                                onPress={submitForm}
+                            >
+                                Add Contact
+                            </Button>
+                        </ScrollView>
+                    </FormControl>
+                )}
+            </Formik>
+        </View>
     );
 }
 
@@ -161,5 +215,12 @@ const styles = StyleSheet.create({
     chevronIcon: {
         marginLeft: "auto",
         marginRight: 5,
+    },
+    addContactButton: {
+        marginTop: "auto",
+    },
+    addContactButtonDisabled: {
+        marginTop: "auto",
+        opacity: 0.6,
     },
 });

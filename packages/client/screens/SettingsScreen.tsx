@@ -9,6 +9,7 @@ import { falWallet } from "../components/icons/light/falWallet";
 import SignOutButton from "../components/SignOutButton";
 import { falTags } from "../components/icons/light/falTags";
 import { falBell } from "../components/icons/light/falBell";
+import { falContactBook } from "../components/icons/light/falContactBook";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (
@@ -41,7 +42,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     testID="contactsButton"
                 >
                     <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falTags} style={styles.icon} size={26} />
+                        <FontAwesomeIcon icon={falContactBook} style={styles.icon} size={26} />
                         <Text style={styles.buttonText}>Contacts</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>

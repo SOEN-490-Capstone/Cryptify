@@ -19,7 +19,7 @@ import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/
 import { ContactsGateway } from "../gateways/contacts_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
 
-export default function AddContactScreen(props: SettingsStackScreenProps<"ContactsSettingsScreen">) {
+export default function AddContactScreen(props: SettingsStackScreenProps<"AddContactScreen">) {
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);

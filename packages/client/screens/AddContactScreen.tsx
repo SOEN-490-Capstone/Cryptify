@@ -24,24 +24,24 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
 
     const { token, user } = React.useContext(AuthContext);
 
-    type IValue = {
+    type FormValuesType = {
         contactName: string;
         ethWallets: string[];
         btcWallets: string[];
     };
 
-    const initialValues: IValue = {
+    const initialValues: FormValuesType = {
         contactName: "",
         ethWallets: [],
         btcWallets: [],
     };
 
     type addWalletFieldArrayProps = {
-        values: IValue;
+        values: FormValuesType;
         handleChange: any;
         currencyType: CurrencyType;
-        errors: FormikErrors<IValue>;
-        touched: FormikTouched<IValue>;
+        errors: FormikErrors<FormValuesType>;
+        touched: FormikTouched<FormValuesType>;
     };
 
     function AddWalletFieldArray({ values, handleChange, currencyType, errors, touched }: addWalletFieldArrayProps) {
@@ -136,30 +136,48 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
         );
     }
 
-    async function onAddContactSubmit(values: IValue, formikHelpers: FormikHelpers<IValue>) {
-        values.btcWallets.map((walletAddress, i) => {
-            try {
-                if (walletAddress.length > 0) {
-                    const isAddressValid = CurrencyType.BITCOIN === getCurrencyType(walletAddress);
-                    if (!isAddressValid) {
-                        formikHelpers.setFieldError(
-                            `btcWallets[${i}]`,
-                            ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
-                        );
-                        return;
+    async function onAddContactSubmit(values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) {
+
+        const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
+
+        // checking for errors for each currency in the list
+        currencies.map((currencyType) => {
+
+            const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
+            const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
+
+            // validating each string to be a valid currency wallet
+            wallets.map((walletAddress, i) => {
+                try {
+                    // ignoring empty strings
+                    if (walletAddress.length > 0) {
+                        const isAddressValid = currencyType=== getCurrencyType(walletAddress);
+                        if (!isAddressValid) {
+                            formikHelpers.setFieldError(
+                                `${walletListString}[${i}]`,
+                                ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                            );
+                            return;
+                        }
                     }
+                } catch (e) {
+                    formikHelpers.setFieldError(
+                        `${walletListString}[${i}]`,
+                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                    );
+                    return;
                 }
-            } catch (e) {
-                formikHelpers.setFieldError(
-                    `btcWallets[${i}]`,
-                    ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
-                );
-                return;
-            }
-        });
+            });
+
+        })
 
         try {
-            await contactsGateway.createContact({ userId: user.id, ...values }, token);
+            
+            const requestValues = {...values};
+            requestValues.btcWallets = requestValues.btcWallets.filter((w) => w === "");
+            requestValues.ethWallets = requestValues.ethWallets.filter((w) => w === "");
+
+            await contactsGateway.createContact({ userId: user.id, ...requestValues }, token);
             props.navigation.navigate("ContactsSettingsScreen");
         } catch (error) {
             if (error instanceof Error) {

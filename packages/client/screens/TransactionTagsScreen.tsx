@@ -120,6 +120,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                                     style={styles.addBadge}
                                     borderWidth={"2px"}
                                     borderStyle={"dashed"}
+                                    testID="addNewTagButton"
                                 >
                                     <HStack space={"10px"} style={styles.badgeContent}>
                                         <Text size={"subheadline"} fontWeight={"semibold"} color={"darkBlue.500"}>
@@ -152,6 +153,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                                             backgroundColor="gray.100"
                                             style={styles.badge}
                                             key={i}
+                                            testID="tag"
                                         >
                                             <HStack space={"10px"} style={styles.badgeContent}>
                                                 <Text size={"subheadline"} fontWeight={"semibold"}>

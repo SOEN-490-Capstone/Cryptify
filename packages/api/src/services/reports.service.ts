@@ -20,33 +20,34 @@ export class ReportsService {
             edgeGatewayStrategy.getWallets({ id: req.userId }),
         ]);
 
-        const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
-
         // Filter transactions
         // 1. Includes the wallet address of the report
-        // 2. If filtered by transactions in
-        // 3. If filtered by transactions out
+        // 2. Filter for only transaction in, out, or both, depending on req params
         // NOTE: selecting "All transactions" will cause both 2. and 3. to be true
-        // 4. Transaction was created after the start date
-        // 5. Transaction was created after the end date
+        // 3. Transaction was created after the start date
+        // 4. Transaction was created after the end date
         // NOTE: selecting "All transactions" will have a start date of 0 and an end date of the current date + 1
+        // TODO: This is a fix since the timestamp is stored as a string literal and does not get casted as a date
+        // object, ideally the timestamp is stored as an integer unix timestamp
         const filters: ((txn: Transaction) => boolean)[] = [
             (txn) => txn.walletIn === req.walletAddress || txn.walletOut === req.walletAddress,
-            (txn) => req.transactionsIn && txn.walletIn === req.walletAddress,
-            (txn) => req.transactionsOut && txn.walletOut === req.walletAddress,
-            (txn) => +txn.createdAt >= +req.startDate,
-            (txn) => +txn.createdAt <= +req.endDate,
+            (txn) =>
+                (req.transactionsIn && txn.walletIn === req.walletAddress) ||
+                (req.transactionsOut && txn.walletOut === req.walletAddress),
+            (txn) => +new Date(txn.createdAt) >= +req.startDate,
+            (txn) => +new Date(txn.createdAt) <= +req.endDate,
         ];
         // Apply each filter above to the transactions and only include the transactions that pass all filters
         const walletTxns = transactions.filter((txn) =>
             filters.map((filter) => filter(txn)).every((result) => result === true),
         );
 
-        // Get users contacts
-        // Create map of addr -> "contact (addr)", include users wallet addr as wallet name only
+        // TODO: Get users contacts and create map of addr -> "contact (addr)", include users wallet addr as wallet name
+        // only
 
+        const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
         const fileName = `${wallet.name} Transaction History.csv`;
-        const writeStream = fs.createWriteStream(`/${fileName}`);
+        const writeStream = fs.createWriteStream(`./${fileName}`);
 
         // Write headers to csv
         const TRANSACTION_HISTORY_HEADERS = [
@@ -71,13 +72,16 @@ export class ReportsService {
                         from: txn.walletOut,
                         to: txn.walletIn,
                         transactionType: `${req.currencyType} ${req.walletAddress === txn.walletIn ? "IN" : "OUT"}`,
-                        transactionDate: txn.createdAt.toLocaleDateString(["en-us"], {
+                        transactionDate: new Date(txn.createdAt).toLocaleDateString(["en-us"], {
                             year: "2-digit",
                             month: "2-digit",
                             day: "2-digit",
                         }),
-                        transactionTime: txn.createdAt.toLocaleString("en-US", { hour: "numeric", minute: "2-digit" }),
-                        transactionAmount: `${req.walletAddress === txn.walletIn ? "+" : "-"} ${txn.amount}`,
+                        transactionTime: new Date(txn.createdAt).toLocaleString("en-US", {
+                            hour: "numeric",
+                            minute: "2-digit",
+                        }),
+                        transactionAmount: `${req.walletAddress === txn.walletIn ? "+" : "-"}${txn.amount}`,
                         transactionFee: "0",
                     } as TransactionHistoryReportRow),
             )

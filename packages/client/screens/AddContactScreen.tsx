@@ -45,6 +45,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     };
 
     function AddWalletFieldArray({ values, handleChange, currencyType, errors, touched }: addWalletFieldArrayProps) {
+
         const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
         const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
@@ -139,6 +140,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     async function onAddContactSubmit(values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) {
 
         const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
+        let hasError = false;
 
         // checking for errors for each currency in the list
         currencies.map((currencyType) => {
@@ -155,16 +157,18 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                         if (!isAddressValid) {
                             formikHelpers.setFieldError(
                                 `${walletListString}[${i}]`,
-                                ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                                ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
                             );
+                            hasError = true;
                             return;
                         }
                     }
                 } catch (e) {
                     formikHelpers.setFieldError(
                         `${walletListString}[${i}]`,
-                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(CurrencyType.BITCOIN)).split(":")[1],
+                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
                     );
+                    hasError = true;
                     return;
                 }
             });
@@ -172,6 +176,10 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
         })
 
         try {
+
+            if(hasError){
+                return;
+            }
             
             const requestValues = {...values};
             requestValues.btcWallets = requestValues.btcWallets.filter((w) => w === "");

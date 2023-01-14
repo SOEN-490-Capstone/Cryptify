@@ -67,8 +67,14 @@ export default function SignUpNotificationsScreen(props: GuestStackScreenProps<"
                 </Text>
                 <Text>We'll send you notifications to keep you up to date with your crypto assets.</Text>
             </Center>
-            <Button onPress={() => submitNotification(true)}>Enable notifications</Button>
-            <Button style={styles.notNowButton} onPress={() => submitNotification(false)}>
+            <Button onPress={() => submitNotification(true)} testID="enableNotificationsSubmit">
+                Enable notifications
+            </Button>
+            <Button
+                style={styles.notNowButton}
+                onPress={() => submitNotification(false)}
+                testID="disableNotificationsSubmit"
+            >
                 <Text color={"darkBlue.500"}>Not Now</Text>
             </Button>
         </View>

@@ -45,7 +45,6 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     };
 
     function AddWalletFieldArray({ values, handleChange, currencyType, errors, touched }: addWalletFieldArrayProps) {
-
         const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
         const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
@@ -138,13 +137,11 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
     }
 
     async function onAddContactSubmit(values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) {
-
         const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
         let hasError = false;
 
         // checking for errors for each currency in the list
         currencies.map((currencyType) => {
-
             const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
             const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
@@ -153,7 +150,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                 try {
                     // ignoring empty strings
                     if (walletAddress.length > 0) {
-                        const isAddressValid = currencyType=== getCurrencyType(walletAddress);
+                        const isAddressValid = currencyType === getCurrencyType(walletAddress);
                         if (!isAddressValid) {
                             formikHelpers.setFieldError(
                                 `${walletListString}[${i}]`,
@@ -172,16 +169,14 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"Contac
                     return;
                 }
             });
-
-        })
+        });
 
         try {
-
-            if(hasError){
+            if (hasError) {
                 return;
             }
-            
-            const requestValues = {...values};
+
+            const requestValues = { ...values };
             requestValues.btcWallets = requestValues.btcWallets.filter((w) => w === "");
             requestValues.ethWallets = requestValues.ethWallets.filter((w) => w === "");
 

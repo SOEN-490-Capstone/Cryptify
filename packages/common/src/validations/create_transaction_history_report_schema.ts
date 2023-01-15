@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
-enum FileType {
+export enum FileType {
     CSV = "CSV",
 }
 

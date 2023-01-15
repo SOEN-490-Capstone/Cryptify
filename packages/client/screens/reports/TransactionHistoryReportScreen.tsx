@@ -7,6 +7,9 @@ import DateBox from "../../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { AuthContext } from "../../components/contexts/AuthContext";
+import { ReportsGateway } from "../../gateways/reports_gateway";
+import { CreateTransactionHistoryReportRequest } from "@cryptify/common/src/requests/create_transaction_history_report_request";
+import { FileType } from "@cryptify/common/src/validations/create_transaction_history_report_schema";
 
 type RadioProps = {
     value: string;
@@ -19,9 +22,9 @@ export default function TransactionHistoryReportScreen({
     route,
     navigation,
 }: HomeStackScreenProps<"TransactionHistoryReportScreen">) {
-    const { token, user } = React.useContext(AuthContext);
+    const reportsGateway = new ReportsGateway();
 
-    const [filters, setFilters] = React.useState<string[]>([]);
+    const { token, user } = React.useContext(AuthContext);
 
     const filtersByTransaction = getFiltersByTransactionStrings(getCurrencyType(route.params.walletAddress));
     const [filterByTransaction, setFilterByTransaction] = React.useState(filtersByTransaction[0]);
@@ -42,31 +45,64 @@ export default function TransactionHistoryReportScreen({
         })();
     }, [filterByTransaction, filterByDate]);
 
+    function getYearStart() {
+        const date = new Date();
+        date.setMonth(0);
+        date.setDate(1);
+        date.setHours(0);
+        date.setMinutes(0);
+        return +date;
+    }
+
     async function onPress(): Promise<void> {
-        const filters = [filterByTransaction];
-        // TODO create payload for report request
+        const startDate =
+            filterByDate === filtersByDate[0]
+                ? 0
+                : filterByDate === filtersByDate[1]
+                ? +new Date() - 1000 * 60 * 60 * 24 * 90
+                : filterByDate === filtersByDate[2]
+                ? getYearStart()
+                : filterByDate === filtersByDate[3]
+                ? getYearStart() - 1000 * 60 * 60 * 24 * 365
+                : +(fromDate || 0);
 
-        // this checks if the filter selected for the date is "custom date"
-        // since we need to have special logic that would add the two dates selected
-        if (filterByDate === "Custom Dates") {
-            const dateFormate = new Intl.DateTimeFormat("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-            });
+        const endDate =
+            filterByDate === filtersByDate[0]
+                ? +new Date() + 1000 * 60 * 60 * 24
+                : filterByDate === filtersByDate[1]
+                ? +new Date() + 1000 * 60 * 60 * 24
+                : filterByDate === filtersByDate[2]
+                ? getYearStart() + 1000 * 60 * 60 * 24 * 365
+                : filterByDate === filtersByDate[3]
+                ? getYearStart() - 1000 * 60 * 60 * 24
+                : +(fromDate || 0);
 
-            filters.push(`${dateFormate.format(fromDate || 0)} - ${dateFormate.format(toDate || +new Date())}`);
-        } else {
-            filters.push(filterByDate);
+        const req = {
+            userId: user.id,
+            walletAddress: route.params.walletAddress,
+            currencyType: getCurrencyType(route.params.walletAddress),
+            transactionsIn: filterByTransaction === "All transactions" || filterByTransaction.endsWith("in"),
+            transactionsOut: filterByTransaction === "All transactions" || filterByTransaction.endsWith("out"),
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            fileType: FileType.CSV,
+        } as CreateTransactionHistoryReportRequest;
+
+        try {
+            await reportsGateway.createTransactionHistoryReport(req, token);
+
+            Alert.alert(
+                "Transaction History Sent",
+                `The Transaction History document for ${route.params.walletName} will be sent to you shortly by email at ${user.email}.`,
+                [{ text: "Ok", style: "cancel" }],
+            );
+        } catch (e) {
+            Alert.alert(
+                "Transaction History Error",
+                `An error occured while generating the Transaction History document for ${route.params.walletName}, please try again later.`,
+                [{ text: "Ok", style: "cancel" }],
+            );
         }
-
-        console.log(`${filters}`);
-
-        Alert.alert(
-            "Transaction History Sent",
-            `The Transaction History document for ${route.params.walletName} will be sent to you shortly by email at ${user.email}.`,
-            [{ text: "Ok", style: "cancel" }],
-        );
     }
 
     function ResetLink() {
@@ -80,7 +116,6 @@ export default function TransactionHistoryReportScreen({
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
-                    setFilters([filtersByTransaction[0], filtersByDate[0]]);
                 }}
             >
                 Reset
@@ -141,12 +176,12 @@ export default function TransactionHistoryReportScreen({
                     Filter by date
                 </Text>
                 <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
+                <Box marginTop="20px" />
+                {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
                 <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
                     File format
                 </Text>
                 <RadioGroup options={filtersByFile} value={filterByFile} setValue={setFilterByFile} isDisabled={true} />
-                <Box marginTop="20px" />
-                {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
                 <Button
                     style={styles.applyButton}
                     onPress={() => onPress()}

@@ -8,6 +8,8 @@ import { ReportNotificationService } from "@cryptify/common/src/utils/notificati
 
 @Injectable()
 export class ReportsService {
+    private static readonly BLANK_LINE: string = ",,,,,,,,,\n";
+
     constructor(
         private readonly edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory,
         private readonly contactsService: ContactsService,
@@ -39,9 +41,9 @@ export class ReportsService {
             (txn) => +new Date(txn.createdAt) <= +req.endDate,
         ];
         // Apply each filter above to the transactions and only include the transactions that pass all filters
-        const walletTxns = transactions.filter((txn) =>
-            filters.map((filter) => filter(txn)).every((result) => result === true),
-        );
+        const walletTxns = transactions
+            .filter((txn) => filters.map((filter) => filter(txn)).every((result) => result === true))
+            .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
 
         // TODO: Get users contacts and create map of addr -> "contact (addr)", include users wallet addr as wallet name
         // only
@@ -49,6 +51,7 @@ export class ReportsService {
         const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
         const fileName = `${wallet.name} Transaction History.csv`;
         let csv = "";
+        csv += ReportsService.BLANK_LINE;
 
         // Write headers to csv
         const TRANSACTION_HISTORY_HEADERS = [
@@ -59,10 +62,12 @@ export class ReportsService {
             "Transaction Type",
             "Transaction Date",
             "Transaction Time",
-            `Transaction Amount ${typeToISOCode[req.currencyType]}`,
-            `Transaction Fee ${typeToISOCode[req.currencyType]}`,
+            `Transaction Amount (${typeToISOCode[req.currencyType]})`,
+            `Transaction Fee (${typeToISOCode[req.currencyType]})`,
         ] as const;
         csv += TRANSACTION_HISTORY_HEADERS.join(",") + "\n";
+        csv += ReportsService.BLANK_LINE;
+        csv += ReportsService.BLANK_LINE;
 
         // Convert each transaction to row format, join array values together, and write row to file
         walletTxns.forEach((txn) => {
@@ -97,7 +102,7 @@ export class ReportsService {
             csv += serializedRow;
         });
 
-        await this.reportNotificationService.sendReportNotification(req.userId, fileName, csv);
+        await this.reportNotificationService.sendReportNotification(req.userId, wallet, fileName, csv);
     }
 }
 

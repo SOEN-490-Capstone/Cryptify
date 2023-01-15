@@ -34,7 +34,7 @@ export class EmailNotificationStrategy extends AbstractNotificationStrategy {
                 from: this.from,
                 to: notification.to,
                 subject: notification.title,
-                text: notification.body,
+                html: notification.body,
                 attachments,
             });
         } catch (e) {}

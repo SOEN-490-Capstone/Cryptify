@@ -130,7 +130,7 @@ export type SettingsStackParamList = {
     WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
-    ContactsSettingsScreen: undefined;
+    ContactsListScreen: undefined;
     AddContactScreen: undefined;
     TagsSettingsScreen: undefined;
     FilterScreen: FilterScreenProps;

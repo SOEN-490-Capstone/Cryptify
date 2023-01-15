@@ -9,7 +9,7 @@ import { falWallet } from "../components/icons/light/falWallet";
 import SignOutButton from "../components/SignOutButton";
 import { falTags } from "../components/icons/light/falTags";
 import { falBell } from "../components/icons/light/falBell";
-import { falContactBook } from "../components/icons/light/falContactBook";
+import { falAddressBook } from "../components/icons/light/falAddressBook";
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
     return (
@@ -34,7 +34,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     </HStack>
                 </Pressable>
                 <Pressable
-                    onPress={() => navigation.navigate("ContactsSettingsScreen")}
+                    onPress={() => navigation.navigate("ContactsListScreen")}
                     style={styles.button}
                     _pressed={{
                         background: "text.200",
@@ -42,7 +42,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     testID="contactsButton"
                 >
                     <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falContactBook} style={styles.icon} size={26} />
+                        <FontAwesomeIcon icon={falAddressBook} style={styles.icon} size={26} />
                         <Text style={styles.buttonText}>Contacts</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>

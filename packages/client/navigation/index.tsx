@@ -48,7 +48,7 @@ import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
 import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
-import ContactsSettingsScreen from "../screens/ContactsSettingsScreen";
+import ContactsListScreen from "../screens/ContactsListScreen";
 import AddContactScreen from "../screens/AddContactScreen";
 
 // TODO refactor this file to reduce code duplication and see if
@@ -329,8 +329,8 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 })}
             />
             <SettingsStack.Screen
-                name="ContactsSettingsScreen"
-                component={ContactsSettingsScreen}
+                name="ContactsListScreen"
+                component={ContactsListScreen}
                 options={{
                     title: "Contacts",
                     headerTintColor: "#404040",

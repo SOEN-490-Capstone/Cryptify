@@ -14,43 +14,39 @@ import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { faEthereum } from "../components/icons/brands/faEthereum";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { ContactsGateway } from "../gateways/contacts_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
+import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 
 export default function AddContactScreen(props: SettingsStackScreenProps<"AddContactScreen">) {
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);
 
-    type FormValuesType = {
-        contactName: string;
-        ethWallets: string[];
-        btcWallets: string[];
-    };
-
-    const initialValues: FormValuesType = {
+    const initialValues: CreateContactRequest = {
         contactName: "",
+        userId: user.id,
         ethWallets: [],
         btcWallets: [],
     };
 
-    type addWalletFieldArrayProps = {
-        values: FormValuesType;
-        handleChange: any;
-        currencyType: CurrencyType;
-        errors: FormikErrors<FormValuesType>;
-        touched: FormikTouched<FormValuesType>;
-    };
-
-    function AddWalletFieldArray({ values, handleChange, currencyType, errors, touched }: addWalletFieldArrayProps) {
-        const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
-        const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
+    function AddWalletFieldArray({
+        values,
+        handleChange,
+        currencyType,
+        errors,
+        touched,
+        placeholder,
+    }: addWalletFieldArrayProps) {
         const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
         const iconColor = currencyType === CurrencyType.BITCOIN ? "#F7931A" : "#3C3C3D";
+
+        const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
         const currencyErrors = currencyType === CurrencyType.BITCOIN ? errors.btcWallets : errors.ethWallets;
         const currencyTouched = currencyType === CurrencyType.BITCOIN ? touched.btcWallets : touched.ethWallets;
+        const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
         const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true);
 
@@ -79,8 +75,8 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                         name={walletListString}
                         render={(arrayHelpers) => (
                             <View>
-                                {wallets.map((wallet, i) => (
-                                    <View style={{ marginTop: 20 }} key={i}>
+                                {wallets?.map((wallet, i) => (
+                                    <View style={wallets.length > 1 ? { marginTop: 13 } : { marginTop: 20 }} key={i}>
                                         <FormControl
                                             isInvalid={
                                                 !!(currencyErrors ? currencyErrors[i] : false && currencyTouched)
@@ -89,6 +85,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                                             <Input
                                                 value={wallet}
                                                 onChangeText={handleChange(`${walletListString}[${i}]`)}
+                                                placeholder={placeholder}
                                                 rightElement={
                                                     <Pressable
                                                         onPress={() => {
@@ -116,7 +113,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                                             arrayHelpers.push("");
                                         }}
                                     >
-                                        <HStack style={{ marginTop: 14 }}>
+                                        <HStack style={{ marginTop: 13 }}>
                                             <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
                                             <Text
                                                 style={{ marginLeft: 10 }}
@@ -136,7 +133,10 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
         );
     }
 
-    async function onAddContactSubmit(values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) {
+    async function onAddContactSubmit(
+        values: CreateContactRequest,
+        formikHelpers: FormikHelpers<CreateContactRequest>,
+    ) {
         const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
         let hasError = false;
 
@@ -146,27 +146,18 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
             const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
             // validating each string to be a valid currency wallet
-            wallets.map((walletAddress, i) => {
-                try {
-                    // ignoring empty strings
-                    if (walletAddress.length > 0) {
-                        const isAddressValid = currencyType === getCurrencyType(walletAddress);
-                        if (!isAddressValid) {
-                            formikHelpers.setFieldError(
-                                `${walletListString}[${i}]`,
-                                ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
-                            );
-                            hasError = true;
-                            return;
-                        }
+            wallets?.map((walletAddress, i) => {
+                // ignoring empty strings
+                if (walletAddress !== undefined && walletAddress.length > 0) {
+                    const isAddressValid = isValidCurrencyAddress(walletAddress, currencyType);
+                    if (!isAddressValid) {
+                        formikHelpers.setFieldError(
+                            `${walletListString}[${i}]`,
+                            ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
+                        );
+                        hasError = true;
+                        return;
                     }
-                } catch (e) {
-                    formikHelpers.setFieldError(
-                        `${walletListString}[${i}]`,
-                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
-                    );
-                    hasError = true;
-                    return;
                 }
             });
         });
@@ -177,11 +168,11 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
             }
 
             const requestValues = { ...values };
-            requestValues.btcWallets = requestValues.btcWallets.filter((w) => w === "");
-            requestValues.ethWallets = requestValues.ethWallets.filter((w) => w === "");
+            requestValues.btcWallets = requestValues.btcWallets?.filter((w) => w !== "");
+            requestValues.ethWallets = requestValues.ethWallets?.filter((w) => w !== "");
 
-            await contactsGateway.createContact({ userId: user.id, ...requestValues }, token);
-            props.navigation.navigate("ContactsSettingsScreen");
+            await contactsGateway.createContact(requestValues, token);
+            props.navigation.navigate("ContactsListScreen");
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("contactName", error.message);
@@ -197,6 +188,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                         <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
                             <Input
                                 value={values.contactName}
+                                autoFocus={true}
                                 onChangeText={handleChange("contactName")}
                                 placeholder="Name"
                                 maxLength={20}
@@ -211,6 +203,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                             currencyType={CurrencyType.BITCOIN}
                             errors={errors}
                             touched={touched}
+                            placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
                         />
                         <AddWalletFieldArray
                             values={values}
@@ -218,6 +211,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
                             currencyType={CurrencyType.ETHEREUM}
                             errors={errors}
                             touched={touched}
+                            placeholder={"Wallet address (Begins with 0x)"}
                         />
 
                         <Button
@@ -236,6 +230,15 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
         </View>
     );
 }
+
+type addWalletFieldArrayProps = {
+    values: CreateContactRequest;
+    handleChange: any;
+    currencyType: CurrencyType;
+    errors: FormikErrors<CreateContactRequest>;
+    touched: FormikTouched<CreateContactRequest>;
+    placeholder: string;
+};
 
 const styles = StyleSheet.create({
     view: {

@@ -19,7 +19,7 @@ export class ContactsGateway extends AbstractApiGateway {
     }
 
     async createContact(req: CreateContactRequest, token: string): Promise<Contact> {
-        const path = `users/${req.userId}/contact`;
+        const path = `users/${req.userId}/contacts`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

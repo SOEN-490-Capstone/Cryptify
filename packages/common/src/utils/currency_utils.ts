@@ -28,6 +28,17 @@ export function normalizeCurrency(amount: number): string {
     return amountString;
 }
 
+export function isValidCurrencyAddress(address: string, currencyType: CurrencyType): boolean {
+    if ((currencyType === CurrencyType.BITCOIN && validate(address, "BTC")) || btcTxRegex.test(address)) {
+        return true;
+    }
+    if ((currencyType === CurrencyType.ETHEREUM && validate(address, "ETH")) || ethTxRegex.test(address)) {
+        return true;
+    }
+
+    return false;
+}
+
 type ISOCode = "ETH" | "BTC";
 export const typeToISOCode: { [key in CurrencyType]: ISOCode } = {
     [CurrencyType.ETHEREUM]: "ETH",

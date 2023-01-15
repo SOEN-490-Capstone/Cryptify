@@ -8,8 +8,8 @@ import { AddressActivityEvent } from "@cryptify/eth-edge/src/types/address_activ
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
-import { EmailNotificationService } from "@cryptify/common/src/utils/notifications/email_notification_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { TransactionNotificationService } from "@cryptify/common/src/utils/notifications/transaction_notification_service";
 
 @Injectable()
 export class TransactionsService {
@@ -21,7 +21,7 @@ export class TransactionsService {
         private walletsService: WalletsService,
         @InjectRepository(Wallet)
         private walletsRepository: Repository<Wallet>,
-        private readonly notificationService: EmailNotificationService,
+        private readonly transactionNotificationService: TransactionNotificationService,
     ) {}
 
     async backfillTransactions(address: string): Promise<void> {
@@ -64,7 +64,7 @@ export class TransactionsService {
         Promise.all(
             transactions.map(
                 async (transaction) =>
-                    await this.notificationService.sendTransactionNotifications(
+                    await this.transactionNotificationService.sendTransactionNotifications(
                         [transaction],
                         getCurrencyType(transaction.transactionAddress),
                     ),

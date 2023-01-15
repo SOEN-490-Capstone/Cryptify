@@ -9,6 +9,7 @@ import { dataSourceOptionsConfig } from "@cryptify/common/src/db/data_source_opt
 import { TransactionsModule } from "./transactions.module";
 import { TagsModule } from "./tags.module";
 import { ContactsModule } from "./contacts.module";
+import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { ContactsModule } from "./contacts.module";
         TransactionsModule,
         TagsModule,
         ContactsModule,
+        ReportsModule,
     ],
 })
 export class AppModule {}

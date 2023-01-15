@@ -9,7 +9,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { ConfigService } from "@nestjs/config";
 import { TransactionsController } from "@cryptify/btc-edge/src/controllers/transactions.controller";
 import { WalletsModule } from "./wallets.module";
-import { EmailNotificationService } from "@cryptify/common/src/utils/notifications/email_notification_service";
+import { NotificationsModule } from "@cryptify/common/src/utils/notifications/notifications.module";
 
 @Module({
     imports: [
@@ -21,9 +21,10 @@ import { EmailNotificationService } from "@cryptify/common/src/utils/notificatio
             }),
         }),
         forwardRef(() => WalletsModule),
+        NotificationsModule,
     ],
     controllers: [TransactionsController],
-    providers: [TransactionsService, SoChainGateway, TransactionWatcherService, EmailNotificationService],
+    providers: [TransactionsService, SoChainGateway, TransactionWatcherService],
     exports: [TransactionsService, TransactionWatcherService],
 })
 export class TransactionsModule {}

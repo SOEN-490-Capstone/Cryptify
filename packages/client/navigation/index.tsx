@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -48,6 +48,7 @@ import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
 import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
+import useTabBar from "../hooks/useTabBar";
 import ContactsListScreen from "../screens/ContactsListScreen";
 import AddContactScreen from "../screens/AddContactScreen";
 
@@ -58,22 +59,7 @@ import AddContactScreen from "../screens/AddContactScreen";
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    React.useLayoutEffect(() => {
-        const tabHiddenRoutes = [
-            "AddWalletSelectionScreen",
-            "AddWalletScreen",
-            "WalletOverviewScreen",
-            "WalletDetailsScreen",
-            "TransactionTagsScreen",
-            "AddTransactionTagsScreen",
-            "TransactionDetailsScreen",
-        ];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
-            navigation.setOptions({ tabBarStyle: { display: "none" } });
-        } else {
-            navigation.setOptions({ tabBarStyle: { display: "flex" } });
-        }
-    }, [navigation, route]);
+    useTabBar({ navigation, route, initialScreenName: "HomeScreen" });
 
     return (
         <HomeStack.Navigator>
@@ -265,21 +251,8 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    React.useLayoutEffect(() => {
-        const tabHiddenRoutes = [
-            "ViewWalletsScreen",
-            "AddWalletSelectionScreen",
-            "AddWalletScreen",
-            "WalletSettingsScreen",
-            "TagsSettingsScreen",
-            "AddTagsScreen",
-        ];
-        if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route) || "")) {
-            navigation.setOptions({ tabBarStyle: { display: "none" } });
-        } else {
-            navigation.setOptions({ tabBarStyle: { display: "flex" } });
-        }
-    }, [navigation, route]);
+    useTabBar({ navigation, route, initialScreenName: "SettingsScreen" });
+
     return (
         <SettingsStack.Navigator>
             <SettingsStack.Screen

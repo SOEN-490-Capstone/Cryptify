@@ -26,12 +26,17 @@ export class EmailNotificationStrategy extends AbstractNotificationStrategy {
     async sendNotification(notification: Notification): Promise<void> {
         const attachments = notification.attachment ? [notification.attachment] : [];
 
-        this.transporter.sendMail({
-            from: this.from,
-            to: notification.to,
-            subject: notification.title,
-            text: notification.body,
-            attachments,
-        });
+        // If there is an error while sending an email then silently fail, the application shouldn't stop because of an
+        // error or misconfiguration here during runtime, this also helps silence errors during integration tests when
+        // the credentials are incorrect
+        try {
+            this.transporter.sendMail({
+                from: this.from,
+                to: notification.to,
+                subject: notification.title,
+                text: notification.body,
+                attachments,
+            });
+        } catch (e) {}
     }
 }

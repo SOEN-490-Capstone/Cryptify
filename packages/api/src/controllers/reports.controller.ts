@@ -11,7 +11,7 @@ export class ReportsController {
     constructor(private readonly reportsService: ReportsService) {}
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
-    @Post("users/:id/reports/transaction-history")
+    @Post("/users/:id/reports/transaction-history")
     async create(@Body() body: CreateTransactionHistoryReportRequest): Promise<void> {
         const createReportRequest = await useValidate(updateUserSchema, body);
         await this.reportsService.generateTransactionHistory(createReportRequest);

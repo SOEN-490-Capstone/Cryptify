@@ -7,7 +7,7 @@ import { falCircleArrowDownLeft } from "./icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
 import { farCopy } from "./icons/regular/farCopy";
 import * as Clipboard from "expo-clipboard";
-import { getFormattedAmount } from "../services/currency_service";
+import { getFormattedAmount } from "@cryptify/common/src/utils/currency_utils";
 import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native";
 import { farChevronRight } from "./icons/regular/farChevronRight";
 import SortService from "../services/sort_service";

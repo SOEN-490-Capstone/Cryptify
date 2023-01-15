@@ -1,24 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import nodemailer from "nodemailer";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
 import {
-    AbstractNotificationServiceTemplateMethod,
+    AbstractNotificationStrategy,
     Notification,
-} from "@cryptify/common/src/utils/notifications/abstract_notification_service_template_method";
+} from "@cryptify/common/src/utils/notifications/abstract_notification_strategy";
 
 @Injectable()
-export class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
+export class EmailNotificationStrategy extends AbstractNotificationStrategy {
     private readonly transporter: nodemailer.Transporter;
     private readonly from: string = "noreply@cryptify.com";
 
-    constructor(
-        private readonly configService: ConfigService,
-        @InjectRepository(Wallet) walletsRepository: Repository<Wallet>,
-    ) {
-        super(walletsRepository);
+    constructor(private readonly configService: ConfigService) {
+        super();
         this.transporter = nodemailer.createTransport({
             host: configService.get<string>("NODEMAILER_HOST"),
             port: +configService.get<number>("NODEMAILER_PORT"),
@@ -29,12 +23,15 @@ export class EmailNotificationService extends AbstractNotificationServiceTemplat
         });
     }
 
-    protected async sendNotification(notification: Notification): Promise<void> {
-        await this.transporter.sendMail({
+    async sendNotification(notification: Notification): Promise<void> {
+        const attachments = notification.attachment ? [notification.attachment] : [];
+
+        this.transporter.sendMail({
             from: this.from,
             to: notification.to,
             subject: notification.title,
             text: notification.body,
+            attachments,
         });
     }
 }

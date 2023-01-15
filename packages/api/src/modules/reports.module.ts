@@ -5,9 +5,10 @@ import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gate
 import { EthEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/eth_edge_gateway_strategy";
 import { BtcEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/btc_edge_gateway_strategy";
 import { ContactsModule } from "@cryptify/api/src/modules/contacts.module";
+import { NotificationsModule } from "@cryptify/common/src/utils/notifications/notifications.module";
 
 @Module({
-    imports: [ContactsModule],
+    imports: [NotificationsModule, ContactsModule],
     providers: [ReportsService, EdgeGatewayStrategyFactory, EthEdgeGatewayStrategy, BtcEdgeGatewayStrategy],
     exports: [ReportsService],
     controllers: [ReportsController],

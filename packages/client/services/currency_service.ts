@@ -26,17 +26,6 @@ export function getWalletsTotal(wallets: WalletWithBalance[], type: CurrencyType
     return "";
 }
 
-export function getFormattedAmount(amount: string, type: CurrencyType): string {
-    const amountInCurrency = type == CurrencyType.ETHEREUM ? Web3.utils.fromWei(amount, "ether") : amount;
-
-    // This block takes care of formatting the currency with commas before the decimal
-    const parts = amountInCurrency.split(".");
-    if (parts[0].length >= 4) {
-        parts[0] = parts[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
-    }
-    return parts.join(".");
-}
-
 export const currencyTypeToIcon: { [key in CurrencyType]: IconDefinition } = {
     [CurrencyType.ETHEREUM]: faEthereum,
     [CurrencyType.BITCOIN]: faBitcoin,

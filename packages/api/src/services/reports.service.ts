@@ -1,16 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTransactionHistoryReportRequest } from "@cryptify/common/src/requests/create_transaction_history_report_request";
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
-import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
+import { getFormattedAmount, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { ContactsService } from "@cryptify/api/src/services/contacts.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import fs from "fs";
+import * as fs from "fs";
+import { ReportNotificationService } from "@cryptify/common/src/utils/notifications/report_notification_service";
 
 @Injectable()
 export class ReportsService {
     constructor(
         private readonly edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory,
         private readonly contactsService: ContactsService,
+        private readonly reportNotificationService: ReportNotificationService,
     ) {}
 
     async generateTransactionHistory(req: CreateTransactionHistoryReportRequest): Promise<void> {
@@ -47,7 +49,7 @@ export class ReportsService {
 
         const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
         const fileName = `${wallet.name} Transaction History.csv`;
-        const writeStream = fs.createWriteStream(`./${fileName}`);
+        const stream = fs.createWriteStream(`./${fileName}`);
 
         // Write headers to csv
         const TRANSACTION_HISTORY_HEADERS = [
@@ -61,7 +63,7 @@ export class ReportsService {
             `Transaction Amount ${typeToISOCode[req.currencyType]}`,
             `Transaction Fee ${typeToISOCode[req.currencyType]}`,
         ] as const;
-        writeStream.write(TRANSACTION_HISTORY_HEADERS.join(",") + "\n");
+        stream.write(TRANSACTION_HISTORY_HEADERS.join(",") + "\n");
 
         walletTxns
             .map(
@@ -81,16 +83,21 @@ export class ReportsService {
                             hour: "numeric",
                             minute: "2-digit",
                         }),
-                        transactionAmount: `${req.walletAddress === txn.walletIn ? "+" : "-"}${txn.amount}`,
+                        transactionAmount: `${req.walletAddress === txn.walletIn ? "+" : "-"}${getFormattedAmount(
+                            txn.amount,
+                            req.currencyType,
+                        )}`,
                         transactionFee: "0",
                     } as TransactionHistoryReportRow),
             )
             .forEach((row) => {
                 const serializedRow = Object.values(row).join(",") + "\n";
-                writeStream.write(serializedRow);
+                stream.write(serializedRow);
             });
 
-        writeStream.end();
+        stream.end();
+
+        await this.reportNotificationService.sendReportNotification(req.userId, fileName);
     }
 }
 

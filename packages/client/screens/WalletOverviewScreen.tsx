@@ -2,7 +2,6 @@ import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { Pressable, Box, Text, HStack, VStack } from "native-base";
 import { StyleSheet } from "react-native";
-import { falWallet } from "../components/icons/light/falWallet";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
@@ -18,6 +17,8 @@ import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
+import {farWallet} from "../components/icons/regular/farWallet";
+import {farFile} from "../components/icons/regular/farFile";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,
@@ -77,7 +78,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 </VStack>
             </Box>
             <Box marginTop="20px" marginBottom="0"></Box>
-            <HStack paddingX="83px" justifyContent="space-between">
+            <HStack paddingX="38px" justifyContent="space-between">
                 <VStack space="4px">
                     <Pressable
                         testID="walletDetailsButton"
@@ -93,7 +94,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                         }
                     >
                         <Box style={styles.walletIconBackground}>
-                            <FontAwesomeIcon icon={falWallet} style={styles.walletIcon} size={20} />
+                            <FontAwesomeIcon icon={farWallet} style={styles.walletIcon} size={20} />
                         </Box>
                     </Pressable>
                     <Text size={"subheadline"} fontWeight={"semibold"}>
@@ -112,6 +113,25 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                     </Pressable>
                     <Text size={"subheadline"} fontWeight={"semibold"}>
                         QR Code
+                    </Text>
+                </VStack>
+                <VStack space="4px">
+                    <Pressable
+                        testID="walletDocumentsButton"
+                        style={styles.button}
+                        onPress={() =>
+                            navigation.navigate("ReportSelectionScreen", {
+                                walletAddress: address,
+                                walletName: name,
+                            })
+                        }
+                    >
+                        <Box style={styles.walletIconBackground}>
+                            <FontAwesomeIcon icon={farFile} style={styles.walletIcon} size={20} />
+                        </Box>
+                    </Pressable>
+                    <Text size={"subheadline"} fontWeight={"semibold"}>
+                        Documents
                     </Text>
                 </VStack>
             </HStack>

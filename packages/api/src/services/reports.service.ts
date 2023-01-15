@@ -65,6 +65,7 @@ export class ReportsService {
         ] as const;
         stream.write(TRANSACTION_HISTORY_HEADERS.join(",") + "\n");
 
+        // Convert each transaction to row format, join array values together, and write row to file
         walletTxns
             .map(
                 (txn) =>

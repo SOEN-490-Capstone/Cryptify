@@ -14,6 +14,6 @@ export class ReportsController {
     @Post("users/:id/reports/transaction-history")
     async create(@Body() body: CreateTransactionHistoryReportRequest): Promise<void> {
         const createReportRequest = await useValidate(updateUserSchema, body);
-        this.reportsService.generateTransactionHistory(createReportRequest);
+        await this.reportsService.generateTransactionHistory(createReportRequest);
     }
 }

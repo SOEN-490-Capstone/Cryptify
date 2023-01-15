@@ -30,7 +30,7 @@ export class EmailNotificationStrategy extends AbstractNotificationStrategy {
         // error or misconfiguration here during runtime, this also helps silence errors during integration tests when
         // the credentials are incorrect
         try {
-            this.transporter.sendMail({
+            await this.transporter.sendMail({
                 from: this.from,
                 to: notification.to,
                 subject: notification.title,

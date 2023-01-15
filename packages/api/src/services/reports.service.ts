@@ -4,7 +4,6 @@ import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gate
 import { getFormattedAmount, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { ContactsService } from "@cryptify/api/src/services/contacts.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import * as fs from "fs";
 import { ReportNotificationService } from "@cryptify/common/src/utils/notifications/report_notification_service";
 
 @Injectable()
@@ -49,7 +48,7 @@ export class ReportsService {
 
         const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
         const fileName = `${wallet.name} Transaction History.csv`;
-        const stream = fs.createWriteStream(`./${fileName}`);
+        let csv = "";
 
         // Write headers to csv
         const TRANSACTION_HISTORY_HEADERS = [
@@ -63,42 +62,42 @@ export class ReportsService {
             `Transaction Amount ${typeToISOCode[req.currencyType]}`,
             `Transaction Fee ${typeToISOCode[req.currencyType]}`,
         ] as const;
-        stream.write(TRANSACTION_HISTORY_HEADERS.join(",") + "\n");
+        csv += TRANSACTION_HISTORY_HEADERS.join(",") + "\n";
 
         // Convert each transaction to row format, join array values together, and write row to file
-        walletTxns
-            .map(
-                (txn) =>
-                    ({
-                        transactionId: txn.transactionAddress,
-                        status: "CONFIRMED",
-                        from: txn.walletOut,
-                        to: txn.walletIn,
-                        transactionType: `${req.currencyType} ${req.walletAddress === txn.walletIn ? "IN" : "OUT"}`,
-                        transactionDate: new Date(txn.createdAt).toLocaleDateString(["en-us"], {
-                            year: "2-digit",
-                            month: "2-digit",
-                            day: "2-digit",
-                        }),
-                        transactionTime: new Date(txn.createdAt).toLocaleString("en-US", {
-                            hour: "numeric",
-                            minute: "2-digit",
-                        }),
-                        transactionAmount: `${req.walletAddress === txn.walletIn ? "+" : "-"}${getFormattedAmount(
-                            txn.amount,
-                            req.currencyType,
-                        )}`,
-                        transactionFee: "0",
-                    } as TransactionHistoryReportRow),
-            )
-            .forEach((row) => {
-                const serializedRow = Object.values(row).join(",") + "\n";
-                stream.write(serializedRow);
+        walletTxns.forEach((txn) => {
+            const transactionType = `${req.currencyType} ${req.walletAddress === txn.walletIn ? "IN" : "OUT"}`;
+            const transactionDate = new Date(txn.createdAt).toLocaleDateString(["en-us"], {
+                year: "2-digit",
+                month: "2-digit",
+                day: "2-digit",
             });
+            const transactionTime = new Date(txn.createdAt).toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+            });
+            const transactionAmount = `${req.walletAddress === txn.walletIn ? "+" : "-"}${getFormattedAmount(
+                txn.amount,
+                req.currencyType,
+            )}`;
 
-        stream.end();
+            const row = {
+                transactionId: txn.transactionAddress,
+                status: "CONFIRMED",
+                from: txn.walletOut,
+                to: txn.walletIn,
+                transactionType,
+                transactionDate,
+                transactionTime,
+                transactionAmount,
+                transactionFee: "0",
+            } as TransactionHistoryReportRow;
 
-        await this.reportNotificationService.sendReportNotification(req.userId, fileName);
+            const serializedRow = Object.values(row).join(",") + "\n";
+            csv += serializedRow;
+        });
+
+        await this.reportNotificationService.sendReportNotification(req.userId, fileName, csv);
     }
 }
 

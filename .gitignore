@@ -374,6 +374,3 @@ pgdata
 
 .scannerwork
 **/test-report.xml
-
-# generated transaction history csv files
-*Transaction History.csv

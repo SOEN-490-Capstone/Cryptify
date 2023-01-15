@@ -140,6 +140,7 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
                                         ref={(input) => {
                                             isSubmitting && input?.focus();
                                         }}
+                                        testID="newTagInput"
                                     />
                                     <FormControl.ErrorMessage>{errors.tag}</FormControl.ErrorMessage>
                                 </FormControl>

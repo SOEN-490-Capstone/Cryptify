@@ -7,7 +7,7 @@ import { falCircleArrowDownLeft } from "./icons/light/falCircleArrowDownLeft";
 import { falCircleArrowUpRight } from "./icons/light/falCircleArrowUpRight";
 import { farCopy } from "./icons/regular/farCopy";
 import * as Clipboard from "expo-clipboard";
-import { getFormattedAmount } from "../services/currency_service";
+import { getFormattedAmount } from "@cryptify/common/src/utils/currency_utils";
 import { CompositeNavigationProp, useIsFocused } from "@react-navigation/native";
 import { farChevronRight } from "./icons/regular/farChevronRight";
 import SortService from "../services/sort_service";
@@ -141,6 +141,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                         setTransaction: setTransaction,
                     })
                 }
+                testID="addTagsButton"
             >
                 {transactionTags.length === 0 ? (
                     <HStack style={styles.addTagsButton} alignItems="center">
@@ -168,7 +169,7 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                                     }
                                 >
                                     {SortService.sortTransactionTagsAlphabetically(transactionTags).map((tag, i) => (
-                                        <VStack>
+                                        <VStack key={i}>
                                             {/* Dummy badges solely used to calculate dimensions when rendered on the UI
                                                 and immediately hidden from the UI once all badges have been measured. */}
                                             <Box style={dummyTagsContainerRender ? {} : { display: "none" }}>

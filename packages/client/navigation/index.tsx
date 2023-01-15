@@ -49,6 +49,8 @@ import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 import useTabBar from "../hooks/useTabBar";
+import ContactsListScreen from "../screens/ContactsListScreen";
+import AddContactScreen from "../screens/AddContactScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -298,6 +300,39 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 })}
+            />
+            <SettingsStack.Screen
+                name="ContactsListScreen"
+                component={ContactsListScreen}
+                options={{
+                    title: "Contacts",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddContactScreen")}>
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddContactScreen"
+                component={AddContactScreen}
+                options={{
+                    title: "Add a Contact",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
             />
             <SettingsStack.Screen
                 name="TagsSettingsScreen"

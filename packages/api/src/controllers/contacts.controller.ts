@@ -21,7 +21,7 @@ export class ContactsController {
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
-    @Post("users/:id/contact")
+    @Post("users/:id/contacts")
     async create(@Body() body: CreateContactRequest) {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);

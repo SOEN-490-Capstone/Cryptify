@@ -1,4 +1,5 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import Web3 from "web3";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { validate } from "./wav";
@@ -28,8 +29,30 @@ export function normalizeCurrency(amount: number): string {
     return amountString;
 }
 
+export function isValidCurrencyAddress(address: string, currencyType: CurrencyType): boolean {
+    if ((currencyType === CurrencyType.BITCOIN && validate(address, "BTC")) || btcTxRegex.test(address)) {
+        return true;
+    }
+    if ((currencyType === CurrencyType.ETHEREUM && validate(address, "ETH")) || ethTxRegex.test(address)) {
+        return true;
+    }
+
+    return false;
+}
+
 type ISOCode = "ETH" | "BTC";
 export const typeToISOCode: { [key in CurrencyType]: ISOCode } = {
     [CurrencyType.ETHEREUM]: "ETH",
     [CurrencyType.BITCOIN]: "BTC",
 };
+
+export function getFormattedAmount(amount: string, type: CurrencyType): string {
+    const amountInCurrency = type == CurrencyType.ETHEREUM ? Web3.utils.fromWei(amount, "ether") : amount;
+
+    // This block takes care of formatting the currency with commas before the decimal
+    const parts = amountInCurrency.split(".");
+    if (parts[0].length >= 4) {
+        parts[0] = parts[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+    }
+    return parts.join(".");
+}

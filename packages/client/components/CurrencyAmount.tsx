@@ -2,7 +2,7 @@ import { Box, Text } from "native-base";
 import { CurrencyDisplayData } from "../constants/CurrenciesDisplayData";
 import React from "react";
 import { StyleProp, TextStyle } from "react-native";
-import { getFormattedAmount } from "../services/currency_service";
+import { getFormattedAmount } from "@cryptify/common/src/utils/currency_utils";
 
 type Props = {
     currency: CurrencyDisplayData;

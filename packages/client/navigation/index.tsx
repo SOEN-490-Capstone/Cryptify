@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ColorSchemeName } from "react-native";
@@ -48,34 +48,16 @@ import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
 import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
+import useTabBar from "../hooks/useTabBar";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
 // navigation stacks
 
-type TabBarHookProps = {
-    route: RouteProp<any, any>;
-    navigation: any;
-    initialScreenName: string;
-};
-
-function useTabBarHook({ navigation, route, initialScreenName }: TabBarHookProps) {
-    React.useLayoutEffect(() => {
-        const tabBarRoutes = ["HomeScreen", "SettingsScreen"];
-        const routeName = getFocusedRouteNameFromRoute(route) ?? initialScreenName;
-
-        if (tabBarRoutes.includes(routeName)) {
-            navigation.setOptions({ tabBarStyle: { display: "flex", position: "absolute" } });
-        } else {
-            navigation.setOptions({ tabBarStyle: { display: "none" } });
-        }
-    }, [navigation, route]);
-}
-
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    useTabBarHook({ navigation, route, initialScreenName: "HomeScreen" });
+    useTabBar({ navigation, route, initialScreenName: "HomeScreen" });
 
     return (
         <HomeStack.Navigator>
@@ -267,7 +249,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>; navigation: any }) {
-    useTabBarHook({ navigation, route, initialScreenName: "SettingsScreen" });
+    useTabBar({ navigation, route, initialScreenName: "SettingsScreen" });
 
     return (
         <SettingsStack.Navigator>

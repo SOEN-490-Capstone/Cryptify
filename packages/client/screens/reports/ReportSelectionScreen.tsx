@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Text, HStack, Pressable, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {HomeStackScreenProps} from "../../types";
+import { HomeStackScreenProps } from "../../types";
 import { View } from "../../components/Themed";
-import {farChevronRight} from "../../components/icons/regular/farChevronRight";
-import {falFileInvoice} from "../../components/icons/light/falFileInvoice";
+import { farChevronRight } from "../../components/icons/regular/farChevronRight";
+import { falFileInvoice } from "../../components/icons/light/falFileInvoice";
 
 export default function ReportSelectionScreen({ route, navigation }: HomeStackScreenProps<"ReportSelectionScreen">) {
     return (
@@ -22,7 +22,7 @@ export default function ReportSelectionScreen({ route, navigation }: HomeStackSc
                     _pressed={{
                         background: "text.200",
                     }}
-                    testID="walletsButton"
+                    testID="transactionHistoryButton"
                 >
                     <HStack height="50px" alignItems="center">
                         <FontAwesomeIcon icon={falFileInvoice} style={styles.icon} size={26} />

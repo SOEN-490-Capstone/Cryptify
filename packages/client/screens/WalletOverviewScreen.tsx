@@ -17,8 +17,8 @@ import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
-import {farWallet} from "../components/icons/regular/farWallet";
-import {farFile} from "../components/icons/regular/farFile";
+import { farWallet } from "../components/icons/regular/farWallet";
+import { farFile } from "../components/icons/regular/farFile";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"WalletOverviewScreen">,

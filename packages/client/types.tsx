@@ -100,14 +100,14 @@ type SignUpNotificationsScreenProps = {
 };
 
 type ReportSelectionScreenProps = {
-    walletAddress: string; 
+    walletAddress: string;
     walletName: string;
-}
+};
 
 type TransactionHistoryReportScreenProps = {
     walletAddress: string;
     walletName: string;
-}
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;

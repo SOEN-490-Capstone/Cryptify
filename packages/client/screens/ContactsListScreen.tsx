@@ -1,50 +1,51 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Box, Text } from "native-base";
+import { ContactsGateway } from "../gateways/contacts_gateway";
+import { AuthContext } from "../components/contexts/AuthContext";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { View } from "../components/Themed";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ContactsListScreen (){
-    const datatodisplay =  [
-        { name: "Movies", header: true },
-        { name: "Interstellar", header: false },
-        { name: "Dark Knight", header: false },
-        { name: "Pop", header: false },
-        { name: "Pulp Fiction", header: false },
-        { name: "Burning Train", header: false },
-        { name: "Music", header: true },
-        { name: "Adams", header: false },
-        { name: "Nirvana", header: false },
-        { name: "Amrit Maan", header: false },
-        { name: "Oye Hoye", header: false },
-        { name: "Eminem", header: false },
-        { name: "Places", header: true },
-        { name: "Jordan", header: false },
-        { name: "Punjab", header: false },
-        { name: "Ludhiana", header: false },
-        { name: "Jamshedpur", header: false },
-        { name: "India", header: false },
-        { name: "People", header: true },
-        { name: "Jazzy", header: false },
-        { name: "Appie", header: false },
-        { name: "Baby", header: false },
-        { name: "Sunil", header: false },
-        { name: "Arrow", header: false },
-        { name: "Things", header: true },
-        { name: "table", header: false },
-        { name: "chair", header: false },
-        { name: "fan", header: false },
-        { name: "cup", header: false },
-        { name: "cube", header: false }
-      ]
 
-    // var stickyHeaderIndices: any[] = [];
-    // const stickyHeaderIndices = datatodisplay
-    //     .map(obj => obj.header ? datatodisplay.indexOf(obj) : null)
-    //     .filter((x) => x != null);
-    const stickyHeaderIndices = datatodisplay.flatMap(obj => obj.header ? [datatodisplay.indexOf(obj)] : []);
+    const contactsGateway = new ContactsGateway();
+
+    const isFocused = useIsFocused();
+
+    const { token, user } = React.useContext(AuthContext);
+
+    const [contacts, setContacts] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+        (async () => {
+            const sortedContacts = await contactsGateway.findAllContacts({id: user.id}, token);
+
+            let currChar = "";
+            const listData = sortedContacts.flatMap((contact) => {
+                if (contact.contactName.charAt(0).toUpperCase() !== currChar) {
+                    currChar = contact.contactName.charAt(0).toUpperCase();
+                    return [
+                        {name: currChar, header: true},
+                        {name: contact.contactName, header: false}
+                    ]
+                } else {
+                    return [
+                        {name: contact.contactName, header: false}
+                    ]
+                }
+            });
+
+            setContacts(listData);
+        })();
+    }, [isFocused]);
+
+    const stickyHeaderIndices = contacts.flatMap(obj => obj.header ? [contacts.indexOf(obj)] : []);
 
     return (
+        <View style={{flex: 1}}>
         <FlatList
-            data={datatodisplay}
+            data={contacts}
             renderItem={({ item }) => (
                 <>
                     {item.header? (
@@ -64,6 +65,8 @@ export default function ContactsListScreen (){
             )}
             stickyHeaderIndices={stickyHeaderIndices}
         />
+        </View>
+        
     );
 
 }

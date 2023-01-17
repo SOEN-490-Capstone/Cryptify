@@ -45,12 +45,12 @@ import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
 import TransactionTagsScreen from "../screens/TransactionTagsScreen";
 import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
-import { farArrowLeft } from "../components/icons/regular/farArrowLeft";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 import useTabBar from "../hooks/useTabBar";
 import ContactsListScreen from "../screens/ContactsListScreen";
 import AddContactScreen from "../screens/AddContactScreen";
+import BackButton from "../components/BackButton";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -62,7 +62,11 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
     useTabBar({ navigation, route, initialScreenName: "HomeScreen" });
 
     return (
-        <HomeStack.Navigator>
+        <HomeStack.Navigator
+            screenOptions={({ navigation }) => ({
+                headerLeft: () => BackButton(navigation),
+            })}
+        >
             <HomeStack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
@@ -74,6 +78,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                         fontWeight: "600",
                     },
                     headerShadowVisible: false,
+                    headerLeft: () => null,
                 }}
             />
             <HomeStack.Screen
@@ -135,16 +140,6 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    // TODO refactor to reduce code duplication and unify with other screens
-                    headerLeft: () => (
-                        <Pressable
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        >
-                            <FontAwesomeIcon icon={farArrowLeft} color="#404040" size={22} />
-                        </Pressable>
-                    ),
                 }}
             />
             <HomeStack.Screen
@@ -159,16 +154,6 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    // TODO refactor to reduce code duplication and unify with other screens
-                    headerLeft: () => (
-                        <Pressable
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        >
-                            <FontAwesomeIcon icon={farArrowLeft} color="#404040" size={22} />
-                        </Pressable>
-                    ),
                 }}
             />
             <HomeStack.Screen
@@ -254,7 +239,11 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
     useTabBar({ navigation, route, initialScreenName: "SettingsScreen" });
 
     return (
-        <SettingsStack.Navigator>
+        <SettingsStack.Navigator
+            screenOptions={({ navigation }) => ({
+                headerLeft: () => BackButton(navigation),
+            })}
+        >
             <SettingsStack.Screen
                 name="SettingsScreen"
                 component={SettingsScreen}
@@ -266,6 +255,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                         fontWeight: "600",
                     },
                     headerShadowVisible: false,
+                    headerLeft: () => null,
                 }}
             />
             <SettingsStack.Screen
@@ -529,11 +519,12 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="SignInScreen"
                 component={SignInScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                }}
+                    headerLeft: () => BackButton(navigation),
+                })}
             />
             <GuestStack.Screen
                 name="SignUpNotificationsScreen"

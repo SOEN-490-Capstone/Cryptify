@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { Badge, Center, FormControl, HStack, Input, Pressable, Text, VStack } from "native-base";
+import { Center, FormControl, HStack, Input, Text, VStack } from "native-base";
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
@@ -8,9 +8,9 @@ import { TagsGateway } from "../gateways/tags_gateway";
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { HomeStackScreenProps } from "../types";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farPlus } from "../components/icons/regular/farPlus";
 import SortService from "../services/sort_service";
+import TagsGallery from "../components/TagsGallery";
 
 export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"AddTransactionTagsScreen">) {
     const tagsGateway = new TagsGateway();
@@ -115,7 +115,7 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.view}>
-                <VStack space={"35px"} style={styles.addTag}>
+                <VStack space={"35px"}>
                     <Center>
                         <Text fontWeight={"semibold"} size={"title3"}>
                             Add a Tag
@@ -158,69 +158,27 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
                                     ? "Here are some suggestions you can use for tagging this transaction."
                                     : "A similar existing tag is already associated with this transaction."}
                             </Text>
-                            <HStack style={styles.suggestedTags}>
-                                {suggestedTags.map((tag, i) => (
-                                    // TODO create a component and use it for both tags list
-                                    <Pressable
-                                        onPress={() => {
-                                            if (isSuggestionTagsAvailable) {
-                                                addTransactionTag(tag);
-                                            }
-                                        }}
-                                        rounded="md"
-                                        backgroundColor="gray.100"
-                                        style={styles.suggestedBadge}
-                                        key={i}
-                                    >
-                                        <HStack space={"10px"} style={styles.badgeContent}>
-                                            <Text size={"subheadline"} fontWeight={"semibold"}>
-                                                {tag.tagName}
-                                            </Text>
-                                            {isSuggestionTagsAvailable && (
-                                                <FontAwesomeIcon icon={farPlus} size={14} color="#404040" />
-                                            )}
-                                        </HStack>
-                                    </Pressable>
-                                ))}
-                            </HStack>
+                            <TagsGallery
+                                tags={suggestedTags}
+                                onTagPress={(tag) => {
+                                    if (isSuggestionTagsAvailable) {
+                                        addTransactionTag(tag);
+                                    }
+                                }}
+                                tagIcon={isSuggestionTagsAvailable ? farPlus : undefined}
+                                tagStyles={styles.suggestedBadge}
+                                tagsContainerStyles={styles.suggestedTags}
+                            />
                         </VStack>
                     )}
 
                     {/* Tags Added */}
                     {transactionTags.length != 0 && (
-                        <>
-                            <VStack space={"20px"} style={styles.tagsAdded}>
-                                <Text fontWeight={"semibold"} size={"title3"}>
-                                    Tags Added
-                                </Text>
-
-                                <HStack flexWrap={"wrap"}>
-                                    {transactionTags.length != 0 && (
-                                        <>
-                                            {SortService.sortTransactionTagsAlphabetically(transactionTags).map(
-                                                (tag, i) => (
-                                                    // TODO create a component and use it for both tags list
-                                                    <Badge
-                                                        rounded="md"
-                                                        backgroundColor="gray.100"
-                                                        style={styles.badge}
-                                                        px={"15px"}
-                                                        py={"8px"}
-                                                        key={i}
-                                                    >
-                                                        <HStack space={"10px"} style={styles.badgeContent}>
-                                                            <Text size={"subheadline"} fontWeight={"semibold"}>
-                                                                {tag.tagName}
-                                                            </Text>
-                                                        </HStack>
-                                                    </Badge>
-                                                ),
-                                            )}
-                                        </>
-                                    )}
-                                </HStack>
-                            </VStack>
-                        </>
+                        <TagsGallery
+                            title={"Tags Added"}
+                            tags={SortService.sortTransactionTagsAlphabetically(transactionTags)}
+                            styles={styles.tagsAdded}
+                        />
                     )}
                 </KeyboardAwareScrollView>
             </View>
@@ -237,17 +195,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingBottom: 15,
     },
-    addTag: {
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    badge: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        marginRight: 13,
-        marginBottom: 13,
-        justifyContent: "center",
-    },
     suggestedBadge: {
         paddingHorizontal: 15,
         paddingVertical: 8,
@@ -255,9 +202,6 @@ const styles = StyleSheet.create({
         marginLeft: 6.5,
         marginBottom: 13,
         justifyContent: "center",
-    },
-    badgeContent: {
-        alignItems: "center",
     },
     tagForm: {
         marginRight: "auto",
@@ -278,6 +222,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
-        flexWrap: "wrap",
     },
 });

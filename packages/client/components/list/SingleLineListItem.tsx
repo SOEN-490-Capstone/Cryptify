@@ -3,7 +3,7 @@ import { HStack, Text } from "native-base";
 
 type SingleLineListItemProps = {
     label: string;
-    value: string;
+    value: string | React.ReactNode;
 };
 
 export default function SingleLineListItem({ label, value }: SingleLineListItemProps) {

@@ -1,25 +1,46 @@
 import React from "react";
 import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
-import { TransactionDetails } from "../components/TransactionDetails";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { BitcoinTransactionDetails } from "../components/transaction-details/BitcoinTransactionDetails";
+import { EthereumTransactionDetails } from "../components/transaction-details/EthereumTransactionDetails";
 
-export default function TransactionDetailsScreen(
-    props: CompositeScreenProps<
-        HomeStackScreenProps<"TransactionDetailsScreen">,
-        SettingsStackScreenProps<"TransactionDetailsScreen">
-    >,
-) {
+type Props = CompositeScreenProps<
+    HomeStackScreenProps<"TransactionDetailsScreen">,
+    SettingsStackScreenProps<"TransactionDetailsScreen">
+>;
+
+export default function TransactionDetailsScreen({ route, navigation }: Props) {
+    const { transaction, walletAddress } = route.params;
+
+    const renderTransactionDetails = (currencyType: CurrencyType) => {
+        if (currencyType === CurrencyType.BITCOIN) {
+            return (
+                <BitcoinTransactionDetails
+                    transaction={transaction}
+                    walletAddress={walletAddress}
+                    navigation={navigation}
+                />
+            );
+        } else if (currencyType === CurrencyType.ETHEREUM) {
+            return (
+                <EthereumTransactionDetails
+                    transaction={transaction}
+                    walletAddress={walletAddress}
+                    navigation={navigation}
+                />
+            );
+        }
+    };
+
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
-                <TransactionDetails
-                    txn={props.route.params.transaction}
-                    walletAddress={props.route.params.walletAddress}
-                    navigation={props.navigation}
-                />
+                {renderTransactionDetails(getCurrencyType(walletAddress))}
             </ScrollView>
         </View>
     );

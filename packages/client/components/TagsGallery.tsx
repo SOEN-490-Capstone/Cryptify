@@ -1,16 +1,17 @@
-import { HStack, Pressable, Text, VStack } from "native-base";
+import { HStack, Text, VStack } from "native-base";
 import React from "react";
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
+import Tag from "./tags/Tag";
 
 type Props = {
     title?: string;
     tags: TransactionTag[];
     onTagPress?: (tag: TransactionTag) => void | Promise<void>;
+    tagTestIDPrefix?: string;
     tagIcon?: IconDefinition | IconProp;
-    tagIconColor?: string | "#404040";
+    tagIconColor?: string;
     styles?: StyleProp<ViewStyle>;
     tagsContainerStyles?: StyleProp<ViewStyle>;
     tagStyles?: StyleProp<ViewStyle>;
@@ -21,6 +22,7 @@ export default function TagsGallery({
     title,
     tags,
     onTagPress,
+    tagTestIDPrefix,
     tagIcon,
     tagIconColor,
     styles,
@@ -37,38 +39,18 @@ export default function TagsGallery({
             )}
             <HStack flexWrap={"wrap"} style={tagsContainerStyles}>
                 {tags.map((tag, i) => (
-                    // TODO create a badge component
-                    <Pressable
-                        onPress={() => {
-                            onTagPress && onTagPress(tag);
-                        }}
-                        borderRadius={"8px"}
-                        backgroundColor="gray.100"
-                        style={tagStyles ? tagStyles : styl.badge}
+                    <Tag
+                        tag={tag}
                         key={i}
-                        // TODO update system tests
-                        testID="tag"
-                    >
-                        <HStack space={"10px"} alignItems={"center"}>
-                            <Text size={"subheadline"} fontWeight={"semibold"}>
-                                {tag.tagName}
-                            </Text>
-                            {tagIcon && <FontAwesomeIcon icon={tagIcon} size={14} color={tagIconColor} />}
-                        </HStack>
-                    </Pressable>
+                        testID={tagTestIDPrefix ? `${tagTestIDPrefix}-${i}` : undefined}
+                        onTagPress={onTagPress}
+                        tagIcon={tagIcon}
+                        tagIconColor={tagIconColor}
+                        tagStyles={tagStyles}
+                    />
                 ))}
                 {children}
             </HStack>
         </VStack>
     );
 }
-
-const styl = StyleSheet.create({
-    badge: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        marginRight: 13,
-        marginBottom: 13,
-        justifyContent: "center",
-    },
-});

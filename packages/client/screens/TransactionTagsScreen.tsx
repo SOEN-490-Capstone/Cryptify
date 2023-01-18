@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { Pressable, HStack, Text, ScrollView } from "native-base";
+import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { TagsGateway } from "../gateways/tags_gateway";
@@ -11,6 +10,7 @@ import { farPlus } from "../components/icons/regular/farPlus";
 import { farXMark } from "../components/icons/regular/farXMark";
 import SortService from "../services/sort_service";
 import TagsGallery from "../components/TagsGallery";
+import AddTag from "../components/tags/AddTag";
 
 export default function TransactionTagsScreen(props: HomeStackScreenProps<"TransactionTagsScreen">) {
     const tagsGateway = new TagsGateway();
@@ -84,35 +84,18 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                     styles={styles.tagsAdded}
                 >
                     {transactionTags.length < 10 && (
-                        <>
-                            {/* TODO make/use a badge component */}
-                            <Pressable
-                                onPress={() =>
-                                    props.navigation.navigate("AddTransactionTagsScreen", {
-                                        transaction: transaction,
-                                        setTransaction: props.route.params.setTransaction,
-                                        transactionTags: transactionTags,
-                                        setTransactionTags: setTransactionTags,
-                                        transactionTagsNotAdded: transactionTagsNotAdded,
-                                        setTransactionTagsNotAdded: setTransactionTagsNotAdded,
-                                    })
-                                }
-                                borderRadius={"8px"}
-                                backgroundColor="darkBlue.50"
-                                borderColor={"darkBlue.500"}
-                                style={styles.addBadge}
-                                borderWidth={"2px"}
-                                borderStyle={"dashed"}
-                                testID="addNewTagButton"
-                            >
-                                <HStack space={"10px"} style={styles.badgeContent}>
-                                    <Text size={"subheadline"} fontWeight={"semibold"} color={"darkBlue.500"}>
-                                        Add
-                                    </Text>
-                                    <FontAwesomeIcon icon={farPlus} size={14} color="#0077E6" />
-                                </HStack>
-                            </Pressable>
-                        </>
+                        <AddTag
+                            onPress={() => {
+                                props.navigation.navigate("AddTransactionTagsScreen", {
+                                    transaction: transaction,
+                                    setTransaction: props.route.params.setTransaction,
+                                    transactionTags: transactionTags,
+                                    setTransactionTags: setTransactionTags,
+                                    transactionTagsNotAdded: transactionTagsNotAdded,
+                                    setTransactionTagsNotAdded: setTransactionTagsNotAdded,
+                                });
+                            }}
+                        />
                     )}
                 </TagsGallery>
                 {transactionTagsNotAdded.length != 0 && (
@@ -124,6 +107,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                         }}
                         tagIcon={transactionTags.length < 10 ? farPlus : undefined}
                         styles={styles.allTags}
+                        tagTestIDPrefix={"allTags"}
                     />
                 )}
             </ScrollView>
@@ -138,16 +122,6 @@ const styles = StyleSheet.create({
     scrollView: {
         paddingHorizontal: 15,
         paddingTop: 20,
-    },
-    addBadge: {
-        marginBottom: 13,
-        height: 36,
-        width: 85,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    badgeContent: {
-        alignItems: "center",
     },
     allTags: {
         marginTop: 40,

@@ -87,8 +87,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                     }}
                     tagIcon={isEditMode ? farPencil : undefined}
                     tagIconColor={"#0077E6"}
-                    // TODO Update system tests
-                    // testID={`editTag-${i}`}
+                    tagTestIDPrefix={`editTag`}
                     styles={{ paddingBottom: 15 }}
                 />
             </ScrollView>

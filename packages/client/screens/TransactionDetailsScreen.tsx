@@ -7,10 +7,7 @@ import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 
 export default function TransactionDetailsScreen(
-    props: CompositeScreenProps<
-        HomeStackScreenProps<"TransactionDetailsScreen">,
-        SettingsStackScreenProps<"TransactionDetailsScreen">
-    >,
+    props: HomeStackScreenProps<"TransactionDetailsScreen">,
 ) {
     return (
         <View style={styles.view}>

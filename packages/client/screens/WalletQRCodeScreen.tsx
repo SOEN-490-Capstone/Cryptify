@@ -11,12 +11,7 @@ import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
-type Props = CompositeScreenProps<
-    HomeStackScreenProps<"WalletQRCodeScreen">,
-    SettingsStackScreenProps<"WalletQRCodeScreen">
->;
-
-export default function WalletQRCodeScreen({ route }: Props) {
+export default function WalletQRCodeScreen({ route }: HomeStackScreenProps<"WalletQRCodeScreen">) {
     const { address, name, currencyType } = route.params;
 
     return (

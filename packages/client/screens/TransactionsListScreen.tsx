@@ -16,10 +16,7 @@ import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(
-    props: CompositeScreenProps<
-        HomeStackScreenProps<"TransactionsListScreen">,
-        SettingsStackScreenProps<"TransactionsListScreen">
-    >,
+    props: HomeStackScreenProps<"TransactionsListScreen">,
 ) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
@@ -156,6 +153,7 @@ export default function TransactionsListScreen(
                     <TransactionsList
                         transactions={transactions}
                         walletAddress={props.route.params.walletAddress}
+                        walletName={props.route.params.walletName}
                         displaySeparation={displaySeparation}
                         navigation={props.navigation}
                     />

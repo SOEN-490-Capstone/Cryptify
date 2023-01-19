@@ -71,6 +71,7 @@ type WalletQRCodeProps = {
 type TransactionsListScreenProps = {
     transactions: Transaction[];
     walletAddress: string;
+    walletName: string;
     displaySeparation: boolean;
 };
 
@@ -119,7 +120,6 @@ export type HomeStackParamList = {
     WalletDetailsScreen: WalletDetailsScreenProps;
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
-    ViewWalletsScreen: ViewWalletsScreenProps;
     FilterScreen: FilterScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
@@ -136,17 +136,11 @@ export type SettingsStackParamList = {
     SettingsScreen: undefined;
     AddWalletSelectionScreen: undefined;
     AddWalletScreen: AddWalletScreenProps;
-    TransactionDetailsScreen: TransactionDetailsProps;
-    WalletOverviewScreen: WalletOverviewScreenProps;
-    WalletDetailsScreen: WalletDetailsScreenProps;
-    TransactionsListScreen: TransactionsListScreenProps;
-    WalletQRCodeScreen: WalletQRCodeProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
     ContactsListScreen: undefined;
     AddContactScreen: undefined;
     TagsSettingsScreen: undefined;
-    FilterScreen: FilterScreenProps;
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;

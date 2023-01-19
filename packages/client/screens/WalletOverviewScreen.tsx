@@ -20,12 +20,7 @@ import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { farWallet } from "../components/icons/regular/farWallet";
 import { farFile } from "../components/icons/regular/farFile";
 
-type Props = CompositeScreenProps<
-    HomeStackScreenProps<"WalletOverviewScreen">,
-    SettingsStackScreenProps<"WalletOverviewScreen">
->;
-
-export default function WalletOverviewScreen({ route, navigation }: Props) {
+export default function WalletOverviewScreen({ route, navigation }: HomeStackScreenProps<"WalletOverviewScreen">) {
     const { address, name, currencyType, balance } = route.params;
 
     const transactionGateway = new TransactionsGateway();
@@ -146,6 +141,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                             navigation.navigate("TransactionsListScreen", {
                                 transactions: [...transactions],
                                 walletAddress: address,
+                                walletName: name,
                                 displaySeparation: true,
                             })
                         }

@@ -99,6 +99,16 @@ type SignUpNotificationsScreenProps = {
     token: JwtToken;
 };
 
+type ReportSelectionScreenProps = {
+    walletAddress: string;
+    walletName: string;
+};
+
+type TransactionHistoryReportScreenProps = {
+    walletAddress: string;
+    walletName: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -112,6 +122,8 @@ export type HomeStackParamList = {
     FilterScreen: FilterScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
+    ReportSelectionScreen: ReportSelectionScreenProps;
+    TransactionHistoryReportScreen: TransactionHistoryReportScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<

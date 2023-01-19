@@ -51,6 +51,8 @@ import useTabBar from "../hooks/useTabBar";
 import ContactsListScreen from "../screens/ContactsListScreen";
 import AddContactScreen from "../screens/AddContactScreen";
 import BackButton from "../components/BackButton";
+import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
+import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -228,6 +230,34 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                         <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
                     ),
                 })}
+            />
+            <HomeStack.Screen
+                name="ReportSelectionScreen"
+                component={ReportSelectionScreen}
+                options={{
+                    headerTintColor: "#404040",
+                    title: "Documents",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="TransactionHistoryReportScreen"
+                component={TransactionHistoryReportScreen}
+                options={{
+                    headerTintColor: "#404040",
+                    title: "Transaction History",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
             />
         </HomeStack.Navigator>
     );

@@ -12,8 +12,11 @@ export class ReportsController {
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("/users/:id/reports/transaction-history")
-    async create(@Body() body: CreateTransactionHistoryReportRequest): Promise<void> {
+    async create(@Body() body: CreateTransactionHistoryReportRequest) {
         const createReportRequest = await useValidate(updateUserSchema, body);
         await this.reportsService.generateTransactionHistory(createReportRequest);
+        // Nestjs void return conflicts with the React Native fetch API and causes an EOF syntax error, this is just a
+        // workaround
+        return {};
     }
 }

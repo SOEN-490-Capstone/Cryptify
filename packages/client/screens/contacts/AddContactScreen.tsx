@@ -1,23 +1,23 @@
 import React from "react";
-import { SettingsStackScreenProps } from "../types";
-import { View } from "../components/Themed";
+import { SettingsStackScreenProps } from "../../types";
+import { View } from "../../components/Themed";
 import { FieldArray, Formik, FormikErrors, FormikHelpers, FormikTouched } from "formik";
 import { Button, FormControl, HStack, Input, ScrollView, Text } from "native-base";
 import Collapsible from "react-native-collapsible";
 import { Pressable, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBitcoin } from "../components/icons/brands/faBitcoin";
-import { farChevronUp } from "../components/icons/regular/farChevronUp";
-import { farChevronDown } from "../components/icons/regular/farChevronDown";
-import { falCircleXMark } from "../components/icons/light/falCircleXMark";
-import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid";
+import { faBitcoin } from "../../components/icons/brands/faBitcoin";
+import { farChevronUp } from "../../components/icons/regular/farChevronUp";
+import { farChevronDown } from "../../components/icons/regular/farChevronDown";
+import { falCircleXMark } from "../../components/icons/light/falCircleXMark";
+import { fasCirclePlusSolid } from "../../components/icons/solid/fasCirclePlusSolid";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { faEthereum } from "../components/icons/brands/faEthereum";
+import { faEthereum } from "../../components/icons/brands/faEthereum";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
-import { ContactsGateway } from "../gateways/contacts_gateway";
-import { AuthContext } from "../components/contexts/AuthContext";
+import { ContactsGateway } from "../../gateways/contacts_gateway";
+import { AuthContext } from "../../components/contexts/AuthContext";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 
 export default function AddContactScreen(props: SettingsStackScreenProps<"AddContactScreen">) {

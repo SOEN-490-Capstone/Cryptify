@@ -22,7 +22,6 @@ export default function TransactionsListScreen(
     const [sortType, setSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
 
-    // Places the sort and filter icons on the top navigation bar
     React.useEffect(() => {
         (() => {
             props.navigation.setOptions({

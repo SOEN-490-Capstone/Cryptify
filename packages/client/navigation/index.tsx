@@ -48,8 +48,8 @@ import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 import useTabBar from "../hooks/useTabBar";
-import ContactsListScreen from "../screens/ContactsListScreen";
-import AddContactScreen from "../screens/AddContactScreen";
+import ContactsListScreen from "../screens/contacts/ContactsListScreen";
+import AddContactScreen from "../screens/contacts/AddContactScreen";
 import BackButton from "../components/BackButton";
 import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
 import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
@@ -251,6 +251,39 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 options={{
                     headerTintColor: "#404040",
                     title: "Transaction History",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="ContactsListScreen"
+                component={ContactsListScreen}
+                options={{
+                    title: "Contacts",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable onPress={() => navigation.navigate("AddContactScreen")}>
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                }}
+            />
+            <SettingsStack.Screen
+                name="AddContactScreen"
+                component={AddContactScreen}
+                options={{
+                    title: "Add a Contact",
+                    headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,
                         fontWeight: "600",

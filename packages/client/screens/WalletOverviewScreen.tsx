@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
-import { CompositeScreenProps } from "@react-navigation/native";
+import {CompositeScreenProps, useIsFocused} from "@react-navigation/native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
@@ -30,14 +30,18 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
     const [isLoading, setIsLoading] = React.useState(true);
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const currencyIcon = currencyTypeToIcon[wallet.currencyType];
+    
+    const isFocused = useIsFocused();
 
     React.useEffect(() => {
         (async () => {
-            const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, wallet.address)));
-            setIsLoading(false);
+            if (isFocused) {
+                const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
+                setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, wallet.address)));
+                setIsLoading(false);
+            }
         })();
-    }, []);
+    }, [isFocused]);
     return (
         <View style={styles.view}>
             <Box

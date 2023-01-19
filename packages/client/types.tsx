@@ -100,6 +100,14 @@ type TransactionHistoryReportScreenProps = {
     wallet: WalletWithBalance
 };
 
+type ContactListScreenProps = {
+    prefilledWalletAddress: string | null;
+}
+
+type AddContactScreenProps = {
+    prefilledWalletAddress: string | null;
+}
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -114,6 +122,8 @@ export type HomeStackParamList = {
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
     ReportSelectionScreen: ReportSelectionScreenProps;
     TransactionHistoryReportScreen: TransactionHistoryReportScreenProps;
+    ContactsListScreen: ContactListScreenProps;
+    AddContactScreen: AddContactScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -127,8 +137,8 @@ export type SettingsStackParamList = {
     AddWalletScreen: AddWalletScreenProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;
-    ContactsListScreen: undefined;
-    AddContactScreen: undefined;
+    ContactsListScreen: ContactListScreenProps;
+    AddContactScreen: AddContactScreenProps;
     TagsSettingsScreen: undefined;
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;

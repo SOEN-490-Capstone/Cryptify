@@ -18,22 +18,27 @@ export default function ContactsListScreen() {
 
     React.useEffect(() => {
         (async () => {
-            const contacts = await contactsGateway.findAllContacts({ id: user.id }, token);
+            if (isFocused) {
+                const contacts = await contactsGateway.findAllContacts({ id: user.id }, token);
 
-            let currChar = "";
-            const listData = contacts.flatMap((contact) => {
-                if (contact.contactName.charAt(0).toUpperCase() !== currChar) {
-                    currChar = contact.contactName.charAt(0).toUpperCase();
-                    return [
-                        { name: currChar, header: true },
-                        { name: contact.contactName, header: false },
-                    ];
-                } else {
-                    return [{ name: contact.contactName, header: false }];
-                }
-            });
+                let currChar = "";
+                const listData = contacts
+                    .map((contact) => contact.contactName)
+                    .filter((name, pos, names) => names.indexOf(name) == pos)
+                    .flatMap((name) => {
+                        if (name.charAt(0).toUpperCase() !== currChar) {
+                            currChar = name.charAt(0).toUpperCase();
+                            return [
+                                { name: currChar, header: true },
+                                { name, header: false },
+                            ];
+                        } else {
+                            return [{ name, header: false }];
+                        }
+                    });
 
-            setContactsWithHeader(listData);
+                setContactsWithHeader(listData);
+            }
         })();
     }, [isFocused]);
 

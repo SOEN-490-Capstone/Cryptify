@@ -8,6 +8,7 @@ import { createContactSchema } from "@cryptify/common/src/validations/create_con
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { CanAccessResourceGuard } from "../guards/can_access_resource.guard";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
+import {Contact} from "@cryptify/common/src/domain/entities/contact";
 
 @Controller()
 export class ContactsController {
@@ -15,14 +16,14 @@ export class ContactsController {
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("users/:id/contacts")
-    async get(@Param() params: GetContactsRequest) {
+    async findAll(@Param() params: GetContactsRequest): Promise<Contact[]> {
         const getContactsRequest = await useValidate(getContactsSchema, params);
         return this.contactsService.findAll(getContactsRequest.id);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("users/:id/contacts")
-    async create(@Body() body: CreateContactRequest) {
+    async create(@Body() body: CreateContactRequest): Promise<Contact[]> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
     }

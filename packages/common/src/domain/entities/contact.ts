@@ -4,18 +4,16 @@ import { User } from "./user";
 @Entity()
 export class Contact {
     @PrimaryColumn()
-    contactName: string;
+    walletAddress: string;
 
+    // userId of the user who created this contact
     @PrimaryColumn()
     userId: number;
-
-    @Column("simple-array", { nullable: true })
-    ethWallets: string[];
-
-    @Column("simple-array", { nullable: true })
-    btcWallets: string[];
 
     @ManyToOne(() => User, (user) => user.contacts)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
+
+    @Column({ nullable: false })
+    contactName: string;
 }

@@ -171,7 +171,7 @@ export default function AddContactScreen(props: SettingsStackScreenProps<"AddCon
             requestValues.btcWallets = requestValues.btcWallets?.filter((w) => w !== "");
             requestValues.ethWallets = requestValues.ethWallets?.filter((w) => w !== "");
 
-            await contactsGateway.createContact(requestValues, token);
+            await contactsGateway.createContacts(requestValues, token);
             props.navigation.navigate("ContactsListScreen");
         } catch (error) {
             if (error instanceof Error) {

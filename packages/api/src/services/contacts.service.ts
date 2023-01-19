@@ -16,15 +16,21 @@ export class ContactsService {
         return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
-    async create(createContactRequest: CreateContactRequest): Promise<Contact> {
+    async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
 
         if (await this.contactRepository.findOneBy({ userId, contactName })) {
             throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
+        
+        const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
+        const contacts = walletAddrs.map((addr) => this.contactRepository.create({
+            userId,
+            contactName,
+            walletAddress: addr,
+        }))
 
-        const contact = this.contactRepository.create(createContactRequest);
-        this.contactRepository.insert(contact);
-        return contact;
+        await this.contactRepository.insert(contacts);
+        return contacts;
     }
 }

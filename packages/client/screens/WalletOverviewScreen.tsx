@@ -15,13 +15,13 @@ import { getTransactionByWallet } from "../services/transaction_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
-import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
+import {getFormattedAmount, typeToISOCode} from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { farWallet } from "../components/icons/regular/farWallet";
 import { farFile } from "../components/icons/regular/farFile";
 
 export default function WalletOverviewScreen({ route, navigation }: HomeStackScreenProps<"WalletOverviewScreen">) {
-    const { address, name, currencyType, balance } = route.params;
+    const wallet = route.params.wallet;
 
     const transactionGateway = new TransactionsGateway();
 
@@ -29,12 +29,12 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
 
     const [isLoading, setIsLoading] = React.useState(true);
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
-    const currencyIcon = currencyTypeToIcon[currencyType];
+    const currencyIcon = currencyTypeToIcon[wallet.currencyType];
 
     React.useEffect(() => {
         (async () => {
             const transactions = await transactionGateway.findAllTransactions({ id: user.id }, token);
-            setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, address)));
+            setTransactions(SortService.sortDateNewest(getTransactionByWallet(transactions, wallet.address)));
             setIsLoading(false);
         })();
     }, []);
@@ -42,21 +42,21 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
         <View style={styles.view}>
             <Box
                 style={styles.walletDetailsWrapper}
-                backgroundColor={currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"}
+                backgroundColor={wallet.currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"}
             >
                 <VStack style={styles.walletDetails}>
                     <HStack justifyContent="space-between">
                         <VStack>
-                            <Text>{name}</Text>
+                            <Text>{wallet.name}</Text>
                             <Box marginTop="2px"></Box>
                             <Text size={"subheadline"} color={"text.500"}>
-                                {formatAddress(address)}
+                                {formatAddress(wallet.address)}
                             </Text>
                         </VStack>
                         <VStack>
                             <FontAwesomeIcon
                                 icon={currencyIcon}
-                                color={currencyType == "BITCOIN" ? "#F7931A" : "#3C3C3D"}
+                                color={wallet.currencyType == "BITCOIN" ? "#F7931A" : "#3C3C3D"}
                                 size={40}
                             />
                         </VStack>
@@ -65,9 +65,9 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                         <VStack>
                             <Box marginTop="40px" marginBottom="0"></Box>
                             <Text size={"subheadline"} color={"text.500"}>
-                                {typeToISOCode[currencyType]}
+                                {typeToISOCode[wallet.currencyType]}
                             </Text>
-                            <Text size={"title3"}>{balance}</Text>
+                            <Text size={"title3"}>{getFormattedAmount(wallet.balance, wallet.currencyType)}</Text>
                         </VStack>
                     </HStack>
                 </VStack>
@@ -80,10 +80,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                         style={styles.button}
                         onPress={() =>
                             navigation.navigate("WalletDetailsScreen", {
-                                address,
-                                name,
-                                currencyType,
-                                balance,
+                                wallet,
                                 transactions,
                             })
                         }
@@ -100,7 +97,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                     <Pressable
                         testID="walletQRCodeButton"
                         style={styles.button}
-                        onPress={() => navigation.navigate("WalletQRCodeScreen", { address, name, currencyType })}
+                        onPress={() => navigation.navigate("WalletQRCodeScreen", { wallet })}
                     >
                         <Box style={styles.walletIconBackground}>
                             <FontAwesomeIcon icon={farQrCode} style={styles.walletIcon} size={20} />
@@ -116,8 +113,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                         style={styles.button}
                         onPress={() =>
                             navigation.navigate("ReportSelectionScreen", {
-                                walletAddress: address,
-                                walletName: name,
+                                wallet
                             })
                         }
                     >
@@ -140,8 +136,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                         onPress={() =>
                             navigation.navigate("TransactionsListScreen", {
                                 transactions: [...transactions],
-                                walletAddress: address,
-                                walletName: name,
+                                wallet,
                                 displaySeparation: true,
                             })
                         }
@@ -154,8 +149,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
             {isLoading || transactions.length > 0 ? (
                 <TransactionsList
                     transactions={transactions}
-                    walletAddress={address}
-                    walletName={name}
+                    wallet={wallet}
                     displaySeparation={false}
                     navigation={navigation}
                 />

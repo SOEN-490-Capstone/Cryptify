@@ -34,7 +34,7 @@ export default function TransactionsListScreen(
                                 props.navigation.navigate("FilterScreen", {
                                     filters,
                                     setFilters,
-                                    walletAddress: props.route.params.walletAddress,
+                                    wallet: props.route.params.wallet,
                                 });
                             }}
                             testID="filterTransactionsButton"
@@ -51,23 +51,22 @@ export default function TransactionsListScreen(
 
     // Updates transaction list everytime a new sorting option is selected
     React.useEffect(() => {
-        setTransactions(SortService.sortTransactions(sortType, transactions, props.route.params.walletAddress));
+        setTransactions(SortService.sortTransactions(sortType, transactions, props.route.params.wallet.address));
         setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest");
         FiltersBadges();
     }, [sortType]);
 
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
-    const type = getCurrencyType(props.route.params.walletAddress);
 
     React.useEffect(() => {
         const DisplayedTransaction = filterTransctions(
-            type,
-            props.route.params.walletAddress,
+            props.route.params.wallet.currencyType,
+            props.route.params.wallet.address,
             [...props.route.params.transactions],
             filtersDisplayed,
         );
 
-        setTransactions(SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.walletAddress));
+        setTransactions(SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.wallet.address));
     }, [filters]);
 
     // To Do Move into components folder for later use.
@@ -140,7 +139,7 @@ export default function TransactionsListScreen(
                                 props.navigation.navigate("FilterScreen", {
                                     filters,
                                     setFilters,
-                                    walletAddress: props.route.params.walletAddress,
+                                    wallet: props.route.params.wallet,
                                 });
                             }}
                         >
@@ -152,8 +151,7 @@ export default function TransactionsListScreen(
                 <>
                     <TransactionsList
                         transactions={transactions}
-                        walletAddress={props.route.params.walletAddress}
-                        walletName={props.route.params.walletName}
+                        wallet={props.route.params.wallet}
                         displaySeparation={displaySeparation}
                         navigation={props.navigation}
                     />

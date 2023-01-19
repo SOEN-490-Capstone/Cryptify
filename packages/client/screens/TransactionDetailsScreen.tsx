@@ -14,8 +14,7 @@ export default function TransactionDetailsScreen(
             <ScrollView style={styles.scrollView}>
                 <TransactionDetails
                     txn={props.route.params.transaction}
-                    walletAddress={props.route.params.walletAddress}
-                    walletName={props.route.params.walletName}
+                    wallet={props.route.params.wallet}
                     navigation={props.navigation}
                 />
             </ScrollView>

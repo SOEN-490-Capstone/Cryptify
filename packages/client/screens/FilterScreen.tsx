@@ -8,11 +8,8 @@ import DateBox from "../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 
-type Props = CompositeScreenProps<HomeStackScreenProps<"FilterScreen">, SettingsStackScreenProps<"FilterScreen">>;
-
-export default function FilterScreen({ route, navigation }: Props) {
-    const type = getCurrencyType(route.params.walletAddress);
-    const filtersByTransaction = getFiltersByTransactionStrings(type);
+export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
+    const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
 
     const filtersByDate = getFiltersByDateStrings();
 

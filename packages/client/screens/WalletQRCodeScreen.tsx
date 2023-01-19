@@ -12,14 +12,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
 export default function WalletQRCodeScreen({ route }: HomeStackScreenProps<"WalletQRCodeScreen">) {
-    const { address, name, currencyType } = route.params;
+    const wallet = route.params.wallet;
 
     return (
         <View style={styles.view}>
             <Text size={"subheadline"} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
-                    {titleCase(currencyType)} ({typeToISOCode[currencyType]}){" "}
+                    {titleCase(wallet.currencyType)} ({typeToISOCode[wallet.currencyType]}){" "}
                 </Text>
                 from another source. A{" "}
                 <Text style={{ fontWeight: "600" }} underline>
@@ -29,19 +29,19 @@ export default function WalletQRCodeScreen({ route }: HomeStackScreenProps<"Wall
             </Text>
 
             <Center style={styles.qrCode}>
-                <QRCode value={address} size={200} logoMargin={0} />
+                <QRCode value={wallet.address} size={200} logoMargin={0} />
             </Center>
 
             <VStack space={"15px"}>
-                <MultiLineListItem label="Name" value={name} />
-                <MultiLineListItem label="Address" value={address} copy={true} />
+                <MultiLineListItem label="Name" value={wallet.name} />
+                <MultiLineListItem label="Address" value={wallet.address} copy={true} />
             </VStack>
 
             <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={farCircleInfo} size={16} />
                 <Text size={"footnote2"} style={styles.infoText}>
-                    Never enter this address by hand and only send {titleCase(currencyType)} (
-                    {typeToISOCode[currencyType]}) to this address.
+                    Never enter this address by hand and only send {titleCase(wallet.currencyType)} (
+                    {typeToISOCode[wallet.currencyType]}) to this address.
                 </Text>
             </HStack>
         </View>

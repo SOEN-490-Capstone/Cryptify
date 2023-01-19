@@ -227,7 +227,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
+                        <AddressShareButton wallet={route.params.wallet} />
                     ),
                 })}
             />

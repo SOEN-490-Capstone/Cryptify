@@ -26,7 +26,7 @@ export default function TransactionHistoryReportScreen({
 
     const { token, user } = React.useContext(AuthContext);
 
-    const filtersByTransaction = getFiltersByTransactionStrings(getCurrencyType(route.params.walletAddress));
+    const filtersByTransaction = getFiltersByTransactionStrings(getCurrencyType(route.params.wallet.address));
     const [filterByTransaction, setFilterByTransaction] = React.useState(filtersByTransaction[0]);
 
     const filtersByDate = getFiltersByDateStrings();
@@ -79,8 +79,8 @@ export default function TransactionHistoryReportScreen({
 
         const req = {
             userId: user.id,
-            walletAddress: route.params.walletAddress,
-            currencyType: getCurrencyType(route.params.walletAddress),
+            walletAddress: route.params.wallet.address,
+            currencyType: route.params.wallet.currencyType,
             transactionsIn: filterByTransaction === "All transactions" || filterByTransaction.endsWith("in"),
             transactionsOut: filterByTransaction === "All transactions" || filterByTransaction.endsWith("out"),
             startDate: new Date(startDate),
@@ -93,13 +93,13 @@ export default function TransactionHistoryReportScreen({
 
             Alert.alert(
                 "Transaction History Sent",
-                `The Transaction History document for ${route.params.walletName} will be sent to you shortly by email at ${user.email}.`,
+                `The Transaction History document for ${route.params.wallet.name} will be sent to you shortly by email at ${user.email}.`,
                 [{ text: "Ok", style: "cancel" }],
             );
         } catch (e) {
             Alert.alert(
                 "Transaction History Error",
-                `An error occured while generating the Transaction History document for ${route.params.walletName}, please try again later.`,
+                `An error occured while generating the Transaction History document for ${route.params.wallet.name}, please try again later.`,
                 [{ text: "Ok", style: "cancel" }],
             );
         }

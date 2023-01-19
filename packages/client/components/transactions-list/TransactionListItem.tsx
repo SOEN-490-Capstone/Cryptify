@@ -8,16 +8,16 @@ import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { getFormattedAmount, getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
+import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     transaction: Transaction;
-    walletAddress: string;
-    walletName: string;
+    wallet: WalletWithBalance;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionListItem({ transaction, walletAddress, walletName, navigation }: Props) {
-    const isIncomingTransaction = walletAddress == transaction.walletIn;
+export function TransactionListItem({ transaction, wallet, navigation }: Props) {
+    const isIncomingTransaction = wallet.address == transaction.walletIn;
 
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);
@@ -33,8 +33,7 @@ export function TransactionListItem({ transaction, walletAddress, walletName, na
                 navigation.navigate("TransactionDetailsScreen", {
                     title: getFormattedDate(transaction.createdAt as any),
                     transaction: transaction,
-                    walletAddress: walletAddress,
-                    walletName: walletName,
+                    wallet,
                 })
             }
         >

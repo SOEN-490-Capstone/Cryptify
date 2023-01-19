@@ -16,11 +16,11 @@ import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
+import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     txn: Transaction;
-    walletAddress: string;
-    walletName: string;
+    wallet: WalletWithBalance;
     navigation: CompositeNavigationProp<any, any>;
 };
 
@@ -30,7 +30,7 @@ type TagRenderInfo = {
     index: number;
 };
 
-export function TransactionDetails({ txn, walletAddress, walletName, navigation }: Props) {
+export function TransactionDetails({ txn, wallet, navigation }: Props) {
     const transactionGateway = new TransactionsGateway();
     const isFocused = useIsFocused();
 
@@ -38,7 +38,7 @@ export function TransactionDetails({ txn, walletAddress, walletName, navigation 
 
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
     const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([]);
-    const isIncomingTransaction = walletAddress == transaction.walletIn;
+    const isIncomingTransaction = wallet.address == transaction.walletIn;
     const currencyTypeCheck = getCurrencyType(transaction.transactionAddress) == "BITCOIN";
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);
@@ -265,7 +265,7 @@ export function TransactionDetails({ txn, walletAddress, walletName, navigation 
                     </Text>
                     {transaction.contactOut && <Text style={styles.elementInformationText}>{transaction.contactOut.contactName}</Text>}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{isIncomingTransaction ? transaction.walletOut : walletName}</Text>
+                        <Text style={styles.elementInformationText}>{isIncomingTransaction ? transaction.walletOut : wallet.name}</Text>
                         {isIncomingTransaction && (
                             <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
@@ -279,7 +279,7 @@ export function TransactionDetails({ txn, walletAddress, walletName, navigation 
                     </Text>
                     {transaction.contactIn && <Text style={styles.elementInformationText}>{transaction.contactIn.contactName}</Text>}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{!isIncomingTransaction ? transaction.walletIn : walletName}</Text>
+                        <Text style={styles.elementInformationText}>{!isIncomingTransaction ? transaction.walletIn : wallet.name}</Text>
                         {!isIncomingTransaction && (
                             <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />

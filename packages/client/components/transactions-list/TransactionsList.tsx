@@ -4,16 +4,16 @@ import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionListItem } from "./TransactionListItem";
 import { CompositeNavigationProp } from "@react-navigation/native";
+import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
+    wallet: WalletWithBalance;
     transactions: Transaction[];
-    walletAddress: string;
-    walletName: string;
     displaySeparation: boolean;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionsList({ transactions, walletAddress, walletName, displaySeparation, navigation }: Props) {
+export function TransactionsList({ transactions, wallet, displaySeparation, navigation }: Props) {
     let savedDate = new Date();
     function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {
@@ -37,7 +37,7 @@ export function TransactionsList({ transactions, walletAddress, walletName, disp
                 <>
                     {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
                     <Box style={styles.transactionWrapper}>
-                        <TransactionListItem transaction={item} walletAddress={walletAddress} walletName={walletName} navigation={navigation} />
+                        <TransactionListItem transaction={item} wallet={wallet} navigation={navigation} />
                     </Box>
                 </>
             )}

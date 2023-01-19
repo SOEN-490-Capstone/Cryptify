@@ -8,11 +8,12 @@ import { CompositeNavigationProp } from "@react-navigation/native";
 type Props = {
     transactions: Transaction[];
     walletAddress: string;
+    walletName: string;
     displaySeparation: boolean;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionsList({ transactions, walletAddress, displaySeparation, navigation }: Props) {
+export function TransactionsList({ transactions, walletAddress, walletName, displaySeparation, navigation }: Props) {
     let savedDate = new Date();
     function renderHeader(date: Date) {
         if (savedDate?.getFullYear() == date.getFullYear() && savedDate.getMonth() == date.getMonth()) {
@@ -36,7 +37,7 @@ export function TransactionsList({ transactions, walletAddress, displaySeparatio
                 <>
                     {displaySeparation && renderHeader(new Date(item.createdAt.toString()))}
                     <Box style={styles.transactionWrapper}>
-                        <TransactionListItem transaction={item} walletAddress={walletAddress} navigation={navigation} />
+                        <TransactionListItem transaction={item} walletAddress={walletAddress} walletName={walletName} navigation={navigation} />
                     </Box>
                 </>
             )}

@@ -29,6 +29,7 @@ type TransactionDetailsProps = {
     title: string;
     transaction: Transaction;
     walletAddress: string;
+    walletName: string;
 };
 
 type TransactionTagsScreenProps = {

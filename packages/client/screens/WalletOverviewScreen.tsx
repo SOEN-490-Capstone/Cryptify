@@ -159,6 +159,7 @@ export default function WalletOverviewScreen({ route, navigation }: Props) {
                 <TransactionsList
                     transactions={transactions}
                     walletAddress={address}
+                    walletName={name}
                     displaySeparation={false}
                     navigation={navigation}
                 />

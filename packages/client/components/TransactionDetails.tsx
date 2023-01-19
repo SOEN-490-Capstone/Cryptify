@@ -20,6 +20,7 @@ import { getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/curre
 type Props = {
     txn: Transaction;
     walletAddress: string;
+    walletName: string;
     navigation: CompositeNavigationProp<any, any>;
 };
 
@@ -29,7 +30,7 @@ type TagRenderInfo = {
     index: number;
 };
 
-export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
+export function TransactionDetails({ txn, walletAddress, walletName, navigation }: Props) {
     const transactionGateway = new TransactionsGateway();
     const isFocused = useIsFocused();
 
@@ -262,14 +263,13 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                     <Text size={"subheadline"} color="text.500">
                         From
                     </Text>
+                    {transaction.contactOut && <Text style={styles.elementInformationText}>{transaction.contactOut.contactName}</Text>}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{transaction.walletIn}</Text>
-                        {isIncomingTransaction ? (
-                            <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
+                        <Text style={styles.elementInformationText}>{isIncomingTransaction ? transaction.walletOut : walletName}</Text>
+                        {isIncomingTransaction && (
+                            <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
                             </Pressable>
-                        ) : (
-                            <></>
                         )}
                     </HStack>
                 </Box>
@@ -277,12 +277,11 @@ export function TransactionDetails({ txn, walletAddress, navigation }: Props) {
                     <Text size={"subheadline"} color="text.500">
                         To
                     </Text>
+                    {transaction.contactIn && <Text style={styles.elementInformationText}>{transaction.contactIn.contactName}</Text>}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{transaction.walletOut}</Text>
-                        {isIncomingTransaction ? (
-                            <></>
-                        ) : (
-                            <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
+                        <Text style={styles.elementInformationText}>{!isIncomingTransaction ? transaction.walletIn : walletName}</Text>
+                        {!isIncomingTransaction && (
+                            <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
                             </Pressable>
                         )}

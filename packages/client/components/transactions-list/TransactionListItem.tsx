@@ -12,10 +12,11 @@ import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 type Props = {
     transaction: Transaction;
     walletAddress: string;
+    walletName: string;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
+export function TransactionListItem({ transaction, walletAddress, walletName, navigation }: Props) {
     const isIncomingTransaction = walletAddress == transaction.walletIn;
 
     function getFormattedDate(timestamp: string): string {
@@ -33,6 +34,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                     title: getFormattedDate(transaction.createdAt as any),
                     transaction: transaction,
                     walletAddress: walletAddress,
+                    walletName: walletName,
                 })
             }
         >
@@ -46,7 +48,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                     <VStack style={styles.verticalStack}>
                         <HStack>
                             <Text fontWeight={"semibold"} style={styles.transactionsAddress}>
-                                {formatAddress(transaction.transactionAddress)}
+                                {(isIncomingTransaction && transaction.contactOut?.contactName) || (!isIncomingTransaction && transaction.contactIn?.contactName) || formatAddress(transaction.transactionAddress)}
                             </Text>
                             <Text
                                 isTruncated

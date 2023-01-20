@@ -6,7 +6,7 @@ import { BtcEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/
 import { TransactionsController } from "../controllers/transactions.controller";
 import { TransactionsService } from "../services/transactions.service";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import {ContactsModule} from "@cryptify/api/src/modules/contacts.module";
+import { ContactsModule } from "@cryptify/api/src/modules/contacts.module";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Transaction]), ContactsModule],

@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionListItem } from "./TransactionListItem";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     wallet: WalletWithBalance;

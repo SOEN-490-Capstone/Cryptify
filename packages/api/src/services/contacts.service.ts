@@ -1,7 +1,6 @@
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
-import { ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT } from "@cryptify/common/src/errors/error_messages";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -22,13 +21,15 @@ export class ContactsService {
         // if (await this.contactRepository.findOneBy({ userId, contactName })) {
         //     throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
         // }
-        
+
         const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
-        const contacts = walletAddrs.map((addr) => this.contactRepository.create({
-            userId,
-            contactName,
-            walletAddress: addr,
-        }))
+        const contacts = walletAddrs.map((addr) =>
+            this.contactRepository.create({
+                userId,
+                contactName,
+                walletAddress: addr,
+            }),
+        );
 
         await this.contactRepository.insert(contacts);
         return contacts;

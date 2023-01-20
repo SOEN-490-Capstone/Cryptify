@@ -8,7 +8,7 @@ import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { getFormattedAmount, getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     transaction: Transaction;
@@ -47,7 +47,9 @@ export function TransactionListItem({ transaction, wallet, navigation }: Props) 
                     <VStack style={styles.verticalStack}>
                         <HStack>
                             <Text fontWeight={"semibold"} style={styles.transactionsAddress}>
-                                {(isIncomingTransaction && transaction.contactOut?.contactName) || (!isIncomingTransaction && transaction.contactIn?.contactName) || formatAddress(transaction.transactionAddress)}
+                                {(isIncomingTransaction && transaction.contactOut?.contactName) ||
+                                    (!isIncomingTransaction && transaction.contactIn?.contactName) ||
+                                    formatAddress(transaction.transactionAddress)}
                             </Text>
                             <Text
                                 isTruncated

@@ -36,7 +36,7 @@ export function isValidCurrencyAddress(address: string, currencyType: CurrencyTy
         }
         if ((currencyType === CurrencyType.ETHEREUM && validate(address, "ETH")) || ethTxRegex.test(address)) {
             return true;
-        } 
+        }
     } catch (e) {
         return false;
     }

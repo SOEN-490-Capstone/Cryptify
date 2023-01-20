@@ -16,9 +16,7 @@ import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
-import SortActionSheet from "./transactions-list/SortTransactionListComponent";
-import {farBarsFilter} from "./icons/regular/farBarsFilter";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import TransactionDetailsActionSheet from "./TransactionDetailsActionSheet";
 
 type Props = {
@@ -111,7 +109,11 @@ export function TransactionDetails({ txn, wallet, navigation }: Props) {
             if (!txn.contactIn && !txn.contactOut) {
                 navigation.setOptions({
                     headerRight: () => (
-                        <TransactionDetailsActionSheet wallet={wallet} navigation={navigation} transaction={transaction} />
+                        <TransactionDetailsActionSheet
+                            wallet={wallet}
+                            navigation={navigation}
+                            transaction={transaction}
+                        />
                     ),
                 });
             }
@@ -278,9 +280,13 @@ export function TransactionDetails({ txn, wallet, navigation }: Props) {
                     <Text size={"subheadline"} color="text.500">
                         From
                     </Text>
-                    {transaction.contactOut && <Text style={styles.elementInformationText}>{transaction.contactOut.contactName}</Text>}
+                    {transaction.contactOut && (
+                        <Text style={styles.elementInformationText}>{transaction.contactOut.contactName}</Text>
+                    )}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{isIncomingTransaction ? transaction.walletOut : wallet.name}</Text>
+                        <Text style={styles.elementInformationText}>
+                            {isIncomingTransaction ? transaction.walletOut : wallet.name}
+                        </Text>
                         {isIncomingTransaction && (
                             <Pressable onPress={() => copyToClipboard(transaction.walletOut)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />
@@ -292,9 +298,13 @@ export function TransactionDetails({ txn, wallet, navigation }: Props) {
                     <Text size={"subheadline"} color="text.500">
                         To
                     </Text>
-                    {transaction.contactIn && <Text style={styles.elementInformationText}>{transaction.contactIn.contactName}</Text>}
+                    {transaction.contactIn && (
+                        <Text style={styles.elementInformationText}>{transaction.contactIn.contactName}</Text>
+                    )}
                     <HStack space="10px">
-                        <Text style={styles.elementInformationText}>{!isIncomingTransaction ? transaction.walletIn : wallet.name}</Text>
+                        <Text style={styles.elementInformationText}>
+                            {!isIncomingTransaction ? transaction.walletIn : wallet.name}
+                        </Text>
                         {!isIncomingTransaction && (
                             <Pressable onPress={() => copyToClipboard(transaction.walletIn)}>
                                 <FontAwesomeIcon icon={farCopy} style={styles.copyIcon} size={20} />

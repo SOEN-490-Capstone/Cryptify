@@ -1,9 +1,8 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, HStack, Center, VStack } from "native-base";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { HomeStackScreenProps } from "../types";
 import React from "react";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import MultiLineListItem from "../components/list/MultiLineListItem";

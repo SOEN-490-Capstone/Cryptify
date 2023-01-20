@@ -226,9 +226,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <AddressShareButton wallet={route.params.wallet} />
-                    ),
+                    headerRight: () => <AddressShareButton wallet={route.params.wallet} />,
                 })}
             />
             <HomeStack.Screen
@@ -272,9 +270,13 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddContactScreen", {
-                            prefilledWalletAddress: route.params.prefilledWalletAddress,
-                        })}>
+                        <Pressable
+                            onPress={() =>
+                                navigation.navigate("AddContactScreen", {
+                                    prefilledWalletAddress: route.params.prefilledWalletAddress,
+                                })
+                            }
+                        >
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),

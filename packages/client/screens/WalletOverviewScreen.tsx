@@ -1,11 +1,11 @@
 import React from "react";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { HomeStackScreenProps } from "../types";
 import { Pressable, Box, Text, HStack, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "../components/Themed";
 import { farArrowRight } from "../components/icons/regular/farArrowRight";
-import {CompositeScreenProps, useIsFocused} from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionsGateway } from "../gateways/transactions_gateway";
 import { AuthContext } from "../components/contexts/AuthContext";
@@ -15,7 +15,7 @@ import { getTransactionByWallet } from "../services/transaction_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
-import {getFormattedAmount, typeToISOCode} from "@cryptify/common/src/utils/currency_utils";
+import { getFormattedAmount, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { farWallet } from "../components/icons/regular/farWallet";
 import { farFile } from "../components/icons/regular/farFile";
@@ -30,7 +30,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
     const [isLoading, setIsLoading] = React.useState(true);
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const currencyIcon = currencyTypeToIcon[wallet.currencyType];
-    
+
     const isFocused = useIsFocused();
 
     React.useEffect(() => {
@@ -46,7 +46,9 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
         <View style={styles.view}>
             <Box
                 style={styles.walletDetailsWrapper}
-                backgroundColor={wallet.currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"}
+                backgroundColor={
+                    wallet.currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"
+                }
             >
                 <VStack style={styles.walletDetails}>
                     <HStack justifyContent="space-between">
@@ -117,7 +119,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                         style={styles.button}
                         onPress={() =>
                             navigation.navigate("ReportSelectionScreen", {
-                                wallet
+                                wallet,
                             })
                         }
                     >

@@ -1,35 +1,48 @@
 import React from "react";
-import {HomeStackScreenProps, SettingsStackScreenProps} from "../../types";
-import {View} from "../../components/Themed";
-import {FieldArray, Formik, FormikErrors, FormikHelpers, FormikTouched} from "formik";
-import {Button, FormControl, HStack, Input, ScrollView, Text} from "native-base";
+import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
+import { View } from "../../components/Themed";
+import { FieldArray, Formik, FormikErrors, FormikHelpers, FormikTouched } from "formik";
+import { Button, FormControl, HStack, Input, ScrollView, Text } from "native-base";
 import Collapsible from "react-native-collapsible";
-import {Pressable, StyleSheet} from "react-native";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faBitcoin} from "../../components/icons/brands/faBitcoin";
-import {farChevronUp} from "../../components/icons/regular/farChevronUp";
-import {farChevronDown} from "../../components/icons/regular/farChevronDown";
-import {falCircleXMark} from "../../components/icons/light/falCircleXMark";
-import {fasCirclePlusSolid} from "../../components/icons/solid/fasCirclePlusSolid";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {faEthereum} from "../../components/icons/brands/faEthereum";
-import {titleCase} from "@cryptify/common/src/utils/string_utils";
-import {getCurrencyType, isValidCurrencyAddress} from "@cryptify/common/src/utils/currency_utils";
-import {ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY} from "@cryptify/common/src/errors/error_messages";
-import {ContactsGateway} from "../../gateways/contacts_gateway";
-import {AuthContext} from "../../components/contexts/AuthContext";
-import {CreateContactRequest} from "@cryptify/common/src/requests/create_contact_request";
-import {CompositeScreenProps} from "@react-navigation/native";
+import { Pressable, StyleSheet } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faBitcoin } from "../../components/icons/brands/faBitcoin";
+import { farChevronUp } from "../../components/icons/regular/farChevronUp";
+import { farChevronDown } from "../../components/icons/regular/farChevronDown";
+import { falCircleXMark } from "../../components/icons/light/falCircleXMark";
+import { fasCirclePlusSolid } from "../../components/icons/solid/fasCirclePlusSolid";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { faEthereum } from "../../components/icons/brands/faEthereum";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
+import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
+import { ContactsGateway } from "../../gateways/contacts_gateway";
+import { AuthContext } from "../../components/contexts/AuthContext";
+import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
+import { CompositeScreenProps } from "@react-navigation/native";
 
-type Props = CompositeScreenProps<HomeStackScreenProps<"AddContactScreen">, SettingsStackScreenProps<"AddContactScreen">>;
+type Props = CompositeScreenProps<
+    HomeStackScreenProps<"AddContactScreen">,
+    SettingsStackScreenProps<"AddContactScreen">
+>;
 
 export default function AddContactScreen(props: Props) {
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);
-    
-    const defaultEthWallets = isValidCurrencyAddress(props.route.params?.prefilledWalletAddress || "", CurrencyType.ETHEREUM) ? [props.route.params.prefilledWalletAddress] : [];
-    const defaultBtcWallets = isValidCurrencyAddress(props.route.params?.prefilledWalletAddress || "", CurrencyType.BITCOIN) ? [props.route.params.prefilledWalletAddress] : [];
+
+    const defaultEthWallets = isValidCurrencyAddress(
+        props.route.params?.prefilledWalletAddress || "",
+        CurrencyType.ETHEREUM,
+    )
+        ? [props.route.params.prefilledWalletAddress]
+        : [];
+    const defaultBtcWallets = isValidCurrencyAddress(
+        props.route.params?.prefilledWalletAddress || "",
+        CurrencyType.BITCOIN,
+    )
+        ? [props.route.params.prefilledWalletAddress]
+        : [];
 
     const initialValues: CreateContactRequest = {
         contactName: "",
@@ -92,20 +105,24 @@ export default function AddContactScreen(props: Props) {
                                                 value={wallet}
                                                 onChangeText={handleChange(`${walletListString}[${i}]`)}
                                                 placeholder={placeholder}
-                                                rightElement={!props.route.params.prefilledWalletAddress ? (
-                                                    <Pressable
-                                                        onPress={() => {
-                                                            arrayHelpers.remove(i);
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon
-                                                            color={"#EF4444"}
-                                                            style={{ marginRight: 12 }}
-                                                            size={20}
-                                                            icon={falCircleXMark}
-                                                        />
-                                                    </Pressable>
-                                                ) : <></>}
+                                                rightElement={
+                                                    !props.route.params.prefilledWalletAddress ? (
+                                                        <Pressable
+                                                            onPress={() => {
+                                                                arrayHelpers.remove(i);
+                                                            }}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                color={"#EF4444"}
+                                                                style={{ marginRight: 12 }}
+                                                                size={20}
+                                                                icon={falCircleXMark}
+                                                            />
+                                                        </Pressable>
+                                                    ) : (
+                                                        <></>
+                                                    )
+                                                }
                                                 isDisabled={!!props.route.params?.prefilledWalletAddress}
                                             />
                                             <FormControl.ErrorMessage>
@@ -122,7 +139,11 @@ export default function AddContactScreen(props: Props) {
                                             }}
                                         >
                                             <HStack style={{ marginTop: 13 }}>
-                                                <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
+                                                <FontAwesomeIcon
+                                                    color={"#0077E6"}
+                                                    icon={fasCirclePlusSolid}
+                                                    size={20}
+                                                />
                                                 <Text
                                                     style={{ marginLeft: 10 }}
                                                     color={"darkBlue.500"}
@@ -226,9 +247,9 @@ export default function AddContactScreen(props: Props) {
                                     errors={errors}
                                     touched={touched}
                                     placeholder={"Wallet address (Begins with 0x)"}
-                                /> 
+                                />
                             </>
-                        ) :  (
+                        ) : (
                             <AddWalletFieldArray
                                 values={values}
                                 handleChange={handleChange}

@@ -11,8 +11,7 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
-import {Wallet} from "@cryptify/common/src/domain/entities/wallet";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -30,7 +29,7 @@ type AddWalletScreenProps = {
 type TransactionDetailsProps = {
     title: string;
     transaction: Transaction;
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type TransactionTagsScreenProps = {
@@ -49,21 +48,21 @@ type AddTransactionTagsScreenProps = {
 
 type WalletOverviewScreenProps = {
     title: string;
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type WalletDetailsScreenProps = {
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
     transactions: Transaction[];
 };
 
 type WalletQRCodeProps = {
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type TransactionsListScreenProps = {
     transactions: Transaction[];
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
     displaySeparation: boolean;
 };
 
@@ -74,13 +73,13 @@ type ViewWalletsScreenProps = {
 
 type WalletSettingsScreenProps = {
     title: string;
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type FilterScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type EditTagScreenProps = {
@@ -93,20 +92,20 @@ type SignUpNotificationsScreenProps = {
 };
 
 type ReportSelectionScreenProps = {
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type TransactionHistoryReportScreenProps = {
-    wallet: WalletWithBalance
+    wallet: WalletWithBalance;
 };
 
 type ContactListScreenProps = {
     prefilledWalletAddress?: string;
-}
+};
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
-}
+};
 
 export type HomeStackParamList = {
     HomeScreen: undefined;

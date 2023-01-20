@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TransactionTag } from "./TransactionTag";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Entity()
 export class Transaction {
@@ -12,12 +12,12 @@ export class Transaction {
 
     @Column({ nullable: false })
     walletIn: string;
-    
+
     contactIn: Contact | null;
 
     @Column({ nullable: false })
     walletOut: string;
-    
+
     contactOut: Contact | null;
 
     @Column({ nullable: false })

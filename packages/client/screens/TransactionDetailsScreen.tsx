@@ -2,13 +2,10 @@ import React from "react";
 import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { TransactionDetails } from "../components/TransactionDetails";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { HomeStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 
-export default function TransactionDetailsScreen(
-    props: HomeStackScreenProps<"TransactionDetailsScreen">,
-) {
+export default function TransactionDetailsScreen(props: HomeStackScreenProps<"TransactionDetailsScreen">) {
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>

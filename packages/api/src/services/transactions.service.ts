@@ -3,10 +3,7 @@ import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transa
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
-import {Repository} from "typeorm";
-import {ContactsService} from "@cryptify/api/src/services/contacts.service";
+import { ContactsService } from "@cryptify/api/src/services/contacts.service";
 
 @Injectable()
 export class TransactionsService {
@@ -21,13 +18,11 @@ export class TransactionsService {
         );
         const transactionsByType = await Promise.all(strategies.map((strategy) => strategy.getTransactions(req)));
         const contacts = await this.contactService.findAll(req.id);
-        
-        return transactionsByType
-            .flat()
-            .map((transaction) => ({
-                ...transaction,
-                contactIn: contacts.find(({ walletAddress }) => walletAddress === transaction.walletIn),
-                contactOut: contacts.find(({ walletAddress }) => walletAddress === transaction.walletOut),
-            }));
+
+        return transactionsByType.flat().map((transaction) => ({
+            ...transaction,
+            contactIn: contacts.find(({ walletAddress }) => walletAddress === transaction.walletIn),
+            contactOut: contacts.find(({ walletAddress }) => walletAddress === transaction.walletOut),
+        }));
     }
 }

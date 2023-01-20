@@ -4,8 +4,7 @@ import { Pressable } from "native-base";
 import React from "react";
 import { Share } from "react-native";
 import { faArrowUpBracket } from "./icons/regular/farArrowUpFromBracket";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     wallet: WalletWithBalance;

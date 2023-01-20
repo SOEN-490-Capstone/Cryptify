@@ -8,7 +8,7 @@ import { createContactSchema } from "@cryptify/common/src/validations/create_con
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { CanAccessResourceGuard } from "../guards/can_access_resource.guard";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Controller()
 export class ContactsController {

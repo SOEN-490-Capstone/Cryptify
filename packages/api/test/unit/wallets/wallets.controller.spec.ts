@@ -5,6 +5,7 @@ import { WalletsController } from "../../../src/controllers/wallets.controller";
 import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "@cryptify/common/src/domain/entities/user";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
@@ -30,11 +31,13 @@ describe("WalletsController", () => {
         contacts: [],
     };
 
-    const transaction = {
+    const transaction: Transaction = {
         id: 1,
         transactionAddress: "string",
         walletIn: "string",
+        contactIn: null,
         walletOut: "string",
+        contactOut: null,
         amount: "string",
         createdAt: new Date(),
         tags: [],

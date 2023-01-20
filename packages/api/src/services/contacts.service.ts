@@ -18,10 +18,6 @@ export class ContactsService {
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
 
-        // if (await this.contactRepository.findOneBy({ userId, contactName })) {
-        //     throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
-        // }
-
         const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
         const contacts = walletAddrs.map((addr) =>
             this.contactRepository.create({

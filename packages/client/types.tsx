@@ -101,11 +101,11 @@ type TransactionHistoryReportScreenProps = {
 };
 
 type ContactListScreenProps = {
-    prefilledWalletAddress: string | null;
+    prefilledWalletAddress?: string;
 }
 
 type AddContactScreenProps = {
-    prefilledWalletAddress: string | null;
+    prefilledWalletAddress?: string;
 }
 
 export type HomeStackParamList = {

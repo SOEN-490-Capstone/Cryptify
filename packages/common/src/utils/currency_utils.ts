@@ -30,11 +30,15 @@ export function normalizeCurrency(amount: number): string {
 }
 
 export function isValidCurrencyAddress(address: string, currencyType: CurrencyType): boolean {
-    if ((currencyType === CurrencyType.BITCOIN && validate(address, "BTC")) || btcTxRegex.test(address)) {
-        return true;
-    }
-    if ((currencyType === CurrencyType.ETHEREUM && validate(address, "ETH")) || ethTxRegex.test(address)) {
-        return true;
+    try {
+        if ((currencyType === CurrencyType.BITCOIN && validate(address, "BTC")) || btcTxRegex.test(address)) {
+            return true;
+        }
+        if ((currencyType === CurrencyType.ETHEREUM && validate(address, "ETH")) || ethTxRegex.test(address)) {
+            return true;
+        } 
+    } catch (e) {
+        return false;
     }
 
     return false;

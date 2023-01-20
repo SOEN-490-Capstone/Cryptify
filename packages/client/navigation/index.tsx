@@ -259,10 +259,10 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleAlign: "center",
                 }}
             />
-            <SettingsStack.Screen
+            <HomeStack.Screen
                 name="ContactsListScreen"
                 component={ContactsListScreen}
-                options={{
+                options={({ route }) => ({
                     title: "Contacts",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -272,13 +272,15 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddContactScreen")}>
+                        <Pressable onPress={() => navigation.navigate("AddContactScreen", {
+                            prefilledWalletAddress: route.params.prefilledWalletAddress,
+                        })}>
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),
-                }}
+                })}
             />
-            <SettingsStack.Screen
+            <HomeStack.Screen
                 name="AddContactScreen"
                 component={AddContactScreen}
                 options={{

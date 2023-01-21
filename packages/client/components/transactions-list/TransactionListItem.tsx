@@ -26,6 +26,11 @@ export function TransactionListItem({ transaction, wallet, navigation }: Props) 
         return `${datePart} • ${timePart}`;
     }
 
+    const transactionAddr =
+        (isIncomingTransaction && transaction.contactOut?.contactName) ||
+        (!isIncomingTransaction && transaction.contactIn?.contactName) ||
+        formatAddress(transaction.transactionAddress);
+
     return (
         <Pressable
             testID={"transactionsListItem"}
@@ -47,9 +52,7 @@ export function TransactionListItem({ transaction, wallet, navigation }: Props) 
                     <VStack style={styles.verticalStack}>
                         <HStack>
                             <Text fontWeight={"semibold"} style={styles.transactionsAddress}>
-                                {(isIncomingTransaction && transaction.contactOut?.contactName) ||
-                                    (!isIncomingTransaction && transaction.contactIn?.contactName) ||
-                                    formatAddress(transaction.transactionAddress)}
+                                {transactionAddr}
                             </Text>
                             <Text
                                 isTruncated

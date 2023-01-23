@@ -14,8 +14,7 @@ export default function ReportSelectionScreen({ route, navigation }: HomeStackSc
                 <Pressable
                     onPress={() =>
                         navigation.navigate("TransactionHistoryReportScreen", {
-                            walletAddress: route.params.walletAddress,
-                            walletName: route.params.walletName,
+                            wallet: route.params.wallet,
                         })
                     }
                     style={styles.button}

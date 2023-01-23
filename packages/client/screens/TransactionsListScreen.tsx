@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { HomeStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
 import SortActionSheet from "../components/transactions-list/SortTransactionListComponent";
@@ -11,21 +10,14 @@ import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "nativ
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { filterTransctions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
-export default function TransactionsListScreen(
-    props: CompositeScreenProps<
-        HomeStackScreenProps<"TransactionsListScreen">,
-        SettingsStackScreenProps<"TransactionsListScreen">
-    >,
-) {
+export default function TransactionsListScreen(props: HomeStackScreenProps<"TransactionsListScreen">) {
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
 
-    // Places the sort and filter icons on the top navigation bar
     React.useEffect(() => {
         (() => {
             props.navigation.setOptions({
@@ -37,7 +29,7 @@ export default function TransactionsListScreen(
                                 props.navigation.navigate("FilterScreen", {
                                     filters,
                                     setFilters,
-                                    walletAddress: props.route.params.walletAddress,
+                                    wallet: props.route.params.wallet,
                                 });
                             }}
                             testID="filterTransactionsButton"
@@ -54,23 +46,24 @@ export default function TransactionsListScreen(
 
     // Updates transaction list everytime a new sorting option is selected
     React.useEffect(() => {
-        setTransactions(SortService.sortTransactions(sortType, transactions, props.route.params.walletAddress));
+        setTransactions(SortService.sortTransactions(sortType, transactions, props.route.params.wallet.address));
         setDisplaySeparation(sortType === "sortDateNewest" || sortType === "sortDateOldest");
         FiltersBadges();
     }, [sortType]);
 
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
-    const type = getCurrencyType(props.route.params.walletAddress);
 
     React.useEffect(() => {
         const DisplayedTransaction = filterTransctions(
-            type,
-            props.route.params.walletAddress,
+            props.route.params.wallet.currencyType,
+            props.route.params.wallet.address,
             [...props.route.params.transactions],
             filtersDisplayed,
         );
 
-        setTransactions(SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.walletAddress));
+        setTransactions(
+            SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.wallet.address),
+        );
     }, [filters]);
 
     // To Do Move into components folder for later use.
@@ -143,7 +136,7 @@ export default function TransactionsListScreen(
                                 props.navigation.navigate("FilterScreen", {
                                     filters,
                                     setFilters,
-                                    walletAddress: props.route.params.walletAddress,
+                                    wallet: props.route.params.wallet,
                                 });
                             }}
                         >
@@ -155,7 +148,7 @@ export default function TransactionsListScreen(
                 <>
                     <TransactionsList
                         transactions={transactions}
-                        walletAddress={props.route.params.walletAddress}
+                        wallet={props.route.params.wallet}
                         displaySeparation={displaySeparation}
                         navigation={props.navigation}
                     />

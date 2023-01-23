@@ -4,17 +4,16 @@ import { Pressable } from "native-base";
 import React from "react";
 import { Share } from "react-native";
 import { faArrowUpBracket } from "./icons/regular/farArrowUpFromBracket";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
-    currencyType: CurrencyType;
-    address: string;
+    wallet: WalletWithBalance;
 };
 
-export function AddressShareButton({ currencyType, address }: Props) {
+export function AddressShareButton({ wallet }: Props) {
     async function onShare() {
         await Share.share({
-            message: `${titleCase(currencyType)} Wallet Address:\r\n${address}`,
+            message: `${titleCase(wallet.currencyType)} Wallet Address:\r\n${wallet.address}`,
         });
     }
 

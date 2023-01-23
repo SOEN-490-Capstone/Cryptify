@@ -10,7 +10,6 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { currenciesDisplayData, CurrencyDisplayData } from "../../constants/CurrenciesDisplayData";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getWalletsTotal } from "../../services/currency_service";
-import { getFormattedAmount } from "@cryptify/common/src/utils/currency_utils";
 import { CurrencyAmount } from "../CurrencyAmount";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
@@ -91,17 +90,11 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
                             isSettingsTab
                                 ? navigation.navigate("WalletSettingsScreen", {
                                       title: formatTitle(wallet.currencyType, wallet.address),
-                                      address: wallet.address,
-                                      name: wallet.name,
-                                      currencyType: currency.type,
-                                      balance: getFormattedAmount(wallet.balance, currency.type),
+                                      wallet,
                                   })
                                 : navigation.navigate("WalletOverviewScreen", {
                                       title: formatTitle(wallet.currencyType, wallet.address),
-                                      address: wallet.address.toLowerCase(),
-                                      name: wallet.name,
-                                      currencyType: currency.type,
-                                      balance: getFormattedAmount(wallet.balance, currency.type),
+                                      wallet,
                                   });
                         }}
                     >

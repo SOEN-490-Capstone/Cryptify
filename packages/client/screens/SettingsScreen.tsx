@@ -34,7 +34,7 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
                     </HStack>
                 </Pressable>
                 <Pressable
-                    onPress={() => navigation.navigate("ContactsListScreen")}
+                    onPress={() => navigation.navigate("ContactsListScreen", {})}
                     style={styles.button}
                     _pressed={{
                         background: "text.200",

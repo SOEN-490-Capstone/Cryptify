@@ -4,14 +4,15 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import React from "react";
 import SingleLineListItem from "../list/SingleLineListItem";
 import MultiLineListItem from "../list/MultiLineListItem";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     transaction: Transaction;
-    walletAddress: string;
+    wallet: WalletWithBalance;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function EthereumTransactionDetails({ transaction, walletAddress, navigation }: Props) {
+export function EthereumTransactionDetails({ transaction, wallet, navigation }: Props) {
     // TODO
     // Add block number, position in block and nonce
     // Get Gas Limit
@@ -26,12 +27,5 @@ export function EthereumTransactionDetails({ transaction, walletAddress, navigat
         </>
     );
 
-    return (
-        <TransactionDetails
-            txn={transaction}
-            walletAddress={walletAddress}
-            navigation={navigation}
-            otherDetails={otherDetails}
-        />
-    );
+    return <TransactionDetails txn={transaction} wallet={wallet} navigation={navigation} otherDetails={otherDetails} />;
 }

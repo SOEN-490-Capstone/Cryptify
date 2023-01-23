@@ -8,15 +8,16 @@ import { falCircleArrowUpRight } from "../icons/light/falCircleArrowUpRight";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { getFormattedAmount, getCurrencyType, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 type Props = {
     transaction: Transaction;
-    walletAddress: string;
+    wallet: WalletWithBalance;
     navigation: CompositeNavigationProp<any, any>;
 };
 
-export function TransactionListItem({ transaction, walletAddress, navigation }: Props) {
-    const isIncomingTransaction = walletAddress == transaction.walletIn;
+export function TransactionListItem({ transaction, wallet, navigation }: Props) {
+    const isIncomingTransaction = wallet.address == transaction.walletIn;
 
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);
@@ -25,6 +26,11 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
         return `${datePart} • ${timePart}`;
     }
 
+    const transactionAddr =
+        (isIncomingTransaction && transaction.contactOut?.contactName) ||
+        (!isIncomingTransaction && transaction.contactIn?.contactName) ||
+        formatAddress(transaction.transactionAddress);
+
     return (
         <Pressable
             testID={"transactionsListItem"}
@@ -32,7 +38,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                 navigation.navigate("TransactionDetailsScreen", {
                     title: getFormattedDate(transaction.createdAt as any),
                     transaction: transaction,
-                    walletAddress: walletAddress,
+                    wallet,
                 })
             }
         >
@@ -46,7 +52,7 @@ export function TransactionListItem({ transaction, walletAddress, navigation }: 
                     <VStack style={styles.verticalStack}>
                         <HStack>
                             <Text fontWeight={"semibold"} style={styles.transactionsAddress}>
-                                {formatAddress(transaction.transactionAddress)}
+                                {transactionAddr}
                             </Text>
                             <Text
                                 isTruncated

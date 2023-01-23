@@ -15,10 +15,12 @@ import { TransactionTag } from "@cryptify/common/src/domain/entities/Transaction
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import TransactionDetailsActionSheet from "../TransactionDetailsActionSheet";
 
 type Props = {
     txn: Transaction;
-    walletAddress: string;
+    wallet: WalletWithBalance;
     navigation: CompositeNavigationProp<any, any>;
     otherDetails?: React.ReactNode;
 };
@@ -29,7 +31,7 @@ type TagRenderInfo = {
     index: number;
 };
 
-export function TransactionDetails({ txn, walletAddress, navigation, otherDetails }: Props) {
+export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Props) {
     const transactionGateway = new TransactionsGateway();
     const isFocused = useIsFocused();
 
@@ -37,7 +39,7 @@ export function TransactionDetails({ txn, walletAddress, navigation, otherDetail
 
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
     const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([]);
-    const isIncomingTransaction = walletAddress == transaction.walletIn;
+    const isIncomingTransaction = wallet.address == transaction.walletIn;
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);
     const [tagsContainerWidth, setTagsContainerWidth] = React.useState<number>(0);
@@ -100,6 +102,22 @@ export function TransactionDetails({ txn, walletAddress, navigation, otherDetail
             setUpdateTagsContainerWidth(true);
         }
     }, [tagRenderInfo, tagsContainerWidth]);
+
+    React.useEffect(() => {
+        (() => {
+            if (!txn.contactIn && !txn.contactOut) {
+                navigation.setOptions({
+                    headerRight: () => (
+                        <TransactionDetailsActionSheet
+                            wallet={wallet}
+                            navigation={navigation}
+                            transaction={transaction}
+                        />
+                    ),
+                });
+            }
+        })();
+    });
 
     const renderHeader = (
         <VStack space={"15px"} alignItems={"center"} testID="transactionDetailsHeader">
@@ -216,7 +234,6 @@ export function TransactionDetails({ txn, walletAddress, navigation, otherDetail
 
     const renderBasicInfo = (
         // TODO
-        // dynamically get the wallet name if any
         // add fee
         <VStack space={"20px"} testID="transactionDetailsBasicInfo">
             <MultiLineListItem
@@ -241,19 +258,19 @@ export function TransactionDetails({ txn, walletAddress, navigation, otherDetail
             />
             <MultiLineListItem
                 label={"Fee"}
-                value={`${getFormattedAmount(String(0), getCurrencyType(transaction.transactionAddress))} ${
-                    typeToISOCode[getCurrencyType(transaction.transactionAddress)]
-                }`}
+                value={`${getFormattedAmount(String(0), wallet.currencyType)} ${typeToISOCode[wallet.currencyType]}`}
             />
             <MultiLineListItem
                 label={"From"}
-                value={transaction.walletIn}
+                value={isIncomingTransaction ? transaction.walletOut : wallet.name}
+                altValue={transaction.contactOut?.contactName}
                 copy={isIncomingTransaction}
                 labelCopy={"Address"}
             />
             <MultiLineListItem
                 label={"To"}
-                value={transaction.walletOut}
+                value={isIncomingTransaction ? wallet.name : transaction.walletOut}
+                altValue={transaction.contactIn?.contactName}
                 copy={!isIncomingTransaction}
                 labelCopy={"Address"}
             />

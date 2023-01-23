@@ -48,8 +48,8 @@ import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 import useTabBar from "../hooks/useTabBar";
-import ContactsListScreen from "../screens/ContactsListScreen";
-import AddContactScreen from "../screens/AddContactScreen";
+import ContactsListScreen from "../screens/contacts/ContactsListScreen";
+import AddContactScreen from "../screens/contacts/AddContactScreen";
 import BackButton from "../components/BackButton";
 import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
 import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
@@ -226,9 +226,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
-                    ),
+                    headerRight: () => <AddressShareButton wallet={route.params.wallet} />,
                 })}
             />
             <HomeStack.Screen
@@ -251,6 +249,45 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 options={{
                     headerTintColor: "#404040",
                     title: "Transaction History",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="ContactsListScreen"
+                component={ContactsListScreen}
+                options={({ route }) => ({
+                    title: "Contacts",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() =>
+                                navigation.navigate("AddContactScreen", {
+                                    prefilledWalletAddress: route.params.prefilledWalletAddress,
+                                })
+                            }
+                        >
+                            <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <HomeStack.Screen
+                name="AddContactScreen"
+                component={AddContactScreen}
+                options={{
+                    title: "Add a Contact",
+                    headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,
                         fontWeight: "600",
@@ -416,62 +453,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 })}
             />
             <SettingsStack.Screen
-                name="TransactionDetailsScreen"
-                component={TransactionDetailsScreen}
-                options={({ route }) => ({
-                    title: route.params.title,
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                })}
-            />
-            <SettingsStack.Screen
-                name="WalletOverviewScreen"
-                component={WalletOverviewScreen}
-                options={({ route }) => ({
-                    title: route.params.title,
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                })}
-            />
-            <SettingsStack.Screen
-                name="WalletDetailsScreen"
-                component={WalletDetailsScreen}
-                options={{
-                    title: "Details",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                }}
-            />
-            <SettingsStack.Screen
-                name="TransactionsListScreen"
-                component={TransactionsListScreen}
-                options={{
-                    title: "Transactions",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                }}
-            />
-            <SettingsStack.Screen
                 name="EditTagScreen"
                 component={EditTagScreen}
                 options={{
@@ -498,23 +479,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 }}
-            />
-            <HomeStack.Screen
-                name="WalletQRCodeScreen"
-                component={WalletQRCodeScreen}
-                options={({ route }) => ({
-                    title: "QR Code",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                    headerRight: () => (
-                        <AddressShareButton currencyType={route.params.currencyType} address={route.params.address} />
-                    ),
-                })}
             />
         </SettingsStack.Navigator>
     );

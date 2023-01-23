@@ -1,9 +1,8 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, HStack, Center, VStack } from "native-base";
-import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
+import { HomeStackScreenProps } from "../types";
 import React from "react";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import QRCode from "react-native-qrcode-svg";
 import MultiLineListItem from "../components/list/MultiLineListItem";
@@ -11,20 +10,15 @@ import { farCircleInfo } from "../components/icons/regular/farCircleInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 
-type Props = CompositeScreenProps<
-    HomeStackScreenProps<"WalletQRCodeScreen">,
-    SettingsStackScreenProps<"WalletQRCodeScreen">
->;
-
-export default function WalletQRCodeScreen({ route }: Props) {
-    const { address, name, currencyType } = route.params;
+export default function WalletQRCodeScreen({ route }: HomeStackScreenProps<"WalletQRCodeScreen">) {
+    const wallet = route.params.wallet;
 
     return (
         <View style={styles.view}>
             <Text size={"subheadline"} testID="QRCodeHeader">
                 Copy and share this information to add{" "}
                 <Text style={{ fontWeight: "600" }}>
-                    {titleCase(currencyType)} ({typeToISOCode[currencyType]}){" "}
+                    {titleCase(wallet.currencyType)} ({typeToISOCode[wallet.currencyType]}){" "}
                 </Text>
                 from another source. A{" "}
                 <Text style={{ fontWeight: "600" }} underline>
@@ -34,19 +28,19 @@ export default function WalletQRCodeScreen({ route }: Props) {
             </Text>
 
             <Center style={styles.qrCode}>
-                <QRCode value={address} size={200} logoMargin={0} />
+                <QRCode value={wallet.address} size={200} logoMargin={0} />
             </Center>
 
             <VStack space={"15px"}>
-                <MultiLineListItem label="Name" value={name} />
-                <MultiLineListItem label="Address" value={address} copy={true} />
+                <MultiLineListItem label="Name" value={wallet.name} />
+                <MultiLineListItem label="Address" value={wallet.address} copy={true} />
             </VStack>
 
             <HStack style={styles.info} testID="QRCodeWarning">
                 <FontAwesomeIcon icon={farCircleInfo} size={16} />
                 <Text size={"footnote2"} style={styles.infoText}>
-                    Never enter this address by hand and only send {titleCase(currencyType)} (
-                    {typeToISOCode[currencyType]}) to this address.
+                    Never enter this address by hand and only send {titleCase(wallet.currencyType)} (
+                    {typeToISOCode[wallet.currencyType]}) to this address.
                 </Text>
             </HStack>
         </View>

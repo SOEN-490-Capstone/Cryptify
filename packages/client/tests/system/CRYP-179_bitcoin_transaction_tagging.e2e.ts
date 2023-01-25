@@ -26,7 +26,7 @@ describe("CRYP-179 Bitcoin transaction tagging", () => {
 
         // Add existing tag to transaction
         await element(by.id("addTagsButton")).tap();
-        await element(by.id("tag")).atIndex(0).tap();
+        await element(by.id("allTags-1")).tap();
 
         // Add new tag to transaction
         await element(by.id("addNewTagButton")).tap();

@@ -181,7 +181,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
                                             and immediately hidden from the UI once all badges have been measured. */}
                                         <Box style={dummyTagsContainerRender ? {} : { display: "none" }}>
                                             <Badge
-                                                rounded="md"
+                                                borderRadius={"8px"}
                                                 backgroundColor="gray.100"
                                                 onLayout={(e) => {
                                                     setTagRenderInfo([
@@ -205,7 +205,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
                                         </Box>
                                         {/* Actual badges to be rendered on the UI. */}
                                         <Badge
-                                            rounded="md"
+                                            borderRadius={"8px"}
                                             backgroundColor="gray.100"
                                             px={"10px"}
                                             py={"5px"}

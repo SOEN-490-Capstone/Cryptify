@@ -55,10 +55,7 @@ describe("SoChainGateway", () => {
                 },
             ] as any;
 
-            const pairsWithAmounts = (soChainGateway as any).reversePoolMIMOTransaction(
-                inputs,
-                outputs,
-            );
+            const pairsWithAmounts = (soChainGateway as any).reversePoolMIMOTransaction(inputs, outputs);
 
             const total = pairsWithAmounts.reduce((sum, pair) => +pair[2] + sum, 0);
             expect(+total).toBeCloseTo(1.7, 2);

@@ -9,7 +9,7 @@ import { ConfigService } from "@nestjs/config";
 import { TransactionsController } from "@cryptify/btc-edge/src/controllers/transactions.controller";
 import { WalletsModule } from "./wallets.module";
 import { NotificationsModule } from "@cryptify/common/src/utils/notifications/notifications.module";
-import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
+import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Module({
     imports: [

@@ -9,7 +9,7 @@ import { Repository } from "typeorm";
 @Injectable()
 export class BlockchainComGateway extends AbstractServiceGateway {
     private static readonly DECIMALS: number = 100000000;
-    
+
     constructor(
         private readonly configService: ConfigService,
         @InjectRepository(Transaction)
@@ -32,18 +32,21 @@ export class BlockchainComGateway extends AbstractServiceGateway {
         // Get the sent and received transactions from the API
         const path = `rawaddr/${walletAddress}`;
         const outAndInTransactions = await this.request<TransactionsResponse>(Method.GET, {}, path, null);
-        
+
         return outAndInTransactions.txs
-            .flatMap((tx) => this
-                .reversePoolMIMOTransaction(tx.inputs.map(input => input.prev_out), tx.out)
-                .map(([inWallet, outWallet, amount]) =>
-                        this.transactionsRepository.create({
-                            transactionAddress: tx.hash,
-                            walletIn: outWallet.addr,
-                            walletOut: inWallet.addr,
-                            amount,
-                            createdAt: new Date(tx.time * 1000),
-                        }))
+            .flatMap((tx) =>
+                this.reversePoolMIMOTransaction(
+                    tx.inputs.map((input) => input.prev_out),
+                    tx.out,
+                ).map(([inWallet, outWallet, amount]) =>
+                    this.transactionsRepository.create({
+                        transactionAddress: tx.hash,
+                        walletIn: outWallet.addr,
+                        walletOut: inWallet.addr,
+                        amount,
+                        createdAt: new Date(tx.time * 1000),
+                    }),
+                ),
             )
             .filter((transaction) => walletAddress === transaction.walletIn || walletAddress === transaction.walletOut);
     }
@@ -58,22 +61,21 @@ export class BlockchainComGateway extends AbstractServiceGateway {
         // Note: inWallet refers to a wallet that is putting money in (inputting) bitcoin into the transaction pool
         // and outWallet refers to a wallet that is taking money out from the transaction pool, our domain transaction
         // has the reverse where a walletIn takes money out of the pool, and a walletOut puts money into the pool
-        return this
-            .reversePoolMIMOTransaction(tx.inputs.map(input => input.prev_out), tx.out)
-            .map(([inWallet, outWallet, amount]) =>
-                this.transactionsRepository.create({
-                    transactionAddress: tx.hash,
-                    walletIn: outWallet.addr,
-                    walletOut: inWallet.addr,
-                    amount,
-                    createdAt: new Date(tx.time * 1000),
-                }));
+        return this.reversePoolMIMOTransaction(
+            tx.inputs.map((input) => input.prev_out),
+            tx.out,
+        ).map(([inWallet, outWallet, amount]) =>
+            this.transactionsRepository.create({
+                transactionAddress: tx.hash,
+                walletIn: outWallet.addr,
+                walletOut: inWallet.addr,
+                amount,
+                createdAt: new Date(tx.time * 1000),
+            }),
+        );
     }
 
-    private reversePoolMIMOTransaction(
-        inputs: Out[],
-        outputs: Out[],
-    ): PairsWithAmount {
+    private reversePoolMIMOTransaction(inputs: Out[], outputs: Out[]): PairsWithAmount {
         // Get the total amount of BTC taken out of the transaction pool, this will exclude the amount spent in fees
         const totalOut = outputs.reduce((sum, output) => sum + +output.value, 0);
         // Cross the inputs and outputs to produce NxM pairs of transactions, then reverse the transaction MIMO pool
@@ -106,64 +108,64 @@ interface TransactionsResponse {
 }
 
 interface TransactionResponse {
-    hash:         string;
-    ver:          number;
-    vin_sz:       number;
-    vout_sz:      number;
-    size:         number;
-    weight:       number;
-    fee:          number;
-    relayed_by:   string;
-    lock_time:    number;
-    tx_index:     number;
+    hash: string;
+    ver: number;
+    vin_sz: number;
+    vout_sz: number;
+    size: number;
+    weight: number;
+    fee: number;
+    relayed_by: string;
+    lock_time: number;
+    tx_index: number;
     double_spend: boolean;
-    time:         number;
-    block_index:  number;
+    time: number;
+    block_index: number;
     block_height: number;
-    inputs:       Input[];
-    out:          Out[]; 
+    inputs: Input[];
+    out: Out[];
 }
 
 interface Tx {
-    hash:         string;
-    ver:          number;
-    vin_sz:       number;
-    vout_sz:      number;
-    size:         number;
-    weight:       number;
-    fee:          number;
-    lock_time:    number;
-    tx_index:     number;
+    hash: string;
+    ver: number;
+    vin_sz: number;
+    vout_sz: number;
+    size: number;
+    weight: number;
+    fee: number;
+    lock_time: number;
+    tx_index: number;
     double_spend: boolean;
-    time:         number;
-    block_index:  number;
+    time: number;
+    block_index: number;
     block_height: number;
-    inputs:       Input[];
-    out:          Out[];
-    result:       number;
-    balance:      number;
+    inputs: Input[];
+    out: Out[];
+    result: number;
+    balance: number;
 }
 
 interface Input {
     sequence: number;
-    witness:  string;
-    script:   string;
-    index:    number;
+    witness: string;
+    script: string;
+    index: number;
     prev_out: Out;
 }
 
 interface Out {
-    addr:               string;
-    n:                  number;
-    script:             string;
+    addr: string;
+    n: number;
+    script: string;
     spending_outpoints: SpendingOutpoint[];
-    spent:              boolean;
-    tx_index:           number;
-    type:               number;
-    value:              number;
+    spent: boolean;
+    tx_index: number;
+    type: number;
+    value: number;
 }
 
 interface SpendingOutpoint {
-    n:        number;
+    n: number;
     tx_index: number;
 }

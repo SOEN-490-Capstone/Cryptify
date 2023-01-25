@@ -14,7 +14,7 @@ import { TransactionWatcherService } from "@cryptify/btc-edge/src/services/trans
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { zip } from "@cryptify/common/src/utils/function_utils";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
-import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
+import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Injectable()
 export class WalletsService {

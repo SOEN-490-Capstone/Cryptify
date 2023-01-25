@@ -5,7 +5,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { WalletsService } from "../services/wallets.service";
 import { TransactionsModule } from "./transactions.module";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
+import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Wallet, Transaction]), forwardRef(() => TransactionsModule)],

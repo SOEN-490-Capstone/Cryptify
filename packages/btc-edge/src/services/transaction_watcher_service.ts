@@ -7,7 +7,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { TransactionNotificationService } from "@cryptify/common/src/utils/notifications/transaction_notification_service";
-import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
+import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Injectable()
 export class TransactionWatcherService {

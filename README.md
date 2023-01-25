@@ -125,6 +125,18 @@ Follow the steps to setup your device specific detox [config](https://docs.expo.
     $ ./system-test [android | ios] build
     ```
 
+#### Performance tests
+Follow the steps to [install](https://k6.io/docs/get-started/installation/) k6 for your operating system or with docker
+
+1. Build the tests files, inside the `performance-tests` package root
+   ```sh
+   $ yarn build
+   ```
+2. Run the performance test
+    ```sh
+    $ ./system-test [android | ios]
+    ```
+
 ### Linting and Formatting
 
 Run linter and formatter with the following command in the root workspace `Cryptify` directory

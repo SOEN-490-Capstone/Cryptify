@@ -9,12 +9,12 @@ import {
     ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
 } from "@cryptify/common/src/errors/error_messages";
-import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { TransactionsService } from "@cryptify/btc-edge/src/services/transactions_service";
 import { TransactionWatcherService } from "@cryptify/btc-edge/src/services/transaction_watcher_service";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { zip } from "@cryptify/common/src/utils/function_utils";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
+import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Injectable()
 export class WalletsService {
@@ -22,7 +22,7 @@ export class WalletsService {
         @InjectRepository(Wallet)
         private readonly walletRepository: Repository<Wallet>,
         private readonly transactionsService: TransactionsService,
-        private readonly soChainGateway: SoChainGateway,
+        private readonly blockchainComGateway: BlockchainComGateway,
         private readonly transactionWatcherService: TransactionWatcherService,
     ) {}
 
@@ -44,7 +44,7 @@ export class WalletsService {
         // subscribing to the transaction messages for the new wallet is fine since there are
         // no shared resources, once everything resolves the wallet with the balance will be returned
         const [balance] = await Promise.all([
-            this.soChainGateway.getBalance(address),
+            this.blockchainComGateway.getBalance(address),
             this.transactionsService.backfillTransactions(address),
             this.transactionWatcherService.subscribeAddress(address),
         ]);
@@ -61,7 +61,7 @@ export class WalletsService {
         // For each wallet owned by the user get the wallets balance from soChain, we can parallelize these requests
         // to speed up the processing time
         const balances = await Promise.all(
-            wallets.map(async (wallet) => this.soChainGateway.getBalance(wallet.address)),
+            wallets.map(async (wallet) => this.blockchainComGateway.getBalance(wallet.address)),
         );
         // Once all the balances have been retrieved zip the lists together and map through them to construct the final
         // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
@@ -79,7 +79,7 @@ export class WalletsService {
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance> {
         const wallet = await this.findOne(deleteWalletReq.address, deleteWalletReq.id);
         const [balance, count] = await Promise.all([
-            this.soChainGateway.getBalance(deleteWalletReq.address),
+            this.blockchainComGateway.getBalance(deleteWalletReq.address),
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
         ]);
 

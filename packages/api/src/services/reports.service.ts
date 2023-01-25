@@ -37,8 +37,8 @@ export class ReportsService {
             (txn) =>
                 (req.transactionsIn && txn.walletIn === req.walletAddress) ||
                 (req.transactionsOut && txn.walletOut === req.walletAddress),
-            (txn) => +new Date(txn.createdAt) >= +req.startDate,
-            (txn) => +new Date(txn.createdAt) <= +req.endDate,
+            (txn) => +new Date(txn.createdAt) >= +new Date(req.startDate),
+            (txn) => +new Date(txn.createdAt) <= +new Date(req.endDate),
         ];
         // Apply each filter above to the transactions and only include the transactions that pass all filters
         const walletTxns = transactions

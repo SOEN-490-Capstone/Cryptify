@@ -13,7 +13,7 @@ export default function NotificationsScreen() {
 
     const [isEnabled, setIsEnabled] = React.useState(user.areNotificationsEnabled);
     async function toggleSwitch() {
-        usersGateway.update(
+        await usersGateway.update(
             {
                 userId: user.id,
                 areNotificationsEnabled: !isEnabled,

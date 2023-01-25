@@ -6,10 +6,7 @@ import { View } from "../components/Themed";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
 
-type Props = SettingsStackScreenProps<"WalletSettingsScreen">;
-
-export default function WalletSettingsScreen({ navigation, route }: Props) {
-    const { address } = route.params;
+export default function WalletSettingsScreen({ navigation, route }: SettingsStackScreenProps<"WalletSettingsScreen">) {
     const { token, user } = React.useContext(AuthContext);
     const walletsGateway = new WalletsGateway();
 
@@ -20,7 +17,7 @@ export default function WalletSettingsScreen({ navigation, route }: Props) {
                 text: "Remove",
                 style: "destructive",
                 onPress: async () => {
-                    await walletsGateway.deleteWallet({ id: user.id, address: address }, token);
+                    await walletsGateway.deleteWallet({ id: user.id, address: route.params.wallet.address }, token);
                     navigation.goBack();
                 },
             },

@@ -2,14 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AbstractServiceGateway } from "@cryptify/common/src/utils/gateway/abstract_service_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import {
-    AddressBalanceResponse,
-    PairsWithAmount,
-    TransactionResponse,
-    TransactionResponseInput,
-    TransactionResponseOutput,
-    TransactionsByWalletResponse,
-} from "@cryptify/btc-edge/src/types/so_chain_responses";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -93,3 +85,81 @@ export class SoChainGateway extends AbstractServiceGateway {
         );
     }
 }
+
+interface AddressBalanceResponse {
+    status: string;
+    data: {
+        network: string;
+        address: string;
+        confirmed_balance: string;
+        unconfirmed_balance: string;
+    };
+}
+
+interface TransactionsByWalletResponse {
+    status: string;
+    data: {
+        network: string;
+        address: string;
+        txs: {
+            txid: string;
+            output_no: number;
+            script_asm: string;
+            script_hex: string;
+            value: string;
+            confirmations: number;
+            time: number;
+        }[];
+    };
+}
+
+interface TransactionResponse {
+    status: string;
+    data: {
+        network: string;
+        txid: string;
+        blockhash: string;
+        block_no: number;
+        confirmations: number;
+        time: number;
+        size: number;
+        vsize: number;
+        version: number;
+        locktime: number;
+        sent_value: string;
+        fee: string;
+        inputs: TransactionResponseInput[];
+        outputs: TransactionResponseOutput[];
+        tx_hex: string;
+    };
+    code: number;
+    message: string;
+}
+
+interface TransactionResponseInput {
+    input_no: number;
+    address: string;
+    value: string;
+    received_from: {
+        txid: string;
+        output_no: number;
+    };
+    script_asm: string;
+    script_hex: string;
+    witness: string[];
+}
+
+interface TransactionResponseOutput {
+    output_no: number;
+    address: string;
+    value: string;
+    type: string;
+    spent: {
+        txid: string;
+        input_no: number;
+    };
+    script_asm: string;
+    script_hex: string;
+}
+
+type PairsWithAmount = (readonly [TransactionResponseInput, TransactionResponseOutput, string])[];

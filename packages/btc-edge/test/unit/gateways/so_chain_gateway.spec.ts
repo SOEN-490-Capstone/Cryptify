@@ -4,7 +4,6 @@ import { ConfigService } from "@nestjs/config";
 import { Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { PairsWithAmount } from "@cryptify/btc-edge/src/types/so_chain_responses";
 
 describe("SoChainGateway", () => {
     let soChainGateway: SoChainGateway;
@@ -59,7 +58,7 @@ describe("SoChainGateway", () => {
             const pairsWithAmounts = (soChainGateway as any).reversePoolMIMOTransaction(
                 inputs,
                 outputs,
-            ) as PairsWithAmount;
+            );
 
             const total = pairsWithAmounts.reduce((sum, pair) => +pair[2] + sum, 0);
             expect(+total).toBeCloseTo(1.7, 2);

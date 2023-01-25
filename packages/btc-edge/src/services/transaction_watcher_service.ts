@@ -4,10 +4,10 @@ import { Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
-import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { TransactionNotificationService } from "@cryptify/common/src/utils/notifications/transaction_notification_service";
+import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Injectable()
 export class TransactionWatcherService {
@@ -18,7 +18,7 @@ export class TransactionWatcherService {
         private readonly walletsRepository: Repository<Wallet>,
         @InjectRepository(Transaction)
         private readonly transactionsRepository: Repository<Transaction>,
-        private readonly soChainGateway: SoChainGateway,
+        private readonly blockchainComGateway: BlockchainComGateway,
         private readonly transactionNotificationService: TransactionNotificationService,
     ) {}
 
@@ -44,7 +44,7 @@ export class TransactionWatcherService {
                 // Build and hydrate domain transactions using incoming tx address then save all
                 // transactions in db
                 const txAddress = (res as WSTransaction).x.hash;
-                const transactions = await this.soChainGateway.getTransactionsByTxAddress(txAddress);
+                const transactions = await this.blockchainComGateway.getTransactionsByTxAddress(txAddress);
                 await this.transactionsRepository.save(transactions);
 
                 // Asynchronously send the notification to the users

@@ -2,16 +2,16 @@ import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { SoChainGateway } from "@cryptify/btc-edge/src/gateways/so_chain_gateway";
 import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
+import {BlockchainComGateway} from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
 
 @Injectable()
 export class TransactionsService {
     constructor(
         @InjectRepository(Transaction)
         private readonly transactionsRepository: Repository<Transaction>,
-        private readonly soChainGateway: SoChainGateway,
+        private readonly blockchainComGateway: BlockchainComGateway,
         @Inject(forwardRef(() => WalletsService))
         private readonly walletsService: WalletsService,
         @InjectRepository(Wallet)
@@ -24,7 +24,7 @@ export class TransactionsService {
             return;
         }
 
-        const transactions = await this.soChainGateway.getTransactions(address);
+        const transactions = await this.blockchainComGateway.getTransactions(address);
         // Save allows us to do a bulk insert without throwing an error on duplicate
         // transactions which can occur if the wallet involved in a transaction
         // has already been processed by the system
@@ -45,16 +45,13 @@ export class TransactionsService {
         // Here we get all the transactions that involve the wallet we are removing but that
         // don't involve wallets still registered in our system
         // TODO find a faster way to execute this query
-        const transactions = await this.transactionsRepository.query(
-            `
+        const transactions = await this.transactionsRepository.query(`
             select id, "transactionAddress", "walletIn", "walletOut", amount, "createdAt" from transaction as t
             where t."walletOut" = $1
             and t."walletIn" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
             or t."walletIn" = $1
             and t."walletOut" not in (select lower(address) from wallet where "currencyType" = 'BITCOIN')
-        `,
-            [address.toLowerCase()],
-        );
+        `, [address.toLowerCase()],);
         return this.transactionsRepository.remove(transactions);
     }
 }

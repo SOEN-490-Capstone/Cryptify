@@ -134,8 +134,10 @@ Follow the steps to [install](https://k6.io/docs/get-started/installation/) k6 f
    ```
 2. Run the performance test
     ```sh
-    $ ./system-test [android | ios]
+    $ ./performance-tests [test-name]
     ```
+   
+A csv output of the test results can be found in the results folder with the file name of `test-name.csv`
 
 ### Linting and Formatting
 

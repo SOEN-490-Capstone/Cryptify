@@ -3,7 +3,7 @@ import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
 import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
-import Tag from "./tags/Tag";
+import Tag from "./Tag";
 
 type Props = {
     title?: string;

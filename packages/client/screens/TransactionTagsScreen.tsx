@@ -9,7 +9,7 @@ import { HomeStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";
 import { farXMark } from "../components/icons/regular/farXMark";
 import SortService from "../services/sort_service";
-import TagsGallery from "../components/TagsGallery";
+import TagsGallery from "../components/tags/TagsGallery";
 import AddTag from "../components/tags/AddTag";
 
 export default function TransactionTagsScreen(props: HomeStackScreenProps<"TransactionTagsScreen">) {

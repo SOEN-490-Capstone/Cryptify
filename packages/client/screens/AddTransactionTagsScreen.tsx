@@ -10,7 +10,7 @@ import { HomeStackScreenProps } from "../types";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { farPlus } from "../components/icons/regular/farPlus";
 import SortService from "../services/sort_service";
-import TagsGallery from "../components/TagsGallery";
+import TagsGallery from "../components/tags/TagsGallery";
 
 export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"AddTransactionTagsScreen">) {
     const tagsGateway = new TagsGateway();

@@ -8,7 +8,7 @@ import { TagsGateway } from "../gateways/tags_gateway";
 import { Formik, FormikHelpers } from "formik";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SortService from "../services/sort_service";
-import TagsGallery from "../components/TagsGallery";
+import TagsGallery from "../components/tags/TagsGallery";
 
 export default function AddTagsScreen() {
     const tagsGateway = new TagsGateway();

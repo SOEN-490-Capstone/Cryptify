@@ -10,7 +10,7 @@ import { farPencil } from "../components/icons/regular/farPencil";
 import { SettingsStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";
 import { useIsFocused } from "@react-navigation/native";
-import TagsGallery from "../components/TagsGallery";
+import TagsGallery from "../components/tags/TagsGallery";
 import { falTags } from "../components/icons/light/falTags";
 
 export default function TagsSettingsScreen(props: SettingsStackScreenProps<"TagsSettingsScreen">) {

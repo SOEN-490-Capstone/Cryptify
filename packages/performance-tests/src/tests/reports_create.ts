@@ -20,10 +20,14 @@ export default function () {
     const payload = {
         userId: 1,
         address: "0x09aDbe6849D72E7be8f9a93E3a26eD7D37709BEe",
-        name: "test",
         currencyType: "ETHEREUM",
+        transactionsIn: true,
+        transactionsOut: true,
+        startDate: 0,
+        endDate: +new Date(),
+        fileType: "CSV",
     };
-    const res = http.post("http://localhost:3001/users/1/wallets", payload as any, { headers });
+    const res = http.post("http://localhost:3001/users/1/reports/transaction-history", payload as any, { headers });
 
     check(res, {
         "status is 201": () => res.status === 201,

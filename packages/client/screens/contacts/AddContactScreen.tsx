@@ -67,7 +67,7 @@ export default function AddContactScreen(props: Props) {
         const currencyTouched = currencyType === CurrencyType.BITCOIN ? touched.btcWallets : touched.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
-        const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!props.route.params.prefilledWalletAddress);
+        const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!props.route.params?.prefilledWalletAddress);
 
         return (
             <>
@@ -75,6 +75,7 @@ export default function AddContactScreen(props: Props) {
                     onPress={() => {
                         setIsCollapsed(!isCollapsed);
                     }}
+                    testID="walletCollapsibleButton"
                 >
                     <HStack style={{ marginTop: 40 }}>
                         <FontAwesomeIcon style={{ marginRight: 10 }} color={iconColor} icon={currencyIcon} size={26} />
@@ -106,7 +107,7 @@ export default function AddContactScreen(props: Props) {
                                                 onChangeText={handleChange(`${walletListString}[${i}]`)}
                                                 placeholder={placeholder}
                                                 rightElement={
-                                                    !props.route.params.prefilledWalletAddress ? (
+                                                    !props.route.params?.prefilledWalletAddress ? (
                                                         <Pressable
                                                             onPress={() => {
                                                                 arrayHelpers.remove(i);
@@ -124,6 +125,7 @@ export default function AddContactScreen(props: Props) {
                                                     )
                                                 }
                                                 isDisabled={!!props.route.params?.prefilledWalletAddress}
+                                                testID="walletAddressInput"
                                             />
                                             <FormControl.ErrorMessage>
                                                 {currencyErrors ? currencyErrors[i] : ""}
@@ -131,12 +133,13 @@ export default function AddContactScreen(props: Props) {
                                         </FormControl>
                                     </View>
                                 ))}
-                                {!props.route.params.prefilledWalletAddress && (
+                                {!props.route.params?.prefilledWalletAddress && (
                                     <View>
                                         <Pressable
                                             onPress={() => {
                                                 arrayHelpers.push("");
                                             }}
+                                            testID={`addAnother${currencyType}`}
                                         >
                                             <HStack style={{ marginTop: 13 }}>
                                                 <FontAwesomeIcon
@@ -230,7 +233,7 @@ export default function AddContactScreen(props: Props) {
                             />
                             <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
                         </FormControl>
-                        {!props.route.params.prefilledWalletAddress ? (
+                        {!props.route.params?.prefilledWalletAddress ? (
                             <>
                                 <AddWalletFieldArray
                                     values={values}
@@ -253,7 +256,7 @@ export default function AddContactScreen(props: Props) {
                             <AddWalletFieldArray
                                 values={values}
                                 handleChange={handleChange}
-                                currencyType={getCurrencyType(props.route.params.prefilledWalletAddress)}
+                                currencyType={getCurrencyType(props.route.params?.prefilledWalletAddress)}
                                 errors={errors}
                                 touched={touched}
                             />
@@ -265,6 +268,7 @@ export default function AddContactScreen(props: Props) {
                                     : styles.addContactButtonDisabled
                             }
                             onPress={submitForm}
+                            testID="submitCreateContactButton"
                         >
                             Add Contact
                         </Button>

@@ -276,6 +276,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                                     prefilledWalletAddress: route.params.prefilledWalletAddress,
                                 })
                             }
+                            testID="createContactButton"
                         >
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
@@ -371,7 +372,10 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddContactScreen")}>
+                        <Pressable 
+                            onPress={() => navigation.navigate("AddContactScreen")}
+                            testID="createContactButton"
+                        >
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),

@@ -105,6 +105,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
                                               }
                                             : {}
                                     }
+                                    testID="contactListItem"
                                 >
                                     <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>{item.name}</Text>
                                 </Pressable>

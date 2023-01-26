@@ -47,6 +47,7 @@ export default function TransactionDetailsActionSheet({ wallet, navigation, tran
                                             : transaction.walletIn,
                                     })
                                 }
+                                testID="addContactActionSheetButton"
                             >
                                 {isIncomingTransaction ? "Add sender contact" : "Add recipient contact"}
                             </Link>

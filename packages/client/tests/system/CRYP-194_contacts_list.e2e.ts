@@ -21,7 +21,7 @@ describe("CRYP-194 Contacts list screen", () => {
         // Nav to contacts screen
         await element(by.id("settingsTab")).tap();
         await element(by.id("contactsButton")).tap();
-        
+
         // Assert contacts
         await expect(element(by.text("Contacts"))).toBeVisible();
 

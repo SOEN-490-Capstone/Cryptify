@@ -22,7 +22,7 @@ describe("CRYP-34 Create contact", () => {
         await element(by.id("settingsTab")).tap();
         await element(by.id("contactsButton")).tap();
         await element(by.id("createContactButton")).tap();
-        
+
         // Input contact info
         await element(by.id("contactNameInput")).typeText("John\n");
         await element(by.id("walletCollapsibleButton")).atIndex(0).tap();

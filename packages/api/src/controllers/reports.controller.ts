@@ -4,9 +4,7 @@ import { CanMutateResourceGuard } from "@cryptify/api/src/guards/can_mutate_reso
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { ReportsService } from "@cryptify/api/src/services/reports.service";
 import { CreateTransactionHistoryReportRequest } from "@cryptify/common/src/requests/create_transaction_history_report_request";
-import {
-    createTransactionHistoryReportSchema
-} from "@cryptify/common/src/validations/create_transaction_history_report_schema";
+import { createTransactionHistoryReportSchema } from "@cryptify/common/src/validations/create_transaction_history_report_schema";
 
 @Controller()
 export class ReportsController {

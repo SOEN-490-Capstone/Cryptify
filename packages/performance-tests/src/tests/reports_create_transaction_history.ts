@@ -19,7 +19,7 @@ export default function () {
     const headers = { Authorization: `Bearer ${token}` };
     const payload = {
         userId: 1,
-        address: "0x09aDbe6849D72E7be8f9a93E3a26eD7D37709BEe",
+        walletAddress: "0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a",
         currencyType: "ETHEREUM",
         transactionsIn: true,
         transactionsOut: true,

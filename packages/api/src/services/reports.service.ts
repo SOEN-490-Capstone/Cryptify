@@ -48,7 +48,9 @@ export class ReportsService {
         // TODO: Get users contacts and create map of addr -> "contact (addr)", include users wallet addr as wallet name
         // only
 
+        console.log(wallets);
         const wallet = wallets.find((wallet) => wallet.address === req.walletAddress);
+        console.log(wallet);
         const fileName = `${wallet.name} Transaction History.csv`;
         let csv = "";
         csv += ReportsService.BLANK_LINE;

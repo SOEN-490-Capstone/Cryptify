@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pause, pressBackLeft } from "./utils/test_utils";
 
-describe("CRYP-108 Wallet QR code", () => {
+describe("CRYP-108 Ethereum wallet share page", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-108 Wallet QR code", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view wallet qr code and share functions", async () => {
+    it("Should be able to view an Ethereum wallet qr code and share functions", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();

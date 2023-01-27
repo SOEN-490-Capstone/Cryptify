@@ -56,7 +56,7 @@ export function getFormattedAmount(amount: string, type: CurrencyType): string {
     // This block takes care of formatting the currency with commas before the decimal
     const parts = amountInCurrency.split(".");
     if (parts[0].length >= 4) {
-        parts[0] = parts[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+        parts[0] = parts[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,"); //NOSONAR
     }
     return parts.join(".");
 }

@@ -20,18 +20,30 @@ entity User {
   --
   *role : string
   --
+  *areNotificationEnabled : boolean
+  --
   *created_at : timestamp <<generated>>
 }
 
-entity WalletTag {
+entity Tag {
+  *transaction_address : string <<CPK>>
+  --
+  *user_id : string <<CPK, FK>>
+  --
+  *name : string
+}
+note "A Tag is a user-friendly\ncustom name a user can\nassign to any transaction\nto classify it." as N1
+N1 .. Tag
+
+entity Contact {
   *wallet_address : string <<CPK>>
   --
   *user_id : string <<CPK, FK>>
   --
   *name : string
 }
-note "A wallet tag is a reading friendly\ncustom name a user can give\nto any other wallet" as N1
-N1 .. WalletTag
+note "A Contact is a user-friendly\ncustom name that can\nhave many wallets so long\nas they are not associated\nto the user." as N2
+N2 .. Contact
 
 entity Wallet {
   *wallet_address : string <<CPK>>
@@ -56,6 +68,9 @@ entity Transaction {
 }
 
 User ||--o{ Wallet : has
-User ||--o{ WalletTag : assigns
+User ||--o{ Contact : has
+Contact ||--|| Wallet : describes
+User ||--o{ Tag : has
+Tag ||--|| Transaction : describes
 Wallet }|--o{ Transaction : associated to
 @enduml

@@ -26,6 +26,11 @@ export async function seedDB() {
     `);
 
     await dataSource.manager.query(`
+        INSERT INTO public.contact ("walletAddress", "userId", "contactName")
+        VALUES  ('0xebec795c9c8bbd61ffc14a6662944748f299cacf', 1, 'Jason');
+    `);
+
+    await dataSource.manager.query(`
         insert into public.transaction ("transactionAddress", "walletIn", "walletOut", "amount", "createdAt") values
             ('0x4c64c9eec45f55f494bbd2d8b18108a086234f443e9d7d8bcde385118db05f92', '0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a', '0x1cedc0f3af8f9841b0a1f5c1a4ddc6e1a1629074', '133072214572279380', '2022-09-16 01:08:23.000000'),
             ('0xb1f7931aecd85e68bbe11be68b21aa64750e30e89978201df2b8b40b236ba708', '0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a', '0x1cedc0f3af8f9841b0a1f5c1a4ddc6e1a1629074', '329595233657910500', '2022-09-16 02:14:11.000000'),

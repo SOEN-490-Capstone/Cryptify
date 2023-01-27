@@ -7,7 +7,7 @@ export async function seedDB() {
     await dataSource.manager.query(`
         INSERT INTO public."user" ("firstName", "lastName", email, password, "createdAt", "areNotificationsEnabled") VALUES ('John', 'Doe', 'john@example.com', '$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22', '2022-10-20 20:12:19.693457', 'false');
     `);
-
+    
     await dataSource.manager.query(`
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c', 1, 'Ether Wallet Main', 'ETHEREUM');
         INSERT INTO public.wallet ("address", "userId", "name", "currencyType") VALUES ('0xb64a30399f7f6b0c154c2e7af0a3ec7b0a5b131a', 1, 'Ether Savings', 'ETHEREUM');
@@ -23,6 +23,11 @@ export async function seedDB() {
         INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Gym and Workout', 1);
         INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Work', 1);
         INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Housing', 1);
+    `);
+
+    await dataSource.manager.query(`
+        INSERT INTO public.contact ("walletAddress", "userId", "contactName")
+        VALUES  ('0xebec795c9c8bbd61ffc14a6662944748f299cacf', 1, 'Jason');
     `);
 
     await dataSource.manager.query(`

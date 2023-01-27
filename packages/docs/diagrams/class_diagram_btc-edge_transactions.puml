@@ -11,6 +11,12 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+class Contact {
+    +walletAddress: string
+    +userId: number
+    +user: User
+    +contactName: string
+}
 class User {
     +id: number
     +firstName: string
@@ -21,6 +27,7 @@ class User {
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
+    +contacts: Contact[]
 }
 class TransactionTag {
     +tagName: string
@@ -32,10 +39,47 @@ class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
+    +contactIn: Contact
     +walletOut: string
+    +contactOut: Contact
     +amount: string
     +createdAt: Date
     +tags: TransactionTag[]
+}
+interface CreateWalletRequest extends InferType
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+abstract class AbstractNotificationStrategy {
+    +{abstract} sendNotification(notification: Notification): Promise<void>
+}
+interface Notification {
+    +to: string
+    +title: string
+    +body: string
+    +attachment?: { filename: string; content: string; }
+}
+class EmailNotificationStrategy extends AbstractNotificationStrategy {
+    -transporter: nodemailer.Transporter
+    -from: string
+    -configService: ConfigService<Record<string, unknown>, false>
+    +sendNotification(notification: Notification): Promise<void>
+}
+class NotificationStrategyFactory {
+    -emailNotificationStrategy: EmailNotificationStrategy
+    +get(strategy: NotificationStrategy): AbstractNotificationStrategy
+}
+enum NotificationStrategy {
+    EMAIL
+    PUSH_NOTIFICATION
+}
+class TransactionNotificationService {
+    -walletsRepository: Repository<Wallet>
+    -notificationStrategyFactory: NotificationStrategyFactory
+    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
+    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
+    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
+    -{static} keys: readonly ["walletOut", "walletIn"]
 }
 abstract class AbstractGateway {
     -uri: string
@@ -57,75 +101,92 @@ class HttpError extends Error {
 abstract class AbstractServiceGateway extends AbstractGateway {
     #handleError(response: any): Promise<void>
 }
-interface AddressBalanceResponse {
-    +status: string
-    +data: { network: string; address: string; confirmed_balance: string; unconfirmed_balance: string; }
-}
-interface TransactionsByWalletResponse {
-    +status: string
-    +data: { network: string; address: string; txs: {    txid: string;    output_no: number;    script_asm: string;    script_hex: string;    value: string;    confirmations: number;    time: number;}[]; }
-}
-interface TransactionResponse {
-    +status: string
-    +data: { network: string; txid: string; blockhash: string; block_no: number; confirmations: number; time: number; size: number; vsize: number; version: number; locktime: number; sent_value: string; fee: string; inputs: TransactionResponseInput[]; outputs: TransactionResponseOutput[]; tx_hex: string; }
-    +code: number
-    +message: string
-}
-interface TransactionResponseInput {
-    +input_no: number
-    +address: string
-    +value: string
-    +received_from: { txid: string; output_no: number; }
-    +script_asm: string
-    +script_hex: string
-    +witness: string[]
-}
-interface TransactionResponseOutput {
-    +output_no: number
-    +address: string
-    +value: string
-    +type: string
-    +spent: { txid: string; input_no: number; }
-    +script_asm: string
-    +script_hex: string
-}
-class SoChainGateway extends AbstractServiceGateway {
+class BlockchainComGateway extends AbstractServiceGateway {
     -configService: ConfigService<Record<string, unknown>, false>
     -transactionsRepository: Repository<Transaction>
     +getBalance(walletAddress: string): Promise<string>
     +getTransactions(walletAddress: string): Promise<Transaction[]>
     +getTransactionsByTxAddress(txAddress: string): Promise<Transaction[]>
-    -reversePoolMIMOTransaction(inputs: TransactionResponseInput[], outputs: TransactionResponseOutput[]): PairsWithAmount
+    -reversePoolMIMOTransaction(inputs: Out[], outputs: Out[]): PairsWithAmount
+    -{static} DECIMALS: number
 }
-interface CreateWalletRequest extends InferType
-interface WalletWithBalance extends Wallet {
-    +balance: string
+interface BalanceResponse {
+    +final_balance: number
+    +n_tx: number
+    +total_received: number
 }
-abstract class AbstractNotificationServiceTemplateMethod {
-    -walletsRepository: Repository<Wallet>
-    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
-    #{abstract} sendNotification(notification: Notification): Promise<void>
-    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
-    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
-    -{static} keys: readonly ["walletOut", "walletIn"]
+interface TransactionsResponse {
+    +address: string
+    +n_tx: number
+    +total_received: number
+    +total_sent: number
+    +final_balance: number
+    +txs: Tx[]
 }
-interface Notification {
-    +to: string
-    +title: string
-    +body: string
+interface TransactionResponse {
+    +hash: string
+    +ver: number
+    +vin_sz: number
+    +vout_sz: number
+    +size: number
+    +weight: number
+    +fee: number
+    +relayed_by: string
+    +lock_time: number
+    +tx_index: number
+    +double_spend: boolean
+    +time: number
+    +block_index: number
+    +block_height: number
+    +inputs: Input[]
+    +out: Out[]
 }
-class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
-    -transporter: nodemailer.Transporter
-    -from: string
-    -configService: ConfigService<Record<string, unknown>, false>
-    #sendNotification(notification: Notification): Promise<void>
+interface Tx {
+    +hash: string
+    +ver: number
+    +vin_sz: number
+    +vout_sz: number
+    +size: number
+    +weight: number
+    +fee: number
+    +lock_time: number
+    +tx_index: number
+    +double_spend: boolean
+    +time: number
+    +block_index: number
+    +block_height: number
+    +inputs: Input[]
+    +out: Out[]
+    +result: number
+    +balance: number
+}
+interface Input {
+    +sequence: number
+    +witness: string
+    +script: string
+    +index: number
+    +prev_out: Out
+}
+interface Out {
+    +addr: string
+    +n: number
+    +script: string
+    +spending_outpoints: SpendingOutpoint[]
+    +spent: boolean
+    +tx_index: number
+    +type: number
+    +value: number
+}
+interface SpendingOutpoint {
+    +n: number
+    +tx_index: number
 }
 class TransactionWatcherService {
     -ws: WebSocketClient
     -walletsRepository: Repository<Wallet>
     -transactionsRepository: Repository<Transaction>
-    -soChainGateway: SoChainGateway
-    -notificationService: EmailNotificationService
+    -blockchainComGateway: BlockchainComGateway
+    -transactionNotificationService: TransactionNotificationService
     #open(): Promise<void>
     #message(data: WebSocketClient.Data): Promise<void>
     +subscribeAddress(address: string): Promise<void>
@@ -155,7 +216,7 @@ interface DeleteWalletRequest extends InferType
 class WalletsService {
     -walletRepository: Repository<Wallet>
     -transactionsService: TransactionsService
-    -soChainGateway: SoChainGateway
+    -blockchainComGateway: BlockchainComGateway
     -transactionWatcherService: TransactionWatcherService
     +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
     +findAll(userId: number): Promise<WalletWithBalance[]>
@@ -164,7 +225,7 @@ class WalletsService {
 }
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
-    -soChainGateway: SoChainGateway
+    -blockchainComGateway: BlockchainComGateway
     -walletsService: WalletsService
     -walletsRepository: Repository<Wallet>
     +backfillTransactions(address: string): Promise<void>
@@ -179,39 +240,50 @@ class TransactionsController {
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+Contact --> "1" User
 User --> "*" Wallet
 User --> "*" TransactionTag
+User --> "*" Contact
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
+Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
+AbstractNotificationStrategy --> "1" Notification
+EmailNotificationStrategy --> "1" Notification
+NotificationStrategyFactory --> "1" EmailNotificationStrategy
+NotificationStrategyFactory --> "1" NotificationStrategy
+NotificationStrategyFactory --> "1" AbstractNotificationStrategy
+TransactionNotificationService --> "1" Wallet
+TransactionNotificationService --> "1" NotificationStrategyFactory
+TransactionNotificationService --> "1" Transaction
+TransactionNotificationService --> "1" CurrencyType
 AbstractGateway --> "1" Method
-TransactionResponse --> "*" TransactionResponseInput
-TransactionResponse --> "*" TransactionResponseOutput
-SoChainGateway --> "1" Transaction
-SoChainGateway --> "*" Transaction
-SoChainGateway --> "1" TransactionResponseInput
-SoChainGateway --> "1" TransactionResponseOutput
-AbstractNotificationServiceTemplateMethod --> "1" Wallet
-AbstractNotificationServiceTemplateMethod --> "1" Transaction
-AbstractNotificationServiceTemplateMethod --> "1" CurrencyType
-AbstractNotificationServiceTemplateMethod --> "1" Notification
-EmailNotificationService --> "1" Notification
+BlockchainComGateway --> "1" Transaction
+BlockchainComGateway --> "*" Transaction
+BlockchainComGateway --> "1" Out
+TransactionsResponse --> "*" Tx
+TransactionResponse --> "*" Input
+TransactionResponse --> "*" Out
+Tx --> "*" Input
+Tx --> "*" Out
+Input --> "1" Out
+Out --> "*" SpendingOutpoint
 TransactionWatcherService --> "1" Wallet
 TransactionWatcherService --> "1" Transaction
-TransactionWatcherService --> "1" SoChainGateway
-TransactionWatcherService --> "1" EmailNotificationService
+TransactionWatcherService --> "1" BlockchainComGateway
+TransactionWatcherService --> "1" TransactionNotificationService
 WSTransaction --> "*" Input
 WSTransaction --> "*" Out
 WalletsService --> "1" Wallet
 WalletsService --> "1" TransactionsService
-WalletsService --> "1" SoChainGateway
+WalletsService --> "1" BlockchainComGateway
 WalletsService --> "1" TransactionWatcherService
 WalletsService --> "1" CreateWalletRequest
 WalletsService --> "1" WalletWithBalance
 WalletsService --> "*" WalletWithBalance
 WalletsService --> "1" DeleteWalletRequest
 TransactionsService --> "1" Transaction
-TransactionsService --> "1" SoChainGateway
+TransactionsService --> "1" BlockchainComGateway
 TransactionsService --> "1" WalletsService
 TransactionsService --> "1" Wallet
 TransactionsService --> "*" Transaction

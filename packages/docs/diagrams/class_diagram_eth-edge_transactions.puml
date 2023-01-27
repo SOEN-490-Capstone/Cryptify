@@ -11,6 +11,12 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+class Contact {
+    +walletAddress: string
+    +userId: number
+    +user: User
+    +contactName: string
+}
 class User {
     +id: number
     +firstName: string
@@ -21,6 +27,7 @@ class User {
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
+    +contacts: Contact[]
 }
 class TransactionTag {
     +tagName: string
@@ -32,7 +39,9 @@ class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
+    +contactIn: Contact
     +walletOut: string
+    +contactOut: Contact
     +amount: string
     +createdAt: Date
     +tags: TransactionTag[]
@@ -82,31 +91,43 @@ class WalletsService {
     +findAll(userId: number): Promise<WalletWithBalance[]>
     +delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance>
 }
-abstract class AbstractNotificationServiceTemplateMethod {
-    -walletsRepository: Repository<Wallet>
-    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
-    #{abstract} sendNotification(notification: Notification): Promise<void>
-    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
-    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
-    -{static} keys: readonly ["walletOut", "walletIn"]
+abstract class AbstractNotificationStrategy {
+    +{abstract} sendNotification(notification: Notification): Promise<void>
 }
 interface Notification {
     +to: string
     +title: string
     +body: string
+    +attachment?: { filename: string; content: string; }
 }
-class EmailNotificationService extends AbstractNotificationServiceTemplateMethod {
+class EmailNotificationStrategy extends AbstractNotificationStrategy {
     -transporter: nodemailer.Transporter
     -from: string
     -configService: ConfigService<Record<string, unknown>, false>
-    #sendNotification(notification: Notification): Promise<void>
+    +sendNotification(notification: Notification): Promise<void>
+}
+class NotificationStrategyFactory {
+    -emailNotificationStrategy: EmailNotificationStrategy
+    +get(strategy: NotificationStrategy): AbstractNotificationStrategy
+}
+enum NotificationStrategy {
+    EMAIL
+    PUSH_NOTIFICATION
+}
+class TransactionNotificationService {
+    -walletsRepository: Repository<Wallet>
+    -notificationStrategyFactory: NotificationStrategyFactory
+    +sendTransactionNotifications(transactions: Transaction[], currencyType: CurrencyType): Promise<void>
+    -getBody(key: "walletOut" | "walletIn", wallet: Wallet, transaction: Transaction, currencyType: CurrencyType): string
+    -getTitle(key: "walletOut" | "walletIn", currencyType: CurrencyType): string
+    -{static} keys: readonly ["walletOut", "walletIn"]
 }
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
     -alchemyNodeServiceFacade: AlchemyNodeServiceFacade
     -walletsService: WalletsService
     -walletsRepository: Repository<Wallet>
-    -notificationService: EmailNotificationService
+    -transactionNotificationService: TransactionNotificationService
     +backfillTransactions(address: string): Promise<void>
     +handleAddressActivityEvent(addressActivityEvent: AddressActivityEvent): Promise<void>
     +findAll(userId: number): Promise<Transaction[]>
@@ -121,10 +142,13 @@ class TransactionsController {
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+Contact --> "1" User
 User --> "*" Wallet
 User --> "*" TransactionTag
+User --> "*" Contact
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
+Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
 AlchemyNodeServiceFacade --> "*" Transaction
 AbstractGateway --> "1" Method
@@ -136,16 +160,20 @@ WalletsService --> "1" CreateWalletRequest
 WalletsService --> "1" WalletWithBalance
 WalletsService --> "*" WalletWithBalance
 WalletsService --> "1" DeleteWalletRequest
-AbstractNotificationServiceTemplateMethod --> "1" Wallet
-AbstractNotificationServiceTemplateMethod --> "1" Transaction
-AbstractNotificationServiceTemplateMethod --> "1" CurrencyType
-AbstractNotificationServiceTemplateMethod --> "1" Notification
-EmailNotificationService --> "1" Notification
+AbstractNotificationStrategy --> "1" Notification
+EmailNotificationStrategy --> "1" Notification
+NotificationStrategyFactory --> "1" EmailNotificationStrategy
+NotificationStrategyFactory --> "1" NotificationStrategy
+NotificationStrategyFactory --> "1" AbstractNotificationStrategy
+TransactionNotificationService --> "1" Wallet
+TransactionNotificationService --> "1" NotificationStrategyFactory
+TransactionNotificationService --> "1" Transaction
+TransactionNotificationService --> "1" CurrencyType
 TransactionsService --> "1" Transaction
 TransactionsService --> "1" AlchemyNodeServiceFacade
 TransactionsService --> "1" WalletsService
 TransactionsService --> "1" Wallet
-TransactionsService --> "1" EmailNotificationService
+TransactionsService --> "1" TransactionNotificationService
 TransactionsService --> "*" Transaction
 TransactionsController --> "1" TransactionsService
 TransactionsController --> "1" GetTransactionsRequest

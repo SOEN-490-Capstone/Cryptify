@@ -269,7 +269,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
             />
             <MultiLineListItem
                 label={"To"}
-                value={isIncomingTransaction ? wallet.name : transaction.walletOut}
+                value={isIncomingTransaction ? wallet.name : transaction.walletIn}
                 altValue={transaction.contactIn?.contactName}
                 copy={!isIncomingTransaction}
                 labelCopy={"Address"}

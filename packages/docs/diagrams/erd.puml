@@ -32,7 +32,7 @@ entity Tag {
   --
   *name : string
 }
-note "A Contact is a reading friendly\ncustom name a user can give\nto any other wallet" as N1
+note "A Tag is a user-friendly\ncustom name a user can give\nto any of their transactions" as N1
 N1 .. Tag
 
 entity Contact {
@@ -42,7 +42,7 @@ entity Contact {
   --
   *name : string
 }
-note "A Contact is a reading friendly\ncustom name a user can give\nto any other wallet" as N2
+note "A Contact is a user-friendly\ncustom name a user can give\nto any of their wallets" as N2
 N2 .. Contact
 
 entity Wallet {

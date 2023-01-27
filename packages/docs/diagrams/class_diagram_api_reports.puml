@@ -1,11 +1,37 @@
 @startuml
+class JwtAuthGuard
+class CanMutateResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
 enum CurrencyType {
     ETHEREUM
     BITCOIN
 }
+enum FileType {
+    CSV
+}
+interface CreateTransactionHistoryReportRequest extends InferType
+abstract class AbstractGateway {
+    -uri: string
+    -fetch: any
+    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
+    #{abstract} handleError(response: any): Promise<void>
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+abstract class AbstractServiceGateway extends AbstractGateway {
+    #handleError(response: any): Promise<void>
+}
 interface CreateWalletRequest extends InferType
-class JwtAuthGuard
-interface DeleteWalletRequest extends InferType
 class Contact {
     +walletAddress: string
     +userId: number
@@ -53,27 +79,8 @@ interface WalletWithBalance extends Wallet {
     +balance: string
 }
 interface GetWalletsRequest extends InferType
-abstract class AbstractGateway {
-    -uri: string
-    -fetch: any
-    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
-    #{abstract} handleError(response: any): Promise<void>
-}
-enum Method {
-    POST
-    GET
-    PUT
-    PATCH
-    DELETE
-}
-class HttpError extends Error {
-    +message: string
-    +status: number
-}
-abstract class AbstractServiceGateway extends AbstractGateway {
-    #handleError(response: any): Promise<void>
-}
 interface GetTransactionsRequest extends InferType
+interface DeleteWalletRequest extends InferType
 abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
     +{abstract} deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
@@ -99,24 +106,63 @@ class EdgeGatewayStrategyFactory {
     -btcEdgeGatewayStrategy: BtcEdgeGatewayStrategy
     +get(currencyType: CurrencyType): AbstractEdgeGatewayStrategy
 }
-class WalletsService {
+interface CreateContactRequest extends InferType
+class ContactsService {
+    -contactRepository: Repository<Contact>
+    +findAll(userId: number): Promise<Contact[]>
+    +create(createContactRequest: CreateContactRequest): Promise<Contact[]>
+}
+abstract class AbstractNotificationStrategy {
+    +{abstract} sendNotification(notification: Notification): Promise<void>
+}
+interface Notification {
+    +to: string
+    +title: string
+    +body: string
+    +attachment?: { filename: string; content: string; }
+}
+class EmailNotificationStrategy extends AbstractNotificationStrategy {
+    -transporter: nodemailer.Transporter
+    -from: string
+    -configService: ConfigService<Record<string, unknown>, false>
+    +sendNotification(notification: Notification): Promise<void>
+}
+class NotificationStrategyFactory {
+    -emailNotificationStrategy: EmailNotificationStrategy
+    +get(strategy: NotificationStrategy): AbstractNotificationStrategy
+}
+enum NotificationStrategy {
+    EMAIL
+    PUSH_NOTIFICATION
+}
+class ReportNotificationService {
+    -usersRepository: Repository<User>
+    -notificationStrategyFactory: NotificationStrategyFactory
+    +sendReportNotification(userId: number, wallet: Wallet, fileName: string, csv: string): Promise<void>
+}
+class ReportsService {
     -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
-    +create(req: CreateWalletRequest): Promise<WalletWithBalance>
-    +delete(req: DeleteWalletRequest): Promise<WalletWithBalance>
-    +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    -contactsService: ContactsService
+    -reportNotificationService: ReportNotificationService
+    +generateTransactionHistory(req: CreateTransactionHistoryReportRequest): Promise<void>
+    -{static} BLANK_LINE: string
 }
-class CanMutateResourceGuard implements CanActivate {
-    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+interface TransactionHistoryReportRow {
+    +transactionId: string
+    +status: string
+    +from: string
+    +to: string
+    +transactionType: string
+    +transactionDate: string
+    +transactionTime: string
+    +transactionAmount: string
+    +transactionFee: string
 }
-class CanAccessResourceGuard implements CanActivate {
-    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+class ReportsController {
+    -reportsService: ReportsService
+    +create(body: CreateTransactionHistoryReportRequest): Promise<{}>
 }
-class WalletsController {
-    -walletsService: WalletsService
-    +create(body: CreateWalletRequest): Promise<WalletWithBalance>
-    +findAll(params: GetWalletsRequest): Promise<WalletWithBalance[]>
-    +delete(params: DeleteWalletRequest): Promise<WalletWithBalance>
-}
+AbstractGateway --> "1" Method
 Contact --> "1" User
 Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
@@ -128,7 +174,6 @@ User --> "*" Contact
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
-AbstractGateway --> "1" Method
 AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
 AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
 AbstractEdgeGatewayStrategy --> "1" DeleteWalletRequest
@@ -154,16 +199,21 @@ EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" CurrencyType
 EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
-WalletsService --> "1" EdgeGatewayStrategyFactory
-WalletsService --> "1" CreateWalletRequest
-WalletsService --> "1" WalletWithBalance
-WalletsService --> "1" DeleteWalletRequest
-WalletsService --> "1" GetWalletsRequest
-WalletsService --> "*" WalletWithBalance
-WalletsController --> "1" WalletsService
-WalletsController --> "1" CreateWalletRequest
-WalletsController --> "1" WalletWithBalance
-WalletsController --> "1" GetWalletsRequest
-WalletsController --> "*" WalletWithBalance
-WalletsController --> "1" DeleteWalletRequest
+ContactsService --> "1" Contact
+ContactsService --> "*" Contact
+ContactsService --> "1" CreateContactRequest
+AbstractNotificationStrategy --> "1" Notification
+EmailNotificationStrategy --> "1" Notification
+NotificationStrategyFactory --> "1" EmailNotificationStrategy
+NotificationStrategyFactory --> "1" NotificationStrategy
+NotificationStrategyFactory --> "1" AbstractNotificationStrategy
+ReportNotificationService --> "1" User
+ReportNotificationService --> "1" NotificationStrategyFactory
+ReportNotificationService --> "1" Wallet
+ReportsService --> "1" EdgeGatewayStrategyFactory
+ReportsService --> "1" ContactsService
+ReportsService --> "1" ReportNotificationService
+ReportsService --> "1" CreateTransactionHistoryReportRequest
+ReportsController --> "1" ReportsService
+ReportsController --> "1" CreateTransactionHistoryReportRequest
 @enduml

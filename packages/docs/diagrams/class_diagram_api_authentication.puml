@@ -5,11 +5,19 @@ class TransactionTag {
     +user: User
     +transactions: Transaction[]
 }
+class Contact {
+    +walletAddress: string
+    +userId: number
+    +user: User
+    +contactName: string
+}
 class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
+    +contactIn: Contact
     +walletOut: string
+    +contactOut: Contact
     +amount: string
     +createdAt: Date
     +tags: TransactionTag[]
@@ -36,6 +44,7 @@ class User {
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
+    +contacts: Contact[]
 }
 interface SignUpRequest extends InferType
 interface UpdateUserRequest {
@@ -68,12 +77,15 @@ class AuthenticationController {
 }
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
+Contact --> "1" User
+Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 User --> "*" Wallet
 User --> "*" TransactionTag
+User --> "*" Contact
 UsersService --> "1" User
 UsersService --> "1" SignUpRequest
 UsersService --> "1" UpdateUserRequest

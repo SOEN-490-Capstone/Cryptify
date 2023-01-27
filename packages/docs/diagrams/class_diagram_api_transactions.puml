@@ -29,11 +29,19 @@ abstract class AbstractServiceGateway extends AbstractGateway {
     #handleError(response: any): Promise<void>
 }
 interface CreateWalletRequest extends InferType
+class Contact {
+    +walletAddress: string
+    +userId: number
+    +user: User
+    +contactName: string
+}
 class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
+    +contactIn: Contact
     +walletOut: string
+    +contactOut: Contact
     +amount: string
     +createdAt: Date
     +tags: TransactionTag[]
@@ -54,6 +62,7 @@ class User {
     +createdAt: Date
     +wallets: Wallet[]
     +tags: TransactionTag[]
+    +contacts: Contact[]
 }
 class Wallet {
     +address: string
@@ -93,8 +102,15 @@ class EdgeGatewayStrategyFactory {
     -btcEdgeGatewayStrategy: BtcEdgeGatewayStrategy
     +get(currencyType: CurrencyType): AbstractEdgeGatewayStrategy
 }
+interface CreateContactRequest extends InferType
+class ContactsService {
+    -contactRepository: Repository<Contact>
+    +findAll(userId: number): Promise<Contact[]>
+    +create(createContactRequest: CreateContactRequest): Promise<Contact[]>
+}
 class TransactionsService {
     -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
+    -contactService: ContactsService
     +findAll(req: GetTransactionsRequest): Promise<Transaction[]>
 }
 class TransactionsController {
@@ -102,11 +118,14 @@ class TransactionsController {
     +findAll(params: GetTransactionsRequest): Promise<Transaction[]>
 }
 AbstractGateway --> "1" Method
+Contact --> "1" User
+Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
 User --> "*" Wallet
 User --> "*" TransactionTag
+User --> "*" Contact
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
@@ -135,7 +154,11 @@ EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
 EdgeGatewayStrategyFactory --> "1" CurrencyType
 EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
+ContactsService --> "1" Contact
+ContactsService --> "*" Contact
+ContactsService --> "1" CreateContactRequest
 TransactionsService --> "1" EdgeGatewayStrategyFactory
+TransactionsService --> "1" ContactsService
 TransactionsService --> "1" GetTransactionsRequest
 TransactionsService --> "*" Transaction
 TransactionsController --> "1" TransactionsService

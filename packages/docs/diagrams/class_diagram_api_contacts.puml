@@ -1,16 +1,9 @@
 @startuml
-class JwtAuthGuard
 class TransactionTag {
     +tagName: string
     +userId: number
     +user: User
     +transactions: Transaction[]
-}
-class Contact {
-    +walletAddress: string
-    +userId: number
-    +user: User
-    +contactName: string
 }
 class Transaction {
     +id: number
@@ -47,33 +40,33 @@ class User {
     +tags: TransactionTag[]
     +contacts: Contact[]
 }
-interface SignUpRequest extends InferType
-interface UpdateUserRequest {
+class Contact {
+    +walletAddress: string
     +userId: number
-    +firstName?: string
-    +lastName?: string
-    +email?: string
-    +password?: string
-    +areNotificationsEnabled?: boolean
+    +user: User
+    +contactName: string
 }
-class UsersService {
-    -userRepository: Repository<User>
-    +create(signUpReq: SignUpRequest): Promise<User>
-    +findOne(email: string): Promise<User>
-    +findOneById(id: number): Promise<User>
-    +update(updateUserRequest: UpdateUserRequest): Promise<User>
+interface CreateContactRequest extends InferType
+class ContactsService {
+    -contactRepository: Repository<Contact>
+    +findAll(userId: number): Promise<Contact[]>
+    +create(createContactRequest: CreateContactRequest): Promise<Contact[]>
+}
+interface GetContactsRequest extends InferType
+class JwtAuthGuard
+class CanAccessResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
 }
 class CanMutateResourceGuard implements CanActivate {
     +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
 }
-class UsersController {
-    -usersService: UsersService
-    +whoami(req: any): Promise<User>
-    +update(body: UpdateUserRequest): Promise<User>
+class ContactsController {
+    -contactsService: ContactsService
+    +findAll(params: GetContactsRequest): Promise<Contact[]>
+    +create(body: CreateContactRequest): Promise<Contact[]>
 }
 TransactionTag --> "1" User
 TransactionTag --> "*" Transaction
-Contact --> "1" User
 Transaction --> "1" Contact
 Transaction --> "*" TransactionTag
 Wallet --> "1" User
@@ -82,10 +75,12 @@ Wallet --> "*" Transaction
 User --> "*" Wallet
 User --> "*" TransactionTag
 User --> "*" Contact
-UsersService --> "1" User
-UsersService --> "1" SignUpRequest
-UsersService --> "1" UpdateUserRequest
-UsersController --> "1" UsersService
-UsersController --> "1" User
-UsersController --> "1" UpdateUserRequest
+Contact --> "1" User
+ContactsService --> "1" Contact
+ContactsService --> "*" Contact
+ContactsService --> "1" CreateContactRequest
+ContactsController --> "1" ContactsService
+ContactsController --> "1" GetContactsRequest
+ContactsController --> "*" Contact
+ContactsController --> "1" CreateContactRequest
 @enduml

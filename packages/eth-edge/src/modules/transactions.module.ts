@@ -7,11 +7,12 @@ import { TransactionsService } from "@cryptify/eth-edge/src/services/transaction
 import { WalletsModule } from "./wallets.module";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { NotificationsModule } from "@cryptify/common/src/utils/notifications/notifications.module";
+import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Transaction, Wallet]), forwardRef(() => WalletsModule), NotificationsModule],
     controllers: [TransactionsController],
-    providers: [TransactionsService, AlchemyNodeServiceFacade],
+    providers: [TransactionsService, AlchemyNodeServiceFacade, AlchemyDecorator],
     exports: [TransactionsService],
 })
 export class TransactionsModule {}

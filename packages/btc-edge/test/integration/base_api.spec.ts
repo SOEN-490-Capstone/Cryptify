@@ -15,7 +15,7 @@ describe("Base", () => {
         await app.init();
     });
 
-    describe.skip("GET /", () => {
+    describe("GET /", () => {
         it("should return system process details", async () => {
             const res = await agent(app.getHttpServer()).get("/");
 

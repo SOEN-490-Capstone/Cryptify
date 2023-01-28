@@ -62,6 +62,9 @@ describe("WalletsController", () => {
             findAll: async () => {
                 return [walletWithBalance];
             },
+            delete: async () => {
+                return walletWithBalance;
+            },
         };
 
         const module: TestingModule = await Test.createTestingModule({
@@ -90,6 +93,17 @@ describe("WalletsController", () => {
             };
 
             expect(await controller.findAll(req)).toEqual([walletWithBalance]);
+        });
+    });
+
+    describe("WalletsController::delete", () => {
+        it("should return a WalletWithBalance", async () => {
+            const req = {
+                id: 1,
+                address: "0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c",
+            };
+
+            expect(await controller.delete(req)).toEqual(walletWithBalance);
         });
     });
 });

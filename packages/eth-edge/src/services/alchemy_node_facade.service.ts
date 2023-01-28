@@ -1,5 +1,4 @@
 import { AssetTransfersCategory } from "alchemy-sdk";
-import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
@@ -8,7 +7,7 @@ import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decora
 
 @Injectable()
 export class AlchemyNodeServiceFacade {
-    constructor(private readonly configService: ConfigService, private readonly alchemy: AlchemyDecorator) {}
+    constructor(private readonly alchemy: AlchemyDecorator) {}
 
     async getBalance(address: string): Promise<string> {
         try {

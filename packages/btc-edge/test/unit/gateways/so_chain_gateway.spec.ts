@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { Repository } from "typeorm";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import {TransactionWatcherService} from "@cryptify/btc-edge/src/services/transaction_watcher_service";
+import { TransactionWatcherService } from "@cryptify/btc-edge/src/services/transaction_watcher_service";
 
 describe("SoChainGateway", () => {
     let soChainGateway: SoChainGateway;

@@ -8,7 +8,7 @@ import fetch from "node-fetch";
 const { Response } = jest.requireActual("node-fetch");
 jest.mock("node-fetch", () => jest.fn());
 
-describe("Wallets", () => {
+describe("Transactions", () => {
     let app: INestApplication;
 
     beforeAll(async () => {
@@ -24,34 +24,22 @@ describe("Wallets", () => {
         await seedDB();
     });
 
-    describe("POST /users/:id/wallets", () => {
-        const wallet = {
-            address: "bc1q22jrgjeg5mm9zuzlxv90snrfhelm0hy76hsra2",
-            userId: 1,
-            name: "Bitcoin Wallet",
-            currencyType: "BITCOIN",
-            balance: "0.000001",
-        };
-
-        it("should create the wallet and return the wallet with the balance", async () => {
+    describe("GET /users/:id/transactions", () => {
+        it("should get all BTC transactions associated to the users wallets", async () => {
             (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify({
-                "bc1q22jrgjeg5mm9zuzlxv90snrfhelm0hy76hsra2": {
+                "bc1qe4zsm2eeus8j7xqluprkud88wsrhrz8j9vlhqzdzq3e9eq4ygw8qazc3cn": {
                     final_balance: 100,
                 }
             })));
             (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify({
-                "txs": [],
-            }))); 
-            
-            const res = await agent(app.getHttpServer()).post("/users/1/wallets").send({
-                userId: 1,
-                name: "Bitcoin Wallet",
-                address: "bc1q22jrgjeg5mm9zuzlxv90snrfhelm0hy76hsra2",
-                currencyType: "BITCOIN",
-            });
+                "bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq": {
+                    final_balance: 100,
+                }
+            })));
 
-            expect(res.status).toEqual(201);
-            expect(res.body).toEqual(wallet);
+            const res = await agent(app.getHttpServer()).get("/users/1/transactions");
+
+            expect(res.status).toEqual(200);
         });
     });
 

@@ -93,7 +93,7 @@ export class WalletsService {
             // If count is 1 then this was the only user who had this wallet and so we can proceed with the transaction clean up,
             // the cleanup process can also be done asynchronously because we don't have to worry about UI issue because no users
             // will see those transactions anyways
-            this.transactionsService.cleanup(deleteWalletReq.address);
+            this.transactionsService.cleanup(deleteWalletReq.address).catch(() => {});
         }
         return { ...wallet, balance };
     }

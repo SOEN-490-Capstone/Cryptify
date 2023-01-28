@@ -31,6 +31,9 @@ describe("UsersController", () => {
                     id,
                 };
             },
+            update: async () => {
+                return user;
+            },
         };
         fakeUserRepository = {};
 
@@ -54,6 +57,17 @@ describe("UsersController", () => {
             };
 
             expect(await controller.whoami(req)).toEqual(user);
+        });
+    });
+
+    describe("UsersController::update", () => {
+        it("should return user found by id in token", async () => {
+            const req = {
+                userId: 1,
+                name: "andre",
+            };
+
+            expect(await controller.update(req)).toEqual(user);
         });
     });
 });

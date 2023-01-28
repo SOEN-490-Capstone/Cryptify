@@ -1,18 +1,17 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { Test, TestingModule } from "@nestjs/testing";
-import { WalletsController } from "../../../src/controllers/wallets.controller";
-import { WalletsService } from "../../../src/services/wallets.service";
+import { WalletsController } from "@cryptify/btc-edge/src/controllers/wallets.controller";
+import { WalletsService } from "@cryptify/btc-edge/src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
     let fakeWalletsService: Partial<WalletsService>;
 
-    const createWalletReq: CreateWalletRequest = {
+    const createWalletReq = {
         userId: 1,
         address: "address",
         name: "Andre",
@@ -48,7 +47,7 @@ describe("WalletsController", () => {
         address: "string",
         userId: 1,
         name: "Andre",
-        user: user,
+        user,
         currencyType: CurrencyType.ETHEREUM,
         transactions: [transaction],
         balance: "111",

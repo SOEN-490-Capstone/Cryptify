@@ -33,7 +33,7 @@ describe("Transactions", () => {
 
     describe("GET /transactions", () => {
         it("should get all transactions for a user", async () => {
-            const res = await agent(app.getHttpServer()).get("/users/1/transactions").send({id: 1})
+            const res = await agent(app.getHttpServer()).get("/users/1/transactions").send({ id: 1 });
 
             expect(res.status).toEqual(200);
         });

@@ -3,12 +3,7 @@ import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { token } from "@cryptify/api/test/fixtures/token_fixtures";
-import fetch from "node-fetch";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
-import * as yup from "yup";
-
-const { Response } = jest.requireActual("node-fetch");
-jest.mock("node-fetch", () => jest.fn());
 
 describe("Contacts", () => {
     let app: INestApplication;
@@ -47,7 +42,7 @@ describe("Contacts", () => {
                     ethWallets: [],
                     btcWallets: [],
                 });
-            
+
             expect(res.status).toEqual(201);
         });
     });

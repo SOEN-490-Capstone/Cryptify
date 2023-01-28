@@ -3,12 +3,7 @@ import { Test } from "@nestjs/testing";
 import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { token } from "@cryptify/api/test/fixtures/token_fixtures";
-import fetch from "node-fetch";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
-import * as yup from "yup";
-
-const { Response } = jest.requireActual("node-fetch");
-jest.mock("node-fetch", () => jest.fn());
 
 describe("Tags", () => {
     let app: INestApplication;
@@ -28,9 +23,7 @@ describe("Tags", () => {
 
     describe("GET /users/:id/tags", () => {
         it("should return a list of users tags", async () => {
-            const res = await agent(app.getHttpServer())
-                .get("/users/1/tags")
-                .set("Authorization", `Bearer ${token}`);
+            const res = await agent(app.getHttpServer()).get("/users/1/tags").set("Authorization", `Bearer ${token}`);
 
             expect(res.status).toEqual(200);
         });
@@ -46,7 +39,7 @@ describe("Tags", () => {
                     tagName: "New Tag",
                     transactionIds: [1],
                 });
-            
+
             expect(res.status).toEqual(201);
         });
 

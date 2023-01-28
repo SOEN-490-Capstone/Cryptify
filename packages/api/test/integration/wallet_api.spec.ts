@@ -43,7 +43,9 @@ describe("Wallets", () => {
         };
 
         it("should create an Ethereum wallet and return the wallet with the balance", async () => {
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify(ethereumWallet)));
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+                new Response(JSON.stringify(ethereumWallet)),
+            );
 
             const res = await agent(app.getHttpServer())
                 .post("/users/1/wallets")
@@ -60,7 +62,9 @@ describe("Wallets", () => {
         });
 
         it("should create a Bitcoin wallet and return the wallet with the balance", async () => {
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify(bitcoinWallet)));
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+                new Response(JSON.stringify(bitcoinWallet)),
+            );
 
             const res = await agent(app.getHttpServer())
                 .post("/users/1/wallets")
@@ -116,13 +120,15 @@ describe("Wallets", () => {
             },
         ];
 
-        const btcWallets = [{
-            address: "bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq",
-            userId: 1,
-            name: "Bitcoin Wallet Main",
-            currencyType: "BITCOIN",
-            balance: "16894234205432",
-        }];
+        const btcWallets = [
+            {
+                address: "bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq",
+                userId: 1,
+                name: "Bitcoin Wallet Main",
+                currencyType: "BITCOIN",
+                balance: "16894234205432",
+            },
+        ];
 
         it("should return a list of users wallets", async () => {
             (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
@@ -143,7 +149,10 @@ describe("Wallets", () => {
         it("should return error when token doesnt match url", async () => {
             const res = await agent(app.getHttpServer())
                 .get("/users/1/wallets")
-                .set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`);
+                .set(
+                    "Authorization",
+                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`,
+                );
 
             expect(res.status).toEqual(401);
         });
@@ -151,13 +160,17 @@ describe("Wallets", () => {
 
     describe("DELETE /users/:id/wallets/:address", () => {
         it("should return a 200 status code and delete the Ethereum wallet from the db", async () => {
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify({
-                address: "0x4a55474eacb48cefe25d7656db1976aa7ae70e3c",
-                userId: 1,
-                name: "Ether Wallet Main",
-                currencyType: "ETHEREUM",
-                balance: "33262321422",
-            })));
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+                new Response(
+                    JSON.stringify({
+                        address: "0x4a55474eacb48cefe25d7656db1976aa7ae70e3c",
+                        userId: 1,
+                        name: "Ether Wallet Main",
+                        currencyType: "ETHEREUM",
+                        balance: "33262321422",
+                    }),
+                ),
+            );
 
             const res = await agent(app.getHttpServer())
                 .delete("/users/1/wallets/0x4a55474eacb48cefe25d7656db1976aa7ae70e3c")
@@ -167,13 +180,17 @@ describe("Wallets", () => {
         });
 
         it("should return a 200 status code and delete the Bitcoin wallet from the db", async () => {
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify({
-                address: "bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq",
-                userId: 1,
-                name: "Savings Bitcoin",
-                currencyType: "BITCOIN",
-                balance: "33262321422",
-            })));
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+                new Response(
+                    JSON.stringify({
+                        address: "bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq",
+                        userId: 1,
+                        name: "Savings Bitcoin",
+                        currencyType: "BITCOIN",
+                        balance: "33262321422",
+                    }),
+                ),
+            );
 
             const res = await agent(app.getHttpServer())
                 .delete("/users/1/wallets/bc1qt2sps5xjpu4r5tten65c8nue8zqg8a235wmakq")

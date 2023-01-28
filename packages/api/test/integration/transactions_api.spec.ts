@@ -27,12 +27,8 @@ describe("Transactions", () => {
 
     describe("GET /users/:id/transactions", () => {
         it("should return a list of a users transactions", async () => {
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
-                new Response(JSON.stringify([])),
-            );
-            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
-                new Response(JSON.stringify([])),
-            );
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify([])));
+            (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify([])));
 
             const res = await agent(app.getHttpServer())
                 .get("/users/1/transactions")

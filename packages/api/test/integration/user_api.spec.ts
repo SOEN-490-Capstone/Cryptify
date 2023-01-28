@@ -38,10 +38,15 @@ describe("Users", () => {
         });
 
         it("should return a 404 when a valid token for a user who doesn't exist is sent", async () => {
-            const res = await agent(app.getHttpServer()).get("/users/whoami").set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`);
+            const res = await agent(app.getHttpServer())
+                .get("/users/whoami")
+                .set(
+                    "Authorization",
+                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`,
+                );
 
             expect(res.status).toEqual(404);
-        })
+        });
     });
 
     describe("PATCH /users/:id", () => {
@@ -71,7 +76,10 @@ describe("Users", () => {
         it("should return error when user id not matching token", async () => {
             const res = await agent(app.getHttpServer())
                 .patch("/users/1")
-                .set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`)
+                .set(
+                    "Authorization",
+                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`,
+                )
                 .send({
                     userId: 1,
                     areNotificationsEnabled: true,
@@ -95,7 +103,10 @@ describe("Users", () => {
         it("should return 404 error when user not found", async () => {
             const res = await agent(app.getHttpServer())
                 .patch("/users/2")
-                .set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`)
+                .set(
+                    "Authorization",
+                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`,
+                )
                 .send({
                     userId: 2,
                     areNotificationsEnabled: true,

@@ -1,10 +1,10 @@
-import { Network, Alchemy, AssetTransfersCategory } from "alchemy-sdk";
+import { AssetTransfersCategory } from "alchemy-sdk";
 import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
-import {AlchemyDecorator} from "@cryptify/eth-edge/src/services/alchemy_decorator";
+import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 
 @Injectable()
 export class AlchemyNodeServiceFacade {

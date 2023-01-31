@@ -50,7 +50,9 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
     async function onSubmit(contactName: string) {
         if (!route.params.prefilledWalletAddress) {
-            return;
+            navigation.navigate("EditContactScreen",{
+                prefilledWalletAddress: "any"
+            })
         }
 
         // Hack because the schema was not designed properly, there should only be a single array of wallet addresses

@@ -15,6 +15,10 @@ export class ContactsService {
         return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
+    async findSpecific(userId: number, contactName: string){
+        return this.contactRepository.find({where: {userId, contactName}});
+    }
+
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
 

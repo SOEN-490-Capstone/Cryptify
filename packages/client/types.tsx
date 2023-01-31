@@ -107,6 +107,10 @@ type AddContactScreenProps = {
     prefilledWalletAddress?: string;
 };
 
+type EditContactScreenProps = {
+    prefilledWalletAddress?: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -142,6 +146,7 @@ export type SettingsStackParamList = {
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;
+    EditContactScreen: EditContactScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

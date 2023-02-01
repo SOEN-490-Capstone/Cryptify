@@ -19,9 +19,9 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
 }
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
@@ -36,7 +36,7 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
 class Wallet {
@@ -47,9 +47,14 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
-class AlchemyNodeServiceFacade {
-    -alchemy: Alchemy
+class AlchemyDecorator {
+    -delegate: Alchemy
     -configService: ConfigService<Record<string, unknown>, false>
+    +getBalance(address: string): Promise<BigNumber>
+    +getAssetTransfers(params: AssetTransfersWithMetadataParams): Promise<AssetTransfersWithMetadataResponse>
+}
+class AlchemyNodeServiceFacade {
+    -alchemy: AlchemyDecorator
     +getBalance(address: string): Promise<string>
     +getTransactions(wallet: string): Promise<Transaction[]>
 }
@@ -142,15 +147,16 @@ class WalletsController {
 }
 Contact --> "1" User
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
+Transaction --> "*" Tag
+Tag --> "1" User
+Tag --> "*" Transaction
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+AlchemyNodeServiceFacade --> "1" AlchemyDecorator
 AlchemyNodeServiceFacade --> "*" Transaction
 AbstractNotificationStrategy --> "1" Notification
 EmailNotificationStrategy --> "1" Notification

@@ -21,9 +21,9 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
 }
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
@@ -38,7 +38,7 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
 class Wallet {
@@ -119,11 +119,11 @@ class WalletsController {
 }
 Contact --> "1" User
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
+Transaction --> "*" Tag
+Tag --> "1" User
+Tag --> "*" Transaction
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
 Wallet --> "1" User
 Wallet --> "1" CurrencyType

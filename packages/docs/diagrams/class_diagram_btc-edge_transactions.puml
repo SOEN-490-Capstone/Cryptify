@@ -26,10 +26,10 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
@@ -44,7 +44,7 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
 }
 interface CreateWalletRequest extends InferType
 interface WalletWithBalance extends Wallet {
@@ -242,12 +242,12 @@ Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 Contact --> "1" User
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
+Tag --> "1" User
+Tag --> "*" Transaction
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
+Transaction --> "*" Tag
 AbstractNotificationStrategy --> "1" Notification
 EmailNotificationStrategy --> "1" Notification
 NotificationStrategyFactory --> "1" EmailNotificationStrategy

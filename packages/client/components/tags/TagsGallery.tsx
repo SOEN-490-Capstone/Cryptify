@@ -1,7 +1,7 @@
 import { HStack, Text, VStack } from "native-base";
 import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 import Tag from "./Tag";
 

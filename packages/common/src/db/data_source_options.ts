@@ -3,7 +3,7 @@ import { User } from "@cryptify/common/src/domain/entities/user";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Transaction } from "../domain/entities/transaction";
 import { ConfigService } from "@nestjs/config";
-import { TransactionTag } from "../domain/entities/TransactionTag";
+import { TransactionTag } from "../domain/entities/tag";
 import { Contact } from "../domain/entities/contact";
 
 const entities = [User, Wallet, Transaction, TransactionTag, Contact];

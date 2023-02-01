@@ -3,7 +3,7 @@ import { View } from "../components/Themed";
 import { Center, FormControl, HStack, Input, Text, VStack } from "native-base";
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { Formik, FormikHelpers } from "formik";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";

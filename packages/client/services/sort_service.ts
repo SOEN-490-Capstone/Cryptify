@@ -1,5 +1,5 @@
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 
 function sortDateNewest(transactions: Transaction[]) {
     return transactions.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());

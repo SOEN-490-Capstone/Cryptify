@@ -8,7 +8,7 @@ import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/n
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";

@@ -3,7 +3,7 @@ import { View } from "../components/Themed";
 import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { HomeStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";

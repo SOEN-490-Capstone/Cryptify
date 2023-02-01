@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TagsController } from "../../../src/controllers/tags.controller";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsService } from "../../../src/services/tags.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 

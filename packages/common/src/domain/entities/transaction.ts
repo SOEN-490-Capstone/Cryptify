@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TransactionTag } from "./TransactionTag";
+import { TransactionTag } from "./tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Entity()

@@ -2,7 +2,7 @@ import { GetTagsRequest } from "@cryptify/common/src/requests/get_tags_request";
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
 import { DeleteTagRequest } from "@cryptify/common/src/requests/delete_tag_request";
 

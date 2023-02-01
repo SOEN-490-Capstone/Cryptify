@@ -11,7 +11,7 @@ import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_reque
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 import { DeleteTagRequest } from "@cryptify/common/src/requests/delete_tag_request";
 import { TagsService } from "../services/tags.service";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
 
 @Controller()

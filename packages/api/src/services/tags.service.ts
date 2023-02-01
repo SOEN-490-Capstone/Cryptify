@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
 import {
     ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,

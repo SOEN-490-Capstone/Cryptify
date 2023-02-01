@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsService } from "../services/tags.service";
 import { TagsController } from "../controllers/tags.controller";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";

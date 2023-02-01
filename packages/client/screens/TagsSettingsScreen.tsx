@@ -4,7 +4,7 @@ import { Pressable, Link, ScrollView, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { farPencil } from "../components/icons/regular/farPencil";
 import { SettingsStackScreenProps } from "../types";

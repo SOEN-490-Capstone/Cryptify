@@ -11,7 +11,7 @@ import { farChevronRight } from "../icons/regular/farChevronRight";
 import SortService from "../../services/sort_service";
 import { AuthContext } from "../contexts/AuthContext";
 import { TransactionsGateway } from "../../gateways/transactions_gateway";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";

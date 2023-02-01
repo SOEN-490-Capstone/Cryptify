@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
-import { TransactionTag } from "./TransactionTag";
+import { TransactionTag } from "./tag";
 import { Contact } from "./contact";
 
 @Entity()

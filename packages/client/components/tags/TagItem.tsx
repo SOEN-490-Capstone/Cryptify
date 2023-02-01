@@ -15,7 +15,7 @@ type Props = {
     testID?: string | "tag";
 };
 
-export default function Tag({ tag, key, onTagPress, tagIcon, tagIconColor, tagStyles, testID }: Props) {
+export default function TagItem({ tag, key, onTagPress, tagIcon, tagIconColor, tagStyles, testID }: Props) {
     return (
         <Pressable
             onPress={() => {

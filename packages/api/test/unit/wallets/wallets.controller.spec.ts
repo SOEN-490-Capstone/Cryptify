@@ -6,6 +6,7 @@ import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
@@ -25,6 +26,7 @@ describe("WalletsController", () => {
         email: "email@email.com",
         password: "",
         areNotificationsEnabled: false,
+        role: Role.BASIC,
         createdAt: new Date(),
         wallets: [],
         tags: [],

@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } f
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Tag } from "./tag";
 import { Contact } from "./contact";
+import { Role } from "@cryptify/common/src/domain/role";
 
 @Entity()
 export class User {
@@ -22,6 +23,9 @@ export class User {
 
     @Column({ nullable: false, default: false })
     areNotificationsEnabled: boolean;
+
+    @Column({ nullable: false, type: "enum", enum: Role, default: Role.BASIC })
+    role: Role;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

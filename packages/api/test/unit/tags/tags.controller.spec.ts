@@ -3,6 +3,7 @@ import { TagsController } from "../../../src/controllers/tags.controller";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsService } from "../../../src/services/tags.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("TagsController", () => {
     let controller: TagsController;
@@ -15,6 +16,7 @@ describe("TagsController", () => {
         email: "email@email.com",
         password: "",
         areNotificationsEnabled: false,
+        role: Role.BASIC,
         createdAt: new Date(),
         wallets: [],
         tags: [],

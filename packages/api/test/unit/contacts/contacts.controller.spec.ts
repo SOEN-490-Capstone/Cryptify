@@ -3,6 +3,7 @@ import { ContactsController } from "../../../src/controllers/contacts.controller
 import { ContactsService } from "@cryptify/api/src/services/contacts.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("ContactsController", () => {
     let controller: ContactsController;
@@ -15,6 +16,7 @@ describe("ContactsController", () => {
         email: "email@email.com",
         password: "",
         areNotificationsEnabled: false,
+        role: Role.BASIC,
         createdAt: new Date(),
         wallets: [],
         tags: [],

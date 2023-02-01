@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TransactionTag } from "./tag";
+import { Tag } from "./tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Entity()
@@ -27,6 +27,6 @@ export class Transaction {
     createdAt: Date;
 
     @JoinTable()
-    @ManyToMany(() => TransactionTag, (tag) => tag.transactions, { onUpdate: "CASCADE", onDelete: "CASCADE" })
-    tags: TransactionTag[];
+    @ManyToMany(() => Tag, (tag) => tag.transactions, { onUpdate: "CASCADE", onDelete: "CASCADE" })
+    tags: Tag[];
 }

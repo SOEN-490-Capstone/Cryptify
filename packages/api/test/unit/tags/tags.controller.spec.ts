@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TagsController } from "../../../src/controllers/tags.controller";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsService } from "../../../src/services/tags.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 
@@ -21,7 +21,7 @@ describe("TagsController", () => {
         contacts: [],
     };
 
-    const tag: TransactionTag = {
+    const tag: Tag = {
         userId: 1,
         tagName: "test",
         user,

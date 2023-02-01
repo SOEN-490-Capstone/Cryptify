@@ -1,14 +1,14 @@
 import { HStack, Text, VStack } from "native-base";
 import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 import Tag from "./Tag";
 
 type Props = {
     title?: string;
-    tags: TransactionTag[];
-    onTagPress?: (tag: TransactionTag) => void | Promise<void>;
+    tags: Tag[];
+    onTagPress?: (tag: Tag) => void | Promise<void>;
     tagTestIDPrefix?: string;
     tagIcon?: IconDefinition | IconProp;
     tagIconColor?: string;

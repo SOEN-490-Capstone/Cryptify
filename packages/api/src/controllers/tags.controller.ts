@@ -11,7 +11,7 @@ import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_reque
 import { UpdateTagRequest } from "@cryptify/common/src/requests/update_tag_request";
 import { DeleteTagRequest } from "@cryptify/common/src/requests/delete_tag_request";
 import { TagsService } from "../services/tags.service";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
 
 @Controller()
@@ -20,28 +20,28 @@ export class TagsController {
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("/users/:id/tags")
-    async get(@Param() params: GetTagsRequest): Promise<TransactionTag[]> {
+    async get(@Param() params: GetTagsRequest): Promise<Tag[]> {
         const getTagsReq = await useValidate(getTagsSchema, params);
         return this.tagsService.findAll(getTagsReq.id);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("/users/:id/tags")
-    async create(@Body() body: CreateTagRequest): Promise<TransactionTag> {
+    async create(@Body() body: CreateTagRequest): Promise<Tag> {
         const createTagReq = await useValidate(createTagSchema, body);
         return this.tagsService.create(createTagReq);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Patch("/users/:id/tags")
-    async update(@Body() body: UpdateTagRequest): Promise<TransactionTag> {
+    async update(@Body() body: UpdateTagRequest): Promise<Tag> {
         const updateTagReq = await useValidate(updateTagSchema, body);
         return this.tagsService.update(updateTagReq);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Delete("/users/:id/tags/:name")
-    async delete(@Param() params: DeleteTagRequest): Promise<TransactionTag> {
+    async delete(@Param() params: DeleteTagRequest): Promise<Tag> {
         const deleteTagReq = await useValidate(deleteTagSchema, params);
         return this.tagsService.delete(deleteTagReq);
     }

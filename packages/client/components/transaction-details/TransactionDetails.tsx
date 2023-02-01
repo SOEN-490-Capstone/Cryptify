@@ -11,7 +11,7 @@ import { farChevronRight } from "../icons/regular/farChevronRight";
 import SortService from "../../services/sort_service";
 import { AuthContext } from "../contexts/AuthContext";
 import { TransactionsGateway } from "../../gateways/transactions_gateway";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";
@@ -38,7 +38,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
     const { token, user } = React.useContext(AuthContext);
 
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
-    const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([]);
+    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([]);
     const isIncomingTransaction = wallet.address == transaction.walletIn;
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);

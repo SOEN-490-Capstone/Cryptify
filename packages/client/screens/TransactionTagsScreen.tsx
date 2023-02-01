@@ -3,7 +3,7 @@ import { View } from "../components/Themed";
 import { ScrollView } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { HomeStackScreenProps } from "../types";
 import { farPlus } from "../components/icons/regular/farPlus";
@@ -18,10 +18,10 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
     const transaction = props.route.params.transaction;
     const { token, user } = React.useContext(AuthContext);
 
-    const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([
+    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([
         ...props.route.params.transaction.tags,
     ]);
-    const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<TransactionTag[]>([]);
+    const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<Tag[]>([]);
 
     React.useEffect(() => {
         (async () => {
@@ -34,7 +34,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
         })();
     }, []);
 
-    function removeTransactionTag(tag: TransactionTag) {
+    function removeTransactionTag(tag: Tag) {
         updateTransactionTag(tag, false).then((updatedTag) => {
             const updatedTransactionTags = transactionTags.filter((t) => t.tagName !== updatedTag.tagName);
 
@@ -48,7 +48,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
         });
     }
 
-    function addTransactionTag(tag: TransactionTag) {
+    function addTransactionTag(tag: Tag) {
         updateTransactionTag(tag, true).then((updatedTag) => {
             props.route.params.setTransaction({
                 ...transaction,
@@ -60,7 +60,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
         });
     }
 
-    async function updateTransactionTag(tag: TransactionTag, isAddTag: boolean): Promise<TransactionTag> {
+    async function updateTransactionTag(tag: Tag, isAddTag: boolean): Promise<Tag> {
         return await tagsGateway.updateTag(
             {
                 userId: user.id,
@@ -102,7 +102,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
                     <TagsGallery
                         title={"All Tags"}
                         tags={SortService.sortTransactionTagsAlphabetically(transactionTagsNotAdded)}
-                        onTagPress={(tag: TransactionTag) => {
+                        onTagPress={(tag: Tag) => {
                             if (transactionTags.length < 10) addTransactionTag(tag);
                         }}
                         tagIcon={transactionTags.length < 10 ? farPlus : undefined}

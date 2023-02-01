@@ -3,7 +3,7 @@ import { Transaction } from "./transaction";
 import { User } from "./user";
 
 @Entity()
-export class TransactionTag {
+export class Tag {
     @PrimaryColumn()
     tagName: string;
 

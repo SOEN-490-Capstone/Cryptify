@@ -1,14 +1,14 @@
 import { HStack, Pressable, Text } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React from "react";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/tag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
-    tag: TransactionTag;
+    tag: Tag;
     key: number;
-    onTagPress?: (tag: TransactionTag) => void | Promise<void>;
+    onTagPress?: (tag: Tag) => void | Promise<void>;
     tagIcon?: IconDefinition | IconProp;
     tagIconColor?: string | "#404040";
     tagStyles?: StyleProp<ViewStyle>;

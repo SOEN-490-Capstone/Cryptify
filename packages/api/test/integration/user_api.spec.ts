@@ -4,6 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
 import { token } from "@cryptify/api/test/fixtures/token_fixtures";
+import {Role} from "@cryptify/common/src/domain/role";
 
 describe("Users", () => {
     let app: INestApplication;
@@ -33,6 +34,7 @@ describe("Users", () => {
                 email: "john@example.com",
                 password: "$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22",
                 areNotificationsEnabled: false,
+                role: Role.BASIC,
                 createdAt: "2022-10-20T20:12:19.693Z",
             });
         });
@@ -59,6 +61,7 @@ describe("Users", () => {
                     firstName: "fName",
                     lastName: "lName",
                     areNotificationsEnabled: true,
+                    role: Role.PRO,
                 });
 
             expect(res.status).toEqual(200);
@@ -69,6 +72,7 @@ describe("Users", () => {
                 email: "john@example.com",
                 password: "$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22",
                 areNotificationsEnabled: true,
+                rile: Role.PRO,
                 createdAt: "2022-10-20T20:12:19.693Z",
             });
         });

@@ -53,6 +53,8 @@ import AddContactScreen from "../screens/contacts/AddContactScreen";
 import BackButton from "../components/BackButton";
 import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
 import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
+import AccountScreen from "../screens/account/AccountScreen";
+import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -472,6 +474,34 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={NotificationsScreen}
                 options={{
                     title: "Notifications",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AccountScreen"
+                component={AccountScreen}
+                options={{
+                    title: "Account",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AccountTypeScreen"
+                component={AccountTypeScreen}
+                options={{
+                    title: "",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

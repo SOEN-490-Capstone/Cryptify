@@ -10,71 +10,68 @@ import SignOutButton from "../components/SignOutButton";
 import { falTags } from "../components/icons/light/falTags";
 import { falBell } from "../components/icons/light/falBell";
 import { falAddressBook } from "../components/icons/light/falAddressBook";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { falUser } from "../components/icons/light/falUser";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+
+type SettingsItem = {
+    text: string;
+    onPress: () => void;
+    icon: IconDefinition;
+};
 
 export default function SettingsScreen({ navigation }: SettingsStackScreenProps<"SettingsScreen">) {
+    const items: SettingsItem[] = [
+        {
+            text: "account",
+            onPress: () => navigation.navigate("AccountScreen"),
+            icon: falUser,
+        },
+        {
+            text: "wallets",
+            onPress: () =>
+                navigation.navigate("ViewWalletsScreen", {
+                    isSettingsTab: true,
+                }),
+            icon: falWallet,
+        },
+        {
+            text: "contacts",
+            onPress: () => navigation.navigate("ContactsListScreen", {}),
+            icon: falAddressBook,
+        },
+        {
+            text: "tags",
+            onPress: () => navigation.navigate("TagsSettingsScreen"),
+            icon: falTags,
+        },
+        {
+            text: "notifications",
+            onPress: () => navigation.navigate("NotificationsScreen"),
+            icon: falBell,
+        },
+    ];
+
     return (
         <View style={styles.view}>
-            <VStack space="15px">
-                <Pressable
-                    onPress={() =>
-                        navigation.navigate("ViewWalletsScreen", {
-                            isSettingsTab: true,
-                        })
-                    }
-                    style={styles.button}
-                    _pressed={{
-                        background: "text.200",
-                    }}
-                    testID="walletsButton"
-                >
-                    <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falWallet} style={styles.icon} size={26} />
-                        <Text style={styles.buttonText}>Wallets</Text>
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
-                </Pressable>
-                <Pressable
-                    onPress={() => navigation.navigate("ContactsListScreen", {})}
-                    style={styles.button}
-                    _pressed={{
-                        background: "text.200",
-                    }}
-                    testID="contactsButton"
-                >
-                    <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falAddressBook} style={styles.icon} size={26} />
-                        <Text style={styles.buttonText}>Contacts</Text>
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
-                </Pressable>
-                <Pressable
-                    onPress={() => navigation.navigate("TagsSettingsScreen")}
-                    style={styles.button}
-                    _pressed={{
-                        background: "text.200",
-                    }}
-                    testID="tagsButton"
-                >
-                    <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falTags} style={styles.icon} size={26} />
-                        <Text style={styles.buttonText}>Tags</Text>
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
-                </Pressable>
-                <Pressable
-                    onPress={() => navigation.navigate("NotificationsScreen")}
-                    style={styles.button}
-                    _pressed={{
-                        background: "text.200",
-                    }}
-                    testID="notificationButton"
-                >
-                    <HStack height="50px" alignItems="center">
-                        <FontAwesomeIcon icon={falBell} style={styles.icon} size={26} />
-                        <Text style={styles.buttonText}>Notifications</Text>
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
-                </Pressable>
+            <VStack space="7.5px">
+                {items.map((item) => (
+                    <Pressable
+                        onPress={item.onPress}
+                        style={styles.button}
+                        _pressed={{
+                            background: "text.200",
+                        }}
+                        testID={`${item.text}Button`}
+                        key={item.text}
+                    >
+                        <HStack height="50px" alignItems="center">
+                            <FontAwesomeIcon icon={item.icon} style={styles.icon} size={26} />
+                            <Text style={styles.buttonText}>{titleCase(item.text)}</Text>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    </Pressable>
+                ))}
                 <SignOutButton />
             </VStack>
         </View>

@@ -4,7 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
 import { token } from "@cryptify/api/test/fixtures/token_fixtures";
-import {Role} from "@cryptify/common/src/domain/role";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("Users", () => {
     let app: INestApplication;

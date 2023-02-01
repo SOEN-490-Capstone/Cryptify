@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { CreateTagRequest } from "@cryptify/common/src/requests/create_tag_request";
 import {
     ERROR_TAG_NAME_ALREADY_ADDED_TO_ACCOUNT,
@@ -16,20 +16,20 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 @Injectable()
 export class TagsService {
     constructor(
-        @InjectRepository(TransactionTag)
-        private tagRepository: Repository<TransactionTag>,
+        @InjectRepository(Tag)
+        private tagRepository: Repository<Tag>,
         @InjectRepository(Transaction)
         private transactionRepository: Repository<Transaction>,
     ) {}
 
-    async findAll(userId: number): Promise<TransactionTag[]> {
+    async findAll(userId: number): Promise<Tag[]> {
         return this.tagRepository.find({
             where: { userId },
             order: { tagName: "ASC" },
         });
     }
 
-    async create(req: CreateTagRequest): Promise<TransactionTag> {
+    async create(req: CreateTagRequest): Promise<Tag> {
         const userId = req.userId;
         const tagName = req.tagName;
         const transactionIds: number[] = (req.transactionIds ??= []);
@@ -48,13 +48,13 @@ export class TagsService {
         return await this.tagRepository.save(tag);
     }
 
-    async update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag> {
+    async update(updateTagNameRequest: UpdateTagRequest): Promise<Tag> {
         const userId = updateTagNameRequest.userId;
         const currentName = updateTagNameRequest.currentName;
         const newName = updateTagNameRequest.newName;
         const addTransactions = (updateTagNameRequest.addTransactions ??= []);
         const removeTransactions = (updateTagNameRequest.removeTransactions ??= []);
-        let transactionTag: TransactionTag;
+        let transactionTag: Tag;
 
         transactionTag = await this.tagRepository.findOne({
             where: { userId, tagName: currentName },
@@ -96,7 +96,7 @@ export class TagsService {
         return await this.tagRepository.save(transactionTag);
     }
 
-    async delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag> {
+    async delete(deleteTagRequest: DeleteTagRequest): Promise<Tag> {
         const userId = deleteTagRequest.id;
         const tagName = deleteTagRequest.name;
         const tag = await this.tagRepository.findOneBy({ userId, tagName });

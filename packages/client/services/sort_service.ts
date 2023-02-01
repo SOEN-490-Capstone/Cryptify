@@ -1,5 +1,5 @@
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 
 function sortDateNewest(transactions: Transaction[]) {
     return transactions.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
@@ -74,7 +74,7 @@ function sortBadgeValues(sortType: string) {
     }
 }
 
-function sortTransactionTagsAlphabetically(transactionTags: TransactionTag[]): TransactionTag[] {
+function sortTransactionTagsAlphabetically(transactionTags: Tag[]): Tag[] {
     return transactionTags.sort((a, b) => (a.tagName > b.tagName ? 1 : -1));
 }
 

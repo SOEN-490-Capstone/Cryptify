@@ -4,6 +4,7 @@ import { UsersService } from "@cryptify/api/src/services/users.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Repository } from "typeorm";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("UsersController", () => {
     let controller: UsersController;
@@ -17,6 +18,7 @@ describe("UsersController", () => {
         email: "email@email.com",
         password: "",
         areNotificationsEnabled: false,
+        role: Role.BASIC,
         createdAt: new Date(),
         wallets: [],
         tags: [],
@@ -65,7 +67,7 @@ describe("UsersController", () => {
             const req = {
                 userId: 1,
                 name: "andre",
-            };
+            } as any;
 
             expect(await controller.update(req)).toEqual(user);
         });

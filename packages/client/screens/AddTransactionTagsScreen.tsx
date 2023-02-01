@@ -20,9 +20,7 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
 
     const formikRef = React.useRef<FormikProps<any>>(null);
 
-    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([
-        ...props.route.params.transactionTags,
-    ]);
+    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([...props.route.params.transactionTags]);
     const [suggestedTags, setSuggestedTags] = React.useState<Tag[]>([]);
     const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<Tag[]>([
         ...props.route.params.transactionTagsNotAdded,

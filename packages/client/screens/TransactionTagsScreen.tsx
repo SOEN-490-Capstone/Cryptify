@@ -18,9 +18,7 @@ export default function TransactionTagsScreen(props: HomeStackScreenProps<"Trans
     const transaction = props.route.params.transaction;
     const { token, user } = React.useContext(AuthContext);
 
-    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([
-        ...props.route.params.transaction.tags,
-    ]);
+    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([...props.route.params.transaction.tags]);
     const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<Tag[]>([]);
 
     React.useEffect(() => {

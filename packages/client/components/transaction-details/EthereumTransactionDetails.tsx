@@ -5,6 +5,8 @@ import React from "react";
 import SingleLineListItem from "../list/SingleLineListItem";
 import MultiLineListItem from "../list/MultiLineListItem";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { AuthContext } from "../contexts/AuthContext";
+import { isPro } from "@cryptify/common/src/domain/role";
 
 type Props = {
     transaction: Transaction;
@@ -13,11 +15,13 @@ type Props = {
 };
 
 export function EthereumTransactionDetails({ transaction, wallet, navigation }: Props) {
+    const { user } = React.useContext(AuthContext);
+
     // TODO
     // Add block number, position in block and nonce
     // Get Gas Limit
     // Get Gas Price
-    const otherDetails = (
+    const otherDetails = isPro(user) && (
         <>
             <SingleLineListItem label={"Block Number"} value={"15"} />
             <SingleLineListItem label={"Position in Block"} value={"19"} />

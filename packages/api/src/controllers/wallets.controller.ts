@@ -1,14 +1,4 @@
-import {
-    Body,
-    CacheInterceptor,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    UseGuards,
-    UseInterceptors,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { createWalletSchema } from "@cryptify/common/src/validations/create_wallet_schema";
@@ -34,7 +24,6 @@ export class WalletsController {
     }
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
-    @UseInterceptors(CacheInterceptor)
     @Get("/users/:id/wallets")
     async findAll(@Param() params: GetWalletsRequest): Promise<WalletWithBalance[]> {
         const getWalletsReq = await useValidate(getWalletsSchema, params);

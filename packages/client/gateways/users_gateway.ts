@@ -9,7 +9,7 @@ export class UsersGateway extends AbstractApiGateway {
     }
 
     async whoami(token: string): Promise<User> {
-        const path = "users/whoami";
+        const path = `users/whoami?token=${token}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

@@ -1,4 +1,4 @@
-import { CacheModule, Module } from "@nestjs/common";
+import { CacheInterceptor, CacheModule, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/api/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -10,6 +10,7 @@ import { TransactionsModule } from "./transactions.module";
 import { TagsModule } from "./tags.module";
 import { ContactsModule } from "./contacts.module";
 import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 
 @Module({
     imports: [
@@ -26,7 +27,6 @@ import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
         }),
         CacheModule.register({
             ttl: 10 * 1000, // 10 seconds
-            isGlobal: true,
         }),
         BaseModule,
         AuthenticationModule,
@@ -36,6 +36,12 @@ import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
         TagsModule,
         ContactsModule,
         ReportsModule,
+    ],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CacheInterceptor,
+        },
     ],
 })
 export class AppModule {}

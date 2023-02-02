@@ -291,7 +291,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
             <VStack space={"40px"} style={styles.transactionDetails}>
                 {renderHeader}
                 {renderBasicInfo}
-                {otherDetails && renderOtherDetails}
+                {!!otherDetails && renderOtherDetails}
             </VStack>
         </>
     );

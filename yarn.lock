@@ -2261,6 +2261,7 @@ __metadata:
     "@types/passport-jwt": ^3.0.6
     "@types/supertest": ^2.0.12
     bcrypt: ^5.0.1
+    cache-manager: ^5.1.4
     jest: ^28.1.2
     jest-sonar-reporter: ^2.0.0
     passport: ^0.6.0
@@ -9287,6 +9288,16 @@ __metadata:
     union-value: ^1.0.0
     unset-value: ^1.0.0
   checksum: 9114b8654fe2366eedc390bad0bcf534e2f01b239a888894e2928cb58cdc1e6ea23a73c6f3450dcfd2058aa73a8a981e723cd1e7c670c047bf11afdc65880107
+  languageName: node
+  linkType: hard
+
+"cache-manager@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "cache-manager@npm:5.1.4"
+  dependencies:
+    lodash.clonedeep: ^4.5.0
+    lru-cache: ^7.14.0
+  checksum: 4f2d6a0bee6e198976ffc73947c9bceaf68ea1c0f1c361e1264c4158cd80ec45c991a1359d1848a52bb95faaad20c0b244cf002f2fd4d3e1485dbfb8d303c5b8
   languageName: node
   linkType: hard
 
@@ -17664,6 +17675,13 @@ __metadata:
   dependencies:
     yallist: ^4.0.0
   checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
+  languageName: node
+  linkType: hard
+
+"lru-cache@npm:^7.14.0":
+  version: 7.14.1
+  resolution: "lru-cache@npm:7.14.1"
+  checksum: d72c6713c6a6d86836a7a6523b3f1ac6764768cca47ec99341c3e76db06aacd4764620e5e2cda719a36848785a52a70e531822dc2b33fb071fa709683746c104
   languageName: node
   linkType: hard
 

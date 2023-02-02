@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { CacheModule, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BaseModule } from "@cryptify/api/src/modules/base.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -23,6 +23,10 @@ import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
                 ...dataSourceOptionsConfig(config),
                 synchronize: true,
             }),
+        }),
+        CacheModule.register({
+            ttl: 10 * 1000, // 10 seconds
+            isGlobal: true,
         }),
         BaseModule,
         AuthenticationModule,

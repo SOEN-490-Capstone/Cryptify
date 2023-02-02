@@ -3,12 +3,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Repository } from "typeorm";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
-import {ERROR_EMAIL_IN_USE, ERROR_TAG_NOT_FOUND} from "@cryptify/common/src/errors/error_messages";
+import { ERROR_EMAIL_IN_USE } from "@cryptify/common/src/errors/error_messages";
 import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_request";
-import {DeleteUserRequest} from "@cryptify/common/src/requests/delete_user_request";
-import {WalletsService} from "@cryptify/api/src/services/wallets.service";
-import {Tag} from "@cryptify/common/src/domain/entities/tag";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import { DeleteUserRequest } from "@cryptify/common/src/requests/delete_user_request";
+import { WalletsService } from "@cryptify/api/src/services/wallets.service";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Injectable()
 export class UsersService {
@@ -68,12 +68,12 @@ export class UsersService {
 
     async delete(req: DeleteUserRequest): Promise<User> {
         const { id } = req;
-        
+
         const user = await this.userRepository.findOneBy({ id });
         if (!user) {
             throw new BadRequestException("User not found");
         }
-        
+
         const wallets = await this.walletsService.findAll({ id });
         await Promise.all([
             // Manually delete the wallets through the edge services so that any cleanup process that needs to happen with
@@ -89,6 +89,6 @@ export class UsersService {
         // up there won't be any foreign key errors here
         await this.userRepository.delete({ id });
 
-        return user; 
+        return user;
     }
 }

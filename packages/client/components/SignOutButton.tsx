@@ -7,9 +7,9 @@ import { AuthContext } from "./contexts/AuthContext";
 export default function SignOutButton() {
     const { setToken } = React.useContext(AuthContext);
 
-    function handleSignOut(): void {
+    async function handleSignOut() {
+        await StorageService.remove(KEY_JWT);
         setToken("");
-        StorageService.remove(KEY_JWT);
     }
 
     return (

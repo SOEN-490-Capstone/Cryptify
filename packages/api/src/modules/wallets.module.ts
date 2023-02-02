@@ -11,5 +11,6 @@ import { BtcEdgeGatewayStrategy } from "@cryptify/api/src/gateways/edge-gateway/
     imports: [TypeOrmModule.forFeature([Wallet])],
     providers: [WalletsService, EdgeGatewayStrategyFactory, EthEdgeGatewayStrategy, BtcEdgeGatewayStrategy],
     controllers: [WalletsController],
+    exports: [WalletsService],
 })
 export class WalletsModule {}

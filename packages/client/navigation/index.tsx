@@ -50,7 +50,6 @@ import SignUpNotificationsScreen from "../screens/SignUpNotificationsScreen";
 import useTabBar from "../hooks/useTabBar";
 import ContactsListScreen from "../screens/contacts/ContactsListScreen";
 import AddContactScreen from "../screens/contacts/AddContactScreen";
-import EditContactScreen from "../screens/contacts/EditContactScreen";
 import BackButton from "../components/BackButton";
 import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
 import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
@@ -275,6 +274,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                             onPress={() =>
                                 navigation.navigate("AddContactScreen", {
                                     prefilledWalletAddress: route.params.prefilledWalletAddress,
+                                    contacts: null,
                                 })
                             }
                             testID="createContactButton"
@@ -384,20 +384,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={AddContactScreen}
                 options={{
                     title: "Add a Contact",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                }}
-            />
-            <SettingsStack.Screen
-                name="EditContactScreen"
-                component={EditContactScreen}
-                options={{
-                    title: "Edit Contact",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

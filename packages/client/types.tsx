@@ -12,6 +12,7 @@ import { TransactionTag } from "@cryptify/common/src/domain/entities/Transaction
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -105,10 +106,7 @@ type ContactListScreenProps = {
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
-};
-
-type EditContactScreenProps = {
-    prefilledWalletAddress?: string;
+    contacts: Contact[];
 };
 
 export type HomeStackParamList = {
@@ -146,7 +144,6 @@ export type SettingsStackParamList = {
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;
-    EditContactScreen: EditContactScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

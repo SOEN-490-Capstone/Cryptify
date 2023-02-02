@@ -15,12 +15,17 @@ export class ContactsService {
         return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
-    async findSpecific(userId: number, contactName: string){
-        return this.contactRepository.find({where: {userId, contactName}});
+    async findSpecific(userId: number, contactName: string) {
+        return this.contactRepository.find({ where: { userId, contactName } });
+    }
+
+    async delete(userId: number, contactName: string) {
+        return this.contactRepository.delete({ userId: userId, contactName: contactName });
     }
 
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
+        await this.delete(userId, contactName);
 
         const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
         const contacts = walletAddrs.map((addr) =>

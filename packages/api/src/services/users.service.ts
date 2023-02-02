@@ -74,14 +74,15 @@ export class UsersService {
             throw new BadRequestException("User not found");
         }
 
-        const wallets = await this.walletsService.findAll({ id });
-        await Promise.all([
-            // Manually delete the wallets through the edge services so that any cleanup process that needs to happen with
-            // the transactions doesn't need to be replicated here
-            ...wallets.map(({ address }) => this.walletsService.delete({ id, address })),
+        const [wallets] = await Promise.all([
+            this.walletsService.findAll({ id }),
             this.tagRepository.delete({ userId: id }),
             this.contactRepository.delete({ userId: id }),
         ]);
+
+        // Manually delete the wallets through the edge services so that any cleanup process that needs to happen with
+        // the transactions doesn't need to be replicated here
+        await Promise.all(wallets.map(({ address }) => this.walletsService.delete({ id, address })));
 
         // Once all the related entities are removed from the db we can delete the user as well. Note even if the
         // transaction cleanup process in the edge services takes a long time for any given wallets, since the

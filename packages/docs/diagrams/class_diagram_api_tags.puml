@@ -28,7 +28,7 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
 class Contact {
@@ -46,54 +46,54 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
 }
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
     +transactions: Transaction[]
 }
 class TagsService {
-    -tagRepository: Repository<TransactionTag>
+    -tagRepository: Repository<Tag>
     -transactionRepository: Repository<Transaction>
-    +findAll(userId: number): Promise<TransactionTag[]>
-    +create(req: CreateTagRequest): Promise<TransactionTag>
-    +update(updateTagNameRequest: UpdateTagRequest): Promise<TransactionTag>
-    +delete(deleteTagRequest: DeleteTagRequest): Promise<TransactionTag>
+    +findAll(userId: number): Promise<Tag[]>
+    +create(req: CreateTagRequest): Promise<Tag>
+    +update(updateTagNameRequest: UpdateTagRequest): Promise<Tag>
+    +delete(deleteTagRequest: DeleteTagRequest): Promise<Tag>
 }
 class CanMutateResourceGuard implements CanActivate {
     +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
 }
 class TagsController {
     -tagsService: TagsService
-    +get(params: GetTagsRequest): Promise<TransactionTag[]>
-    +create(body: CreateTagRequest): Promise<TransactionTag>
-    +update(body: UpdateTagRequest): Promise<TransactionTag>
-    +delete(params: DeleteTagRequest): Promise<TransactionTag>
+    +get(params: GetTagsRequest): Promise<Tag[]>
+    +create(body: CreateTagRequest): Promise<Tag>
+    +update(body: UpdateTagRequest): Promise<Tag>
+    +delete(params: DeleteTagRequest): Promise<Tag>
 }
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
 Contact --> "1" User
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
-TagsService --> "1" TransactionTag
+Transaction --> "*" Tag
+Tag --> "1" User
+Tag --> "*" Transaction
+TagsService --> "1" Tag
 TagsService --> "1" Transaction
-TagsService --> "*" TransactionTag
+TagsService --> "*" Tag
 TagsService --> "1" CreateTagRequest
 TagsService --> "1" UpdateTagRequest
 TagsService --> "1" DeleteTagRequest
 TagsController --> "1" TagsService
 TagsController --> "1" GetTagsRequest
-TagsController --> "*" TransactionTag
+TagsController --> "*" Tag
 TagsController --> "1" CreateTagRequest
-TagsController --> "1" TransactionTag
+TagsController --> "1" Tag
 TagsController --> "1" UpdateTagRequest
 TagsController --> "1" DeleteTagRequest
 @enduml

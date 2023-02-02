@@ -1,24 +1,17 @@
-import { Network, Alchemy, AssetTransfersCategory } from "alchemy-sdk";
-import { ConfigService } from "@nestjs/config";
+import { AssetTransfersCategory } from "alchemy-sdk";
 import { Injectable } from "@nestjs/common";
 import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
+import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 
 @Injectable()
 export class AlchemyNodeServiceFacade {
-    private alchemy: Alchemy;
-
-    constructor(private configService: ConfigService) {
-        this.alchemy = new Alchemy({
-            apiKey: configService.get<string>("ALCHEMY_API_KEY"),
-            network: Network.ETH_MAINNET,
-        });
-    }
+    constructor(private readonly alchemy: AlchemyDecorator) {}
 
     async getBalance(address: string): Promise<string> {
         try {
-            const balance = await this.alchemy.core.getBalance(address);
+            const balance = await this.alchemy.getBalance(address);
             // Serializing the BigNumber as a string so we can easily transport it
             // over HTTP, we will leave the balance as WEI for now to allow BigNumber
             // conversions and calculations, it will only be converted to ETHER when
@@ -36,14 +29,14 @@ export class AlchemyNodeServiceFacade {
         // Get both in and out transactions in parallel then flatten the 2D array
         // into a single dimension
         const assetTransfers = await Promise.all([
-            this.alchemy.core.getAssetTransfers({
+            this.alchemy.getAssetTransfers({
                 fromBlock: "0x0",
                 toAddress: wallet,
                 excludeZeroValue: true,
                 category: [AssetTransfersCategory.EXTERNAL],
                 withMetadata: true,
             }),
-            this.alchemy.core.getAssetTransfers({
+            this.alchemy.getAssetTransfers({
                 fromBlock: "0x0",
                 fromAddress: wallet,
                 excludeZeroValue: true,

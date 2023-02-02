@@ -6,6 +6,7 @@ import { WalletsService } from "../../../src/services/wallets.service";
 import { BadRequestException } from "@nestjs/common";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import { Role } from "@cryptify/common/src/domain/role";
 
 describe("WalletsController", () => {
     let controller: WalletsController;
@@ -25,6 +26,7 @@ describe("WalletsController", () => {
         email: "email@email.com",
         password: "",
         areNotificationsEnabled: false,
+        role: Role.BASIC,
         createdAt: new Date(),
         wallets: [],
         tags: [],
@@ -61,6 +63,9 @@ describe("WalletsController", () => {
             findAll: async () => {
                 return [walletWithBalance];
             },
+            delete: async () => {
+                return walletWithBalance;
+            },
         };
 
         const module: TestingModule = await Test.createTestingModule({
@@ -89,6 +94,17 @@ describe("WalletsController", () => {
             };
 
             expect(await controller.findAll(req)).toEqual([walletWithBalance]);
+        });
+    });
+
+    describe("WalletsController::delete", () => {
+        it("should return a WalletWithBalance", async () => {
+            const req = {
+                id: 1,
+                address: "0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c",
+            };
+
+            expect(await controller.delete(req)).toEqual(walletWithBalance);
         });
     });
 });

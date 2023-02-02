@@ -4,7 +4,7 @@ import { Pressable, Link, ScrollView, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { farPencil } from "../components/icons/regular/farPencil";
 import { SettingsStackScreenProps } from "../types";
@@ -20,7 +20,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
 
     const { token, user } = React.useContext(AuthContext);
 
-    const [tags, setTags] = React.useState<TransactionTag[]>([]);
+    const [tags, setTags] = React.useState<Tag[]>([]);
 
     React.useEffect(() => {
         (async () => {

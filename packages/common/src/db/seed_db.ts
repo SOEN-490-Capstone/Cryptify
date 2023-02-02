@@ -17,12 +17,12 @@ export async function seedDB() {
     `);
 
     await dataSource.manager.query(`
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Groceries', 1);
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Gifts', 1);
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Spring Break', 1);
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Gym and Workout', 1);
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Work', 1);
-        INSERT INTO public.transaction_tag ("tagName", "userId") VALUES ('Housing', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Groceries', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Gifts', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Spring Break', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Gym and Workout', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Work', 1);
+        INSERT INTO public.tag ("tagName", "userId") VALUES ('Housing', 1);
     `);
 
     await dataSource.manager.query(`

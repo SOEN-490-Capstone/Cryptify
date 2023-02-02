@@ -26,10 +26,10 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
@@ -44,11 +44,16 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
+}
+class AlchemyDecorator {
+    -delegate: Alchemy
+    -configService: ConfigService<Record<string, unknown>, false>
+    +getBalance(address: string): Promise<BigNumber>
+    +getAssetTransfers(params: AssetTransfersWithMetadataParams): Promise<AssetTransfersWithMetadataResponse>
 }
 class AlchemyNodeServiceFacade {
-    -alchemy: Alchemy
-    -configService: ConfigService<Record<string, unknown>, false>
+    -alchemy: AlchemyDecorator
     +getBalance(address: string): Promise<string>
     +getTransactions(wallet: string): Promise<Transaction[]>
 }
@@ -144,12 +149,13 @@ Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 Contact --> "1" User
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
+Tag --> "1" User
+Tag --> "*" Transaction
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
+Transaction --> "*" Tag
+AlchemyNodeServiceFacade --> "1" AlchemyDecorator
 AlchemyNodeServiceFacade --> "*" Transaction
 AbstractGateway --> "1" Method
 WalletsService --> "1" Wallet

@@ -17,7 +17,7 @@ export class ContactsController {
     constructor(private contactsService: ContactsService) {}
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
-    @Get("users/:id/contacts")
+    @Get("/users/:id/contacts")
     async findAll(@Param() params: GetContactsRequest): Promise<Contact[]> {
         const getContactsRequest = await useValidate(getContactsSchema, params);
         return this.contactsService.findAll(getContactsRequest.id);
@@ -31,7 +31,7 @@ export class ContactsController {
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
-    @Post("users/:id/contacts")
+    @Post("/users/:id/contacts")
     async create(@Body() body: CreateContactRequest): Promise<Contact[]> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);

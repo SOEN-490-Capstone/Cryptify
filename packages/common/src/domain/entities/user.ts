@@ -1,7 +1,8 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
-import { TransactionTag } from "./TransactionTag";
+import { Tag } from "./tag";
 import { Contact } from "./contact";
+import { Role } from "@cryptify/common/src/domain/role";
 
 @Entity()
 export class User {
@@ -23,14 +24,17 @@ export class User {
     @Column({ nullable: false, default: false })
     areNotificationsEnabled: boolean;
 
+    @Column({ nullable: false, type: "enum", enum: Role, default: Role.BASIC })
+    role: Role;
+
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
     @OneToMany(() => Wallet, (wallet) => wallet.user)
     wallets: Wallet[];
 
-    @OneToMany(() => TransactionTag, (tag) => tag.user)
-    tags: TransactionTag[];
+    @OneToMany(() => Tag, (tag) => tag.user)
+    tags: Tag[];
 
     @OneToMany(() => Contact, (contact) => contact.user)
     contacts: Contact[];

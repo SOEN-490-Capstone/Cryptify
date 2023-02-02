@@ -142,6 +142,8 @@ export type SettingsStackParamList = {
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;
+    AccountScreen: undefined;
+    AccountTypeScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

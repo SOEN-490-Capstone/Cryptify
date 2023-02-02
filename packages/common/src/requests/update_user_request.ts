@@ -1,5 +1,11 @@
-import { InferType } from "yup";
-import { updateUserSchema } from "@cryptify/common/src/validations/update_user_schema";
+import { Role } from "@cryptify/common/src/domain/role";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface UpdateUserRequest extends InferType<typeof updateUserSchema> {}
+export interface UpdateUserRequest {
+    userId: number;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    areNotificationsEnabled?: boolean;
+    role?: Role;
+}

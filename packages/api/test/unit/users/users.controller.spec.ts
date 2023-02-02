@@ -67,7 +67,7 @@ describe("UsersController", () => {
             const req = {
                 userId: 1,
                 name: "andre",
-            } as any;
+            };
 
             expect(await controller.update(req)).toEqual(user);
         });

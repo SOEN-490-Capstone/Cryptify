@@ -8,8 +8,8 @@ export default function SignOutButton() {
     const { setToken } = React.useContext(AuthContext);
 
     async function handleSignOut() {
-        setToken("");
         await StorageService.remove(KEY_JWT);
+        setToken("");
     }
 
     return (

@@ -19,9 +19,9 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
     function handleDelete() {
         const callback = async () => {
             await usersGateway.deleteUser({ id: user.id }, token);
+            await StorageService.remove(KEY_JWT);
             setToken("");
             setUser({} as User);
-            await StorageService.remove(KEY_JWT);
         };
 
         Alert.alert("Do you want to delete your account?", "You cannot undo this action.", [

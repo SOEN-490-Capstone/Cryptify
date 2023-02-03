@@ -2,8 +2,7 @@ import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { In, Repository } from "typeorm";
-import { number } from "yup";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class ContactsService {

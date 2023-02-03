@@ -214,10 +214,18 @@ export default function AddContactScreen(props: Props) {
             }
 
             const requestValuesInsert = { ...values };
-            requestValuesInsert.btcWalletsDelete = initialValues.btcWallets?.filter((w) => w !== "" && !requestValuesInsert.btcWallets.includes(w));
-            requestValuesInsert.ethWalletsDelete = initialValues.ethWallets?.filter((w) => w !== "" && !requestValuesInsert.ethWallets.includes(w));
-            requestValuesInsert.btcWallets = requestValuesInsert.btcWallets?.filter((w) => w !== "" && !initialValues.btcWallets.includes(w));
-            requestValuesInsert.ethWallets = requestValuesInsert.ethWallets?.filter((w) => w !== "" && !initialValues.ethWallets.includes(w));
+            requestValuesInsert.btcWalletsDelete = initialValues.btcWallets?.filter(
+                (w) => w !== "" && !requestValuesInsert.btcWallets.includes(w),
+            );
+            requestValuesInsert.ethWalletsDelete = initialValues.ethWallets?.filter(
+                (w) => w !== "" && !requestValuesInsert.ethWallets.includes(w),
+            );
+            requestValuesInsert.btcWallets = requestValuesInsert.btcWallets?.filter(
+                (w) => w !== "" && !initialValues.btcWallets.includes(w),
+            );
+            requestValuesInsert.ethWallets = requestValuesInsert.ethWallets?.filter(
+                (w) => w !== "" && !initialValues.ethWallets.includes(w),
+            );
 
             await contactsGateway.createContacts(requestValuesInsert, token);
             props.navigation.goBack();

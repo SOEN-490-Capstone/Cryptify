@@ -16,14 +16,10 @@ export class ContactsService {
         return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
-    async findSpecific(userId: number, contactName: string) {
+    async find(userId: number, contactName: string) {
         return this.contactRepository.find({ where: { userId, contactName } });
     }
 
-    async delete(userId: number, contactName: string) {
-        return this.contactRepository.delete({ userId: userId, contactName: contactName });
-    }
-    
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
 
@@ -48,6 +44,6 @@ export class ContactsService {
         );
 
         await this.contactRepository.insert(contactsToAdd);
-        return contactsToAdd;
+        return [...contactsToAdd, ...contactsToDelete];
     }
 }

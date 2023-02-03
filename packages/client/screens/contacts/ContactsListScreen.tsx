@@ -25,7 +25,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
     React.useEffect(() => {
         (async () => {
             if (isFocused) {
-                const contacts = await contactsGateway.findAllContacts({ id: user.id }, token);
+                const contacts = await contactsGateway.findAllContacts({ id: user.id, name: "" }, token);
 
                 let currChar = "";
                 const listData = contacts
@@ -50,7 +50,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
     async function onSubmit(contactName: string) {
         if (!route.params.prefilledWalletAddress) {
-            const contacts = await contactsGateway.findSpecificContacts({ id: user.id, name: contactName }, token);
+            const contacts = await contactsGateway.findContacts({ id: user.id, name: contactName }, token);
             navigation.navigate("AddContactScreen", {
                 prefilledWalletAddress: undefined,
                 contacts: contacts,

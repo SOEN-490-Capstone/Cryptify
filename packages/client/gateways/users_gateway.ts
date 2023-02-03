@@ -10,7 +10,8 @@ export class UsersGateway extends AbstractApiGateway {
     }
 
     async whoami(token: string): Promise<User> {
-        const path = "users/whoami";
+        // By adding the token as a query parameter we can make sure this route is only cached for the same token
+        const path = `users/whoami?token=${token}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

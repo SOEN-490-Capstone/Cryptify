@@ -24,7 +24,9 @@ describe("Users", () => {
 
     describe("GET /users/whoami", () => {
         it("should return a signed token when sign up is successful", async () => {
-            const res = await agent(app.getHttpServer()).get("/users/whoami").set("Authorization", `Bearer ${token}`);
+            const res = await agent(app.getHttpServer())
+                .get(`/users/whoami?token=${token}`)
+                .set("Authorization", `Bearer ${token}`);
 
             expect(res.status).toEqual(200);
             expect(res.body).toEqual({
@@ -41,7 +43,9 @@ describe("Users", () => {
 
         it("should return a 404 when a valid token for a user who doesn't exist is sent", async () => {
             const res = await agent(app.getHttpServer())
-                .get("/users/whoami")
+                .get(
+                    "/users/whoami?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso",
+                )
                 .set(
                     "Authorization",
                     `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`,

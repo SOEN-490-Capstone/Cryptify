@@ -6,6 +6,7 @@ import { AlchemyDecorator } from "../../src/services/alchemy_decorator";
 import { AppModule } from "../../src/modules/app.module";
 import fetch from "node-fetch";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { BigNumber } from "@ethersproject/bignumber";
 
 const { Response } = jest.requireActual("node-fetch");
 jest.mock("node-fetch", () => jest.fn());
@@ -15,6 +16,20 @@ describe("wallets", () => {
     const fakeAlchemyDecorator: Partial<AlchemyDecorator> = {
         getBalance: async () => {
             return { toString: () => "" } as any;
+        },
+        getTransaction: async () => {
+            return {
+                data: "string",
+                value: new BigNumber("", "1"),
+                hash: "",
+                nonce: 1,
+                confirmations: 1,
+                from: "",
+                wait: (): any => ({}),
+                chainId: 1,
+                gasPrice: new BigNumber("", "1"),
+                gasLimit: new BigNumber("", "1"),
+            };
         },
         getAssetTransfers: async () => {
             return {

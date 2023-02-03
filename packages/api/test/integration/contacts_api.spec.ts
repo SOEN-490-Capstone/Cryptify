@@ -41,6 +41,8 @@ describe("Contacts", () => {
                     contactName: "John Doe",
                     ethWallets: [],
                     btcWallets: [],
+                    ethWalletsDelete: [],
+                    btcWalletsDelete: [],
                 });
 
             expect(res.status).toEqual(201);

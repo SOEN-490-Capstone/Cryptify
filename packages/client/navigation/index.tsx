@@ -276,6 +276,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                             onPress={() =>
                                 navigation.navigate("AddContactScreen", {
                                     prefilledWalletAddress: route.params.prefilledWalletAddress,
+                                    contacts: null,
                                 })
                             }
                             testID="createContactButton"

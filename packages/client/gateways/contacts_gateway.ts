@@ -18,6 +18,15 @@ export class ContactsGateway extends AbstractApiGateway {
         return this.request<Contact[]>(Method.GET, headers, path, null);
     }
 
+    async findContacts(req: GetContactsRequest, token: string): Promise<Contact[]> {
+        const path = `users/${req.id}/contacts/${req.name}`;
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+
+        return this.request<Contact[]>(Method.GET, headers, path, null);
+    }
+
     async createContacts(req: CreateContactRequest, token: string): Promise<Contact[]> {
         const path = `users/${req.userId}/contacts`;
         const headers = {

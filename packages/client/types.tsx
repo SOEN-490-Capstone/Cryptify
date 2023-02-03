@@ -12,6 +12,7 @@ import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -105,6 +106,7 @@ type ContactListScreenProps = {
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
+    contacts: Contact[];
 };
 
 export type HomeStackParamList = {

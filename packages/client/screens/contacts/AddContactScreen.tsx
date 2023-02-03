@@ -28,6 +28,7 @@ type Props = CompositeScreenProps<
 
 export default function AddContactScreen(props: Props) {
     const contactsGateway = new ContactsGateway();
+    const isEditMode = props.route.params?.contacts;
 
     const { token, user } = React.useContext(AuthContext);
 
@@ -36,19 +37,29 @@ export default function AddContactScreen(props: Props) {
         CurrencyType.ETHEREUM,
     )
         ? [props.route.params.prefilledWalletAddress]
+        : isEditMode
+        ? props.route.params.contacts
+              .filter((c) => getCurrencyType(c.walletAddress) === CurrencyType.ETHEREUM)
+              .map((c) => c.walletAddress)
         : [];
     const defaultBtcWallets = isValidCurrencyAddress(
         props.route.params?.prefilledWalletAddress || "",
         CurrencyType.BITCOIN,
     )
         ? [props.route.params.prefilledWalletAddress]
+        : isEditMode
+        ? props.route.params.contacts
+              .filter((c) => getCurrencyType(c.walletAddress) === CurrencyType.BITCOIN)
+              .map((c) => c.walletAddress)
         : [];
 
     const initialValues: CreateContactRequest = {
-        contactName: "",
+        contactName: isEditMode ? props.route.params.contacts[0].contactName : "",
         userId: user.id,
         ethWallets: defaultEthWallets,
         btcWallets: defaultBtcWallets,
+        ethWalletsDelete: [],
+        btcWalletsDelete: [],
     };
 
     function AddWalletFieldArray({
@@ -67,7 +78,9 @@ export default function AddContactScreen(props: Props) {
         const currencyTouched = currencyType === CurrencyType.BITCOIN ? touched.btcWallets : touched.ethWallets;
         const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
-        const [isCollapsed, setIsCollapsed] = React.useState<boolean>(!props.route.params?.prefilledWalletAddress);
+        const [isCollapsed, setIsCollapsed] = React.useState<boolean>(
+            !props.route.params?.prefilledWalletAddress && !isEditMode,
+        );
 
         return (
             <>
@@ -200,11 +213,21 @@ export default function AddContactScreen(props: Props) {
                 return;
             }
 
-            const requestValues = { ...values };
-            requestValues.btcWallets = requestValues.btcWallets?.filter((w) => w !== "");
-            requestValues.ethWallets = requestValues.ethWallets?.filter((w) => w !== "");
+            const requestValuesInsert = { ...values };
+            requestValuesInsert.btcWalletsDelete = initialValues.btcWallets?.filter(
+                (w) => w !== "" && !requestValuesInsert.btcWallets.includes(w),
+            );
+            requestValuesInsert.ethWalletsDelete = initialValues.ethWallets?.filter(
+                (w) => w !== "" && !requestValuesInsert.ethWallets.includes(w),
+            );
+            requestValuesInsert.btcWallets = requestValuesInsert.btcWallets?.filter(
+                (w) => w !== "" && !initialValues.btcWallets.includes(w),
+            );
+            requestValuesInsert.ethWallets = requestValuesInsert.ethWallets?.filter(
+                (w) => w !== "" && !initialValues.ethWallets.includes(w),
+            );
 
-            await contactsGateway.createContacts(requestValues, token);
+            await contactsGateway.createContacts(requestValuesInsert, token);
             props.navigation.goBack();
             if (props.route.params?.prefilledWalletAddress) {
                 props.navigation.goBack();
@@ -270,7 +293,7 @@ export default function AddContactScreen(props: Props) {
                             onPress={submitForm}
                             testID="submitCreateContactButton"
                         >
-                            Add Contact
+                            {isEditMode ? "Edit Contact" : "Add Contact"}
                         </Button>
                     </ScrollView>
                 )}

@@ -15,11 +15,15 @@ export class ContactsService {
         return this.contactRepository.find({ where: { userId }, order: { contactName: "ASC" } });
     }
 
+    async find(userId: number, contactName: string) {
+        return this.contactRepository.find({ where: { userId, contactName } });
+    }
+
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
 
-        const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
-        const contacts = walletAddrs.map((addr) =>
+        const walletAddrsDelete = [...createContactRequest.btcWalletsDelete, ...createContactRequest.ethWalletsDelete];
+        const contactsToDelete = walletAddrsDelete.map((addr) =>
             this.contactRepository.create({
                 userId,
                 contactName,
@@ -27,7 +31,18 @@ export class ContactsService {
             }),
         );
 
-        await this.contactRepository.insert(contacts);
-        return contacts;
+        await this.contactRepository.remove(contactsToDelete);
+
+        const walletAddrsInsert = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
+        const contactsToAdd = walletAddrsInsert.map((addr) =>
+            this.contactRepository.create({
+                userId,
+                contactName,
+                walletAddress: addr,
+            }),
+        );
+
+        await this.contactRepository.insert(contactsToAdd);
+        return [...contactsToAdd, ...contactsToDelete];
     }
 }

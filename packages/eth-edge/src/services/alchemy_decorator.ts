@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import { AssetTransfersWithMetadataParams, AssetTransfersWithMetadataResponse } from "alchemy-sdk/dist/src/types/types";
 import { BigNumber } from "@ethersproject/bignumber";
+import { TransactionResponse } from "@ethersproject/abstract-provider";
 
 @Injectable()
 export class AlchemyDecorator {
@@ -21,5 +22,9 @@ export class AlchemyDecorator {
 
     async getAssetTransfers(params: AssetTransfersWithMetadataParams): Promise<AssetTransfersWithMetadataResponse> {
         return this.delegate.core.getAssetTransfers(params);
+    }
+
+    async getTransaction(hash: string): Promise<TransactionResponse> {
+        return this.delegate.core.getTransaction(hash);
     }
 }

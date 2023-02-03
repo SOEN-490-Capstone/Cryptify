@@ -2,7 +2,8 @@ import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
+import { number } from "yup";
 
 @Injectable()
 export class ContactsService {
@@ -22,13 +23,12 @@ export class ContactsService {
     async delete(userId: number, contactName: string) {
         return this.contactRepository.delete({ userId: userId, contactName: contactName });
     }
-
+    
     async create(createContactRequest: CreateContactRequest): Promise<Contact[]> {
         const { userId, contactName } = createContactRequest;
-        await this.delete(userId, contactName);
 
-        const walletAddrs = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
-        const contacts = walletAddrs.map((addr) =>
+        const walletAddrsDelete = [...createContactRequest.btcWalletsDelete, ...createContactRequest.ethWalletsDelete];
+        const contactsToDelete = walletAddrsDelete.map((addr) =>
             this.contactRepository.create({
                 userId,
                 contactName,
@@ -36,7 +36,18 @@ export class ContactsService {
             }),
         );
 
-        await this.contactRepository.insert(contacts);
-        return contacts;
+        await this.contactRepository.remove(contactsToDelete);
+
+        const walletAddrsInsert = [...createContactRequest.btcWallets, ...createContactRequest.ethWallets];
+        const contactsToAdd = walletAddrsInsert.map((addr) =>
+            this.contactRepository.create({
+                userId,
+                contactName,
+                walletAddress: addr,
+            }),
+        );
+
+        await this.contactRepository.insert(contactsToAdd);
+        return contactsToAdd;
     }
 }

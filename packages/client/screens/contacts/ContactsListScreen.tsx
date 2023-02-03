@@ -65,6 +65,8 @@ export default function ContactsListScreen({ route, navigation }: Props) {
                 userId: user.id,
                 ethWallets: [route.params.prefilledWalletAddress],
                 btcWallets: [],
+                ethWalletsDelete: [],
+                btcWalletsDelete: [],
             },
             token,
         );

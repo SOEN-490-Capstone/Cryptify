@@ -58,6 +58,8 @@ export default function AddContactScreen(props: Props) {
         userId: user.id,
         ethWallets: defaultEthWallets,
         btcWallets: defaultBtcWallets,
+        ethWalletsDelete: [],
+        btcWalletsDelete: [],
     };
 
     function AddWalletFieldArray({
@@ -211,11 +213,13 @@ export default function AddContactScreen(props: Props) {
                 return;
             }
 
-            const requestValues = { ...values };
-            requestValues.btcWallets = requestValues.btcWallets?.filter((w) => w !== "");
-            requestValues.ethWallets = requestValues.ethWallets?.filter((w) => w !== "");
+            const requestValuesInsert = { ...values };
+            requestValuesInsert.btcWalletsDelete = initialValues.btcWallets?.filter((w) => w !== "" && !requestValuesInsert.btcWallets.includes(w));
+            requestValuesInsert.ethWalletsDelete = initialValues.ethWallets?.filter((w) => w !== "" && !requestValuesInsert.ethWallets.includes(w));
+            requestValuesInsert.btcWallets = requestValuesInsert.btcWallets?.filter((w) => w !== "" && !initialValues.btcWallets.includes(w));
+            requestValuesInsert.ethWallets = requestValuesInsert.ethWallets?.filter((w) => w !== "" && !initialValues.ethWallets.includes(w));
 
-            await contactsGateway.createContacts(requestValues, token);
+            await contactsGateway.createContacts(requestValuesInsert, token);
             props.navigation.goBack();
             if (props.route.params?.prefilledWalletAddress) {
                 props.navigation.goBack();

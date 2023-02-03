@@ -20,15 +20,15 @@ describe("wallets", () => {
         getTransaction: async () => {
             return {
                 data: "string",
-                value: new BigNumber("", "1"),
+                value: BigNumber.from(123),
                 hash: "",
                 nonce: 1,
                 confirmations: 1,
                 from: "",
                 wait: (): any => ({}),
                 chainId: 1,
-                gasPrice: new BigNumber("", "1"),
-                gasLimit: new BigNumber("", "1"),
+                gasPrice: BigNumber.from(123),
+                gasLimit: BigNumber.from(123),
             };
         },
         getAssetTransfers: async () => {

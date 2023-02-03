@@ -23,10 +23,10 @@ export class Transaction {
     @Column({ nullable: false })
     amount: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     gasPrice: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     gasLimit: string;
 
     @CreateDateColumn({ type: "timestamp" })

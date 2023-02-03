@@ -52,6 +52,7 @@ describe("ContactsController", () => {
         it("should return contacts found by id", async () => {
             const req = {
                 id: 1,
+                name: "",
             };
 
             expect(await controller.findAll(req)).toEqual([contact]);
@@ -65,6 +66,8 @@ describe("ContactsController", () => {
                 userId: 1,
                 ethWallets: [],
                 btcWallets: [],
+                ethWalletsDelete: [],
+                btcWalletsDelete: [],
             };
 
             expect(await controller.create(req)).toEqual([contact]);

@@ -3,7 +3,7 @@ import { View } from "../components/Themed";
 import { Center, FormControl, HStack, Input, Text, VStack } from "native-base";
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { TagsGateway } from "../gateways/tags_gateway";
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import { HomeStackScreenProps } from "../types";
@@ -20,11 +20,9 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
 
     const formikRef = React.useRef<FormikProps<any>>(null);
 
-    const [transactionTags, setTransactionTags] = React.useState<TransactionTag[]>([
-        ...props.route.params.transactionTags,
-    ]);
-    const [suggestedTags, setSuggestedTags] = React.useState<TransactionTag[]>([]);
-    const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<TransactionTag[]>([
+    const [transactionTags, setTransactionTags] = React.useState<Tag[]>([...props.route.params.transactionTags]);
+    const [suggestedTags, setSuggestedTags] = React.useState<Tag[]>([]);
+    const [transactionTagsNotAdded, setTransactionTagsNotAdded] = React.useState<Tag[]>([
         ...props.route.params.transactionTagsNotAdded,
     ]);
     const [isSuggestionTagsAvailable, setIsSuggestionTagsAvailable] = React.useState<boolean>(false);
@@ -52,7 +50,7 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
         }
     }
 
-    async function addTransactionTag(tag: TransactionTag): Promise<void> {
+    async function addTransactionTag(tag: Tag): Promise<void> {
         const updatedTag = await tagsGateway.updateTag(
             {
                 userId: user.id,
@@ -94,7 +92,7 @@ export default function AddTransactionTagsScreen(props: HomeStackScreenProps<"Ad
         }
     }
 
-    function updateTagStates(addTag: TransactionTag): void {
+    function updateTagStates(addTag: Tag): void {
         const updatedTransactionsNotAdded = transactionTagsNotAdded.filter((t) => t.tagName !== addTag.tagName);
         const updatedTransactionTags = [...transactionTags, addTag];
 

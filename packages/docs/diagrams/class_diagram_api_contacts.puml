@@ -1,5 +1,5 @@
 @startuml
-class TransactionTag {
+class Tag {
     +tagName: string
     +userId: number
     +user: User
@@ -14,7 +14,7 @@ class Transaction {
     +contactOut: Contact
     +amount: string
     +createdAt: Date
-    +tags: TransactionTag[]
+    +tags: Tag[]
 }
 enum CurrencyType {
     ETHEREUM
@@ -37,7 +37,7 @@ class User {
     +areNotificationsEnabled: boolean
     +createdAt: Date
     +wallets: Wallet[]
-    +tags: TransactionTag[]
+    +tags: Tag[]
     +contacts: Contact[]
 }
 class Contact {
@@ -65,15 +65,15 @@ class ContactsController {
     +findAll(params: GetContactsRequest): Promise<Contact[]>
     +create(body: CreateContactRequest): Promise<Contact[]>
 }
-TransactionTag --> "1" User
-TransactionTag --> "*" Transaction
+Tag --> "1" User
+Tag --> "*" Transaction
 Transaction --> "1" Contact
-Transaction --> "*" TransactionTag
+Transaction --> "*" Tag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
 User --> "*" Wallet
-User --> "*" TransactionTag
+User --> "*" Tag
 User --> "*" Contact
 Contact --> "1" User
 ContactsService --> "1" Contact

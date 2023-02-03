@@ -8,7 +8,7 @@ import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/n
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import { TransactionTag } from "@cryptify/common/src/domain/entities/TransactionTag";
+import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
@@ -41,10 +41,10 @@ type TransactionTagsScreenProps = {
 type AddTransactionTagsScreenProps = {
     transaction: Transaction;
     setTransaction: React.Dispatch<React.SetStateAction<Transaction>>;
-    transactionTags: TransactionTag[];
-    setTransactionTags: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
-    transactionTagsNotAdded: TransactionTag[];
-    setTransactionTagsNotAdded: React.Dispatch<React.SetStateAction<TransactionTag[]>>;
+    transactionTags: Tag[];
+    setTransactionTags: React.Dispatch<React.SetStateAction<Tag[]>>;
+    transactionTagsNotAdded: Tag[];
+    setTransactionTagsNotAdded: React.Dispatch<React.SetStateAction<Tag[]>>;
 };
 
 type WalletOverviewScreenProps = {
@@ -84,7 +84,7 @@ type FilterScreenProps = {
 };
 
 type EditTagScreenProps = {
-    tag: TransactionTag;
+    tag: Tag;
 };
 
 type SignUpNotificationsScreenProps = {
@@ -144,6 +144,8 @@ export type SettingsStackParamList = {
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;
+    AccountScreen: undefined;
+    AccountTypeScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

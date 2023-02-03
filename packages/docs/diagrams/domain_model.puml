@@ -16,7 +16,7 @@ class EthereumTransaction extends Transaction {
 class BitcoinTransaction extends Transaction {
 }
 
-class TransactionTag {
+class Tag {
 }
 
 class Wallet {
@@ -28,7 +28,7 @@ class EthereumWallet extends Wallet {
 class BitcoinWallet extends Wallet {
 }
 
-class WalletTag {
+class Contact {
 }
 
 class EthereumBlockchain {
@@ -42,8 +42,8 @@ skinparam linetype ortho
 
 User --> "*" Wallet : owns
 Wallet --> "*" Transaction : has
-Transaction --> "*" TransactionTag : labeled with
-Wallet --> "*" WalletTag : labeled with
+Transaction ---> "*" Tag : labeled with
+Wallet ---> "*" Contact : labeled with
 EthereumBlockchain "1" --> "*" EthereumTransaction : from
 EthereumBlockchain "1" --> "*" EthereumWallet : from
 BitcoinBlockchain "1" --> "*" BitcoinTransaction : from

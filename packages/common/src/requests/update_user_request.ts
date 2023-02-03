@@ -1,3 +1,5 @@
+import { Role } from "@cryptify/common/src/domain/role";
+
 export interface UpdateUserRequest {
     userId: number;
     firstName?: string;
@@ -5,4 +7,5 @@ export interface UpdateUserRequest {
     email?: string;
     password?: string;
     areNotificationsEnabled?: boolean;
+    role?: Role;
 }

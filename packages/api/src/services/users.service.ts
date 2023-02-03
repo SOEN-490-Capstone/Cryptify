@@ -50,6 +50,9 @@ export class UsersService {
         if (updateUserRequest.areNotificationsEnabled != null) {
             user.areNotificationsEnabled = updateUserRequest.areNotificationsEnabled;
         }
+        if (updateUserRequest.role != null) {
+            user.role = updateUserRequest.role;
+        }
 
         return this.userRepository.save(user);
     }

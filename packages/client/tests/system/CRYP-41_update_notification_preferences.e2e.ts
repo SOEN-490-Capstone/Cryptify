@@ -20,7 +20,7 @@ describe("CRYP-41 Update notification preferences", () => {
 
         // Nav to notifications preference page
         await element(by.id("settingsTab")).tap();
-        await element(by.id("notificationButton")).tap();
+        await element(by.id("notificationsButton")).tap();
         await expect(element(by.text("Notifications"))).toBeVisible();
 
         // Toggle preferences back and forth

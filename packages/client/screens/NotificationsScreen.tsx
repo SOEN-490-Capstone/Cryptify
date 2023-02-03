@@ -21,10 +21,11 @@ export default function NotificationsScreen() {
             token,
         );
 
-        user.areNotificationsEnabled = !isEnabled;
-        setUser(user);
-
         setIsEnabled(!isEnabled);
+        setUser({
+            ...user,
+            areNotificationsEnabled: !isEnabled,
+        });
     }
 
     return (

@@ -15,6 +15,8 @@ describe("TransactionController", () => {
         walletOut: "string",
         contactOut: null,
         amount: "string",
+        gasLimit: "null",
+        gasPrice: "null",
         createdAt: new Date(),
         tags: [],
     };

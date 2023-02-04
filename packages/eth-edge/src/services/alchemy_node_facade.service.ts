@@ -49,16 +49,23 @@ export class AlchemyNodeServiceFacade {
         // We normalize the currency to remove scientific notation that is in
         // some alchemy transactions then convert all transaction amounts
         // from ETHER to WEI so we can represent them as BigIntegers
-        return transfers.map((transfer) => ({
-            id: -1,
-            transactionAddress: transfer.hash,
-            walletIn: transfer.to,
-            contactIn: null,
-            walletOut: transfer.from,
-            contactOut: null,
-            amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
-            createdAt: new Date(transfer.metadata.blockTimestamp),
-            tags: [],
-        }));
+        return Promise.all(
+            transfers.map(async (transfer) => {
+                const transaction = await this.alchemy.getTransaction(transfer.hash);
+                return {
+                    id: -1,
+                    transactionAddress: transfer.hash,
+                    walletIn: transfer.to,
+                    contactIn: null,
+                    walletOut: transfer.from,
+                    contactOut: null,
+                    amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
+                    gasPrice: transaction.gasPrice.toString(),
+                    gasLimit: transaction.gasLimit.toString(),
+                    createdAt: new Date(transfer.metadata.blockTimestamp),
+                    tags: [],
+                };
+            }),
+        );
     }
 }

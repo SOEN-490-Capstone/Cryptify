@@ -42,6 +42,8 @@ describe("WalletsController", () => {
         walletOut: "string",
         contactOut: null,
         amount: "string",
+        gasPrice: "string",
+        gasLimit: "string",
         createdAt: new Date(),
         tags: [],
     };

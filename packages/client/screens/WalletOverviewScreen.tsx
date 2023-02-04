@@ -136,7 +136,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
                 <Text size={"title3"} fontWeight={"semibold"} style={styles.transactions}>
                     Transactions
                 </Text>
-                {transactions.length != 0 && (
+                {transactions.length !== 0 && (
                     <Pressable
                         testID="transactionsListButton"
                         onPress={() =>

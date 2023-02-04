@@ -17,6 +17,7 @@ import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import TransactionDetailsActionSheet from "../TransactionDetailsActionSheet";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
     txn: Transaction;
@@ -40,6 +41,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
     const [transactionTags, setTransactionTags] = React.useState<Tag[]>([]);
     const isIncomingTransaction = wallet.address == transaction.walletIn;
+    const tranasctionFee = wallet.currencyType === CurrencyType.ETHEREUM? (+transaction.gasLimit)* +transaction.gasPrice : 0;
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);
     const [tagsContainerWidth, setTagsContainerWidth] = React.useState<number>(0);
@@ -258,7 +260,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
             />
             <MultiLineListItem
                 label={"Fee"}
-                value={`${getFormattedAmount(String(0), wallet.currencyType)} ${typeToISOCode[wallet.currencyType]}`}
+                value={`${getFormattedAmount(String(tranasctionFee), wallet.currencyType)} ${typeToISOCode[wallet.currencyType]}`}
             />
             <MultiLineListItem
                 label={"From"}

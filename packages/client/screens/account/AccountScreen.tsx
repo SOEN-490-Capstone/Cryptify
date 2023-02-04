@@ -38,6 +38,7 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
         <View style={styles.view}>
             <VStack space="20px" flex={1}>
                 <MultiLineListItem label={"Name"} value={`${user.firstName} ${user.lastName}`} />
+                <MultiLineListItem label={"Email"} value={`${user.email}`} />
                 <MultiLineListItem
                     label={"Account Type"}
                     value={titleCase(user.role)}

@@ -261,7 +261,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
             />
             <MultiLineListItem
                 label={"Fee"}
-                value={`${getFormattedAmount(String(tranasctionFee), wallet.currencyType)} ${
+                value={`${getFormattedAmount(tranasctionFee.toString(), wallet.currencyType)} ${
                     typeToISOCode[wallet.currencyType]
                 }`}
             />

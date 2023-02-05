@@ -4,7 +4,9 @@ import Web3 from "web3";
 
 export function getTransactionByWallet(transactions: Transaction[], walletAddress: string): Transaction[] {
     return transactions.filter(
-        (transaction) => transaction.walletIn == walletAddress || transaction.walletOut == walletAddress,
+        (transaction) =>
+            transaction.walletIn.toLowerCase() === walletAddress.toLowerCase() ||
+            transaction.walletOut.toLowerCase() === walletAddress.toLowerCase(),
     );
 }
 

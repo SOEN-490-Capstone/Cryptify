@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function TransactionListItem({ transaction, wallet, navigation }: Props) {
-    const isIncomingTransaction = wallet.address == transaction.walletIn;
+    const isIncomingTransaction = wallet.address.toLowerCase() === transaction.walletIn.toLowerCase();
 
     function getFormattedDate(timestamp: string): string {
         const date = new Date(timestamp);

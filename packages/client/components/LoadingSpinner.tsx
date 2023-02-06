@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Animated, Easing } from "react-native";
+import { Animated, Easing } from "react-native";
 
-const LoadingSpinner = () => {
+export default function LoadingSpinner() {
     const spinValue = new Animated.Value(0);
 
     Animated.loop(
@@ -19,13 +19,6 @@ const LoadingSpinner = () => {
     });
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Animated.Image
-                style={{ transform: [{ rotate: spin }] }}
-                source={require("../assets/images/Spinner.png")}
-            />
-        </View>
+        <Animated.Image style={{ transform: [{ rotate: spin }] }} source={require("../assets/images/Spinner.png")} />
     );
-};
-
-export default LoadingSpinner;
+}

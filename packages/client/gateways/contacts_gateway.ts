@@ -1,4 +1,5 @@
 import { GetContactsRequest } from "@cryptify/common/src/requests/get_contacts_request";
+import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
@@ -34,5 +35,14 @@ export class ContactsGateway extends AbstractApiGateway {
         };
 
         return this.request<Contact[]>(Method.POST, headers, path, req);
+    }
+
+    async deleteContact(req: DeleteContactRequest, token: string): Promise<Contact[]> {
+        const path = `users/${req.id}/tags/${req.name}`;
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+
+        return this.request<Contact[]>(Method.DELETE, headers, path, null);
     }
 }

@@ -38,7 +38,7 @@ export class ContactsGateway extends AbstractApiGateway {
     }
 
     async deleteContact(req: DeleteContactRequest, token: string): Promise<Contact[]> {
-        const path = `users/${req.id}/tags/${req.name}`;
+        const path = `users/${req.id}/contacts/${req.name}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

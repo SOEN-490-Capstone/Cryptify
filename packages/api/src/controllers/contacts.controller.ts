@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, Delete } from "@nestjs/common";
 import { ContactsService } from "../services/contacts.service";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
+import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
 import { GetContactsRequest } from "@cryptify/common/src/requests/get_contacts_request";
 import { getContactsSchema } from "@cryptify/common/src/validations/get_contacts_schema";
+import { deleteContactSchema } from "@cryptify/common/src/validations/delete_contact_schema";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { createContactSchema } from "@cryptify/common/src/validations/create_contact_schema";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
@@ -33,5 +35,12 @@ export class ContactsController {
     async create(@Body() body: CreateContactRequest): Promise<Contact[]> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
+    }
+
+    @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
+    @Delete("/users/:id/contacts/:name")
+    async delete(@Param() params: DeleteContactRequest): Promise<Contact[]> {
+        const deleteContactReq = await useValidate(deleteContactSchema, params);
+        return this.contactsService.delete(deleteContactReq);
     }
 }

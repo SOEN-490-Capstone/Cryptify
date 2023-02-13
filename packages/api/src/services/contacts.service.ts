@@ -1,5 +1,6 @@
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
+import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -44,5 +45,15 @@ export class ContactsService {
 
         await this.contactRepository.insert(contactsToAdd);
         return [...contactsToAdd, ...contactsToDelete];
+    }
+
+    async delete(deleteContactRequest: DeleteContactRequest): Promise<Contact[]> {
+        const { id, name } = deleteContactRequest;
+        const contacts = await this.contactRepository.findBy({ userId: id, contactName: name });
+        if (contacts) {
+            return await this.contactRepository.remove(contacts);
+        }
+
+        return [];
     }
 }

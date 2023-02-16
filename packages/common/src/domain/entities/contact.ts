@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { User } from "./user";
 import { ContactAddress } from "@cryptify/common/src/domain/entities/contact_address";
 
@@ -15,15 +15,18 @@ export class Contact {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user?: User;
 
-    @JoinTable()
-    @ManyToMany(() => ContactAddress, (address) => address.contacts, { onUpdate: "CASCADE", onDelete: "CASCADE" })
+    @OneToMany(() => ContactAddress, (address) => address.contacts, {
+        cascade: true,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+    })
     addresses: ContactAddress[];
 }
 
 export class ContactBuilder {
     private contactName: string;
     private userId: number;
-    private addresses: string[];
+    private addresses: string[] = [];
 
     setContactName(name: string): this {
         this.contactName = name;

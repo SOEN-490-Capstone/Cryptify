@@ -15,3 +15,5 @@ export const ERROR_TAG_NOT_FOUND = "Transaction tag not found.";
 export const ERROR_TRANSACTIONS_NOT_FOUND = "One or more transactions not found.";
 
 export const ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT = "This name is already associated with another contact.";
+export const ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT =
+    "This Bitcoin wallet address is already associated with another contact.";

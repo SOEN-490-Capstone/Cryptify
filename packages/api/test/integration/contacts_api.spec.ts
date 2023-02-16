@@ -39,10 +39,7 @@ describe("Contacts", () => {
                 .send({
                     userId: 1,
                     contactName: "John Doe",
-                    ethWallets: [],
-                    btcWallets: [],
-                    ethWalletsDelete: [],
-                    btcWalletsDelete: [],
+                    walletAddrs: [],
                 });
 
             expect(res.status).toEqual(201);

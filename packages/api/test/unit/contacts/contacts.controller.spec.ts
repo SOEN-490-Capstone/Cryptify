@@ -26,8 +26,12 @@ describe("ContactsController", () => {
     const contact: Contact = {
         userId: 1,
         user,
-        walletAddress: "0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c",
         contactName: "test",
+        addresses: [
+            {
+                walletAddress: "0xf2f5c73fa04406b1995e397b55c24ab1f3ea726c",
+            },
+        ],
     };
 
     beforeEach(async () => {
@@ -36,7 +40,7 @@ describe("ContactsController", () => {
                 return [contact];
             },
             create: async () => {
-                return [contact];
+                return contact;
             },
         };
 
@@ -64,10 +68,7 @@ describe("ContactsController", () => {
             const req = {
                 contactName: "test",
                 userId: 1,
-                ethWallets: [],
-                btcWallets: [],
-                ethWalletsDelete: [],
-                btcWalletsDelete: [],
+                walletAddrs: [],
             };
 
             expect(await controller.create(req)).toEqual([contact]);

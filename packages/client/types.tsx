@@ -106,7 +106,6 @@ type ContactListScreenProps = {
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
-    contacts: Contact[];
 };
 
 export type HomeStackParamList = {
@@ -132,6 +131,15 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
     RootStackScreenProps<keyof RootStackParamList>
 >;
 
+type ContactOverviewScreenProps = {
+    contact: Contact;
+};
+
+type EditContactScreenProps = {
+    contact: Contact;
+    setContact: React.Dispatch<React.SetStateAction<Contact>>;
+};
+
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -140,6 +148,8 @@ export type SettingsStackParamList = {
     WalletSettingsScreen: WalletSettingsScreenProps;
     ContactsListScreen: ContactListScreenProps;
     AddContactScreen: AddContactScreenProps;
+    EditContactScreen: EditContactScreenProps;
+    ContactOverviewScreen: ContactOverviewScreenProps;
     TagsSettingsScreen: undefined;
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;

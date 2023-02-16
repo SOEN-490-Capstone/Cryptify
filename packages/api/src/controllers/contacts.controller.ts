@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Delete } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, Delete, Patch } from "@nestjs/common";
 import { ContactsService } from "../services/contacts.service";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
@@ -11,6 +11,8 @@ import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { CanAccessResourceGuard } from "../guards/can_access_resource.guard";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
+import { updateContactSchema } from "@cryptify/common/src/validations/update_contact_schema";
 
 @Controller()
 export class ContactsController {
@@ -23,23 +25,23 @@ export class ContactsController {
         return this.contactsService.findAll(getContactsRequest.id);
     }
 
-    @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
-    @Get("/users/:id/contacts/:name")
-    async find(@Param() params: GetContactsRequest): Promise<Contact[]> {
-        const getContactsRequest = await useValidate(getContactsSchema, params);
-        return this.contactsService.find(getContactsRequest.id, getContactsRequest.name);
-    }
-
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("/users/:id/contacts")
-    async create(@Body() body: CreateContactRequest): Promise<Contact[]> {
+    async create(@Body() body: CreateContactRequest): Promise<Contact> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
+    @Patch("/users/:id/contacts/:name")
+    async update(@Body() body: UpdateContactRequest): Promise<Contact> {
+        const updateContactsRequest = await useValidate(updateContactSchema, body);
+        return this.contactsService.update(updateContactsRequest);
+    }
+
+    @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Delete("/users/:id/contacts/:name")
-    async delete(@Param() params: DeleteContactRequest): Promise<Contact[]> {
+    async delete(@Param() params: DeleteContactRequest): Promise<Contact> {
         const deleteContactReq = await useValidate(deleteContactSchema, params);
         return this.contactsService.delete(deleteContactReq);
     }

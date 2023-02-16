@@ -55,6 +55,8 @@ import ReportSelectionScreen from "../screens/reports/ReportSelectionScreen";
 import TransactionHistoryReportScreen from "../screens/reports/TransactionHistoryReportScreen";
 import AccountScreen from "../screens/account/AccountScreen";
 import AccountTypeScreen from "../screens/account/AccountTypeScreen";
+import EditContactScreen from "../screens/contacts/EditContactScreen";
+import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -274,9 +276,9 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerRight: () => (
                         <Pressable
                             onPress={() =>
+                                // Prefilled add contact
                                 navigation.navigate("AddContactScreen", {
                                     prefilledWalletAddress: route.params.prefilledWalletAddress,
-                                    contacts: null,
                                 })
                             }
                             testID="createContactButton"
@@ -375,7 +377,13 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddContactScreen")} testID="createContactButton">
+                        <Pressable
+                            onPress={() =>
+                                // Regular add contact
+                                navigation.navigate("AddContactScreen")
+                            }
+                            testID="createContactButton"
+                        >
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),
@@ -386,6 +394,34 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 component={AddContactScreen}
                 options={{
                     title: "Add a Contact",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="EditContactScreen"
+                component={EditContactScreen}
+                options={{
+                    title: "Edit a Contact",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="ContactOverviewScreen"
+                component={ContactOverviewScreen}
+                options={{
+                    title: "",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

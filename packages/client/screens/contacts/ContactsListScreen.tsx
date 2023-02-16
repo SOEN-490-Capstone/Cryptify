@@ -8,6 +8,7 @@ import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falAddressBook } from "../../components/icons/light/falAddressBook";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"ContactsListScreen">,
@@ -25,55 +26,58 @@ export default function ContactsListScreen({ route, navigation }: Props) {
     React.useEffect(() => {
         (async () => {
             if (isFocused) {
-                const contacts = await contactsGateway.findAllContacts({ id: user.id, name: "" }, token);
+                const contacts = await contactsGateway.findAllContacts({ id: user.id }, token);
 
                 let currChar = "";
-                const listData = contacts
-                    .map((contact) => contact.contactName)
-                    .filter((name, pos, names) => names.indexOf(name) == pos)
-                    .flatMap((name) => {
-                        if (name.charAt(0).toUpperCase() !== currChar) {
-                            currChar = name.charAt(0).toUpperCase();
-                            return [
-                                { name: currChar, header: true },
-                                { name, header: false },
-                            ];
-                        } else {
-                            return [{ name, header: false }];
-                        }
-                    });
+                const listData = contacts.flatMap((contact) => {
+                    if (contact.contactName.charAt(0).toUpperCase() !== currChar) {
+                        currChar = contact.contactName.charAt(0).toUpperCase();
+                        return [
+                            {
+                                contact: {
+                                    ...contact,
+                                    contactName: currChar,
+                                },
+                                header: true,
+                            },
+                            { contact, header: false },
+                        ];
+                    } else {
+                        return [{ contact, header: false }];
+                    }
+                });
 
                 setContactsWithHeader(listData);
             }
         })();
     }, [isFocused]);
 
-    async function onSubmit(contactName: string) {
-        if (!route.params.prefilledWalletAddress) {
-            const contacts = await contactsGateway.findContacts({ id: user.id, name: contactName }, token);
-            navigation.navigate("AddContactScreen", {
-                prefilledWalletAddress: undefined,
-                contacts: contacts,
+    async function onSubmit(contact: Contact) {
+        const isQuickEdit = !!route.params.prefilledWalletAddress;
+
+        if (isQuickEdit) {
+            const walletAddrs = [
+                ...contact.addresses.map((addr) => addr.walletAddress),
+                route.params.prefilledWalletAddress,
+            ];
+            await contactsGateway.updateContact(
+                {
+                    contactName: contact.contactName,
+                    userId: user.id,
+                    walletAddrs,
+                },
+                token,
+            );
+
+            navigation.goBack();
+        } else {
+            navigation.navigate("ContactOverviewScreen", {
+                contact,
             });
         }
-
-        // Hack because the schema was not designed properly, there should only be a single array of wallet addresses
-        // because it doesn't matter what currency type they are
-        await contactsGateway.createContacts(
-            {
-                contactName,
-                userId: user.id,
-                ethWallets: [route.params.prefilledWalletAddress],
-                btcWallets: [],
-                ethWalletsDelete: [],
-                btcWalletsDelete: [],
-            },
-            token,
-        );
-
-        navigation.goBack();
     }
 
+    // TODO use a more efficient way of getting these indicies
     const stickyHeaderIndices = contactsWithHeader.flatMap((obj) =>
         obj.header ? [contactsWithHeader.indexOf(obj)] : [],
     );
@@ -98,22 +102,18 @@ export default function ContactsListScreen({ route, navigation }: Props) {
                                         fontWeight={"semibold"}
                                         style={{ paddingHorizontal: 15, paddingVertical: 5 }}
                                     >
-                                        {item.name}
+                                        {item.contact.contactName}
                                     </Text>
                                 </Box>
                             ) : (
                                 <Pressable
-                                    onPress={() => onSubmit(item.name)}
-                                    _pressed={
-                                        route.params.prefilledWalletAddress
-                                            ? {
-                                                  background: "text.200",
-                                              }
-                                            : {}
-                                    }
+                                    onPress={() => onSubmit(item.contact)}
+                                    _pressed={{ background: "text.200" }}
                                     testID="contactListItem"
                                 >
-                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>{item.name}</Text>
+                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                                        {item.contact.contactName}
+                                    </Text>
                                 </Pressable>
                             )}
                         </>
@@ -126,7 +126,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 }
 
 type ContactWithHeader = {
-    name: string;
+    contact: Contact;
     header: boolean;
 };
 

@@ -17,12 +17,16 @@ export class TransactionsService {
             this.edgeGatewayStrategyFactory.get(CurrencyType[type]),
         );
         const transactionsByType = await Promise.all(strategies.map((strategy) => strategy.getTransactions(req)));
+
         const contacts = await this.contactService.findAll(req.id);
+        const contactMap = new Map(
+            contacts.flatMap((contact) => contact.addresses.map((addr) => [addr.walletAddress, contact])),
+        );
 
         return transactionsByType.flat().map((transaction) => ({
             ...transaction,
-            contactIn: contacts.find(({ walletAddress }) => walletAddress === transaction.walletIn),
-            contactOut: contacts.find(({ walletAddress }) => walletAddress === transaction.walletOut),
+            contactIn: contactMap.get(transaction.walletIn),
+            contactOut: contactMap.get(transaction.walletOut),
         }));
     }
 }

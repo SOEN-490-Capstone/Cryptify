@@ -23,23 +23,16 @@ export class ContactsController {
         return this.contactsService.findAll(getContactsRequest.id);
     }
 
-    @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
-    @Get("/users/:id/contacts/:name")
-    async find(@Param() params: GetContactsRequest): Promise<Contact[]> {
-        const getContactsRequest = await useValidate(getContactsSchema, params);
-        return this.contactsService.find(getContactsRequest.id, getContactsRequest.name);
-    }
-
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Post("/users/:id/contacts")
-    async create(@Body() body: CreateContactRequest): Promise<Contact[]> {
+    async create(@Body() body: CreateContactRequest): Promise<Contact> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Delete("/users/:id/contacts/:name")
-    async delete(@Param() params: DeleteContactRequest): Promise<Contact[]> {
+    async delete(@Param() params: DeleteContactRequest): Promise<Contact> {
         const deleteContactReq = await useValidate(deleteContactSchema, params);
         return this.contactsService.delete(deleteContactReq);
     }

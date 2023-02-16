@@ -12,5 +12,5 @@ export class ContactAddress {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
     })
-    contacts: Contact[];
+    contacts?: Contact[];
 }

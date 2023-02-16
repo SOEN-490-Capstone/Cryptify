@@ -21,8 +21,8 @@ export class TransactionsService {
 
         return transactionsByType.flat().map((transaction) => ({
             ...transaction,
-            contactIn: contacts.find(({ walletAddress }) => walletAddress === transaction.walletIn),
-            contactOut: contacts.find(({ walletAddress }) => walletAddress === transaction.walletOut),
+            // contactIn: contacts.find(({ walletAddress }) => walletAddress === transaction.walletIn),
+            // contactOut: contacts.find(({ walletAddress }) => walletAddress === transaction.walletOut),
         }));
     }
 }

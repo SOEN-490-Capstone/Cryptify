@@ -3,7 +3,7 @@ import { CreateContactRequest } from "@cryptify/common/src/requests/create_conta
 import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { In, Repository } from "typeorm";
+import {In, Not, Repository} from "typeorm";
 import {
     ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT,
     ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT,
@@ -62,23 +62,30 @@ export class ContactsService {
         if (!contact) {
             throw new BadRequestException("Contact not found");
         }
-
-        // Check to make sure none of the address have been used in the users contacts before
-        const contactsForAddresses = await this.contactRepository.find({
-            where: {
-                userId,
-                addresses: {
-                    walletAddress: In(updateContactRequest.walletAddrs),
-                },
-            },
-        });
-        if (contactsForAddresses.length !== 0) {
-            throw new BadRequestException(ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT);
+        
+        if (updateContactRequest.newName) {
+            contact.contactName = updateContactRequest.newName;
         }
 
-        contact.addresses = updateContactRequest.walletAddrs.map((addr) => ({
-            walletAddress: addr,
-        }));
+        if (updateContactRequest.walletAddrs) {
+            // Check to make sure none of the address have been used in the users contacts before
+            const contactsForAddresses = await this.contactRepository.find({
+                where: {
+                    userId,
+                    contactName: Not(contact.contactName),
+                    addresses: {
+                        walletAddress: In(updateContactRequest.walletAddrs),
+                    },
+                },
+            });
+            if (contactsForAddresses.length !== 0) {
+                throw new BadRequestException(ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT);
+            }
+
+            contact.addresses = updateContactRequest.walletAddrs.map((addr) => ({
+                walletAddress: addr,
+            }));
+        }
 
         return this.contactRepository.save(contact);
     }

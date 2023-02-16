@@ -106,7 +106,7 @@ type ContactListScreenProps = {
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
-    contacts: Contact[];
+    contact: Contact;
 };
 
 export type HomeStackParamList = {

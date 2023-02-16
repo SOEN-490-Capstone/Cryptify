@@ -63,11 +63,11 @@ export class ContactsService {
             throw new BadRequestException("Contact not found");
         }
         
-        if (updateContactRequest.newName) {
+        if (updateContactRequest.newName !== null) {
             contact.contactName = updateContactRequest.newName;
         }
 
-        if (updateContactRequest.walletAddrs) {
+        if (updateContactRequest.walletAddrs !== null) {
             // Check to make sure none of the address have been used in the users contacts before
             const contactsForAddresses = await this.contactRepository.find({
                 where: {

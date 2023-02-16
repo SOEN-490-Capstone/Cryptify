@@ -227,7 +227,7 @@ export default function AddContactScreen(props: Props) {
                 (w) => w !== "" && !initialValues.ethWallets.includes(w),
             );
 
-            await contactsGateway.createContacts(requestValuesInsert, token);
+            await contactsGateway.createContact(requestValuesInsert, token);
             props.navigation.goBack();
             if (props.route.params?.prefilledWalletAddress) {
                 props.navigation.goBack();

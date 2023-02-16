@@ -137,6 +137,7 @@ type ContactOverviewScreenProps = {
 
 type EditContactScreenProps = {
     contact: Contact;
+    setContact: React.Dispatch<React.SetStateAction<Contact>>;
 };
 
 export type SettingsStackParamList = {

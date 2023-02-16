@@ -28,6 +28,7 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
             <ContactsForm
                 prefilledWalletAddress={undefined}
                 contact={props.route.params.contact}
+                setContact={props.route.params.setContact}
                 navigation={props.navigation}
             />
         </View>

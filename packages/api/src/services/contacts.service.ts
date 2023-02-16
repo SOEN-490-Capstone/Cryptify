@@ -58,13 +58,19 @@ export class ContactsService {
     async update(updateContactRequest: UpdateContactRequest): Promise<Contact> {
         const { userId, contactName } = updateContactRequest;
 
-        const contact = await this.contactRepository.findOneBy({ userId, contactName });
+        const contact = await this.contactRepository.findOne({
+            where: { userId, contactName },
+            relations: ["addresses"],
+        });
+        
         if (!contact) {
             throw new BadRequestException("Contact not found");
         }
         
         if (updateContactRequest.newName) {
             contact.contactName = updateContactRequest.newName;
+            // Since we are changing the primary key we have to clean up the old entity
+            await this.contactRepository.delete({ userId, contactName });
         }
 
         if (updateContactRequest.walletAddrs) {

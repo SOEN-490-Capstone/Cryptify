@@ -429,18 +429,6 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() =>
-                                navigation.navigate("EditContactScreen", {
-                                    contact: route.params.contact,
-                                })
-                            }
-                            testID="editContactButton"
-                        >
-                            <Text>Edit</Text>
-                        </Pressable>
-                    ),
                 })}
             />
             <SettingsStack.Screen

@@ -17,6 +17,7 @@ import {equals} from "@cryptify/common/src/utils/function_utils";
 
 type Props = {
     contact: Contact | undefined;
+    setContact: React.Dispatch<React.SetStateAction<Contact>> | undefined;
     prefilledWalletAddress: string | undefined;
     navigation: CompositeNavigationProp<any, any>;
 }
@@ -88,7 +89,7 @@ export default function ContactsForm(props: Props) {
         try {
             const walletAddrs = [...values.ethWallets, ...values.btcWallets].filter((addr) => addr.length !== 0);
             
-            if (props.contact) {
+            if (props.contact && props.setContact) {
                 const req = {
                     userId: user.id,
                     contactName: props.contact.contactName,
@@ -102,7 +103,8 @@ export default function ContactsForm(props: Props) {
                     req["walletAddrs"] = walletAddrs;
                 }
                 
-                await contactsGateway.updateContact(req, token);
+                const contact = await contactsGateway.updateContact(req, token);
+                props.setContact(contact);
             } else {
                 await contactsGateway.createContact({
                     contactName: values.contactName,

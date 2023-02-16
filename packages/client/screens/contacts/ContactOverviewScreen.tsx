@@ -9,11 +9,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falAddressBook } from "../../components/icons/light/falAddressBook";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
 import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import TransactionDetailsActionSheet from "../../components/TransactionDetailsActionSheet";
 
 export default function ContactOverviewScreen({ route, navigation }: SettingsStackScreenProps<"ContactOverviewScreen">) {
+    const [contact, setContact] = React.useState(route.params.contact);
+
+    React.useEffect(() => {
+        (() => {
+            navigation.setOptions({
+                headerRight: () => (
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate("EditContactScreen", {
+                                contact,
+                                setContact,
+                            })
+                        }
+                        testID="editContactButton"
+                    >
+                        <Text>Edit</Text>
+                    </Pressable>
+                ),
+            });
+        })();
+    });
+    
     return (
         <View style={styles.view}>
-            <Text>{route.params.contact.contactName}</Text>
+            <Text>{contact.contactName}</Text>
         </View>
     );
 }

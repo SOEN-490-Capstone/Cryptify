@@ -8,7 +8,7 @@ import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falAddressBook } from "../../components/icons/light/falAddressBook";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../../types";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 type Props = CompositeScreenProps<
     HomeStackScreenProps<"ContactsListScreen">,
@@ -30,19 +30,22 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
                 let currChar = "";
                 const listData = contacts.flatMap((contact) => {
-                        if (contact.contactName.charAt(0).toUpperCase() !== currChar) {
-                            currChar = contact.contactName.charAt(0).toUpperCase();
-                            return [
-                                { contact: {
+                    if (contact.contactName.charAt(0).toUpperCase() !== currChar) {
+                        currChar = contact.contactName.charAt(0).toUpperCase();
+                        return [
+                            {
+                                contact: {
                                     ...contact,
                                     contactName: currChar,
-                                }, header: true },
-                                { contact, header: false },
-                            ];
-                        } else {
-                            return [{ contact, header: false }];
-                        }
-                    });
+                                },
+                                header: true,
+                            },
+                            { contact, header: false },
+                        ];
+                    } else {
+                        return [{ contact, header: false }];
+                    }
+                });
 
                 setContactsWithHeader(listData);
             }
@@ -51,7 +54,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
     async function onSubmit(contact: Contact) {
         const isQuickEdit = !!route.params.prefilledWalletAddress;
-        
+
         if (isQuickEdit) {
             const walletAddrs = [
                 ...contact.addresses.map((addr) => addr.walletAddress),
@@ -105,10 +108,12 @@ export default function ContactsListScreen({ route, navigation }: Props) {
                             ) : (
                                 <Pressable
                                     onPress={() => onSubmit(item.contact)}
-                                    _pressed={{background: "text.200"}}
+                                    _pressed={{ background: "text.200" }}
                                     testID="contactListItem"
                                 >
-                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>{item.contact.contactName}</Text>
+                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                                        {item.contact.contactName}
+                                    </Text>
                                 </Pressable>
                             )}
                         </>

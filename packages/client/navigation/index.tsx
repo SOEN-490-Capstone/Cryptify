@@ -24,7 +24,7 @@ import { fasBars } from "../components/icons/solid/fasBars";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
-import { Pressable, Text } from "native-base";
+import { Pressable } from "native-base";
 import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
@@ -420,7 +420,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="ContactOverviewScreen"
                 component={ContactOverviewScreen}
-                options={({ route }) => ({
+                options={{
                     title: "",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
@@ -429,7 +429,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     },
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
-                })}
+                }}
             />
             <SettingsStack.Screen
                 name="TagsSettingsScreen"

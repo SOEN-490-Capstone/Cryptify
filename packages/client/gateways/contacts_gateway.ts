@@ -4,7 +4,7 @@ import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
-import {UpdateContactRequest} from "@cryptify/common/src/requests/update_contact_request";
+import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
 
 export class ContactsGateway extends AbstractApiGateway {
     constructor() {

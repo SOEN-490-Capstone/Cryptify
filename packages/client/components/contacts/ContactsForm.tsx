@@ -1,33 +1,32 @@
 import React from "react";
-import {View} from "../Themed";
-import {Formik, FormikErrors, FormikHelpers, FormikTouched} from "formik";
-import {Button, FormControl, Input, ScrollView} from "native-base";
-import {StyleSheet} from "react-native";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {titleCase} from "@cryptify/common/src/utils/string_utils";
-import {getCurrencyType, isValidCurrencyAddress} from "@cryptify/common/src/utils/currency_utils";
-import {ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY} from "@cryptify/common/src/errors/error_messages";
-import {ContactsGateway} from "../../gateways/contacts_gateway";
-import {AuthContext} from "../contexts/AuthContext";
+import { Formik, FormikHelpers } from "formik";
+import { Button, FormControl, Input, ScrollView } from "native-base";
+import { StyleSheet } from "react-native";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
+import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
+import { ContactsGateway } from "../../gateways/contacts_gateway";
+import { AuthContext } from "../contexts/AuthContext";
 import CollapsibleFormSection from "./CollapsibleFormSection";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
-import {CompositeNavigationProp} from "@react-navigation/native";
-import {UpdateContactRequest} from "@cryptify/common/src/requests/update_contact_request";
-import {equals} from "@cryptify/common/src/utils/function_utils";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
+import { equals } from "@cryptify/common/src/utils/function_utils";
 
 type Props = {
     contact: Contact | undefined;
     setContact: React.Dispatch<React.SetStateAction<Contact>> | undefined;
     prefilledWalletAddress: string | undefined;
     navigation: CompositeNavigationProp<any, any>;
-}
+};
 
 type CreateContactRequestPayload = {
-    contactName: string,
-    userId: number,
-    ethWallets: string[],
-    btcWallets: string[],
-}
+    contactName: string;
+    userId: number;
+    ethWallets: string[];
+    btcWallets: string[];
+};
 
 function getDefaultAddresses(props: Props, type: CurrencyType): string[] {
     if (props.prefilledWalletAddress && isValidCurrencyAddress(props.prefilledWalletAddress, type)) {
@@ -88,29 +87,37 @@ export default function ContactsForm(props: Props) {
 
         try {
             const walletAddrs = [...values.ethWallets, ...values.btcWallets].filter((addr) => addr.length !== 0);
-            
+
             if (props.contact && props.setContact) {
                 const req = {
                     userId: user.id,
                     contactName: props.contact.contactName,
                 } as UpdateContactRequest;
-                
+
                 if (values.contactName !== props.contact.contactName) {
                     req["newName"] = values.contactName;
                 }
-                
-                if (!equals(walletAddrs, props.contact.addresses.map((addr) => addr.walletAddress))) {
+
+                if (
+                    !equals(
+                        walletAddrs,
+                        props.contact.addresses.map((addr) => addr.walletAddress),
+                    )
+                ) {
                     req["walletAddrs"] = walletAddrs;
                 }
-                
+
                 const contact = await contactsGateway.updateContact(req, token);
                 props.setContact(contact);
             } else {
-                await contactsGateway.createContact({
-                    contactName: values.contactName,
-                    userId: user.id,
-                    walletAddrs,
-                }, token);
+                await contactsGateway.createContact(
+                    {
+                        contactName: values.contactName,
+                        userId: user.id,
+                        walletAddrs,
+                    },
+                    token,
+                );
             }
 
             props.navigation.goBack();
@@ -125,77 +132,68 @@ export default function ContactsForm(props: Props) {
     }
 
     return (
-            <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                {({ values, errors, touched, handleChange, submitForm }) => (
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                        <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
-                            <Input
-                                value={values.contactName}
-                                autoFocus={!props.contact}
-                                onChangeText={handleChange("contactName")}
-                                placeholder="Name"
-                                maxLength={20}
-                                keyboardType={"ascii-capable"}
-                                testID="contactNameInput"
-                            />
-                            <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
-                        </FormControl>
-                        {!props.prefilledWalletAddress ? (
-                            <>
-                                <CollapsibleFormSection
-                                    values={values}
-                                    handleChange={handleChange}
-                                    currencyType={CurrencyType.BITCOIN}
-                                    errors={errors}
-                                    touched={touched}
-                                    placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
-                                    initialIsCollapsed={!props.contact}
-                                    isPrefilledAddContact={false}
-                                />
-                                <CollapsibleFormSection
-                                    values={values}
-                                    handleChange={handleChange}
-                                    currencyType={CurrencyType.ETHEREUM}
-                                    errors={errors}
-                                    touched={touched}
-                                    placeholder={"Wallet address (Begins with 0x)"}
-                                    initialIsCollapsed={!props.contact}
-                                    isPrefilledAddContact={false}
-                                />
-                            </>
-                        ) : (
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+            {({ values, errors, touched, handleChange, submitForm }) => (
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                    <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
+                        <Input
+                            value={values.contactName}
+                            autoFocus={!props.contact}
+                            onChangeText={handleChange("contactName")}
+                            placeholder="Name"
+                            maxLength={20}
+                            keyboardType={"ascii-capable"}
+                            testID="contactNameInput"
+                        />
+                        <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
+                    </FormControl>
+                    {!props.prefilledWalletAddress ? (
+                        <>
                             <CollapsibleFormSection
                                 values={values}
                                 handleChange={handleChange}
-                                currencyType={getCurrencyType(props.prefilledWalletAddress)}
+                                currencyType={CurrencyType.BITCOIN}
                                 errors={errors}
                                 touched={touched}
-                                initialIsCollapsed={false}
-                                isPrefilledAddContact={true}
+                                placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
+                                initialIsCollapsed={!props.contact}
+                                isPrefilledAddContact={false}
                             />
-                        )}
-                        <Button
-                            style={styles.addContactButton}
-                            isDisabled={values.contactName.length === 0}
-                            onPress={submitForm}
-                            testID="submitCreateContactButton"
-                        >
-                            {props.contact ? "Edit Contact" : "Add Contact"}
-                        </Button>
-                    </ScrollView>
-                )}
-            </Formik>
+                            <CollapsibleFormSection
+                                values={values}
+                                handleChange={handleChange}
+                                currencyType={CurrencyType.ETHEREUM}
+                                errors={errors}
+                                touched={touched}
+                                placeholder={"Wallet address (Begins with 0x)"}
+                                initialIsCollapsed={!props.contact}
+                                isPrefilledAddContact={false}
+                            />
+                        </>
+                    ) : (
+                        <CollapsibleFormSection
+                            values={values}
+                            handleChange={handleChange}
+                            currencyType={getCurrencyType(props.prefilledWalletAddress)}
+                            errors={errors}
+                            touched={touched}
+                            initialIsCollapsed={false}
+                            isPrefilledAddContact={true}
+                        />
+                    )}
+                    <Button
+                        style={styles.addContactButton}
+                        isDisabled={values.contactName.length === 0}
+                        onPress={submitForm}
+                        testID="submitCreateContactButton"
+                    >
+                        {props.contact ? "Edit Contact" : "Add Contact"}
+                    </Button>
+                </ScrollView>
+            )}
+        </Formik>
     );
 }
-
-type AddWalletFieldArrayProps = {
-    values: CreateContactRequestPayload;
-    handleChange: any;
-    currencyType: CurrencyType;
-    errors: FormikErrors<CreateContactRequestPayload>;
-    touched: FormikTouched<CreateContactRequestPayload>;
-    placeholder?: string;
-};
 
 const styles = StyleSheet.create({
     addContactButton: {

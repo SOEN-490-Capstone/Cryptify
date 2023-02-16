@@ -3,7 +3,7 @@ import { CreateContactRequest } from "@cryptify/common/src/requests/create_conta
 import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import {In, Not, Repository} from "typeorm";
+import { In, Not, Repository } from "typeorm";
 import {
     ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT,
     ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT,
@@ -62,11 +62,11 @@ export class ContactsService {
             where: { userId, contactName },
             relations: ["addresses"],
         });
-        
+
         if (!contact) {
             throw new BadRequestException("Contact not found");
         }
-        
+
         if (updateContactRequest.newName) {
             contact.contactName = updateContactRequest.newName;
             // Since we are changing the primary key we have to clean up the old entity

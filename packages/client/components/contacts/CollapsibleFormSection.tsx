@@ -1,25 +1,25 @@
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {faBitcoin} from "../icons/brands/faBitcoin";
-import {faEthereum} from "../icons/brands/faEthereum";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { faBitcoin } from "../icons/brands/faBitcoin";
+import { faEthereum } from "../icons/brands/faEthereum";
 import React from "react";
 import { StyleSheet } from "react-native";
-import {FormControl, HStack, Input, Text, Pressable} from "native-base";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {titleCase} from "@cryptify/common/src/utils/string_utils";
-import {farChevronDown} from "../icons/regular/farChevronDown";
-import {farChevronUp} from "../icons/regular/farChevronUp";
+import { FormControl, HStack, Input, Text, Pressable } from "native-base";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { farChevronDown } from "../icons/regular/farChevronDown";
+import { farChevronUp } from "../icons/regular/farChevronUp";
 import Collapsible from "react-native-collapsible";
-import {FieldArray, FormikErrors, FormikTouched} from "formik";
-import {View} from "../Themed";
-import {falCircleXMark} from "../icons/light/falCircleXMark";
-import {fasCirclePlusSolid} from "../icons/solid/fasCirclePlusSolid";
+import { FieldArray, FormikErrors, FormikTouched } from "formik";
+import { View } from "../Themed";
+import { falCircleXMark } from "../icons/light/falCircleXMark";
+import { fasCirclePlusSolid } from "../icons/solid/fasCirclePlusSolid";
 
 type CreateContactRequestPayload = {
-    contactName: string,
-    userId: number,
-    ethWallets: string[],
-    btcWallets: string[],
-}
+    contactName: string;
+    userId: number;
+    ethWallets: string[];
+    btcWallets: string[];
+};
 
 type AddWalletFieldArrayProps = {
     values: CreateContactRequestPayload;
@@ -33,15 +33,15 @@ type AddWalletFieldArrayProps = {
 };
 
 export default function CollapsibleFormSection({
-     values,
-     handleChange,
-     currencyType,
-     errors,
-     touched,
-     placeholder,
-     initialIsCollapsed,
+    values,
+    handleChange,
+    currencyType,
+    errors,
+    touched,
+    placeholder,
+    initialIsCollapsed,
     isPrefilledAddContact,
- }: AddWalletFieldArrayProps) {
+}: AddWalletFieldArrayProps) {
     const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
     const iconColor = currencyType === CurrencyType.BITCOIN ? "#F7931A" : "#3C3C3D";
 
@@ -68,7 +68,7 @@ export default function CollapsibleFormSection({
                     {isCollapsed ? (
                         <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronDown} />
                     ) : (
-                        <FontAwesomeIcon style={styles.chevronIcon} icon={farChevronUp} size={18} />
+                        <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronUp} />
                     )}
                 </HStack>
             </Pressable>
@@ -80,9 +80,7 @@ export default function CollapsibleFormSection({
                         <View>
                             {wallets?.map((wallet, i) => (
                                 <View style={wallets.length > 1 ? { marginTop: 13 } : { marginTop: 20 }} key={i}>
-                                    <FormControl
-                                        isInvalid={!!(currencyErrors?.[i])}
-                                    >
+                                    <FormControl isInvalid={!!(currencyErrors?.[i] && currencyTouched)}>
                                         <Input
                                             value={wallet}
                                             onChangeText={handleChange(`${walletListString}[${i}]`)}
@@ -123,11 +121,7 @@ export default function CollapsibleFormSection({
                                         testID={`addAnother${currencyType}`}
                                     >
                                         <HStack style={{ marginTop: 13 }}>
-                                            <FontAwesomeIcon
-                                                color={"#0077E6"}
-                                                icon={fasCirclePlusSolid}
-                                                size={20}
-                                            />
+                                            <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
                                             <Text
                                                 style={{ marginLeft: 10 }}
                                                 color={"darkBlue.500"}

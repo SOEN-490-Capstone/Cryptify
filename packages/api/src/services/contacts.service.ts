@@ -63,6 +63,19 @@ export class ContactsService {
             throw new BadRequestException("Contact not found");
         }
 
+        // Check to make sure none of the address have been used in the users contacts before
+        const contactsForAddresses = await this.contactRepository.find({
+            where: {
+                userId,
+                addresses: {
+                    walletAddress: In(createContactRequest.walletAddrs),
+                },
+            },
+        });
+        if (contactsForAddresses.length !== 0) {
+            throw new BadRequestException(ERROR_ADDRESS_ALREADY_ADDED_TO_CONTACT);
+        }
+
         contact.addresses = updateContactRequest.walletAddrs.map((addr) => ({
             walletAddress: addr,
         }));

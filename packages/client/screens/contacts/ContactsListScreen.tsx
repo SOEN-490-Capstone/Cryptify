@@ -50,9 +50,9 @@ export default function ContactsListScreen({ route, navigation }: Props) {
     }, [isFocused]);
 
     async function onSubmit(contact: Contact) {
-        const isQuickAdd = route.params.prefilledWalletAddress;
+        const isQuickEdit = !!route.params.prefilledWalletAddress;
         
-        if (isQuickAdd) {
+        if (isQuickEdit) {
             const walletAddrs = [
                 ...contact.addresses.map((addr) => addr.walletAddress),
                 route.params.prefilledWalletAddress,
@@ -68,8 +68,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
             navigation.goBack();
         } else {
-            navigation.navigate("AddContactScreen", {
-                prefilledWalletAddress: undefined,
+            navigation.navigate("EditContactScreen", {
                 contact,
             });
         }

@@ -18,13 +18,8 @@ import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/ut
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { ContactsGateway } from "../../gateways/contacts_gateway";
 import { AuthContext } from "../../components/contexts/AuthContext";
+import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { CompositeScreenProps } from "@react-navigation/native";
-import {CreateContactRequest} from "@cryptify/common/src/requests/create_contact_request";
-
-type Props = CompositeScreenProps<
-    HomeStackScreenProps<"AddContactScreen">,
-    SettingsStackScreenProps<"AddContactScreen">
->;
 
 type CreateContactRequestPayload = {
     contactName: string,
@@ -35,7 +30,7 @@ type CreateContactRequestPayload = {
     btcWalletsDelete: string[],
 }
 
-export default function AddContactScreen(props: Props) {
+export default function EditContactScreen(props: SettingsStackScreenProps<"EditContactScreen">) {
     const contactsGateway = new ContactsGateway();
     const isEditMode = !!props.route.params?.contact;
 
@@ -284,8 +279,11 @@ export default function AddContactScreen(props: Props) {
                             />
                         )}
                         <Button
-                            style={styles.addContactButton}
-                            isDisabled={values.contactName.length === 0}
+                            style={
+                                values.contactName.length > 0
+                                    ? styles.addContactButton
+                                    : styles.addContactButtonDisabled
+                            }
                             onPress={submitForm}
                             testID="submitCreateContactButton"
                         >
@@ -320,5 +318,9 @@ const styles = StyleSheet.create({
     },
     addContactButton: {
         marginTop: "auto",
+    },
+    addContactButtonDisabled: {
+        marginTop: "auto",
+        opacity: 0.6,
     },
 });

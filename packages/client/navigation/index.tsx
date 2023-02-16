@@ -24,7 +24,7 @@ import { fasBars } from "../components/icons/solid/fasBars";
 import AddWalletSelectionScreen from "../screens/add-wallet/AddWalletSelectionScreen";
 import ViewWalletsScreen from "../screens/ViewWalletsScreen";
 import AddWalletScreen from "../screens/add-wallet/AddWalletScreen";
-import { Pressable } from "native-base";
+import { Pressable, Text } from "native-base";
 import { farXMark } from "../components/icons/regular/farXMark";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { RouteProp } from "@react-navigation/core/src/types";
@@ -56,6 +56,7 @@ import TransactionHistoryReportScreen from "../screens/reports/TransactionHistor
 import AccountScreen from "../screens/account/AccountScreen";
 import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 import EditContactScreen from "../screens/contacts/EditContactScreen";
+import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -415,6 +416,32 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 }}
+            />
+            <SettingsStack.Screen
+                name="ContactOverviewScreen"
+                component={ContactOverviewScreen}
+                options={({ route }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() =>
+                                navigation.navigate("EditContactScreen", {
+                                    contact: route.params.contact,
+                                })
+                            }
+                            testID="editContactButton"
+                        >
+                            <Text>Edit</Text>
+                        </Pressable>
+                    ),
+                })}
             />
             <SettingsStack.Screen
                 name="TagsSettingsScreen"

@@ -68,7 +68,7 @@ export default function ContactsListScreen({ route, navigation }: Props) {
 
             navigation.goBack();
         } else {
-            navigation.navigate("EditContactScreen", {
+            navigation.navigate("ContactOverviewScreen", {
                 contact,
             });
         }

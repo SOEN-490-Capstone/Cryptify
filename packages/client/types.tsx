@@ -106,7 +106,6 @@ type ContactListScreenProps = {
 
 type AddContactScreenProps = {
     prefilledWalletAddress?: string;
-    contact: Contact;
 };
 
 export type HomeStackParamList = {
@@ -132,8 +131,11 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
     RootStackScreenProps<keyof RootStackParamList>
 >;
 
+type ContactOverviewScreenProps = {
+    contact: Contact;
+};
+
 type EditContactScreenProps = {
-    prefilledWalletAddress?: string;
     contact: Contact;
 };
 
@@ -146,6 +148,7 @@ export type SettingsStackParamList = {
     ContactsListScreen: ContactListScreenProps;
     AddContactScreen: AddContactScreenProps;
     EditContactScreen: EditContactScreenProps;
+    ContactOverviewScreen: ContactOverviewScreenProps;
     TagsSettingsScreen: undefined;
     EditTagScreen: EditTagScreenProps;
     AddTagsScreen: undefined;

@@ -1,7 +1,5 @@
-import {Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn} from "typeorm";
-import { User } from "./user";
-import {Transaction} from "@cryptify/common/src/domain/entities/transaction";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
+import { Entity, ManyToMany, PrimaryColumn } from "typeorm";
+import { Contact } from "@cryptify/common/src/domain/entities/contact";
 
 @Entity()
 export class ContactAddress {

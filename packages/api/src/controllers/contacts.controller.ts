@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Delete } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, Delete, Patch } from "@nestjs/common";
 import { ContactsService } from "../services/contacts.service";
 import { CreateContactRequest } from "@cryptify/common/src/requests/create_contact_request";
 import { DeleteContactRequest } from "@cryptify/common/src/requests/delete_contact_request";
@@ -11,6 +11,8 @@ import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { CanAccessResourceGuard } from "../guards/can_access_resource.guard";
 import { CanMutateResourceGuard } from "../guards/can_mutate_resource.guard";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
+import { updateContactSchema } from "@cryptify/common/src/validations/update_contact_schema";
 
 @Controller()
 export class ContactsController {
@@ -28,6 +30,13 @@ export class ContactsController {
     async create(@Body() body: CreateContactRequest): Promise<Contact> {
         const createContactsRequest = await useValidate(createContactSchema, body);
         return this.contactsService.create(createContactsRequest);
+    }
+
+    @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
+    @Patch("/users/:id/contacts/:name")
+    async update(@Body() body: UpdateContactRequest): Promise<Contact> {
+        const updateContactsRequest = await useValidate(updateContactSchema, body);
+        return this.contactsService.update(updateContactsRequest);
     }
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)

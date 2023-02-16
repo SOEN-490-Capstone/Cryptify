@@ -1,14 +1,12 @@
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn} from "typeorm";
+import { Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./user";
-import {Tag} from "@cryptify/common/src/domain/entities/tag";
-import {ContactAddress} from "@cryptify/common/src/domain/entities/contact_address";
-import {Transaction} from "@cryptify/common/src/domain/entities/transaction";
+import { ContactAddress } from "@cryptify/common/src/domain/entities/contact_address";
 
 @Entity()
 export class Contact {
     @PrimaryColumn()
     contactName: string;
-    
+
     // userId of the user who created this contact
     @PrimaryColumn()
     userId: number;
@@ -26,12 +24,12 @@ export class ContactBuilder {
     private contactName: string;
     private userId: number;
     private addresses: string[];
-    
+
     setContactName(name: string): this {
         this.contactName = name;
         return this;
     }
-    
+
     setUserId(userId: number): this {
         this.userId = userId;
         return this;
@@ -41,13 +39,13 @@ export class ContactBuilder {
         this.addresses.push(...addresses);
         return this;
     }
-    
+
     build(): Contact {
         return {
             contactName: this.contactName,
             userId: this.userId,
             addresses: this.addresses.map((addr) => ({
-                walletAddress: addr
+                walletAddress: addr,
             })),
         };
     }

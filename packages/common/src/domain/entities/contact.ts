@@ -1,11 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn} from "typeorm";
 import { User } from "./user";
+import {Tag} from "@cryptify/common/src/domain/entities/tag";
+import {ContactAddress} from "@cryptify/common/src/domain/entities/contact_address";
+import {Transaction} from "@cryptify/common/src/domain/entities/transaction";
 
 @Entity()
 export class Contact {
     @PrimaryColumn()
-    walletAddress: string;
-
+    contactName: string;
+    
     // userId of the user who created this contact
     @PrimaryColumn()
     userId: number;
@@ -14,6 +17,7 @@ export class Contact {
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     user: User;
 
-    @Column({ nullable: false })
-    contactName: string;
+    @JoinTable()
+    @ManyToMany(() => ContactAddress, (address) => address.contacts, { onUpdate: "CASCADE", onDelete: "CASCADE" })
+    addresses: ContactAddress[];
 }

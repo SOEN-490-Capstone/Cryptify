@@ -28,6 +28,8 @@ export class ContactsService {
         if (await this.contactRepository.findOneBy({ userId, contactName })) {
             throw new BadRequestException(ERROR_CONTACT_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
+        
+        // check to make sure none of the address have been used in user contacts before
 
         const contact = new ContactBuilder()
             .setContactName(contactName)

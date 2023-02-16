@@ -68,7 +68,7 @@ export class ContactsService {
             where: {
                 userId,
                 addresses: {
-                    walletAddress: In(createContactRequest.walletAddrs),
+                    walletAddress: In(updateContactRequest.walletAddrs),
                 },
             },
         });

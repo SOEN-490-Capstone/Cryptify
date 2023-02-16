@@ -71,7 +71,7 @@ describe("ContactsController", () => {
                 walletAddrs: [],
             };
 
-            expect(await controller.create(req)).toEqual([contact]);
+            expect(await controller.create(req)).toEqual(contact);
         });
     });
 });

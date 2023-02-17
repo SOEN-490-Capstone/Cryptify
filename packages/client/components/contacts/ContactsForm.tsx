@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Button, FormControl, Input, ScrollView } from "native-base";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
@@ -131,6 +131,21 @@ export default function ContactsForm(props: Props) {
         }
     }
 
+    function handleDeleteContact(): void {
+        Alert.alert("Do you want to delete this contact?", "You cannot undo this action.", [
+            { text: "Cancel", style: "cancel" },
+            {
+                text: "Delete",
+                style: "destructive",
+                onPress: async () => {
+                    await contactsGateway.deleteContact({ id: user.id, name: props.contact?.contactName }, token);
+                    props.navigation.goBack();
+                    props.navigation.goBack();
+                },
+            },
+        ]);
+    }
+
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, errors, touched, handleChange, submitForm }) => (
@@ -181,6 +196,12 @@ export default function ContactsForm(props: Props) {
                             isPrefilledAddContact={true}
                         />
                     )}
+                    {props.contact ? <Button
+                                            variant="outline"
+                                            _text={{color: "error.500"}}
+                                            onPress={handleDeleteContact}
+                                            testID="deleteContactButton"
+                                            style = {styles.deleteContactButton}>Delete contact</Button>:<></>}
                     <Button
                         style={styles.addContactButton}
                         isDisabled={values.contactName.length === 0}
@@ -198,5 +219,9 @@ export default function ContactsForm(props: Props) {
 const styles = StyleSheet.create({
     addContactButton: {
         marginTop: "auto",
+    },
+    deleteContactButton: {
+        marginTop: "auto",
+        color:"white",
     },
 });

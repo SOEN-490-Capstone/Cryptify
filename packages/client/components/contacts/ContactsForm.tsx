@@ -196,12 +196,19 @@ export default function ContactsForm(props: Props) {
                             isPrefilledAddContact={true}
                         />
                     )}
-                    {props.contact ? <Button
-                                            variant="outline"
-                                            _text={{color: "error.500"}}
-                                            onPress={handleDeleteContact}
-                                            testID="deleteContactButton"
-                                            style = {styles.deleteContactButton}>Delete contact</Button>:<></>}
+                    {props.contact ? (
+                        <Button
+                            variant="outline"
+                            _text={{ color: "error.500" }}
+                            onPress={handleDeleteContact}
+                            testID="deleteContactButton"
+                            style={styles.deleteContactButton}
+                        >
+                            Delete contact
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
                     <Button
                         style={styles.addContactButton}
                         isDisabled={values.contactName.length === 0}
@@ -222,6 +229,6 @@ const styles = StyleSheet.create({
     },
     deleteContactButton: {
         marginTop: "auto",
-        color:"white",
+        color: "white",
     },
 });

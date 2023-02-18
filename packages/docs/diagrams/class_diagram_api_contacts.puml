@@ -13,6 +13,8 @@ class Transaction {
     +walletOut: string
     +contactOut: Contact
     +amount: string
+    +gasPrice: string
+    +gasLimit: string
     +createdAt: Date
     +tags: Tag[]
 }
@@ -28,6 +30,10 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+enum Role {
+    BASIC
+    PRO
+}
 class User {
     +id: number
     +firstName: string
@@ -35,22 +41,45 @@ class User {
     +email: string
     +password: string
     +areNotificationsEnabled: boolean
+    +role: Role
     +createdAt: Date
     +wallets: Wallet[]
     +tags: Tag[]
     +contacts: Contact[]
 }
-class Contact {
+class ContactAddress {
     +walletAddress: string
-    +userId: number
-    +user: User
+    +contacts?: Contact[]
+}
+class Contact {
     +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
 }
 interface CreateContactRequest extends InferType
+interface DeleteContactRequest extends InferType
+interface UpdateContactRequest {
+    +userId: number
+    +contactName: string
+    +newName?: string
+    +walletAddrs?: string[]
+}
 class ContactsService {
     -contactRepository: Repository<Contact>
     +findAll(userId: number): Promise<Contact[]>
-    +create(createContactRequest: CreateContactRequest): Promise<Contact[]>
+    +create(createContactRequest: CreateContactRequest): Promise<Contact>
+    +update(updateContactRequest: UpdateContactRequest): Promise<Contact>
+    +delete(deleteContactRequest: DeleteContactRequest): Promise<Contact>
 }
 interface GetContactsRequest extends InferType
 class JwtAuthGuard
@@ -63,7 +92,9 @@ class CanMutateResourceGuard implements CanActivate {
 class ContactsController {
     -contactsService: ContactsService
     +findAll(params: GetContactsRequest): Promise<Contact[]>
-    +create(body: CreateContactRequest): Promise<Contact[]>
+    +create(body: CreateContactRequest): Promise<Contact>
+    +update(body: UpdateContactRequest): Promise<Contact>
+    +delete(params: DeleteContactRequest): Promise<Contact>
 }
 Tag --> "1" User
 Tag --> "*" Transaction
@@ -72,15 +103,24 @@ Transaction --> "*" Tag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
+ContactAddress --> "*" Contact
 Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
 ContactsService --> "1" Contact
 ContactsService --> "*" Contact
 ContactsService --> "1" CreateContactRequest
+ContactsService --> "1" UpdateContactRequest
+ContactsService --> "1" DeleteContactRequest
 ContactsController --> "1" ContactsService
 ContactsController --> "1" GetContactsRequest
 ContactsController --> "*" Contact
 ContactsController --> "1" CreateContactRequest
+ContactsController --> "1" Contact
+ContactsController --> "1" UpdateContactRequest
+ContactsController --> "1" DeleteContactRequest
 @enduml

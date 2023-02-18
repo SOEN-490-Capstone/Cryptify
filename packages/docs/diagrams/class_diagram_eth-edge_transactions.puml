@@ -11,11 +11,28 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
-class Contact {
+class ContactAddress {
     +walletAddress: string
-    +userId: number
-    +user: User
+    +contacts?: Contact[]
+}
+class Contact {
     +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
+}
+enum Role {
+    BASIC
+    PRO
 }
 class User {
     +id: number
@@ -24,6 +41,7 @@ class User {
     +email: string
     +password: string
     +areNotificationsEnabled: boolean
+    +role: Role
     +createdAt: Date
     +wallets: Wallet[]
     +tags: Tag[]
@@ -43,6 +61,8 @@ class Transaction {
     +walletOut: string
     +contactOut: Contact
     +amount: string
+    +gasPrice: string
+    +gasLimit: string
     +createdAt: Date
     +tags: Tag[]
 }
@@ -51,6 +71,7 @@ class AlchemyDecorator {
     -configService: ConfigService<Record<string, unknown>, false>
     +getBalance(address: string): Promise<BigNumber>
     +getAssetTransfers(params: AssetTransfersWithMetadataParams): Promise<AssetTransfersWithMetadataResponse>
+    +getTransaction(hash: string): Promise<TransactionResponse>
 }
 class AlchemyNodeServiceFacade {
     -alchemy: AlchemyDecorator
@@ -147,7 +168,11 @@ class TransactionsController {
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+ContactAddress --> "*" Contact
 Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
+User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact

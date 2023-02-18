@@ -19,6 +19,10 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+enum Role {
+    BASIC
+    PRO
+}
 class User {
     +id: number
     +firstName: string
@@ -26,16 +30,30 @@ class User {
     +email: string
     +password: string
     +areNotificationsEnabled: boolean
+    +role: Role
     +createdAt: Date
     +wallets: Wallet[]
     +tags: Tag[]
     +contacts: Contact[]
 }
-class Contact {
+class ContactAddress {
     +walletAddress: string
-    +userId: number
-    +user: User
+    +contacts?: Contact[]
+}
+class Contact {
     +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
 }
 class Transaction {
     +id: number
@@ -45,6 +63,8 @@ class Transaction {
     +walletOut: string
     +contactOut: Contact
     +amount: string
+    +gasPrice: string
+    +gasLimit: string
     +createdAt: Date
     +tags: Tag[]
 }
@@ -75,10 +95,14 @@ class TagsController {
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
+ContactAddress --> "*" Contact
 Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
 Transaction --> "1" Contact
 Transaction --> "*" Tag
 Tag --> "1" User

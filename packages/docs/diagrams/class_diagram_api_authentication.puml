@@ -5,11 +5,24 @@ class Tag {
     +user: User
     +transactions: Transaction[]
 }
-class Contact {
+class ContactAddress {
     +walletAddress: string
-    +userId: number
-    +user: User
+    +contacts?: Contact[]
+}
+class Contact {
     +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
 }
 class Transaction {
     +id: number
@@ -19,6 +32,8 @@ class Transaction {
     +walletOut: string
     +contactOut: Contact
     +amount: string
+    +gasPrice: string
+    +gasLimit: string
     +createdAt: Date
     +tags: Tag[]
 }
@@ -34,6 +49,10 @@ class Wallet {
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+enum Role {
+    BASIC
+    PRO
+}
 class User {
     +id: number
     +firstName: string
@@ -41,6 +60,7 @@ class User {
     +email: string
     +password: string
     +areNotificationsEnabled: boolean
+    +role: Role
     +createdAt: Date
     +wallets: Wallet[]
     +tags: Tag[]
@@ -54,13 +74,77 @@ interface UpdateUserRequest {
     +email?: string
     +password?: string
     +areNotificationsEnabled?: boolean
+    +role?: Role
+}
+interface DeleteUserRequest extends InferType
+interface CreateWalletRequest extends InferType
+interface DeleteWalletRequest extends InferType
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
+interface GetWalletsRequest extends InferType
+abstract class AbstractGateway {
+    -uri: string
+    -fetch: any
+    #request(method: Method, headers: Headers, path: string, body: any): Promise<T>
+    #{abstract} handleError(response: any): Promise<void>
+}
+enum Method {
+    POST
+    GET
+    PUT
+    PATCH
+    DELETE
+}
+class HttpError extends Error {
+    +message: string
+    +status: number
+}
+abstract class AbstractServiceGateway extends AbstractGateway {
+    #handleError(response: any): Promise<void>
+}
+interface GetTransactionsRequest extends InferType
+abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
+    +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +{abstract} deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
+    +{abstract} getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +{abstract} getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+}
+class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
+    -configService: ConfigService<Record<string, unknown>, false>
+    +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
+}
+class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
+    -configService: ConfigService<Record<string, unknown>, false>
+    +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
+    +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
+}
+class EdgeGatewayStrategyFactory {
+    -ethEdgeGatewayStrategy: EthEdgeGatewayStrategy
+    -btcEdgeGatewayStrategy: BtcEdgeGatewayStrategy
+    +get(currencyType: CurrencyType): AbstractEdgeGatewayStrategy
+}
+class WalletsService {
+    -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
+    +create(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +delete(req: DeleteWalletRequest): Promise<WalletWithBalance>
+    +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
 }
 class UsersService {
+    -walletsService: WalletsService
     -userRepository: Repository<User>
+    -tagRepository: Repository<Tag>
+    -contactRepository: Repository<Contact>
     +create(signUpReq: SignUpRequest): Promise<User>
     +findOne(email: string): Promise<User>
     +findOneById(id: number): Promise<User>
     +update(updateUserRequest: UpdateUserRequest): Promise<User>
+    +delete(req: DeleteUserRequest): Promise<User>
 }
 interface SignInRequest extends InferType
 class AuthenticationService {
@@ -77,18 +161,59 @@ class AuthenticationController {
 }
 Tag --> "1" User
 Tag --> "*" Transaction
+ContactAddress --> "*" Contact
 Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
 Transaction --> "1" Contact
 Transaction --> "*" Tag
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
+UpdateUserRequest --> "1" Role
+AbstractGateway --> "1" Method
+AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
+AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
+AbstractEdgeGatewayStrategy --> "1" DeleteWalletRequest
+AbstractEdgeGatewayStrategy --> "1" GetWalletsRequest
+AbstractEdgeGatewayStrategy --> "*" WalletWithBalance
+AbstractEdgeGatewayStrategy --> "1" GetTransactionsRequest
+AbstractEdgeGatewayStrategy --> "*" Transaction
+EthEdgeGatewayStrategy --> "1" CreateWalletRequest
+EthEdgeGatewayStrategy --> "1" WalletWithBalance
+EthEdgeGatewayStrategy --> "1" GetWalletsRequest
+EthEdgeGatewayStrategy --> "*" WalletWithBalance
+EthEdgeGatewayStrategy --> "1" GetTransactionsRequest
+EthEdgeGatewayStrategy --> "*" Transaction
+EthEdgeGatewayStrategy --> "1" DeleteWalletRequest
+BtcEdgeGatewayStrategy --> "1" CreateWalletRequest
+BtcEdgeGatewayStrategy --> "1" WalletWithBalance
+BtcEdgeGatewayStrategy --> "1" GetWalletsRequest
+BtcEdgeGatewayStrategy --> "*" WalletWithBalance
+BtcEdgeGatewayStrategy --> "1" GetTransactionsRequest
+BtcEdgeGatewayStrategy --> "*" Transaction
+BtcEdgeGatewayStrategy --> "1" DeleteWalletRequest
+EdgeGatewayStrategyFactory --> "1" EthEdgeGatewayStrategy
+EdgeGatewayStrategyFactory --> "1" BtcEdgeGatewayStrategy
+EdgeGatewayStrategyFactory --> "1" CurrencyType
+EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
+WalletsService --> "1" EdgeGatewayStrategyFactory
+WalletsService --> "1" CreateWalletRequest
+WalletsService --> "1" WalletWithBalance
+WalletsService --> "1" DeleteWalletRequest
+WalletsService --> "1" GetWalletsRequest
+WalletsService --> "*" WalletWithBalance
+UsersService --> "1" WalletsService
 UsersService --> "1" User
+UsersService --> "1" Tag
+UsersService --> "1" Contact
 UsersService --> "1" SignUpRequest
 UsersService --> "1" UpdateUserRequest
+UsersService --> "1" DeleteUserRequest
 AuthenticationService --> "1" UsersService
 AuthenticationService --> "1" SignUpRequest
 AuthenticationService --> "1" SignInRequest

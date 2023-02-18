@@ -29,11 +29,24 @@ abstract class AbstractServiceGateway extends AbstractGateway {
     #handleError(response: any): Promise<void>
 }
 interface CreateWalletRequest extends InferType
-class Contact {
+class ContactAddress {
     +walletAddress: string
-    +userId: number
-    +user: User
+    +contacts?: Contact[]
+}
+class Contact {
     +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
 }
 class Transaction {
     +id: number
@@ -43,6 +56,8 @@ class Transaction {
     +walletOut: string
     +contactOut: Contact
     +amount: string
+    +gasPrice: string
+    +gasLimit: string
     +createdAt: Date
     +tags: Tag[]
 }
@@ -52,6 +67,10 @@ class Tag {
     +user: User
     +transactions: Transaction[]
 }
+enum Role {
+    BASIC
+    PRO
+}
 class User {
     +id: number
     +firstName: string
@@ -59,6 +78,7 @@ class User {
     +email: string
     +password: string
     +areNotificationsEnabled: boolean
+    +role: Role
     +createdAt: Date
     +wallets: Wallet[]
     +tags: Tag[]
@@ -103,10 +123,19 @@ class EdgeGatewayStrategyFactory {
     +get(currencyType: CurrencyType): AbstractEdgeGatewayStrategy
 }
 interface CreateContactRequest extends InferType
+interface DeleteContactRequest extends InferType
+interface UpdateContactRequest {
+    +userId: number
+    +contactName: string
+    +newName?: string
+    +walletAddrs?: string[]
+}
 class ContactsService {
     -contactRepository: Repository<Contact>
     +findAll(userId: number): Promise<Contact[]>
-    +create(createContactRequest: CreateContactRequest): Promise<Contact[]>
+    +create(createContactRequest: CreateContactRequest): Promise<Contact>
+    +update(updateContactRequest: UpdateContactRequest): Promise<Contact>
+    +delete(deleteContactRequest: DeleteContactRequest): Promise<Contact>
 }
 class TransactionsService {
     -edgeGatewayStrategyFactory: EdgeGatewayStrategyFactory
@@ -118,11 +147,15 @@ class TransactionsController {
     +findAll(params: GetTransactionsRequest): Promise<Transaction[]>
 }
 AbstractGateway --> "1" Method
+ContactAddress --> "*" Contact
 Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
 Transaction --> "1" Contact
 Transaction --> "*" Tag
 Tag --> "1" User
 Tag --> "*" Transaction
+User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
@@ -157,6 +190,8 @@ EdgeGatewayStrategyFactory --> "1" AbstractEdgeGatewayStrategy
 ContactsService --> "1" Contact
 ContactsService --> "*" Contact
 ContactsService --> "1" CreateContactRequest
+ContactsService --> "1" UpdateContactRequest
+ContactsService --> "1" DeleteContactRequest
 TransactionsService --> "1" EdgeGatewayStrategyFactory
 TransactionsService --> "1" ContactsService
 TransactionsService --> "1" GetTransactionsRequest

@@ -139,7 +139,7 @@ export default function ContactsForm(props: Props) {
                 style: "destructive",
                 onPress: async () => {
                     if (props.contact) {
-                        await contactsGateway.deleteContact({ id: user.id, name: props.contact?.contactName }, token);
+                        await contactsGateway.deleteContact({ id: user.id, name: props.contact.contactName }, token);
                         props.navigation.goBack();
                         props.navigation.goBack();
                     }

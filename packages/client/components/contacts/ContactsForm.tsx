@@ -138,9 +138,11 @@ export default function ContactsForm(props: Props) {
                 text: "Delete",
                 style: "destructive",
                 onPress: async () => {
-                    await contactsGateway.deleteContact({ id: user.id, name: props.contact?.contactName }, token);
-                    props.navigation.goBack();
-                    props.navigation.goBack();
+                    if (props.contact) {
+                        await contactsGateway.deleteContact({ id: user.id, name: props.contact?.contactName }, token);
+                        props.navigation.goBack();
+                        props.navigation.goBack();
+                    }
                 },
             },
         ]);
@@ -196,18 +198,16 @@ export default function ContactsForm(props: Props) {
                             isPrefilledAddContact={true}
                         />
                     )}
-                    {props.contact ? (
+                    {props.contact && (
                         <Button
                             variant="outline"
                             _text={{ color: "error.500" }}
                             onPress={handleDeleteContact}
                             testID="deleteContactButton"
-                            style={styles.deleteContactButton}
+                            marginTop={"35px"}
                         >
                             Delete contact
                         </Button>
-                    ) : (
-                        <></>
                     )}
                     <Button
                         style={styles.addContactButton}
@@ -226,9 +226,5 @@ export default function ContactsForm(props: Props) {
 const styles = StyleSheet.create({
     addContactButton: {
         marginTop: "auto",
-    },
-    deleteContactButton: {
-        marginTop: "auto",
-        color: "white",
     },
 });

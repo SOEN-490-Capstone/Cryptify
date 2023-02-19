@@ -1,26 +1,21 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../../types";
 import { View } from "../../components/Themed";
-import {Alert, StyleSheet} from "react-native";
-import ContactsForm, {CreateContactRequestPayload, handleErrors} from "../../components/contacts/ContactsForm";
-import {Button, HStack, Link, Pressable, VStack} from "native-base";
-import TransactionDetailsActionSheet from "../../components/TransactionDetailsActionSheet";
-import {ContactsGateway} from "../../gateways/contacts_gateway";
-import {AuthContext} from "../../components/contexts/AuthContext";
-import {FormikProps} from "formik";
-import SortActionSheet from "../../components/transactions-list/SortTransactionListComponent";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {farBarsFilter} from "../../components/icons/regular/farBarsFilter";
-import {FormikHelpers} from "formik/dist/types";
-import {UpdateContactRequest} from "@cryptify/common/src/requests/update_contact_request";
-import {equals} from "@cryptify/common/src/utils/function_utils";
-import BackButton from "../../components/BackButton";
+import { Alert, StyleSheet } from "react-native";
+import ContactsForm, { CreateContactRequestPayload, handleErrors } from "../../components/contacts/ContactsForm";
+import { Button, Link, VStack } from "native-base";
+import { ContactsGateway } from "../../gateways/contacts_gateway";
+import { AuthContext } from "../../components/contexts/AuthContext";
+import { FormikProps } from "formik";
+import { FormikHelpers } from "formik/dist/types";
+import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
+import { equals } from "@cryptify/common/src/utils/function_utils";
 
 export default function EditContactScreen(props: SettingsStackScreenProps<"EditContactScreen">) {
     const contactsGateway = new ContactsGateway();
-    
+
     const { token, user } = React.useContext(AuthContext);
-    
+
     const formikRef = React.useRef<FormikProps<any>>(null);
 
     React.useEffect(() => {
@@ -28,33 +23,34 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
             props.navigation.setOptions({
                 headerRight: () => (
                     <Link
-                        _text={{color: formikRef.current?.dirty ? "darkBlue.500" : "rgba(64, 64, 64, 0.4)"}}
+                        _text={{ color: formikRef.current?.dirty ? "darkBlue.500" : "rgba(64, 64, 64, 0.4)" }}
                         isUnderlined={false}
-                        onPress={() => onPress(
-                            formikRef.current?.values,
-                            formikRef.current as FormikHelpers<CreateContactRequestPayload>
-                        )}
+                        onPress={() =>
+                            onPress(
+                                formikRef.current?.values,
+                                formikRef.current as FormikHelpers<CreateContactRequestPayload>,
+                            )
+                        }
                         testID="editContactButton"
                     >
                         Done
                     </Link>
                 ),
-                headerLeft: () => <Link
-                    _text={{color: "darkBlue.500", fontWeight: "400"}}
-                    isUnderlined={false}
-                    onPress={() => props.navigation.goBack()}
-                    testID="cancelEditContactButton"
-                >
-                    Cancel
-                </Link>,
+                headerLeft: () => (
+                    <Link
+                        _text={{ color: "darkBlue.500", fontWeight: "400" }}
+                        isUnderlined={false}
+                        onPress={() => props.navigation.goBack()}
+                        testID="cancelEditContactButton"
+                    >
+                        Cancel
+                    </Link>
+                ),
             });
         })();
     });
-    
-    async function onPress(
-        values: CreateContactRequestPayload,
-        helpers: FormikHelpers<CreateContactRequestPayload>,
-    ) {
+
+    async function onPress(values: CreateContactRequestPayload, helpers: FormikHelpers<CreateContactRequestPayload>) {
         const hasError = handleErrors(values, helpers);
         if (hasError) {
             return;
@@ -63,7 +59,7 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
         try {
             const walletAddrs = [...values.ethWallets, ...values.btcWallets].filter((addr) => addr.length !== 0);
             const contact = props.route.params.contact;
-            
+
             const req = {
                 userId: user.id,
                 contactName: contact.contactName,
@@ -73,7 +69,8 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
                 req["newName"] = values.contactName;
             }
 
-            if (!equals(walletAddrs, contact.addresses.map((addr) => addr.walletAddress))) {
+            const currentAddresses = contact.addresses.map((addr) => addr.walletAddress);
+            if (!equals(walletAddrs, currentAddresses)) {
                 req["walletAddrs"] = walletAddrs;
             }
 
@@ -95,14 +92,17 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
                 text: "Delete",
                 style: "destructive",
                 onPress: async () => {
-                    await contactsGateway.deleteContact({ id: user.id, name: props.route.params.contact.contactName }, token);
+                    await contactsGateway.deleteContact(
+                        { id: user.id, name: props.route.params.contact.contactName },
+                        token,
+                    );
                     props.navigation.goBack();
                     props.navigation.goBack();
                 },
             },
         ]);
     }
-    
+
     return (
         <View style={styles.view}>
             <VStack space={"35px"}>

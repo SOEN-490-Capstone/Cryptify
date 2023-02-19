@@ -12,8 +12,7 @@ import Collapsible from "react-native-collapsible";
 import { FieldArray, FormikErrors, FormikTouched } from "formik";
 import { View } from "../Themed";
 import { falCircleXMark } from "../icons/light/falCircleXMark";
-import { fasCirclePlusSolid } from "../icons/solid/fasCirclePlusSolid";
-import {farCirclePlus} from "../icons/regular/farCirclePlus";
+import { farCirclePlus } from "../icons/regular/farCirclePlus";
 
 type CreateContactRequestPayload = {
     contactName: string;

@@ -1,7 +1,7 @@
 import React from "react";
-import {Formik, FormikHelpers, FormikProps, useFormikContext} from "formik";
-import {Button, FormControl, Input, Link, ScrollView} from "native-base";
-import { Alert, StyleSheet } from "react-native";
+import { Formik, FormikHelpers, FormikProps } from "formik";
+import { Button, FormControl, Input, ScrollView } from "native-base";
+import { StyleSheet } from "react-native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
@@ -11,8 +11,6 @@ import { AuthContext } from "../contexts/AuthContext";
 import CollapsibleFormSection from "./CollapsibleFormSection";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { CompositeNavigationProp } from "@react-navigation/native";
-import { UpdateContactRequest } from "@cryptify/common/src/requests/update_contact_request";
-import { equals } from "@cryptify/common/src/utils/function_utils";
 
 type Props = {
     contact: Contact | undefined;
@@ -38,7 +36,7 @@ export default function ContactsForm(props: Props) {
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);
-    
+
     const initialValues: CreateContactRequestPayload = {
         contactName: props.contact?.contactName || "",
         userId: user.id,
@@ -54,7 +52,7 @@ export default function ContactsForm(props: Props) {
         if (hasError) {
             return;
         }
-        
+
         try {
             const walletAddrs = [...values.ethWallets, ...values.btcWallets].filter((addr) => addr.length !== 0);
             await contactsGateway.createContact(
@@ -80,63 +78,65 @@ export default function ContactsForm(props: Props) {
     return (
         <Formik innerRef={props.formikRef} initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, errors, touched, handleChange, submitForm }) => (
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                        <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
-                            <Input
-                                value={values.contactName}
-                                autoFocus={!props.contact}
-                                onChangeText={handleChange("contactName")}
-                                placeholder="Name"
-                                maxLength={20}
-                                keyboardType={"ascii-capable"}
-                                testID="contactNameInput"
-                            />
-                            <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
-                        </FormControl>
-                        {!props.prefilledWalletAddress ? (
-                            <>
-                                <CollapsibleFormSection
-                                    values={values}
-                                    handleChange={handleChange}
-                                    currencyType={CurrencyType.BITCOIN}
-                                    errors={errors}
-                                    touched={touched}
-                                    placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
-                                    initialIsCollapsed={!props.contact}
-                                    isPrefilledAddContact={false}
-                                />
-                                <CollapsibleFormSection
-                                    values={values}
-                                    handleChange={handleChange}
-                                    currencyType={CurrencyType.ETHEREUM}
-                                    errors={errors}
-                                    touched={touched}
-                                    placeholder={"Wallet address (Begins with 0x)"}
-                                    initialIsCollapsed={!props.contact}
-                                    isPrefilledAddContact={false}
-                                />
-                            </>
-                        ) : (
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                    <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
+                        <Input
+                            value={values.contactName}
+                            autoFocus={!props.contact}
+                            onChangeText={handleChange("contactName")}
+                            placeholder="Name"
+                            maxLength={20}
+                            keyboardType={"ascii-capable"}
+                            testID="contactNameInput"
+                        />
+                        <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
+                    </FormControl>
+                    {!props.prefilledWalletAddress ? (
+                        <>
                             <CollapsibleFormSection
                                 values={values}
                                 handleChange={handleChange}
-                                currencyType={getCurrencyType(props.prefilledWalletAddress)}
+                                currencyType={CurrencyType.BITCOIN}
                                 errors={errors}
                                 touched={touched}
-                                initialIsCollapsed={false}
-                                isPrefilledAddContact={true}
+                                placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
+                                initialIsCollapsed={!props.contact}
+                                isPrefilledAddContact={false}
                             />
-                        )}
-                        {!props.contact && <Button
+                            <CollapsibleFormSection
+                                values={values}
+                                handleChange={handleChange}
+                                currencyType={CurrencyType.ETHEREUM}
+                                errors={errors}
+                                touched={touched}
+                                placeholder={"Wallet address (Begins with 0x)"}
+                                initialIsCollapsed={!props.contact}
+                                isPrefilledAddContact={false}
+                            />
+                        </>
+                    ) : (
+                        <CollapsibleFormSection
+                            values={values}
+                            handleChange={handleChange}
+                            currencyType={getCurrencyType(props.prefilledWalletAddress)}
+                            errors={errors}
+                            touched={touched}
+                            initialIsCollapsed={false}
+                            isPrefilledAddContact={true}
+                        />
+                    )}
+                    {!props.contact && (
+                        <Button
                             style={styles.addContactButton}
                             isDisabled={values.contactName.length === 0}
                             onPress={submitForm}
                             testID="submitCreateContactButton"
                         >
                             Add Contact
-                        </Button>}
-                    </ScrollView>
-                )}
+                        </Button>
+                    )}
+                </ScrollView>
+            )}
         </Formik>
     );
 }

@@ -16,6 +16,8 @@ export default function AddContactScreen(props: Props) {
             <ContactsForm
                 prefilledWalletAddress={props.route.params?.prefilledWalletAddress}
                 contact={undefined}
+                setContact={undefined}
+                formikRef={undefined}
                 navigation={props.navigation}
             />
         </View>

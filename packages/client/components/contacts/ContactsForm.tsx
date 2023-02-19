@@ -1,6 +1,6 @@
 import React from "react";
-import { Formik, FormikHelpers } from "formik";
-import { Button, FormControl, Input, ScrollView } from "native-base";
+import {Formik, FormikHelpers, FormikProps, useFormikContext} from "formik";
+import {Button, FormControl, Input, Link, ScrollView} from "native-base";
 import { Alert, StyleSheet } from "react-native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
@@ -17,15 +17,9 @@ import { equals } from "@cryptify/common/src/utils/function_utils";
 type Props = {
     contact: Contact | undefined;
     setContact: React.Dispatch<React.SetStateAction<Contact>> | undefined;
+    formikRef: React.RefObject<FormikProps<any>> | undefined;
     prefilledWalletAddress: string | undefined;
     navigation: CompositeNavigationProp<any, any>;
-};
-
-type CreateContactRequestPayload = {
-    contactName: string;
-    userId: number;
-    ethWallets: string[];
-    btcWallets: string[];
 };
 
 function getDefaultAddresses(props: Props, type: CurrencyType): string[] {
@@ -44,7 +38,7 @@ export default function ContactsForm(props: Props) {
     const contactsGateway = new ContactsGateway();
 
     const { token, user } = React.useContext(AuthContext);
-
+    
     const initialValues: CreateContactRequestPayload = {
         contactName: props.contact?.contactName || "",
         userId: user.id,
@@ -56,69 +50,21 @@ export default function ContactsForm(props: Props) {
         values: CreateContactRequestPayload,
         formikHelpers: FormikHelpers<CreateContactRequestPayload>,
     ) {
-        const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
-        let hasError = false;
-
-        // checking for errors for each currency in the list
-        currencies.forEach((currencyType) => {
-            const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
-            const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
-
-            // validating each string to be a valid currency wallet
-            wallets?.forEach((walletAddress, i) => {
-                // ignoring empty strings
-                if (walletAddress !== undefined && walletAddress.length > 0) {
-                    const isAddressValid = isValidCurrencyAddress(walletAddress, currencyType);
-                    if (!isAddressValid) {
-                        formikHelpers.setFieldError(
-                            `${walletListString}[${i}]`,
-                            ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
-                        );
-                        hasError = true;
-                        return;
-                    }
-                }
-            });
-        });
-
+        const hasError = handleErrors(values, formikHelpers);
         if (hasError) {
             return;
         }
-
+        
         try {
             const walletAddrs = [...values.ethWallets, ...values.btcWallets].filter((addr) => addr.length !== 0);
-
-            if (props.contact && props.setContact) {
-                const req = {
+            await contactsGateway.createContact(
+                {
+                    contactName: values.contactName,
                     userId: user.id,
-                    contactName: props.contact.contactName,
-                } as UpdateContactRequest;
-
-                if (values.contactName !== props.contact.contactName) {
-                    req["newName"] = values.contactName;
-                }
-
-                if (
-                    !equals(
-                        walletAddrs,
-                        props.contact.addresses.map((addr) => addr.walletAddress),
-                    )
-                ) {
-                    req["walletAddrs"] = walletAddrs;
-                }
-
-                const contact = await contactsGateway.updateContact(req, token);
-                props.setContact(contact);
-            } else {
-                await contactsGateway.createContact(
-                    {
-                        contactName: values.contactName,
-                        userId: user.id,
-                        walletAddrs,
-                    },
-                    token,
-                );
-            }
+                    walletAddrs,
+                },
+                token,
+            );
 
             props.navigation.goBack();
             if (props.prefilledWalletAddress) {
@@ -131,94 +77,66 @@ export default function ContactsForm(props: Props) {
         }
     }
 
-    function handleDeleteContact(): void {
-        Alert.alert("Do you want to delete this contact?", "You cannot undo this action.", [
-            { text: "Cancel", style: "cancel" },
-            {
-                text: "Delete",
-                style: "destructive",
-                onPress: async () => {
-                    if (props.contact) {
-                        await contactsGateway.deleteContact({ id: user.id, name: props.contact.contactName }, token);
-                        props.navigation.goBack();
-                        props.navigation.goBack();
-                    }
-                },
-            },
-        ]);
-    }
-
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik innerRef={props.formikRef} initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, errors, touched, handleChange, submitForm }) => (
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
-                        <Input
-                            value={values.contactName}
-                            autoFocus={!props.contact}
-                            onChangeText={handleChange("contactName")}
-                            placeholder="Name"
-                            maxLength={20}
-                            keyboardType={"ascii-capable"}
-                            testID="contactNameInput"
-                        />
-                        <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
-                    </FormControl>
-                    {!props.prefilledWalletAddress ? (
-                        <>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
+                            <Input
+                                value={values.contactName}
+                                autoFocus={!props.contact}
+                                onChangeText={handleChange("contactName")}
+                                placeholder="Name"
+                                maxLength={20}
+                                keyboardType={"ascii-capable"}
+                                testID="contactNameInput"
+                            />
+                            <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
+                        </FormControl>
+                        {!props.prefilledWalletAddress ? (
+                            <>
+                                <CollapsibleFormSection
+                                    values={values}
+                                    handleChange={handleChange}
+                                    currencyType={CurrencyType.BITCOIN}
+                                    errors={errors}
+                                    touched={touched}
+                                    placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
+                                    initialIsCollapsed={!props.contact}
+                                    isPrefilledAddContact={false}
+                                />
+                                <CollapsibleFormSection
+                                    values={values}
+                                    handleChange={handleChange}
+                                    currencyType={CurrencyType.ETHEREUM}
+                                    errors={errors}
+                                    touched={touched}
+                                    placeholder={"Wallet address (Begins with 0x)"}
+                                    initialIsCollapsed={!props.contact}
+                                    isPrefilledAddContact={false}
+                                />
+                            </>
+                        ) : (
                             <CollapsibleFormSection
                                 values={values}
                                 handleChange={handleChange}
-                                currencyType={CurrencyType.BITCOIN}
+                                currencyType={getCurrencyType(props.prefilledWalletAddress)}
                                 errors={errors}
                                 touched={touched}
-                                placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
-                                initialIsCollapsed={!props.contact}
-                                isPrefilledAddContact={false}
+                                initialIsCollapsed={false}
+                                isPrefilledAddContact={true}
                             />
-                            <CollapsibleFormSection
-                                values={values}
-                                handleChange={handleChange}
-                                currencyType={CurrencyType.ETHEREUM}
-                                errors={errors}
-                                touched={touched}
-                                placeholder={"Wallet address (Begins with 0x)"}
-                                initialIsCollapsed={!props.contact}
-                                isPrefilledAddContact={false}
-                            />
-                        </>
-                    ) : (
-                        <CollapsibleFormSection
-                            values={values}
-                            handleChange={handleChange}
-                            currencyType={getCurrencyType(props.prefilledWalletAddress)}
-                            errors={errors}
-                            touched={touched}
-                            initialIsCollapsed={false}
-                            isPrefilledAddContact={true}
-                        />
-                    )}
-                    {props.contact && (
-                        <Button
-                            variant="outline"
-                            _text={{ color: "error.500" }}
-                            onPress={handleDeleteContact}
-                            testID="deleteContactButton"
-                            marginTop={"35px"}
+                        )}
+                        {!props.contact && <Button
+                            style={styles.addContactButton}
+                            isDisabled={values.contactName.length === 0}
+                            onPress={submitForm}
+                            testID="submitCreateContactButton"
                         >
-                            Delete contact
-                        </Button>
-                    )}
-                    <Button
-                        style={styles.addContactButton}
-                        isDisabled={values.contactName.length === 0}
-                        onPress={submitForm}
-                        testID="submitCreateContactButton"
-                    >
-                        {props.contact ? "Edit Contact" : "Add Contact"}
-                    </Button>
-                </ScrollView>
-            )}
+                            Add Contact
+                        </Button>}
+                    </ScrollView>
+                )}
         </Formik>
     );
 }
@@ -228,3 +146,41 @@ const styles = StyleSheet.create({
         marginTop: "auto",
     },
 });
+
+export type CreateContactRequestPayload = {
+    contactName: string;
+    userId: number;
+    ethWallets: string[];
+    btcWallets: string[];
+};
+
+export function handleErrors(
+    values: CreateContactRequestPayload,
+    formikHelpers: FormikHelpers<CreateContactRequestPayload>,
+): boolean {
+    const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
+    let hasError = false;
+
+    // checking for errors for each currency in the list
+    currencies.forEach((currencyType) => {
+        const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
+        const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
+
+        // validating each string to be a valid currency wallet
+        wallets?.forEach((walletAddress, i) => {
+            // ignoring empty strings
+            if (walletAddress !== undefined && walletAddress.length > 0) {
+                const isAddressValid = isValidCurrencyAddress(walletAddress, currencyType);
+                if (!isAddressValid) {
+                    formikHelpers.setFieldError(
+                        `${walletListString}[${i}]`,
+                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
+                    );
+                    hasError = true;
+                }
+            }
+        });
+    });
+
+    return hasError;
+}

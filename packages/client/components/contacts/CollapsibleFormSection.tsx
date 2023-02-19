@@ -12,7 +12,7 @@ import Collapsible from "react-native-collapsible";
 import { FieldArray, FormikErrors, FormikTouched } from "formik";
 import { View } from "../Themed";
 import { falCircleXMark } from "../icons/light/falCircleXMark";
-import { fasCirclePlusSolid } from "../icons/solid/fasCirclePlusSolid";
+import { farCirclePlus } from "../icons/regular/farCirclePlus";
 
 type CreateContactRequestPayload = {
     contactName: string;
@@ -120,8 +120,8 @@ export default function CollapsibleFormSection({
                                         }}
                                         testID={`addAnother${currencyType}`}
                                     >
-                                        <HStack style={{ marginTop: 13 }}>
-                                            <FontAwesomeIcon color={"#0077E6"} icon={fasCirclePlusSolid} size={20} />
+                                        <HStack style={{ marginTop: 13 }} alignItems={"center"}>
+                                            <FontAwesomeIcon color={"#0077E6"} icon={farCirclePlus} size={18} />
                                             <Text
                                                 style={{ marginLeft: 10 }}
                                                 color={"darkBlue.500"}

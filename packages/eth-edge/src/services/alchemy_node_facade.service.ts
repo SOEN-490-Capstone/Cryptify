@@ -4,7 +4,7 @@ import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
 import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
-import {TransactionResponse} from "@ethersproject/abstract-provider";
+import { TransactionResponse } from "@ethersproject/abstract-provider";
 
 @Injectable()
 export class AlchemyNodeServiceFacade {
@@ -61,18 +61,18 @@ export class AlchemyNodeServiceFacade {
                     createdAt: new Date(transfer.metadata.blockTimestamp),
                     tags: [],
                 };
-                
+
                 const transactionDetails = await this.getTransaction(transfer.hash);
                 if (transactionDetails) {
                     transaction.gasPrice = transactionDetails.gasPrice.toString();
                     transaction.gasLimit = transactionDetails.gasLimit.toString();
                 }
-                
+
                 return transaction;
             }),
         );
     }
-    
+
     private async getTransaction(hash: string): Promise<TransactionResponse> {
         // This function can fail sometimes from the ethereum node side so in that case we just won't assign the
         // transaction the extra details, in the future we can try to implement a retry mechanism on this

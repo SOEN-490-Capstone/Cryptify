@@ -8,8 +8,8 @@ export type CurrencyDisplayData = {
     icon: IconDefinition;
     style: "bitcoinIcon" | "ethereumIcon";
     styles: {
-        color: string,
-    },
+        color: string;
+    };
     title: string;
     addressInput: string;
     loadingTitle: string;

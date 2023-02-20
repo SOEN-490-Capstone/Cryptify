@@ -3,7 +3,7 @@ import { SettingsStackScreenProps } from "../../types";
 import { View } from "../../components/Themed";
 import { Alert, StyleSheet } from "react-native";
 import ContactsForm, { CreateContactRequestPayload, handleErrors } from "../../components/contacts/ContactsForm";
-import {Button, Link, ScrollView, VStack} from "native-base";
+import { Button, Link, ScrollView, VStack } from "native-base";
 import { ContactsGateway } from "../../gateways/contacts_gateway";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { FormikProps } from "formik";

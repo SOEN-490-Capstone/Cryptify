@@ -1,28 +1,21 @@
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { faBitcoin } from "../icons/brands/faBitcoin";
-import { faEthereum } from "../icons/brands/faEthereum";
 import React from "react";
 import { StyleSheet } from "react-native";
-import {FormControl, HStack, Input, Text, Pressable, VStack} from "native-base";
+import { HStack, Text, Pressable, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { farChevronDown } from "../icons/regular/farChevronDown";
 import { farChevronUp } from "../icons/regular/farChevronUp";
 import Collapsible from "react-native-collapsible";
-import { FieldArray, FormikErrors, FormikTouched } from "formik";
-import { View } from "../Themed";
-import { falCircleXMark } from "../icons/light/falCircleXMark";
-import { farCirclePlus } from "../icons/regular/farCirclePlus";
-import {displayDataMap} from "../../constants/CurrenciesDisplayData";
-import MultiLineListItem from "../list/MultiLineListItem";
-import {Copy} from "../Copy";
+import { displayDataMap } from "../../constants/CurrenciesDisplayData";
+import { Copy } from "../Copy";
 
 type Props = {
     addresses: string[];
     type: CurrencyType;
 };
 
-export default function CollapsibleAddressSection({addresses, type}: Props) {
+export default function CollapsibleAddressSection({ addresses, type }: Props) {
     const [isCollapsed, setIsCollapsed] = React.useState(false);
 
     const icon = isCollapsed ? (
@@ -30,15 +23,16 @@ export default function CollapsibleAddressSection({addresses, type}: Props) {
     ) : (
         <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronUp} />
     );
-    
+
     return (
         <VStack space={"15px"}>
-            <Pressable
-                onPress={() => setIsCollapsed(!isCollapsed)}
-                testID="walletCollapsibleButton"
-            >
+            <Pressable onPress={() => setIsCollapsed(!isCollapsed)} testID="walletCollapsibleButton">
                 <HStack>
-                    <FontAwesomeIcon style={{ ...displayDataMap[type].styles, marginRight: 10 }} icon={displayDataMap[type].icon} size={26} />
+                    <FontAwesomeIcon
+                        style={{ ...displayDataMap[type].styles, marginRight: 10 }}
+                        icon={displayDataMap[type].icon}
+                        size={26}
+                    />
                     <Text fontWeight={"semibold"} size={"title3"}>
                         {titleCase(type)} Wallets
                     </Text>

@@ -32,12 +32,12 @@ export default function CollapsibleAddressSection({addresses, type}: Props) {
     );
     
     return (
-        <VStack space={"20px"}>
+        <VStack space={"15px"}>
             <Pressable
                 onPress={() => setIsCollapsed(!isCollapsed)}
                 testID="walletCollapsibleButton"
             >
-                <HStack marginTop={"40px"}>
+                <HStack>
                     <FontAwesomeIcon style={{ ...displayDataMap[type].styles, marginRight: 10 }} icon={displayDataMap[type].icon} size={26} />
                     <Text fontWeight={"semibold"} size={"title3"}>
                         {titleCase(type)} Wallets
@@ -51,7 +51,7 @@ export default function CollapsibleAddressSection({addresses, type}: Props) {
                     {addresses.map((address) => (
                         <HStack space="10px" key={address} alignItems={"center"}>
                             <Text flex={1}>{address}</Text>
-                            {<Copy label={`${titleCase(type)} address}`} value={address} />}
+                            {<Copy label={`${titleCase(type)} address`} value={address} />}
                         </HStack>
                     ))}
                 </VStack>

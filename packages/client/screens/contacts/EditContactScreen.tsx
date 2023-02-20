@@ -3,7 +3,7 @@ import { SettingsStackScreenProps } from "../../types";
 import { View } from "../../components/Themed";
 import { Alert, StyleSheet } from "react-native";
 import ContactsForm, { CreateContactRequestPayload, handleErrors } from "../../components/contacts/ContactsForm";
-import { Button, Link, VStack } from "native-base";
+import {Button, Link, ScrollView, VStack} from "native-base";
 import { ContactsGateway } from "../../gateways/contacts_gateway";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { FormikProps } from "formik";
@@ -105,23 +105,25 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
 
     return (
         <View style={styles.view}>
-            <VStack space={"35px"}>
-                <ContactsForm
-                    prefilledWalletAddress={undefined}
-                    contact={props.route.params.contact}
-                    setContact={props.route.params.setContact}
-                    formikRef={formikRef}
-                    navigation={props.navigation}
-                />
-                <Button
-                    variant="outline"
-                    _text={{ color: "error.500" }}
-                    onPress={handleDeleteContact}
-                    testID="deleteContactButton"
-                >
-                    Delete contact
-                </Button>
-            </VStack>
+            <ScrollView style={styles.scrollView}>
+                <VStack space={"35px"} paddingTop={"30px"} paddingBottom={"10px"}>
+                    <ContactsForm
+                        prefilledWalletAddress={undefined}
+                        contact={props.route.params.contact}
+                        setContact={props.route.params.setContact}
+                        formikRef={formikRef}
+                        navigation={props.navigation}
+                    />
+                    <Button
+                        variant="outline"
+                        _text={{ color: "error.500" }}
+                        onPress={handleDeleteContact}
+                        testID="deleteContactButton"
+                    >
+                        Delete contact
+                    </Button>
+                </VStack>
+            </ScrollView>
         </View>
     );
 }
@@ -129,7 +131,8 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+    },
+    scrollView: {
         paddingHorizontal: 15,
-        paddingTop: 30,
     },
 });

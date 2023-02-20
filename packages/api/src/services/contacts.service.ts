@@ -89,6 +89,7 @@ export class ContactsService {
             }
 
             contact.addresses = updateContactRequest.walletAddrs.map((addr) => ({
+                userId,
                 walletAddress: addr,
             }));
         }

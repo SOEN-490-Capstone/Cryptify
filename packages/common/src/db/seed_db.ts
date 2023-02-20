@@ -31,8 +31,8 @@ export async function seedDB() {
     `);
 
     await dataSource.manager.query(`
-        INSERT INTO public."contact_address" ("walletAddress", "contactsContactName", "contactsUserId")
-        VALUES  ('0xebec795c9c8bbd61ffc14a6662944748f299cacf', 'Jason', 1);
+        INSERT INTO public."contact_address" ("walletAddress", "userId", "contactsContactName", "contactsUserId")
+        VALUES  ('0xebec795c9c8bbd61ffc14a6662944748f299cacf', 1, 'Jason', 1);
     `);
 
     await dataSource.manager.query(`

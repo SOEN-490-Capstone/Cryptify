@@ -13,21 +13,21 @@ export class Transaction {
     @Column({ nullable: false })
     walletIn: string;
 
-    contactIn: Contact | null;
+    contactIn?: Contact | null;
 
     @Column({ nullable: false })
     walletOut: string;
 
-    contactOut: Contact | null;
+    contactOut?: Contact | null;
 
     @Column({ nullable: false })
     amount: string;
 
     @Column({ nullable: true })
-    gasPrice: string;
+    gasPrice?: string;
 
     @Column({ nullable: true })
-    gasLimit: string;
+    gasLimit?: string;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

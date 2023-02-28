@@ -4,6 +4,7 @@ import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
 import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
+import { TransactionResponse } from "@ethersproject/abstract-provider";
 
 @Injectable()
 export class AlchemyNodeServiceFacade {
@@ -51,21 +52,34 @@ export class AlchemyNodeServiceFacade {
         // from ETHER to WEI so we can represent them as BigIntegers
         return Promise.all(
             transfers.map(async (transfer) => {
-                const transaction = await this.alchemy.getTransaction(transfer.hash);
-                return {
+                const transaction: Transaction = {
                     id: -1,
                     transactionAddress: transfer.hash,
                     walletIn: transfer.to,
-                    contactIn: null,
                     walletOut: transfer.from,
-                    contactOut: null,
                     amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
-                    gasPrice: transaction.gasPrice.toString(),
-                    gasLimit: transaction.gasLimit.toString(),
                     createdAt: new Date(transfer.metadata.blockTimestamp),
                     tags: [],
                 };
+
+                const transactionDetails = await this.getTransaction(transfer.hash);
+                if (transactionDetails) {
+                    transaction.gasPrice = transactionDetails.gasPrice.toString();
+                    transaction.gasLimit = transactionDetails.gasLimit.toString();
+                }
+
+                return transaction;
             }),
         );
+    }
+
+    private async getTransaction(hash: string): Promise<TransactionResponse> {
+        // This function can fail sometimes from the ethereum node side so in that case we just won't assign the
+        // transaction the extra details, in the future we can try to implement a retry mechanism on this
+        try {
+            return this.alchemy.getTransaction(hash);
+        } catch (e) {
+            return null;
+        }
     }
 }

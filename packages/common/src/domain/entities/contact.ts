@@ -48,6 +48,7 @@ export class ContactBuilder {
             contactName: this.contactName,
             userId: this.userId,
             addresses: this.addresses.map((addr) => ({
+                userId: this.userId,
                 walletAddress: addr,
             })),
         };

@@ -7,11 +7,10 @@ import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
 import { getFormattedAmount, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
 import { formatAddress } from "@cryptify/common/src/utils/address_utils";
-import { Pressable, Box, Text, HStack, VStack } from "native-base";
+import { Box, Text, HStack, VStack } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { currencyTypeToIcon } from "../services/currency_service";
 import MultiLineListItem from "../components/list/MultiLineListItem";
-
 
 export default function WalletSettingsScreen({ navigation, route }: SettingsStackScreenProps<"WalletSettingsScreen">) {
     const { token, user } = React.useContext(AuthContext);
@@ -34,11 +33,12 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
 
     return (
         <View style={styles.view}>
-
             <Box
                 style={styles.walletDetailsWrapper}
                 backgroundColor={
-                    route.params.wallet.currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"
+                    route.params.wallet.currencyType == "BITCOIN"
+                        ? "rgba(247, 147, 26, 0.25)"
+                        : "rgba(60, 60, 61, 0.25)"
                 }
             >
                 <VStack style={styles.walletDetails}>
@@ -64,16 +64,18 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
                             <Text size={"subheadline"} color={"text.500"}>
                                 {typeToISOCode[route.params.wallet.currencyType]}
                             </Text>
-                            <Text size={"title3"}>{getFormattedAmount(route.params.wallet.balance, route.params.wallet.currencyType)}</Text>
+                            <Text size={"title3"}>
+                                {getFormattedAmount(route.params.wallet.balance, route.params.wallet.currencyType)}
+                            </Text>
                         </VStack>
                     </HStack>
                 </VStack>
             </Box>
             <Box marginTop="20px" marginBottom="0"></Box>
             <VStack space={"20px"}>
-                    <MultiLineListItem label="Name" value={route.params.wallet.name} />
-                    <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
-                </VStack>
+                <MultiLineListItem label="Name" value={route.params.wallet.name} />
+                <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
+            </VStack>
             <Box marginTop="20px" marginBottom="0"></Box>
 
             <Button

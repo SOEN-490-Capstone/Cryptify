@@ -1,10 +1,13 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Link } from "native-base";
+import { Text, Radio, Box, Button, HStack, Link, Pressable } from "native-base";
 import { HomeStackScreenProps } from "../types";
 import React from "react";
 import DateBox from "../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
+import { farChevronRight } from "../components/icons/regular/farChevronRight";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
@@ -100,6 +103,20 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 Filter by date
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
+
+            <Pressable marginTop="30px"
+                onPress={() => navigation.navigate("FilterContactScreen", {})}
+                _pressed={{
+                    background: "text.200",
+                }}
+            >
+                        <HStack height="50px" alignItems="center">
+                            <Text fontWeight={"semibold"} color={"text.500"}>
+                                Filter by Contact
+                            </Text>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    </Pressable>
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Button
@@ -154,5 +171,10 @@ const styles = StyleSheet.create({
     applyButtonDisabled: {
         marginTop: "auto",
         opacity: 0.6,
+    },
+    chevronRightIcon: {
+        color: "#A3A3A3",
+        marginLeft: "auto",
+        marginRight: 5,
     },
 });

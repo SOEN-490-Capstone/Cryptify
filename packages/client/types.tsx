@@ -83,6 +83,9 @@ type FilterScreenProps = {
     wallet: WalletWithBalance;
 };
 
+type FilterContactScreenProps = {
+};
+
 type EditTagScreenProps = {
     tag: Tag;
 };
@@ -118,6 +121,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     FilterScreen: FilterScreenProps;
+    FilterContactScreen: FilterContactScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
     ReportSelectionScreen: ReportSelectionScreenProps;

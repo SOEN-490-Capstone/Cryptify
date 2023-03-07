@@ -37,8 +37,16 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
     return (
         <View style={styles.view}>
             <VStack space="20px" flex={1}>
-                <MultiLineListItem label={"Name"} value={`${user.firstName} ${user.lastName}`} />
-                <MultiLineListItem label={"Email"} value={`${user.email}`} />
+                <MultiLineListItem
+                    label={"Name"}
+                    value={`${user.firstName} ${user.lastName}`}
+                    inlineLink={() => navigation.navigate("AccountNameScreen")}
+                />
+                <MultiLineListItem
+                    label={"Email"}
+                    value={`${user.email}`}
+                    inlineLink={() => navigation.navigate("AccountEmailScreen")}
+                />
                 <MultiLineListItem
                     label={"Account Type"}
                     value={titleCase(user.role)}

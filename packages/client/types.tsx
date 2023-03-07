@@ -155,6 +155,8 @@ export type SettingsStackParamList = {
     AddTagsScreen: undefined;
     NotificationsScreen: undefined;
     AccountScreen: undefined;
+    AccountNameScreen: undefined;
+    AccountEmailScreen: undefined;
     AccountTypeScreen: undefined;
 };
 

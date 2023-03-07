@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import React from "react";
-import { Button, FormControl, Input } from "native-base";
+import { Box, Button, FormControl, Input, useToast, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { updateUserNameSchema } from "@cryptify/common/src/validations/update_user_name_schema";
@@ -13,6 +13,7 @@ export default function AccountNameScreen() {
     const usersGateway = new UsersGateway();
 
     const { token, user, setUser } = React.useContext(AuthContext);
+    const toast = useToast();
 
     const intitialValues = {
         userId: user.id,
@@ -24,6 +25,25 @@ export default function AccountNameScreen() {
         try {
             const user = await usersGateway.update(values, token);
             setUser(user);
+
+                toast.show({
+                    placement: "top",
+                    duration: 2000,
+                    render: () => {
+                        return (
+                            <Box style={styles.toastBox}>
+                                <Text
+                                    size={"footnote1"}
+                                    fontWeight={"semibold"}
+                                    color={"white"}
+                                    style={styles.toastText}
+                                >
+                                    Name updated succesfully
+                                </Text>
+                            </Box>
+                        );
+                    },
+                });
 
         } catch (error) {
             if (error instanceof Error) {
@@ -82,5 +102,13 @@ const styles = StyleSheet.create({
     ButtonDisabled: {
         marginTop: "auto",
         opacity: 0.6,
+    },
+    toastBox: {
+        backgroundColor: "#404040",
+        borderRadius: 100,
+    },
+    toastText: {
+        paddingHorizontal: 25.5,
+        paddingVertical: 10.5,
     },
 });

@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import React from "react";
-import { Box, Button, FormControl, Input, useToast, Text } from "native-base";
+import { Box, Button, FormControl, Input, useToast, Text, HStack, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { updateUserNameSchema } from "@cryptify/common/src/validations/update_user_name_schema";
@@ -60,7 +60,8 @@ export default function AccountNameScreen() {
             <Formik initialValues={intitialValues} validationSchema={updateUserNameSchema} onSubmit={handleUpdate}>
                 {({values, errors, handleChange, submitForm}) =>(
                     <FormControl>
-                         <Input
+                        <VStack space={2} marginTop={6}>
+                        <Input
                                 value={values.firstName}
                                 onChangeText={handleChange("firstName")}
                                 placeholder="firstName"
@@ -81,6 +82,8 @@ export default function AccountNameScreen() {
                             <Button disabled={intitialValues.firstName === values.firstName && intitialValues.lastName  === values.lastName} style={ intitialValues.firstName === values.firstName && intitialValues.lastName === values.lastName  ? styles.ButtonDisabled : styles.Button } onPress={submitForm}>
                                 Save changes
                             </Button>
+                        </VStack>
+                        
                     </FormControl>
                     
                 )}
@@ -97,11 +100,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     Button: {
-        marginTop: "auto",
+        marginTop: 5,
     },
     ButtonDisabled: {
-        marginTop: "auto",
         opacity: 0.6,
+        marginTop: 5,
     },
     toastBox: {
         backgroundColor: "#404040",

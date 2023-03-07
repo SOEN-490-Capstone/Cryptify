@@ -34,6 +34,7 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
             <VStack space={"20px"}>
                 <MultiLineListItem label="Name" value={route.params.wallet.name} />
                 <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
+                {/* Comment for Pola: Add BTC feature here */}
             </VStack>
             <Box marginTop="20px"></Box>
 

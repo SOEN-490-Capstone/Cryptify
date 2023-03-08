@@ -3,10 +3,9 @@ import React from "react";
 import { Box, Button, FormControl, Input, useToast, Text, HStack, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../../components/contexts/AuthContext";
-import { updateUserNameSchema } from "@cryptify/common/src/validations/update_user_name_schema";
+import { updateUserSchema } from "@cryptify/common/src/validations/update_user_schema";
 import { UsersGateway } from "../../gateways/users_gateway";
 import { Formik, FormikHelpers } from "formik";
-import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
 import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_request";
 
 export default function AccountNameScreen() {
@@ -47,7 +46,7 @@ export default function AccountNameScreen() {
 
         } catch (error) {
             if (error instanceof Error) {
-                formikHelpers.setFieldError("firstName", ERROR_NOP);
+                formikHelpers.setFieldError("firstName", error.message);
                 formikHelpers.setFieldError("lastName", error.message);
             }
         }
@@ -57,10 +56,10 @@ export default function AccountNameScreen() {
     
     return (
         <View style={styles.view}>
-            <Formik initialValues={intitialValues} validationSchema={updateUserNameSchema} onSubmit={handleUpdate}>
-                {({values, errors, handleChange, submitForm}) =>(
-                    <FormControl>
-                        <VStack space={2} marginTop={6}>
+            <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
+                {({values, errors, touched ,handleChange, submitForm}) =>(
+                    <VStack space={4} marginTop={7}>
+                        <FormControl isInvalid={!!(errors.firstName && touched.firstName)}>
                         <Input
                                 value={values.firstName}
                                 onChangeText={handleChange("firstName")}
@@ -68,8 +67,10 @@ export default function AccountNameScreen() {
                                 testID="firstName"
                             />
                             <FormControl.ErrorMessage>
-                                {errors.firstName != ERROR_NOP && errors.firstName}
+                                {touched.firstName && errors.firstName}
                             </FormControl.ErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={!!(errors.lastName && touched.lastName)}>
                             <Input
                                 value={values.lastName}
                                 onChangeText={handleChange("lastName")}
@@ -77,14 +78,13 @@ export default function AccountNameScreen() {
                                 testID="lastName"
                             />
                             <FormControl.ErrorMessage>
-                                {errors.lastName != ERROR_NOP && errors.lastName}
+                                {touched.lastName && errors.lastName}
                             </FormControl.ErrorMessage>
                             <Button disabled={intitialValues.firstName === values.firstName && intitialValues.lastName  === values.lastName} style={ intitialValues.firstName === values.firstName && intitialValues.lastName === values.lastName  ? styles.ButtonDisabled : styles.Button } onPress={submitForm}>
                                 Save changes
                             </Button>
-                        </VStack>
-                        
                     </FormControl>
+                    </VStack>
                     
                 )}
             </Formik>

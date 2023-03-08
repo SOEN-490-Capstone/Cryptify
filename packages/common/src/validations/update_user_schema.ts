@@ -5,13 +5,13 @@ export const updateUserSchema = yup.object({
     userId: yup.number().required(),
     firstName: yup
         .string()
-        .matches(new RegExp("^[A-Za-z]+"), "First name must only contain alphabetic characters.")
+        .matches(new RegExp("^[A-Za-z]+$"), "First name must only contain alphabetic characters.")
         .min(0)
         .max(32, "First name must be 32 characters or less.")
         .nullable(),
     lastName: yup
         .string()
-        .matches(new RegExp("^[A-Za-z]+"), "Last name must only contain alphabetic characters.")
+        .matches(new RegExp("^[A-Za-z]+$"), "Last name must only contain alphabetic characters.")
         .min(0)
         .max(32, "Last name must be 32 characters or less.")
         .nullable(),

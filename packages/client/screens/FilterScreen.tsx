@@ -120,6 +120,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
                 setIsFilterSaved={setIsFilterSaved}
                 setFilters={route.params.setFilters}
+                filterByTransaction={filterByTransaction}
+                filterByDate={filterByDate}
+                fromDate={fromDate}
+                toDate={toDate}
+                currencyType={route.params.wallet.currencyType}
             />}
             <Button
                 style={styles.applyButton}

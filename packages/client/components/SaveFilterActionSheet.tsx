@@ -29,11 +29,16 @@ import {AuthContext} from "./contexts/AuthContext";
 
 type Props = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByTransaction: string;
+    filterByDate: string;
+    fromDate: Date | null;
+    toDate: Date | null;
+    currencyType: CurrencyType
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>; 
 };
 
-export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilter, setIsFilterSaved }: Props) {
+export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilter, setIsFilterSaved, filterByTransaction, filterByDate, fromDate, toDate, currencyType }: Props) {
     const filtersGateway = new FiltersGateway();
 
     const { token, user } = React.useContext(AuthContext);
@@ -44,25 +49,72 @@ export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilte
     const initialValues = {
         name: "",
     };
+
+    function getYearStart() {
+        const date = new Date();
+        date.setMonth(0);
+        date.setDate(1);
+        date.setHours(0);
+        date.setMinutes(0);
+        return +date;
+    }
     
     async function onSubmit(values: any, formikHelpers: any) {
         try {
-            await filtersGateway.createFilter(
-                {
+            const req = {
                     name: values.name,
                     userId: user.id,
-                    currencyType: CurrencyType.ETHEREUM,
+                    currencyType,
                     txnIn: true,
                     txnOut: true,
                     start: "0",
-                    end: "0",
-                    tagNames: ["tag1", "tag2"],
+                    end: "curr",
+                    tagNames: [],
                     contactNames: [],
-                },
-                token,
-            );
-            
-            setFilters(["Ethereum in", "Past 90 days"]);
+                }; 
+            if (filterByTransaction.endsWith("in")) {
+                req.txnIn = true;
+                req.txnOut = false;
+            }
+            if (filterByTransaction.endsWith("out")) {
+                req.txnIn = false;
+                req.txnOut = true;
+            }
+            if (filterByDate === "Past 90 days") {
+                req.start = `-${1000 * 60 * 60 * 24 * 90}`;
+            }
+            if (filterByDate === new Date().getFullYear().toString()) {
+                req.start = getYearStart().toString();
+                req.end = (getYearStart() + 1000 * 60 * 60 * 24 * 365).toString();
+            }
+            if (filterByDate === (new Date().getFullYear() - 1).toString()) {
+                req.start = (getYearStart() - 1000 * 60 * 60 * 24 * 365).toString();
+                req.end = (getYearStart() - 1000 * 60 * 60 * 24).toString();
+            }
+            if (filterByDate === "Custom Dates") {
+                req.start = `${+(fromDate || 0)}`;
+                req.end = `${+(toDate || 0)}`;
+            }
+            await filtersGateway.createFilter(req, token);
+
+            const filters = [filterByTransaction];
+
+            // this checks if the filter selected for the date is "custom date"
+            // since we need to have special logic that would add the two dates selected
+            if (filterByDate === "Custom Dates" && fromDate && toDate) {
+                const dateFormate = new Intl.DateTimeFormat("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                });
+
+                filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+            } else {
+                if (filterByDate !== "Custom Dates") {
+                    filters.push(filterByDate);
+                }
+            }
+            setFilters(filters);
 
             onClose();
             setIsUsingSavedFilter(true);

@@ -75,7 +75,7 @@ export default function TransactionHistoryReportScreen({
                 ? getYearStart() + 1000 * 60 * 60 * 24 * 365
                 : filterByDate === filtersByDate[3]
                 ? getYearStart() - 1000 * 60 * 60 * 24
-                : +(fromDate || 0);
+                : +(toDate || 0);
 
         const req = {
             userId: user.id,
@@ -83,8 +83,8 @@ export default function TransactionHistoryReportScreen({
             currencyType: route.params.wallet.currencyType,
             transactionsIn: filterByTransaction === "All transactions" || filterByTransaction.endsWith("in"),
             transactionsOut: filterByTransaction === "All transactions" || filterByTransaction.endsWith("out"),
-            startDate: new Date(startDate),
-            endDate: new Date(endDate),
+            startDate: startDate,
+            endDate: endDate,
             fileType: FileType.CSV,
         } as CreateTransactionHistoryReportRequest;
 

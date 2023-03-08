@@ -61,6 +61,9 @@ export class UsersService {
         if (updateUserRequest.areNotificationsEnabled != null) {
             user.areNotificationsEnabled = updateUserRequest.areNotificationsEnabled;
         }
+        if (updateUserRequest.email != null) {
+            user.email = updateUserRequest.email;
+        }
         if (updateUserRequest.role != null) {
             user.role = updateUserRequest.role;
         }

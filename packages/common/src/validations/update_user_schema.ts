@@ -16,6 +16,7 @@ export const updateUserSchema = yup.object({
         .max(32, "Last name must be 32 characters or less.")
         .nullable(),
     email: yup.string().email("Enter a valid email.").max(50, "Email must be 50 characters or less.").nullable(),
+    confirmEmail: yup.string().equals([yup.ref("email"), null], "The passwords you entered do not match."),
     password: yup
         .string()
         .min(6, "Password must be between 6 and 20 characters.")

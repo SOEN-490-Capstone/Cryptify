@@ -5,7 +5,7 @@ import {
     ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
 } from "@cryptify/common/src/errors/error_messages";
-import {Wallet, WalletBuilder} from "@cryptify/common/src/domain/entities/wallet";
+import { Wallet, WalletBuilder } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeServiceFacade } from "@cryptify/eth-edge/src/services/alchemy_node_facade.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
@@ -29,9 +29,7 @@ export class WalletsService {
 
     async create(req: CreateWalletRequest): Promise<WalletWithBalance> {
         if (await this.findOne(req.address, req.userId)) {
-            throw new BadRequestException(
-                ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(req.currencyType)),
-            );
+            throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(req.currencyType)));
         }
 
         if (await this.walletRepository.findOneBy({ name: req.name, userId: req.userId })) {
@@ -73,10 +71,8 @@ export class WalletsService {
         // Once all the balances have been retrieved zip the lists together and map through them to construct the final
         // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
         // will line up when we zip them
-        return zip(wallets, balances).map(([wallet, balance]) => new WalletBuilder()
-            .setWallet(wallet)
-            .setBalance(balance)
-            .build()
+        return zip(wallets, balances).map(([wallet, balance]) =>
+            new WalletBuilder().setWallet(wallet).setBalance(balance).build(),
         );
     }
 
@@ -99,10 +95,7 @@ export class WalletsService {
             // will see those transactions anyways
             this.transactionsService.cleanup(deleteWalletReq.address);
         }
-        
-        return new WalletBuilder()
-            .setWallet(wallet)
-            .setBalance(balance)
-            .build();
+
+        return new WalletBuilder().setWallet(wallet).setBalance(balance).build();
     }
 }

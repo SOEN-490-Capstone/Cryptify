@@ -2,8 +2,8 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Transaction } from "./transaction";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import {getCurrencyType} from "@cryptify/common/src/utils/currency_utils";
-import {WalletWithBalance} from "@cryptify/common/src/domain/wallet_with_balance";
+import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
 @Entity()
 export class Wallet {
@@ -59,7 +59,7 @@ export class WalletBuilder {
         this.transactions.push(...transactions);
         return this;
     }
-    
+
     setWallet(wallet: Wallet): this {
         this.address = wallet.address;
         this.userId = wallet.userId;
@@ -74,7 +74,7 @@ export class WalletBuilder {
 
     build(): WalletWithBalance {
         const currencyType = getCurrencyType(this.address);
-        
+
         return {
             address: this.address,
             userId: this.userId,

@@ -52,5 +52,8 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 20,
     },
 });

@@ -54,9 +54,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         borderRadius: 10,
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 20,
     },
     walletDetails: {
         paddingVertical: 20,

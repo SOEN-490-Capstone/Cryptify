@@ -13,12 +13,10 @@ import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass
 import { farQrCode } from "../components/icons/regular/farQrCode";
 import { getTransactionByWallet } from "../services/transaction_service";
 import { TransactionsList } from "../components/transactions-list/TransactionsList";
-import { currencyTypeToIcon } from "../services/currency_service";
 import SortService from "../services/sort_service";
-import { getFormattedAmount, typeToISOCode } from "@cryptify/common/src/utils/currency_utils";
-import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import { farWallet } from "../components/icons/regular/farWallet";
 import { farFile } from "../components/icons/regular/farFile";
+import WalletDetailsComponent from "../components/WalletDetailsComponent";
 
 export default function WalletOverviewScreen({ route, navigation }: HomeStackScreenProps<"WalletOverviewScreen">) {
     const wallet = route.params.wallet;
@@ -29,7 +27,6 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
 
     const [isLoading, setIsLoading] = React.useState(true);
     const [transactions, setTransactions] = React.useState<Transaction[]>([]);
-    const currencyIcon = currencyTypeToIcon[wallet.currencyType];
 
     const isFocused = useIsFocused();
 
@@ -44,41 +41,8 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
     }, [isFocused]);
     return (
         <View style={styles.view}>
-            <Box
-                style={styles.walletDetailsWrapper}
-                backgroundColor={
-                    wallet.currencyType == "BITCOIN" ? "rgba(247, 147, 26, 0.25)" : "rgba(60, 60, 61, 0.25)"
-                }
-            >
-                <VStack style={styles.walletDetails}>
-                    <HStack justifyContent="space-between">
-                        <VStack>
-                            <Text>{wallet.name}</Text>
-                            <Box marginTop="2px"></Box>
-                            <Text size={"subheadline"} color={"text.500"}>
-                                {formatAddress(wallet.address)}
-                            </Text>
-                        </VStack>
-                        <VStack>
-                            <FontAwesomeIcon
-                                icon={currencyIcon}
-                                color={wallet.currencyType == "BITCOIN" ? "#F7931A" : "#3C3C3D"}
-                                size={40}
-                            />
-                        </VStack>
-                    </HStack>
-                    <HStack alignItems="center">
-                        <VStack>
-                            <Box marginTop="40px" marginBottom="0"></Box>
-                            <Text size={"subheadline"} color={"text.500"}>
-                                {typeToISOCode[wallet.currencyType]}
-                            </Text>
-                            <Text size={"title3"}>{getFormattedAmount(wallet.balance, wallet.currencyType)}</Text>
-                        </VStack>
-                    </HStack>
-                </VStack>
-            </Box>
-            <Box marginTop="20px" marginBottom="0"></Box>
+            <WalletDetailsComponent wallet={wallet} />
+            <Box marginTop="20px"></Box>
             <HStack paddingX="38px" justifyContent="space-between">
                 <VStack space="4px">
                     <Pressable
@@ -172,18 +136,9 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-    },
-    walletDetailsWrapper: {
-        paddingLeft: 20,
-        paddingRight: 20,
-        marginHorizontal: 15,
-        borderRadius: 10,
-    },
-    walletDetails: {
-        paddingVertical: 20,
-        paddingRight: 0,
-        borderTopWidth: 1,
-        borderColor: "#E5E5E5",
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 20,
     },
     walletIcon: {
         color: "#404040",

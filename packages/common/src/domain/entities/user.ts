@@ -32,14 +32,14 @@ export class User {
     createdAt: Date;
 
     @OneToMany(() => Wallet, (wallet) => wallet.user)
-    wallets: Wallet[];
+    wallets?: Wallet[];
 
     @OneToMany(() => Tag, (tag) => tag.user)
-    tags: Tag[];
+    tags?: Tag[];
 
     @OneToMany(() => Contact, (contact) => contact.user)
-    contacts: Contact[];
+    contacts?: Contact[];
 
     @OneToMany(() => Filter, (filter) => filter.user)
-    filters: Filter[];
+    filters?: Filter[];
 }

@@ -136,9 +136,6 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 20,
     },
     walletIcon: {
         color: "#404040",

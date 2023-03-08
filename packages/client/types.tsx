@@ -81,6 +81,8 @@ type FilterScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     wallet: WalletWithBalance;
+    isUsingSavedFilter: boolean;
+    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type EditTagScreenProps = {

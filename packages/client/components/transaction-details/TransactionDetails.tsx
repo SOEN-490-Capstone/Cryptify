@@ -16,7 +16,7 @@ import { formatAddress } from "@cryptify/common/src/utils/address_utils";
 import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import TransactionDetailsActionSheet from "../TransactionDetailsActionSheet";
+import TransactionDetailsActionSheet from "./TransactionDetailsActionSheet";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
@@ -41,8 +41,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
     const [transaction, setTransaction] = React.useState<Transaction>(txn);
     const [transactionTags, setTransactionTags] = React.useState<Tag[]>([]);
     const isIncomingTransaction = wallet.address == transaction.walletIn;
-    const tranasctionFee =
-        wallet.currencyType === CurrencyType.ETHEREUM ? +transaction.gasLimit * +transaction.gasPrice : 0;
+    const transactionFee = +(transaction.gasLimit || 0) * +(transaction.gasPrice || 0);
 
     const [tagRenderState, setTagRenderState] = React.useState<boolean[]>([]);
     const [tagsContainerWidth, setTagsContainerWidth] = React.useState<number>(0);
@@ -236,8 +235,6 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
     );
 
     const renderBasicInfo = (
-        // TODO
-        // add fee
         <VStack space={"20px"} testID="transactionDetailsBasicInfo">
             <MultiLineListItem
                 label={"Transaction ID"}
@@ -261,7 +258,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
             />
             <MultiLineListItem
                 label={"Fee"}
-                value={`${getFormattedAmount(tranasctionFee.toString(), wallet.currencyType)} ${
+                value={`${getFormattedAmount(transactionFee.toString(), wallet.currencyType)} ${
                     typeToISOCode[wallet.currencyType]
                 }`}
             />

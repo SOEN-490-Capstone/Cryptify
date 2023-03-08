@@ -29,23 +29,22 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
 
     return (
         <View style={styles.view}>
-            <WalletDetailsComponent wallet={route.params.wallet} />
-            <Box marginTop="20px"></Box>
             <VStack space={"20px"}>
-                <MultiLineListItem label="Name" value={route.params.wallet.name} />
-                <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
-                {/* Comment for Pola: Add BTC feature here */}
+                <WalletDetailsComponent wallet={route.params.wallet} />
+                <VStack space={"20px"}>
+                    <MultiLineListItem label="Name" value={route.params.wallet.name} />
+                    <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
+                    {/* Comment for Pola: Add BTC feature here */}
+                </VStack>
+                <Button
+                    variant="outline"
+                    _text={{ color: "error.500" }}
+                    onPress={handleDeleteWallet}
+                    testID="removeWalletButton"
+                >
+                    Remove wallet
+                </Button>
             </VStack>
-            <Box marginTop="20px"></Box>
-
-            <Button
-                variant="outline"
-                _text={{ color: "error.500" }}
-                onPress={handleDeleteWallet}
-                testID="removeWalletButton"
-            >
-                Remove wallet
-            </Button>
         </View>
     );
 }
@@ -53,8 +52,5 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 20,
     },
 });

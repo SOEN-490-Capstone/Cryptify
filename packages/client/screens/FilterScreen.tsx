@@ -5,6 +5,11 @@ import { HomeStackScreenProps } from "../types";
 import React from "react";
 import DateBox from "../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
+import {farBookmark} from "../components/icons/regular/farBookmark";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import SaveFilterActionSheet from "../components/SaveFilterActionSheet";
+import {fasBookmark} from "../components/icons/solid/fasBookmark";
+import {AuthContext} from "../components/contexts/AuthContext";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
@@ -24,6 +29,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 
     const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
 
+    const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
+    
     function ResetLink() {
         return (
             <Link
@@ -36,21 +43,28 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
-                    navigation.goBack();
+                    route.params.setIsUsingSavedFilter(false);
+                    setIsFilterSaved(false);
                 }}
             >
                 Reset
             </Link>
         );
     }
+    
 
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
-                headerRight: () => !areFiltersDefault && <ResetLink />,
+                headerRight: () => (
+                    <HStack space={"15px"}>
+                        {!areFiltersDefault && <ResetLink />}
+                        {isFilterSaved ?  <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} /> : <FontAwesomeIcon icon={farBookmark} size={22} />}
+                    </HStack>
+                ),
             });
         })();
-    }, [filterByTransaction, filterByDate]);
+    }, [filterByTransaction, filterByDate, isFilterSaved]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -102,13 +116,14 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
+            {!areFiltersDefault && !isFilterSaved && <SaveFilterActionSheet 
+                setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
+                setIsFilterSaved={setIsFilterSaved}
+                setFilters={route.params.setFilters}
+            />}
             <Button
-                style={
-                    filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]
-                        ? styles.applyButtonDisabled
-                        : styles.applyButton
-                }
-                disabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
+                style={styles.applyButton}
+                isDisabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
                 onPress={() => {
                     const filters = [filterByTransaction];
 
@@ -150,9 +165,5 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         marginTop: "auto",
-    },
-    applyButtonDisabled: {
-        marginTop: "auto",
-        opacity: 0.6,
     },
 });

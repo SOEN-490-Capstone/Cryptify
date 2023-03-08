@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, Post, Body, Delete } from "@nestjs/common";
+import {Controller, Get, Param, UseGuards, Post, Body, Delete, Query} from "@nestjs/common";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 import { JwtAuthGuard } from "@cryptify/api/src/guards/jwt-auth.guard";
 import { CanAccessResourceGuard } from "@cryptify/api/src/guards/can_access_resource.guard";
@@ -15,8 +15,8 @@ export class FiltersController {
 
     @UseGuards(JwtAuthGuard, CanAccessResourceGuard)
     @Get("/users/:id/filters")
-    async get(@Param() params: GetFiltersRequest): Promise<Filter[]> {
-        const req = await useValidate(getFiltersSchema, params);
+    async get(@Param() params: GetFiltersRequest, @Query() query): Promise<Filter[]> {
+        const req = await useValidate(getFiltersSchema, {...params, ...query});
         return this.filtersService.findAll(req);
     }
 
@@ -29,8 +29,8 @@ export class FiltersController {
 
     @UseGuards(JwtAuthGuard, CanMutateResourceGuard)
     @Delete("/users/:id/filters/:name")
-    async delete(@Param() params: DeleteFilterRequest): Promise<Filter> {
-        const req = await useValidate(deleteFilterSchema, params);
+    async delete(@Param() params: DeleteFilterRequest, @Query() query): Promise<Filter> {
+        const req = await useValidate(deleteFilterSchema, {...params, ...query});
         return this.filtersService.delete(req);
     }
 }

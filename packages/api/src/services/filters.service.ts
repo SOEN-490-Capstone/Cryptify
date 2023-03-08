@@ -23,15 +23,13 @@ export class FiltersService {
         function hydrateRange(filter: Filter): Filter {
             if (filter.start === "curr") {
                 filter.start = (+new Date()).toString();
-            }
-            if (filter.start[0] === "-") {
+            } else if (filter.start[0] === "-") {
                 filter.start = (+new Date() + +filter.start).toString();
             }
 
             if (filter.end === "curr") {
                 filter.end = (+new Date()).toString();
-            }
-            if (filter.end[0] === "-") {
+            } else if (filter.end[0] === "-") {
                 filter.end = (+new Date() + +filter.end).toString();
             }
 

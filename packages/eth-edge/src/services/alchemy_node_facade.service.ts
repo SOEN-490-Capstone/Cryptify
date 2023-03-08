@@ -1,7 +1,7 @@
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { Injectable } from "@nestjs/common";
 import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import {Transaction, TransactionBuilder} from "@cryptify/common/src/domain/entities/transaction";
 import Web3 from "web3";
 import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
@@ -52,23 +52,21 @@ export class AlchemyNodeServiceFacade {
         // from ETHER to WEI so we can represent them as BigIntegers
         return Promise.all(
             transfers.map(async (transfer) => {
-                const transaction: Transaction = {
-                    id: -1,
-                    transactionAddress: transfer.hash,
-                    walletIn: transfer.to,
-                    walletOut: transfer.from,
-                    amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
-                    createdAt: new Date(transfer.metadata.blockTimestamp),
-                    tags: [],
-                };
+                const txnBuilder = new TransactionBuilder()
+                    .setAddress(transfer.hash)
+                    .setWalletIn(transfer.to)
+                    .setWalletOut(transfer.from)
+                    .setAmount(transfer.value)
+                    .setCreatedAt(transfer.metadata.blockTimestamp)
 
                 const transactionDetails = await this.getTransaction(transfer.hash);
                 if (transactionDetails) {
-                    transaction.gasPrice = transactionDetails.gasPrice.toString();
-                    transaction.gasLimit = transactionDetails.gasLimit.toString();
+                    txnBuilder
+                        .setGasPrice(transactionDetails.gasPrice.toString())
+                        .setGasLimit(transactionDetails.gasLimit.toString());
                 }
 
-                return transaction;
+                return txnBuilder.build();
             }),
         );
     }

@@ -92,7 +92,7 @@ describe("wallets", () => {
             (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(new Response(JSON.stringify([])));
 
             const res = await agent(app.getHttpServer())
-                .delete("/users/1/wallets/0xA40FE62927D741EA49992D6d4699E534E65cA177")
+                .delete("/users/1/wallets/0x4a55474eacb48cefe25d7656db1976aa7ae70e3c")
                 .send();
             expect(res.status).toEqual(200);
         });

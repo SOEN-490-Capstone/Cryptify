@@ -5,7 +5,7 @@ import {
     ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT,
     ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT,
 } from "@cryptify/common/src/errors/error_messages";
-import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
+import {Wallet, WalletBuilder} from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { AlchemyNodeServiceFacade } from "@cryptify/eth-edge/src/services/alchemy_node_facade.service";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
@@ -27,18 +27,18 @@ export class WalletsService {
         private alchemyNodeGateway: AlchemyNodeGateway,
     ) {}
 
-    async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
-        if (await this.findOne(createWalletReq.address, createWalletReq.userId)) {
+    async create(req: CreateWalletRequest): Promise<WalletWithBalance> {
+        if (await this.findOne(req.address, req.userId)) {
             throw new BadRequestException(
-                ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(createWalletReq.currencyType)),
+                ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(req.currencyType)),
             );
         }
 
-        if (await this.walletRepository.findOneBy({ name: createWalletReq.name, userId: createWalletReq.userId })) {
+        if (await this.walletRepository.findOneBy({ name: req.name, userId: req.userId })) {
             throw new BadRequestException(ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
-        const reqWallet = this.walletRepository.create(createWalletReq);
+        const reqWallet = this.walletRepository.create(req);
         await this.walletRepository.insert(reqWallet);
 
         // Parallelizing the promises here are fine since there are no shared resources between them
@@ -51,8 +51,12 @@ export class WalletsService {
             this.alchemyNodeGateway.updateWebhookAddresses([reqWallet.address], []),
         ]);
 
-        const wallet = await this.findOne(createWalletReq.address, createWalletReq.userId);
-        return { ...wallet, balance };
+        return new WalletBuilder()
+            .setAddress(req.address)
+            .setName(req.name)
+            .setUserId(req.userId)
+            .setBalance(balance)
+            .build();
     }
 
     async findOne(address: string, userId: number): Promise<Wallet> {
@@ -69,10 +73,11 @@ export class WalletsService {
         // Once all the balances have been retrieved zip the lists together and map through them to construct the final
         // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
         // will line up when we zip them
-        return zip(wallets, balances).map(([wallet, balance]) => ({
-            ...wallet,
-            balance,
-        }));
+        return zip(wallets, balances).map(([wallet, balance]) => new WalletBuilder()
+            .setWallet(wallet)
+            .setBalance(balance)
+            .build()
+        );
     }
 
     async delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance> {
@@ -82,7 +87,7 @@ export class WalletsService {
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
         ]);
 
-        //We delete the wallet the database and then we proceed to remove the webhook from alchemy
+        // We delete the wallet the database and then we proceed to remove the webhook from alchemy
         await Promise.all([
             this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
             this.alchemyNodeGateway.updateWebhookAddresses([], [deleteWalletReq.address]),
@@ -94,6 +99,10 @@ export class WalletsService {
             // will see those transactions anyways
             this.transactionsService.cleanup(deleteWalletReq.address);
         }
-        return { ...wallet, balance };
+        
+        return new WalletBuilder()
+            .setWallet(wallet)
+            .setBalance(balance)
+            .build();
     }
 }

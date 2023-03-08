@@ -3,6 +3,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Tag } from "./tag";
 import { Contact } from "./contact";
 import { Role } from "@cryptify/common/src/domain/role";
+import {Filter} from "@cryptify/common/src/domain/entities/filter";
 
 @Entity()
 export class User {
@@ -38,4 +39,7 @@ export class User {
 
     @OneToMany(() => Contact, (contact) => contact.user)
     contacts: Contact[];
+
+    @OneToMany(() => Filter, (filter) => filter.user)
+    filters: Filter[];
 }

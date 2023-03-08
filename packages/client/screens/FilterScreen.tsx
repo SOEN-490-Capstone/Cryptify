@@ -1,5 +1,5 @@
 import { View } from "../components/Themed";
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { Text, Radio, Box, Button, HStack, Link, Pressable } from "native-base";
 import { HomeStackScreenProps } from "../types";
 import React from "react";
@@ -13,7 +13,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
 
     const filtersByDate = getFiltersByDateStrings();
-
+    
     const [filterByTransaction, setFilterByTransaction] = React.useState(
         route.params.filters[0] || filtersByTransaction[0],
     );
@@ -25,7 +25,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         options: string[];
     };
 
-    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && route.params.contactFilters.length === 0;
 
     function ResetLink() {
         return (
@@ -39,6 +39,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
+                    route.params.setContactFilters([])
                     navigation.goBack();
                 }}
             >
@@ -53,7 +54,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 headerRight: () => !areFiltersDefault && <ResetLink />,
             });
         })();
-    }, [filterByTransaction, filterByDate]);
+    }, [filterByTransaction, filterByDate, route.params.contactFilters]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -103,9 +104,14 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 Filter by date
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-
+            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Pressable marginTop="30px"
-                onPress={() => navigation.navigate("FilterContactScreen", {})}
+                onPress={() => navigation.navigate("FilterContactScreen", {
+                    filters: route.params.filters,
+                    setFilters: route.params.setFilters,
+                    contactFilters: route.params.contactFilters,
+                    setContactFilters: route.params.setContactFilters,
+                })}
                 _pressed={{
                     background: "text.200",
                 }}
@@ -114,11 +120,15 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             <Text fontWeight={"semibold"} color={"text.500"}>
                                 Filter by Contact
                             </Text>
+                            {route.params.contactFilters.map((contact)=>(
+                                <Text>
+                                    {contact}
+                                </Text>
+                            ))}
                             <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                         </HStack>
                     </Pressable>
             <Box marginTop="20px" />
-            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Button
                 style={
                     filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]

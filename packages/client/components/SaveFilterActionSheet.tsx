@@ -2,30 +2,23 @@ import React from "react";
 import {
     Actionsheet,
     useDisclose,
-    Radio,
     Text,
     Pressable,
-    Link,
     Box,
     HStack,
     FormControl,
     Input,
-    KeyboardAvoidingView, Button, VStack, useToast
+    Button,
+    VStack,
+    useToast,
 } from "native-base";
-import {Keyboard, Platform, StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { farEllipsis } from "./icons/regular/farEllipsis";
-import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
-import { CompositeNavigationProp } from "@react-navigation/native";
-import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
-import {farBookmark} from "./icons/regular/farBookmark";
-import {farPlus} from "./icons/regular/farPlus";
-import {Formik} from "formik";
-import {FiltersGateway} from "../gateways/filters_gateway";
-import {handleErrors} from "./contacts/ContactsForm";
-import * as yup from "yup";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {AuthContext} from "./contexts/AuthContext";
+import { farBookmark } from "./icons/regular/farBookmark";
+import { Formik } from "formik";
+import { FiltersGateway } from "../gateways/filters_gateway";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { AuthContext } from "./contexts/AuthContext";
 
 type Props = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
@@ -33,19 +26,28 @@ type Props = {
     filterByDate: string;
     fromDate: Date | null;
     toDate: Date | null;
-    currencyType: CurrencyType
+    currencyType: CurrencyType;
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>; 
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilter, setIsFilterSaved, filterByTransaction, filterByDate, fromDate, toDate, currencyType }: Props) {
+export default function SaveFilterActionSheet({
+    setFilters,
+    setIsUsingSavedFilter,
+    setIsFilterSaved,
+    filterByTransaction,
+    filterByDate,
+    fromDate,
+    toDate,
+    currencyType,
+}: Props) {
     const filtersGateway = new FiltersGateway();
 
     const { token, user } = React.useContext(AuthContext);
-    
+
     const { isOpen, onOpen, onClose } = useDisclose();
     const toast = useToast();
-    
+
     const initialValues = {
         name: "",
     };
@@ -58,20 +60,20 @@ export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilte
         date.setMinutes(0);
         return +date;
     }
-    
+
     async function onSubmit(values: any, formikHelpers: any) {
         try {
             const req = {
-                    name: values.name,
-                    userId: user.id,
-                    currencyType,
-                    txnIn: true,
-                    txnOut: true,
-                    start: "0",
-                    end: "curr",
-                    tagNames: [],
-                    contactNames: [],
-                }; 
+                name: values.name,
+                userId: user.id,
+                currencyType,
+                txnIn: true,
+                txnOut: true,
+                start: "0",
+                end: "curr",
+                tagNames: [],
+                contactNames: [],
+            };
             if (filterByTransaction.endsWith("in")) {
                 req.txnIn = true;
                 req.txnOut = false;
@@ -136,7 +138,7 @@ export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilte
             if (error instanceof Error) {
                 formikHelpers.setFieldError("name", error.message);
             }
-        } 
+        }
     }
 
     return (
@@ -152,12 +154,11 @@ export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilte
             <Actionsheet isOpen={isOpen} onClose={onClose}>
                 <Actionsheet.Content>
                     <VStack space={"20px"} minWidth={"100%"} paddingX={"15px"} paddingBottom={"15px"}>
-
                         <Text fontWeight={"semibold"} style={styles.headerStyle} marginX={"auto"}>
                             Save Filter
                         </Text>
                         <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                            {({ values, handleChange, errors, touched, submitForm, isSubmitting }) => (
+                            {({ values, handleChange, errors, touched, submitForm }) => (
                                 <VStack space={"20px"} minWidth={"100%"}>
                                     <FormControl isInvalid={!!(errors.name && touched.name)}>
                                         <Input
@@ -178,7 +179,7 @@ export default function SaveFilterActionSheet({ setFilters, setIsUsingSavedFilte
                                     >
                                         Save filter
                                     </Button>
-                                </VStack>   
+                                </VStack>
                             )}
                         </Formik>
                     </VStack>

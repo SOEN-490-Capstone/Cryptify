@@ -5,11 +5,10 @@ import { HomeStackScreenProps } from "../types";
 import React from "react";
 import DateBox from "../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
-import {farBookmark} from "../components/icons/regular/farBookmark";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import { farBookmark } from "../components/icons/regular/farBookmark";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../components/SaveFilterActionSheet";
-import {fasBookmark} from "../components/icons/solid/fasBookmark";
-import {AuthContext} from "../components/contexts/AuthContext";
+import { fasBookmark } from "../components/icons/solid/fasBookmark";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
@@ -30,7 +29,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
 
     const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
-    
+
     function ResetLink() {
         return (
             <Link
@@ -51,7 +50,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             </Link>
         );
     }
-    
 
     React.useEffect(() => {
         (() => {
@@ -59,7 +57,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 headerRight: () => (
                     <HStack space={"15px"}>
                         {!areFiltersDefault && <ResetLink />}
-                        {isFilterSaved ?  <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} /> : <FontAwesomeIcon icon={farBookmark} size={22} />}
+                        {isFilterSaved ? (
+                            <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />
+                        ) : (
+                            <FontAwesomeIcon icon={farBookmark} size={22} />
+                        )}
                     </HStack>
                 ),
             });
@@ -116,16 +118,18 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            {!areFiltersDefault && !isFilterSaved && <SaveFilterActionSheet 
-                setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
-                setIsFilterSaved={setIsFilterSaved}
-                setFilters={route.params.setFilters}
-                filterByTransaction={filterByTransaction}
-                filterByDate={filterByDate}
-                fromDate={fromDate}
-                toDate={toDate}
-                currencyType={route.params.wallet.currencyType}
-            />}
+            {!areFiltersDefault && !isFilterSaved && (
+                <SaveFilterActionSheet
+                    setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
+                    setIsFilterSaved={setIsFilterSaved}
+                    setFilters={route.params.setFilters}
+                    filterByTransaction={filterByTransaction}
+                    filterByDate={filterByDate}
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    currencyType={route.params.wallet.currencyType}
+                />
+            )}
             <Button
                 style={styles.applyButton}
                 isDisabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}

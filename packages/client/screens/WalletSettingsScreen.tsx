@@ -5,7 +5,7 @@ import { Alert, StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
-import { Box, VStack } from "native-base";
+import { VStack } from "native-base";
 import MultiLineListItem from "../components/list/MultiLineListItem";
 import WalletDetailsComponent from "../components/WalletDetailsComponent";
 

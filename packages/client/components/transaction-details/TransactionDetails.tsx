@@ -17,7 +17,6 @@ import MultiLineListItem from "../list/MultiLineListItem";
 import SingleLineListItem from "../list/SingleLineListItem";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import TransactionDetailsActionSheet from "./TransactionDetailsActionSheet";
-import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
     txn: Transaction;

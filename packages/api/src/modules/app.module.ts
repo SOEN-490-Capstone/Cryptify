@@ -11,7 +11,7 @@ import { TagsModule } from "./tags.module";
 import { ContactsModule } from "./contacts.module";
 import { ReportsModule } from "@cryptify/api/src/modules/reports.module";
 import { APP_INTERCEPTOR } from "@nestjs/core";
-import {FiltersModule} from "@cryptify/api/src/modules/filters.module";
+import { FiltersModule } from "@cryptify/api/src/modules/filters.module";
 
 @Module({
     imports: [

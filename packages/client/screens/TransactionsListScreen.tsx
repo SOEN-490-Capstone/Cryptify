@@ -120,46 +120,46 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     }
 
     return (
-            <View style={styles.view}>
-                {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest") && <FiltersBadges />}
-                {transactions.length == 0 ? (
-                    <VStack style={styles.magnifyingGlass} margin="auto">
-                        <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
-                        <Text style={styles.magnifyingGlassText}>
-                            We could not find any transactions matching your filters.
-                        </Text>
-                        <Center marginTop="15">
-                            <Link
-                                _text={{
-                                    color: "darkBlue.500",
-                                    fontWeight: "semibold",
-                                }}
-                                isUnderlined={false}
-                                onPress={() => {
-                                    props.navigation.navigate("FilterScreen", {
-                                        filters,
-                                        setFilters,
-                                        wallet: props.route.params.wallet,
-                                        isUsingSavedFilter,
-                                        setIsUsingSavedFilter,
-                                    });
-                                }}
-                            >
-                                Choose another filter
-                            </Link>
-                        </Center>
-                    </VStack>
-                ) : (
-                    <>
-                        <TransactionsList
-                            transactions={transactions}
-                            wallet={props.route.params.wallet}
-                            displaySeparation={displaySeparation}
-                            navigation={props.navigation}
-                        />
-                    </>
-                )}
-            </View>
+        <View style={styles.view}>
+            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest") && <FiltersBadges />}
+            {transactions.length == 0 ? (
+                <VStack style={styles.magnifyingGlass} margin="auto">
+                    <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
+                    <Text style={styles.magnifyingGlassText}>
+                        We could not find any transactions matching your filters.
+                    </Text>
+                    <Center marginTop="15">
+                        <Link
+                            _text={{
+                                color: "darkBlue.500",
+                                fontWeight: "semibold",
+                            }}
+                            isUnderlined={false}
+                            onPress={() => {
+                                props.navigation.navigate("FilterScreen", {
+                                    filters,
+                                    setFilters,
+                                    wallet: props.route.params.wallet,
+                                    isUsingSavedFilter,
+                                    setIsUsingSavedFilter,
+                                });
+                            }}
+                        >
+                            Choose another filter
+                        </Link>
+                    </Center>
+                </VStack>
+            ) : (
+                <>
+                    <TransactionsList
+                        transactions={transactions}
+                        wallet={props.route.params.wallet}
+                        displaySeparation={displaySeparation}
+                        navigation={props.navigation}
+                    />
+                </>
+            )}
+        </View>
     );
 }
 

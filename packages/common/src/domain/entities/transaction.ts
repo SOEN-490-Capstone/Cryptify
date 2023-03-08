@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGenerat
 import { Tag } from "./tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import Web3 from "web3";
-import {normalizeCurrency} from "@cryptify/common/src/utils/currency_utils";
+import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
 
 @Entity()
 export class Transaction {
@@ -105,7 +105,7 @@ export class TransactionBuilder {
         this.tags.push(...tags);
         return this;
     }
-    
+
     setTransaction(transaction: Transaction): this {
         this.id = transaction.id;
         this.address = transaction.transactionAddress;
@@ -122,21 +122,21 @@ export class TransactionBuilder {
         }
         this.createdAt = new Date(transaction.createdAt);
         this.tags = transaction.tags;
-        
+
         return this;
     }
 
     build(): Transaction {
         const transaction = {
-             id: this.id,
-             transactionAddress: this.address,
-             walletIn: this.walletIn,
-             walletOut: this.walletOut,
-             amount: this.amount,
-             createdAt: this.createdAt,
-             tags: this.tags,
+            id: this.id,
+            transactionAddress: this.address,
+            walletIn: this.walletIn,
+            walletOut: this.walletOut,
+            amount: this.amount,
+            createdAt: this.createdAt,
+            tags: this.tags,
         } as Transaction;
-        
+
         if (this.contactIn) {
             transaction.contactIn = this.contactIn;
         }
@@ -149,7 +149,7 @@ export class TransactionBuilder {
         if (this.gasLimit) {
             transaction.gasLimit = this.gasLimit;
         }
-        
+
         return transaction;
     }
 }

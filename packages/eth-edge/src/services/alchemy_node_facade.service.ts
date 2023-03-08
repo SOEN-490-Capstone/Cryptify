@@ -1,8 +1,6 @@
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { Injectable } from "@nestjs/common";
-import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
-import {Transaction, TransactionBuilder} from "@cryptify/common/src/domain/entities/transaction";
-import Web3 from "web3";
+import { Transaction, TransactionBuilder } from "@cryptify/common/src/domain/entities/transaction";
 import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 
@@ -57,7 +55,7 @@ export class AlchemyNodeServiceFacade {
                     .setWalletIn(transfer.to)
                     .setWalletOut(transfer.from)
                     .setAmount(transfer.value)
-                    .setCreatedAt(transfer.metadata.blockTimestamp)
+                    .setCreatedAt(transfer.metadata.blockTimestamp);
 
                 const transactionDetails = await this.getTransaction(transfer.hash);
                 if (transactionDetails) {

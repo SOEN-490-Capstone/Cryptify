@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { GetTransactionsRequest } from "@cryptify/common/src/requests/get_transaction_request";
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import {Transaction, TransactionBuilder} from "@cryptify/common/src/domain/entities/transaction";
+import { Transaction, TransactionBuilder } from "@cryptify/common/src/domain/entities/transaction";
 import { ContactsService } from "@cryptify/api/src/services/contacts.service";
 
 @Injectable()
@@ -23,12 +23,14 @@ export class TransactionsService {
             contacts.flatMap((contact) => contact.addresses.map((addr) => [addr.walletAddress, contact])),
         );
 
-        return transactionsByType.flat().map((transaction) => 
-            new TransactionBuilder()
-                .setTransaction(transaction)
-                .setContactIn(contactMap.get(transaction.walletIn))
-                .setContactOut(contactMap.get(transaction.walletOut))
-                .build()
-        );
+        return transactionsByType
+            .flat()
+            .map((transaction) =>
+                new TransactionBuilder()
+                    .setTransaction(transaction)
+                    .setContactIn(contactMap.get(transaction.walletIn))
+                    .setContactOut(contactMap.get(transaction.walletOut))
+                    .build(),
+            );
     }
 }

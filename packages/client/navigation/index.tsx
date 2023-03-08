@@ -224,7 +224,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 name="FilterContactScreen"
                 component={FilterContactScreen}
                 options={{
-                    title: "Filter",
+                    title: "Filter by Contact",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

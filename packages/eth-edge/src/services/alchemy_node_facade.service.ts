@@ -73,7 +73,8 @@ export class AlchemyNodeServiceFacade {
         // This function can fail sometimes from the ethereum node side so in that case we just won't assign the
         // transaction the extra details, in the future we can try to implement a retry mechanism on this
         try {
-            return this.alchemy.getTransaction(hash);
+            // We need to await before the return here so we can catch any error coming from rejecting the promise
+            return await this.alchemy.getTransaction(hash);
         } catch (e) {
             return null;
         }

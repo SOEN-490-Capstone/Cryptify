@@ -1,7 +1,6 @@
 import * as yup from "yup";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
-import {InferType} from "yup";
-import {createTagSchema} from "@cryptify/common/src/validations/create_tag_schema";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { InferType } from "yup";
 
 export const deleteFilterSchema = yup.object({
     userId: yup.number().required(),

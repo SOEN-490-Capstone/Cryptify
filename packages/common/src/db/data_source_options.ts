@@ -6,7 +6,7 @@ import { ConfigService } from "@nestjs/config";
 import { Tag } from "../domain/entities/tag";
 import { Contact } from "../domain/entities/contact";
 import { ContactAddress } from "@cryptify/common/src/domain/entities/contact_address";
-import {Filter} from "@cryptify/common/src/domain/entities/filter";
+import { Filter } from "@cryptify/common/src/domain/entities/filter";
 
 const entities = [User, Wallet, Transaction, Tag, Contact, ContactAddress, Filter];
 

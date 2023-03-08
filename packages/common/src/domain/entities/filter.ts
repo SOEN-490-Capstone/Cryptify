@@ -1,7 +1,6 @@
-import {Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn} from "typeorm";
-import { Transaction } from "./transaction";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./user";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Entity()
 export class Filter {
@@ -32,11 +31,11 @@ export class Filter {
     start: string;
     @Column({ nullable: false })
     end: string;
-    
+
     // Tags
     @Column("text", { array: true })
     tagNames: string[];
-    
+
     // Contacts
     @Column("text", { array: true })
     contactNames: string[];
@@ -57,12 +56,12 @@ export class FilterBuilder {
         this.name = name;
         return this;
     }
-    
+
     setUserId(userId: number): this {
         this.userId = userId;
         return this;
     }
-    
+
     setCurrencyType(type: CurrencyType): this {
         this.currencyType = type;
         return this;

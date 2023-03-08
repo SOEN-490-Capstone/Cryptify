@@ -3,7 +3,7 @@ import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { Tag } from "./tag";
 import { Contact } from "./contact";
 import { Role } from "@cryptify/common/src/domain/role";
-import {Filter} from "@cryptify/common/src/domain/entities/filter";
+import { Filter } from "@cryptify/common/src/domain/entities/filter";
 
 @Entity()
 export class User {

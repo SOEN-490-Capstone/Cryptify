@@ -57,6 +57,7 @@ import AccountScreen from "../screens/account/AccountScreen";
 import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 import EditContactScreen from "../screens/contacts/EditContactScreen";
 import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
+import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 
 // TODO refactor this file to reduce code duplication and see if
@@ -224,6 +225,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={SavedFiltersScreen}
                 options={{
                     title: "Saved Filters",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="FilterContactScreen"
+                component={FilterContactScreen}
+                options={{
+                    title: "Filter",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

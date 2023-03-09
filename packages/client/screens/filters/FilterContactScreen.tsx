@@ -1,8 +1,10 @@
 import { View } from "../../components/Themed";
-import { FlatList, Pressable, StyleSheet } from "react-native";
-import { Text, Box, HStack, Center, Checkbox } from "native-base";
+import { FlatList, StyleSheet } from "react-native";
+import { Text, Radio, Box, Button, HStack, Link, Center, Checkbox } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
+import DateBox from "../../components/DateBox";
+import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useIsFocused } from "@react-navigation/native";
 import { AuthContext } from "../../components/contexts/AuthContext";
@@ -17,16 +19,6 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
 
     const { token, user } = React.useContext(AuthContext);
     const [contactsWithHeader, setContactsWithHeader] = React.useState<ContactWithHeader[]>([]);
-
-    async function handleCheckboxChange(contact: string) {
-        if (route.params.contactFilters.includes(contact)) {
-            route.params.contactFilters.splice(route.params.contactFilters.indexOf(contact), 1);
-            route.params.setContactFilters(route.params.contactFilters);
-        } else {
-            route.params.contactFilters.push(contact);
-            route.params.setContactFilters([...route.params.contactFilters]);
-        }
-    }
 
     React.useEffect(() => {
         (async () => {
@@ -57,28 +49,10 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
         })();
     }, [isFocused]);
 
-    React.useEffect(() => {
-        (() => {
-            navigation.setOptions({
-                headerRight: () => (
-                    <Pressable
-                        onPress={() => (
-                            route.params.contactFilters.splice(0),
-                            route.params.setContactFilters([]),
-                            navigation.goBack()
-                        )}
-                    >
-                        <Text>Reset</Text>
-                    </Pressable>
-                ),
-            });
-        })();
-    });
-
     const stickyHeaderIndices = contactsWithHeader.flatMap((obj) =>
         obj.header ? [contactsWithHeader.indexOf(obj)] : [],
-    );
-
+    ); 
+    
     return (
         <View style={styles.view}>
             {contactsWithHeader.length === 0 ? (
@@ -104,27 +78,13 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                                 </Box>
                             ) : (
                                 <HStack>
-                                    {route.params.contactFilters.includes(item.contact.contactName) ? (
-                                        <Checkbox
-                                            value={item.contact.contactName}
-                                            defaultIsChecked
-                                            onChange={() => handleCheckboxChange(item.contact.contactName)}
-                                        >
-                                            <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                                                {item.contact.contactName}
-                                            </Text>
-                                        </Checkbox>
-                                    ) : (
-                                        <Checkbox
-                                            value={item.contact.contactName}
-                                            onChange={() => handleCheckboxChange(item.contact.contactName)}
-                                        >
-                                            <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                                                {item.contact.contactName}
-                                            </Text>
-                                        </Checkbox>
-                                    )}
+                                    <Checkbox value={item.contact.contactName}>
+                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                                        {item.contact.contactName}
+                                    </Text>
+                                    </Checkbox>
                                 </HStack>
+                                
                             )}
                         </>
                     )}
@@ -132,6 +92,7 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                 />
             )}
         </View>
+
     );
 }
 

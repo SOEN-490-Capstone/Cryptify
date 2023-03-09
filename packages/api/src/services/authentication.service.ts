@@ -37,7 +37,7 @@ export class AuthenticationService {
         return this.signToken(user);
     }
 
-    async isMyPassword(password: string, userId: number): Promise<string> {
+    async isUsersPassword(password: string, userId: number): Promise<string> {
         const user = await this.usersService.findOneById(userId);
 
         return await bcrypt.compare(password, user.password);

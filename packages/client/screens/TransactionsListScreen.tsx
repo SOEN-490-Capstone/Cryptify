@@ -17,6 +17,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
+    const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
 
     React.useEffect(() => {
         (() => {
@@ -30,6 +31,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                                     filters,
                                     setFilters,
                                     wallet: props.route.params.wallet,
+                                    isUsingSavedFilter,
+                                    setIsUsingSavedFilter,
                                 });
                             }}
                             testID="filterTransactionsButton"
@@ -137,6 +140,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                                     filters,
                                     setFilters,
                                     wallet: props.route.params.wallet,
+                                    isUsingSavedFilter,
+                                    setIsUsingSavedFilter,
                                 });
                             }}
                         >

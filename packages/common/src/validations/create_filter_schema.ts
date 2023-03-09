@@ -16,8 +16,7 @@ export const createFilterSchema = yup.object({
     currencyType: yup.mixed<CurrencyType>().oneOf(Object.values(CurrencyType)).required(),
     txnIn: yup.boolean().required(),
     txnOut: yup.boolean().required(),
-    start: yup.string().required(),
-    end: yup.string().required(),
+    range: yup.string().required(),
     tagNames: yup.array().of(yup.string()),
     contactNames: yup.array().of(yup.string()),
 });

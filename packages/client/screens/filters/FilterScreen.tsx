@@ -9,9 +9,12 @@ import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
+
+    const isFocused = useIsFocused();
 
     const filtersByDate = getFiltersByDateStrings();
 
@@ -20,6 +23,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
+    const [filterByContact, setFilterByContact] = React.useState<String[]>([]);
+
     type RadioProps = {
         value: string;
         setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +32,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     };
 
     const areFiltersDefault = () =>
-        filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && route.params.contactFilters.length === 0;
+        filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && filterByContact.length === 0;
 
     const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
@@ -83,6 +88,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             });
         })();
     }, [filterByTransaction, filterByDate, isFilterSaved, route.params.contactFilters]);
+
+    React.useEffect(() => {
+        setFilterByContact(route.params.contactFilters);
+    }, [route.params.contactFilters, isFocused])
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -144,18 +153,18 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     background: "text.200",
                 }}
             >
-                        <HStack height="50px" alignItems="center">
-                            <Text fontWeight={"semibold"} color={"text.500"}>
-                                Filter by Contact
-                            </Text>
-                            {route.params.contactFilters.map((contact)=>(
-                                <Text>
-                                    {contact}
-                                </Text>
-                            ))}
-                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                        </HStack>
-                    </Pressable>
+                <HStack height="50px" alignItems="center">
+                    <Text fontWeight={"semibold"} color={"text.500"}>
+                        Filter by Contact
+                    </Text>
+                    {filterByContact.map((contact)=>(
+                        <Text>
+                            {contact}
+                        </Text>
+                    ))}
+                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             {!(filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]) &&

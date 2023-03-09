@@ -24,14 +24,19 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
     async function handleCheckboxChange(contact: string){
         console.log(contact)
         if(route.params.contactFilters.includes(contact)){
-            route.params.setContactFilters(route.params.contactFilters.filter((c)=>(c !== contact)));
+            route.params.contactFilters.splice(route.params.contactFilters.indexOf(contact), 1)
+            route.params.setContactFilters(route.params.contactFilters);
         }
         else{
-            route.params.setContactFilters([...route.params.contactFilters, contact]);
+            route.params.contactFilters.push(contact)
+            route.params.setContactFilters([...route.params.contactFilters]);
             console.log(JSON.stringify(route.params.contactFilters))
         }        
         console.log(JSON.stringify(route.params.contactFilters))
     }
+    React.useEffect(()=>{
+        console.log(JSON.stringify(route.params.contactFilters))
+    }, [route.params.contactFilters])
 
     React.useEffect(() => {
         (async () => {
@@ -67,7 +72,7 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
             navigation.setOptions({
                 headerRight: () => (
                     <Pressable
-                    onPress={() => (route.params.setContactFilters([]))}>
+                    onPress={() => (route.params.contactFilters.splice(0),route.params.setContactFilters([]), navigation.goBack())}>
                         <Text>
                             Reset
                         </Text>
@@ -106,11 +111,20 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                                 </Box>
                             ) : (
                                 <HStack>
-                                    <Checkbox value={item.contact.contactName} onChange={()=>handleCheckboxChange(item.contact.contactName)}>
+                                    {
+                                        route.params.contactFilters.includes(item.contact.contactName)?
+                                        <Checkbox value={item.contact.contactName} defaultIsChecked onChange={()=>handleCheckboxChange(item.contact.contactName)}>
                                         <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
                                             {item.contact.contactName}
                                         </Text>
                                     </Checkbox>
+                                        :
+                                        <Checkbox value={item.contact.contactName} onChange={()=>handleCheckboxChange(item.contact.contactName)}>
+                                        <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                                            {item.contact.contactName}
+                                        </Text>
+                                    </Checkbox>
+                                    }
                                 </HStack>  
                             )}
                         </>

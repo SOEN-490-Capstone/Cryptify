@@ -57,7 +57,9 @@ export class UsersService {
             user.lastName = updateUserRequest.lastName;
         }
         if (updateUserRequest.currentPassword && updateUserRequest.newPassword) {
-            if (!(await this.authService.isUsersPassword(updateUserRequest.currentPassword, updateUserRequest.userId))) {
+            if (
+                !(await this.authService.isUsersPassword(updateUserRequest.currentPassword, updateUserRequest.userId))
+            ) {
                 throw new ForbiddenException(ERROR_CURRENT_PASSWORD_INCORRECT);
             }
             user.password = await this.authService.createNewPassword(updateUserRequest.newPassword);

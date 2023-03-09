@@ -59,6 +59,7 @@ import EditContactScreen from "../screens/contacts/EditContactScreen";
 import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
 import AccountNameScreen from "../screens/account/AccountNameScreen";
 import AccountEmailScreen from "../screens/account/AccountEmailScreen";
+import AccountPasswordScreen from "../screens/account/AccountPasswordScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -568,7 +569,21 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 name="AccountEmailScreen"
                 component={AccountEmailScreen}
                 options={{
-                    title: "Update Name",
+                    title: "Update Email",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <SettingsStack.Screen
+                name="AccountPasswordScreen"
+                component={AccountPasswordScreen}
+                options={{
+                    title: "Update Password",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

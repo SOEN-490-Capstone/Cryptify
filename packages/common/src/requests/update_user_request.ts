@@ -6,7 +6,9 @@ export interface UpdateUserRequest {
     lastName?: string;
     email?: string;
     confirmEmail?: string;
-    password?: string;
+    currentPassword?: string;
+    newPassword?: string;
+    confirmNewPassword?: string;
     areNotificationsEnabled?: boolean;
     role?: Role;
 }

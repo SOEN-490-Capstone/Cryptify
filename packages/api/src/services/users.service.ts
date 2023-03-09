@@ -1,20 +1,22 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Inject, Injectable, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import { Repository } from "typeorm";
-import * as bcrypt from "bcrypt";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
-import { ERROR_EMAIL_IN_USE } from "@cryptify/common/src/errors/error_messages";
+import { ERROR_CURRENT_PASSWORD_INCORRECT, ERROR_EMAIL_IN_USE } from "@cryptify/common/src/errors/error_messages";
 import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_request";
 import { DeleteUserRequest } from "@cryptify/common/src/requests/delete_user_request";
 import { WalletsService } from "@cryptify/api/src/services/wallets.service";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { AuthenticationService } from "./authentication.service";
 
 @Injectable()
 export class UsersService {
     constructor(
         private readonly walletsService: WalletsService,
+        @Inject(forwardRef(() => AuthenticationService))
+        private readonly authService: AuthenticationService,
         @InjectRepository(User)
         private userRepository: Repository<User>,
         @InjectRepository(Tag)
@@ -54,9 +56,11 @@ export class UsersService {
         if (updateUserRequest.lastName) {
             user.lastName = updateUserRequest.lastName;
         }
-        if (updateUserRequest.password) {
-            updateUserRequest.password = await bcrypt.hash(updateUserRequest.password, 10);
-            user.password = updateUserRequest.password;
+        if (updateUserRequest.currentPassword && updateUserRequest.newPassword) {
+            if (!await this.authService.isMyPassword(updateUserRequest.currentPassword, updateUserRequest.userId)) {
+                throw new ForbiddenException(ERROR_CURRENT_PASSWORD_INCORRECT);
+            }
+            user.password = await this.authService.createNewPassword(updateUserRequest.newPassword);
         }
         if (updateUserRequest.areNotificationsEnabled != null) {
             user.areNotificationsEnabled = updateUserRequest.areNotificationsEnabled;

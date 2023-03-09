@@ -157,6 +157,7 @@ export type SettingsStackParamList = {
     AccountScreen: undefined;
     AccountNameScreen: undefined;
     AccountEmailScreen: undefined;
+    AccountPasswordScreen: undefined;
     AccountTypeScreen: undefined;
 };
 

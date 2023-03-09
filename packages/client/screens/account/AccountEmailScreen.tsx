@@ -18,65 +18,59 @@ export default function AccountNameScreen() {
         userId: user.id,
         email: "",
         confirmEmail: "",
-    }
+    };
 
     async function handleUpdate(values: UpdateUserRequest, formikHelpers: FormikHelpers<UpdateUserRequest>) {
         try {
-            const user = await usersGateway.update({userId: values.userId, email: values.email}, token);
+            const user = await usersGateway.update({ userId: values.userId, email: values.email }, token);
             setUser(user);
 
-                toast.show({
-                    placement: "top",
-                    duration: 2000,
-                    render: () => {
-                        return (
-                            <Box style={styles.toastBox}>
-                                <Text
-                                    size={"footnote1"}
-                                    fontWeight={"semibold"}
-                                    color={"white"}
-                                    style={styles.toastText}
-                                >
-                                    Email updated succesfully
-                                </Text>
-                            </Box>
-                        );
-                    },
-                });
+            toast.show({
+                placement: "top",
+                duration: 2000,
+                render: () => {
+                    return (
+                        <Box style={styles.toastBox}>
+                            <Text size={"footnote1"} fontWeight={"semibold"} color={"white"} style={styles.toastText}>
+                                Email updated succesfully
+                            </Text>
+                        </Box>
+                    );
+                },
+            });
 
-                values.confirmEmail = "";
-                values.email = "";
-
+            values.confirmEmail = "";
+            values.email = "";
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("email", error.message);
                 formikHelpers.setFieldError("confirmEmail", error.message);
             }
         }
-       
     }
 
-    
     return (
         <View style={styles.view}>
             <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
-                {({values, errors, touched ,handleChange, submitForm}) =>(
+                {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space={4} marginTop={7}>
-                        <Text size={"title2"} fontWeight={"semibold"}>Current</Text>
+                        <Text size={"title2"} fontWeight={"semibold"}>
+                            Current
+                        </Text>
                         <Text>{user.email}</Text>
-                        <Text size={"title2"} fontWeight={"semibold"}>New</Text>
+                        <Text size={"title2"} fontWeight={"semibold"}>
+                            New
+                        </Text>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
-                        <Input
+                            <Input
                                 value={values.email}
                                 onChangeText={handleChange("email")}
                                 placeholder="email"
                                 testID="email"
                             />
-                            <FormControl.ErrorMessage>
-                                {touched.email && errors.email}
-                            </FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={!!(errors.confirmEmail && touched.confirmEmail)}>
+                            <FormControl.ErrorMessage>{touched.email && errors.email}</FormControl.ErrorMessage>
+                        </FormControl>
+                        <FormControl isInvalid={!!(errors.confirmEmail && touched.confirmEmail)}>
                             <Input
                                 value={values.confirmEmail}
                                 onChangeText={handleChange("confirmEmail")}
@@ -86,15 +80,17 @@ export default function AccountNameScreen() {
                             <FormControl.ErrorMessage>
                                 {touched.confirmEmail && errors.confirmEmail}
                             </FormControl.ErrorMessage>
-                            <Button disabled={!(values.confirmEmail && values.email)} style={!(values.confirmEmail && values.email) ? styles.ButtonDisabled : styles.Button } onPress={submitForm}>
+                            <Button
+                                disabled={!(values.confirmEmail && values.email)}
+                                style={!(values.confirmEmail && values.email) ? styles.ButtonDisabled : styles.Button}
+                                onPress={submitForm}
+                            >
                                 Save changes
                             </Button>
-                    </FormControl>
+                        </FormControl>
                     </VStack>
-                    
                 )}
             </Formik>
-            
         </View>
     );
 }

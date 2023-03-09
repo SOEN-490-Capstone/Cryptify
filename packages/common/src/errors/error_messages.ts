@@ -1,5 +1,6 @@
 export const ERROR_EMAIL_OR_PASSWORD_INCORRECT = "Your email or password was incorrect.";
 export const ERROR_EMAIL_IN_USE = "This email address is already associated with another account.";
+export const ERROR_CURRENT_PASSWORD_INCORRECT = "Your current password is incorrect.";
 
 export const ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY = (currency: string) =>
     `address:Enter a valid ${currency} wallet address.`;

@@ -41,8 +41,9 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
     }, [isFocused]);
     return (
         <View style={styles.view}>
-            <WalletDetailsComponent wallet={wallet} />
-            <Box marginTop="20px"></Box>
+            <Box marginBottom="20px" paddingX={"15px"}>
+                <WalletDetailsComponent wallet={wallet} />
+            </Box>
             <HStack paddingX="38px" justifyContent="space-between">
                 <VStack space="4px">
                     <Pressable
@@ -136,9 +137,6 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 20,
     },
     walletIcon: {
         color: "#404040",

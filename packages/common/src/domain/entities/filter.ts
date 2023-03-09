@@ -24,13 +24,8 @@ export class Filter {
     txnOut: boolean;
 
     // Date
-    // none-negative number -> any arbitrary UNIX timestamp
-    // curr -> current time
-    // negative number -> subtract that amount from the current time
     @Column({ nullable: false })
-    start: string;
-    @Column({ nullable: false })
-    end: string;
+    range: string;
 
     // Tags
     @Column("text", { array: true })
@@ -47,8 +42,7 @@ export class FilterBuilder {
     private currencyType: CurrencyType;
     private txnIn: boolean;
     private txnOut: boolean;
-    private start: string;
-    private end: string;
+    private range: string;
     private tagNames: string[] = [];
     private contactNames: string[] = [];
 
@@ -73,9 +67,8 @@ export class FilterBuilder {
         return this;
     }
 
-    setRange(start: string, end: string): this {
-        this.start = start;
-        this.end = end;
+    setRange(range: string): this {
+        this.range = range;
         return this;
     }
 
@@ -96,8 +89,7 @@ export class FilterBuilder {
             currencyType: this.currencyType,
             txnIn: this.txnIn,
             txnOut: this.txnOut,
-            start: this.start,
-            end: this.end,
+            range: this.range,
             tagNames: this.tagNames,
             contactNames: this.contactNames,
         };

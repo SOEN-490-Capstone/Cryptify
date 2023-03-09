@@ -50,7 +50,7 @@ export default function AccountNameScreen() {
         <View style={styles.view}>
             <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={7}>
+                    <VStack space={4} marginTop={5}>
                         <FormControl isInvalid={!!(errors.firstName && touched.firstName)}>
                             <Input
                                 value={values.firstName}
@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     Button: {
-        marginTop: 5,
+        marginTop: 20,
     },
     ButtonDisabled: {
         opacity: 0.6,
-        marginTop: 5,
+        marginTop: 20,
     },
     toastBox: {
         backgroundColor: "#404040",

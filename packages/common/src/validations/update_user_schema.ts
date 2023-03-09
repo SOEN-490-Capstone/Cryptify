@@ -35,7 +35,10 @@ export const updateUserSchema = yup.object({
             "Password must contain at least 1 upper case, 1 lower case letter, 1 number, and 1 special character.",
         )
         .nullable(),
-    confirmNewPassword: yup.string().equals([yup.ref("newPassword"), null], "The passwords you entered do not match.").nullable(),
+    confirmNewPassword: yup
+        .string()
+        .equals([yup.ref("newPassword"), null], "The passwords you entered do not match.")
+        .nullable(),
     areNotificationsEnabled: yup.boolean().nullable(),
     role: yup.mixed<Role>().oneOf(Object.values(Role)).nullable(),
 });

@@ -29,8 +29,10 @@ export default function AccountPasswordScreen() {
 
     async function handleUpdate(values: UpdateUserRequest, formikHelpers: FormikHelpers<UpdateUserRequest>) {
         try {
-
-            const user = await usersGateway.update({ userId: values.userId, currentPassword: values.currentPassword, newPassword: values.newPassword }, token);
+            const user = await usersGateway.update(
+                { userId: values.userId, currentPassword: values.currentPassword, newPassword: values.newPassword },
+                token,
+            );
             setUser(user);
 
             toast.show({
@@ -61,7 +63,7 @@ export default function AccountPasswordScreen() {
         <View style={styles.view}>
             <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={7}>
+                    <VStack space={4} marginTop={5}>
                         <FormControl isInvalid={!!(errors.currentPassword && touched.currentPassword)}>
                             <Input
                                 value={values.currentPassword}

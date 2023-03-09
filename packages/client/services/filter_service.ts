@@ -70,21 +70,7 @@ export function filterTransctions(
                     new Date(toDate) >= new Date(transaction.createdAt),
             );
         }        
-        // if(!filtersByContacts.includes("All Contacts")){
-        //     transactions = transactions.filter(
-        //         (transaction) =>
-        //             transaction.contactIn?.contactName === filter ||
-        //             transaction.contactIn?.contactName === filter
-        //     );
-        // } 
     });
-
-    // contactFilters.map((contact) => {
-    //     if(contactFilters.length !== 0){
-    //         transactions = transactions.filter
-    //     }
-    // })
-
 
     if(contactFilters.length !== 0){
         transactions = transactions.filter(

@@ -22,7 +22,6 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
     const [contactsWithHeader, setContactsWithHeader] = React.useState<ContactWithHeader[]>([]);
 
     async function handleCheckboxChange(contact: string){
-        console.log(contact)
         if(route.params.contactFilters.includes(contact)){
             route.params.contactFilters.splice(route.params.contactFilters.indexOf(contact), 1)
             route.params.setContactFilters(route.params.contactFilters);
@@ -30,13 +29,8 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
         else{
             route.params.contactFilters.push(contact)
             route.params.setContactFilters([...route.params.contactFilters]);
-            console.log(JSON.stringify(route.params.contactFilters))
         }        
-        console.log(JSON.stringify(route.params.contactFilters))
     }
-    React.useEffect(()=>{
-        console.log(JSON.stringify(route.params.contactFilters))
-    }, [route.params.contactFilters])
 
     React.useEffect(() => {
         (async () => {
@@ -134,7 +128,6 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                 
             )}
         </View>
-
     );
 }
 

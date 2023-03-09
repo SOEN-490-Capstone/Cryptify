@@ -130,8 +130,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         Filter by Contact
                     </Text>
                     {filterByContact.map((contact)=>(
-                        <Text>
-                            {contact}
+                        <Text color={"text.500"}>
+                            {contact},
                         </Text>
                     ))}
                     <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />

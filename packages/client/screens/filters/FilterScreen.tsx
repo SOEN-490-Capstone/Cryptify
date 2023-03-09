@@ -59,6 +59,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         {!areFiltersDefault && <ResetLink />}
                         <Pressable onPress={() => navigation.navigate("SavedFiltersScreen", {
                             currencyType: route.params.wallet.currencyType,
+                            setFilters: route.params.setFilters,
                         })}>
                             {isFilterSaved ? (
                                 <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />

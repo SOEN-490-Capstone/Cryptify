@@ -87,6 +87,7 @@ type FilterScreenProps = {
 
 type SavedFiltersScreenProps = {
     currencyType: CurrencyType;
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type EditTagScreenProps = {

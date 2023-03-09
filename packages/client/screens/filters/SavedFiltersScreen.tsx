@@ -29,44 +29,51 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
     React.useEffect(() => {
         (async () => {
             if (isFocused) {
-                try {
-                    const filters = await filtersGateway.findAllFilters({
-                        id: user.id,
-                        currencyType: route.params.currencyType
-                    }, token);
+                const filters = await filtersGateway.findAllFilters({
+                    id: user.id,
+                    currencyType: route.params.currencyType
+                }, token);
 
 
-                    let currChar = "";
-                    const listData = filters.flatMap((filter) => {
-                        if (filter.name.charAt(0).toUpperCase() !== currChar) {
-                            currChar = filter.name.charAt(0).toUpperCase();
-                            return [
-                                {
-                                    filter: {
-                                        ...filter,
-                                        name: currChar,
-                                    },
-                                    header: true,
+                let currChar = "";
+                const listData = filters.flatMap((filter) => {
+                    if (filter.name.charAt(0).toUpperCase() !== currChar) {
+                        currChar = filter.name.charAt(0).toUpperCase();
+                        return [
+                            {
+                                filter: {
+                                    ...filter,
+                                    name: currChar,
                                 },
-                                { filter, header: false },
-                            ];
-                        } else {
-                            return [{ filter, header: false }];
-                        }
-                    });
+                                header: true,
+                            },
+                            { filter, header: false },
+                        ];
+                    } else {
+                        return [{ filter, header: false }];
+                    }
+                });
 
-                    setFiltersWithHeader(listData);
-                } catch (e) {
-                    console.log(`${e}`);
-                }
-
-
+                setFiltersWithHeader(listData);
             }
         })();
     }, [isFocused]);
 
     async function onSubmit(filter: Filter) {
+        const filters: string[] = [];
+        const filtersByTransaction = getFiltersByTransactionStrings(route.params.currencyType);
+        if (filter.txnOut && filter.txnIn) {
+            filters[0] = filtersByTransaction[0];
+        } else if (!filter.txnOut && filter.txnIn) {
+            filters[0] = filtersByTransaction[1];
+        } else if (filter.txnOut && !filter.txnIn) {
+            filters[0] = filtersByTransaction[2];
+        }
+
+        filter[1] = filter.range;
         
+        route.params.setFilters(filters);
+        navigation.goBack();
     }
 
     // TODO use a more efficient way of getting these indicies

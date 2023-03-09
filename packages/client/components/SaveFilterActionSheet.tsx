@@ -65,7 +65,7 @@ export default function SaveFilterActionSheet({
         try {
             const req = {
                 name: values.name,
-                userId: user.id,
+                id: user.id,
                 currencyType,
                 txnIn: true,
                 txnOut: true,

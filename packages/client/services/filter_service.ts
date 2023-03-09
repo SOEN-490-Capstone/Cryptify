@@ -18,6 +18,7 @@ export function filterTransctions(
     walletAddress: string,
     transactions: Transaction[],
     filters: string[],
+    contactFilters: string[],
 ): Transaction[] {
     const filtersByTransaction = getFiltersByTransactionStrings(currencyType);
     const filtersByDate = getFiltersByDateStrings();
@@ -70,5 +71,12 @@ export function filterTransctions(
         }
     });
 
+    if (contactFilters.length !== 0) {
+        transactions = transactions.filter(
+            (transaction) =>
+                contactFilters.includes(transaction.contactIn?.contactName ?? "") ||
+                contactFilters.includes(transaction.contactOut?.contactName ?? ""),
+        );
+    }
     return transactions;
 }

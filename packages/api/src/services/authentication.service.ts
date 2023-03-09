@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable, forwardRef } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import * as bcrypt from "bcrypt";
@@ -10,7 +10,11 @@ import { ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/e
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private jwtService: JwtService, private usersService: UsersService) {}
+    constructor(
+        private jwtService: JwtService,
+        @Inject(forwardRef(() => UsersService))
+        private usersService: UsersService,
+    ) {}
 
     async signUp(signUpReq: SignUpRequest): Promise<JwtToken> {
         signUpReq.password = await bcrypt.hash(signUpReq.password, 10);
@@ -31,6 +35,16 @@ export class AuthenticationService {
         }
 
         return this.signToken(user);
+    }
+
+    async verify(password: string, userId: number): Promise<string> {
+        const user = await this.usersService.findOneById(userId);
+
+        return await bcrypt.compare(password, user.password);
+    }
+
+    async encode(password: string): Promise<string> {
+        return await bcrypt.hash(password, 10);
     }
 
     private signToken(user: User): JwtToken {

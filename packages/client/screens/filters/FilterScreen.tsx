@@ -26,7 +26,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         options: string[];
     };
 
-    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+    const areFiltersDefault = () => filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
 
     const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
@@ -56,10 +56,14 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             navigation.setOptions({
                 headerRight: () => (
                     <HStack space={"15px"}>
-                        {!areFiltersDefault && <ResetLink />}
+                        {!areFiltersDefault() && <ResetLink />}
                         <Pressable onPress={() => navigation.navigate("SavedFiltersScreen", {
                             currencyType: route.params.wallet.currencyType,
                             setFilters: route.params.setFilters,
+                            setFilterByTransaction,
+                            setFilterByDate,
+                            setIsUsingSavedFilter: route.params.setIsUsingSavedFilter,
+                            setIsFilterSaved
                         })}>
                             {isFilterSaved ? (
                                 <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />
@@ -123,7 +127,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            {!areFiltersDefault && !isFilterSaved && (
+            {(
+                !(filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0])
+                && (!isFilterSaved || !(filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]))
+            ) 
+                && (
                 <SaveFilterActionSheet
                     setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
                     setIsFilterSaved={setIsFilterSaved}
@@ -157,6 +165,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         }
                     }
                     route.params.setFilters(filters);
+                    route.params.setIsUsingSavedFilter(false);
+                    setIsFilterSaved(false); 
                     navigation.goBack();
                 }}
                 testID="applyFiltersSubmit"

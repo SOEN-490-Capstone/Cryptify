@@ -70,9 +70,13 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
             filters[0] = filtersByTransaction[2];
         }
 
-        filter[1] = filter.range;
+        filters[1] = filter.range;
         
         route.params.setFilters(filters);
+        route.params.setFilterByTransaction(filters[0]);
+        route.params.setFilterByDate(filters[1]);
+        route.params.setIsFilterSaved(true);
+        route.params.setIsUsingSavedFilter(true);
         navigation.goBack();
     }
 

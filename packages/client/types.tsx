@@ -88,6 +88,10 @@ type FilterScreenProps = {
 type SavedFiltersScreenProps = {
     currencyType: CurrencyType;
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    setFilterByTransaction: React.Dispatch<React.SetStateAction<string>>;
+    setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
+    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type EditTagScreenProps = {

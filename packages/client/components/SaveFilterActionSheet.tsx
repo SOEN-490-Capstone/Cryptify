@@ -63,42 +63,6 @@ export default function SaveFilterActionSheet({
 
     async function onSubmit(values: any, formikHelpers: any) {
         try {
-            const req = {
-                name: values.name,
-                id: user.id,
-                currencyType,
-                txnIn: true,
-                txnOut: true,
-                start: "0",
-                end: "curr",
-                tagNames: [],
-                contactNames: [],
-            };
-            if (filterByTransaction.endsWith("in")) {
-                req.txnIn = true;
-                req.txnOut = false;
-            }
-            if (filterByTransaction.endsWith("out")) {
-                req.txnIn = false;
-                req.txnOut = true;
-            }
-            if (filterByDate === "Past 90 days") {
-                req.start = `-${1000 * 60 * 60 * 24 * 90}`;
-            }
-            if (filterByDate === new Date().getFullYear().toString()) {
-                req.start = getYearStart().toString();
-                req.end = (getYearStart() + 1000 * 60 * 60 * 24 * 365).toString();
-            }
-            if (filterByDate === (new Date().getFullYear() - 1).toString()) {
-                req.start = (getYearStart() - 1000 * 60 * 60 * 24 * 365).toString();
-                req.end = (getYearStart() - 1000 * 60 * 60 * 24).toString();
-            }
-            if (filterByDate === "Custom Dates") {
-                req.start = `${+(fromDate || 0)}`;
-                req.end = `${+(toDate || 0)}`;
-            }
-            await filtersGateway.createFilter(req, token);
-
             const filters = [filterByTransaction];
 
             // this checks if the filter selected for the date is "custom date"
@@ -117,6 +81,26 @@ export default function SaveFilterActionSheet({
                 }
             }
             setFilters(filters);
+
+            const req = {
+                name: values.name,
+                userId: user.id,
+                currencyType,
+                txnIn: true,
+                txnOut: true,
+                range: filters[1],
+                tagNames: [],
+                contactNames: [],
+            };
+            if (filterByTransaction.endsWith("in")) {
+                req.txnIn = true;
+                req.txnOut = false;
+            }
+            if (filterByTransaction.endsWith("out")) {
+                req.txnIn = false;
+                req.txnOut = true;
+            }
+            await filtersGateway.createFilter(req, token);
 
             onClose();
             setIsUsingSavedFilter(true);

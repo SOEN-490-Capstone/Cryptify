@@ -20,7 +20,7 @@ export class FiltersGateway extends AbstractApiGateway {
     }
 
     async createFilter(req: CreateFilterRequest, token: string): Promise<Filter> {
-        const path = `users/${req.id}/filters`;
+        const path = `users/${req.userId}/filters`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

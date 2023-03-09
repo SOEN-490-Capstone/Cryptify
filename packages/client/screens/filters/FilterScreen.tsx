@@ -1,14 +1,14 @@
-import { View } from "../components/Themed";
+import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Link } from "native-base";
-import { HomeStackScreenProps } from "../types";
+import {Text, Radio, Box, Button, HStack, Link, Pressable} from "native-base";
+import { HomeStackScreenProps } from "../../types";
 import React from "react";
-import DateBox from "../components/DateBox";
-import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
-import { farBookmark } from "../components/icons/regular/farBookmark";
+import DateBox from "../../components/DateBox";
+import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
+import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import SaveFilterActionSheet from "../components/SaveFilterActionSheet";
-import { fasBookmark } from "../components/icons/solid/fasBookmark";
+import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
+import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
@@ -57,11 +57,15 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 headerRight: () => (
                     <HStack space={"15px"}>
                         {!areFiltersDefault && <ResetLink />}
-                        {isFilterSaved ? (
-                            <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />
-                        ) : (
-                            <FontAwesomeIcon icon={farBookmark} size={22} />
-                        )}
+                        <Pressable onPress={() => navigation.navigate("SavedFiltersScreen", {
+                            currencyType: route.params.wallet.currencyType,
+                        })}>
+                            {isFilterSaved ? (
+                                <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />
+                            ) : (
+                                <FontAwesomeIcon icon={farBookmark} size={22} />
+                            )}
+                        </Pressable>
                     </HStack>
                 ),
             });

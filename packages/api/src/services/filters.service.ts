@@ -16,7 +16,7 @@ export class FiltersService {
 
     async findAll(req: GetFiltersRequest): Promise<Filter[]> {
         const filters = await this.filtersRepository.findBy({
-            userId: req.userId,
+            userId: req.id,
             currencyType: req.currencyType,
         });
 
@@ -41,7 +41,7 @@ export class FiltersService {
 
     async create(req: CreateFilterRequest): Promise<Filter> {
         const doesFilterExists = !!(await this.filtersRepository.findOneBy({
-            userId: req.userId,
+            userId: req.id,
             name: req.name,
             currencyType: req.currencyType,
         }));
@@ -51,7 +51,7 @@ export class FiltersService {
 
         const filter = new FilterBuilder()
             .setName(req.name)
-            .setUserId(req.userId)
+            .setUserId(req.id)
             .setCurrencyType(req.currencyType)
             .setTxns(req.txnIn, req.txnOut)
             .setRange(req.start, req.end)
@@ -64,7 +64,7 @@ export class FiltersService {
 
     async delete(req: DeleteFilterRequest): Promise<Filter> {
         const filter = await this.filtersRepository.findOneBy({
-            userId: req.userId,
+            userId: req.id,
             name: req.name,
             currencyType: req.currencyType,
         });

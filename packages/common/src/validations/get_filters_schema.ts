@@ -3,7 +3,7 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { InferType } from "yup";
 
 export const getFiltersSchema = yup.object({
-    userId: yup.number().required(),
+    id: yup.number().required(),
     currencyType: yup.mixed<CurrencyType>().oneOf(Object.values(CurrencyType)).required(),
 });
 

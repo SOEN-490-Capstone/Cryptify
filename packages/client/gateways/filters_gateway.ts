@@ -11,7 +11,7 @@ export class FiltersGateway extends AbstractApiGateway {
     }
 
     async findAllFilters(req: GetFiltersRequest, token: string): Promise<Filter[]> {
-        const path = `users/${req.userId}/filters?currencyType=${req.currencyType}`;
+        const path = `users/${req.id}/filters?currencyType=${req.currencyType}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };
@@ -20,7 +20,7 @@ export class FiltersGateway extends AbstractApiGateway {
     }
 
     async createFilter(req: CreateFilterRequest, token: string): Promise<Filter> {
-        const path = `users/${req.userId}/filters`;
+        const path = `users/${req.id}/filters`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };
@@ -29,7 +29,7 @@ export class FiltersGateway extends AbstractApiGateway {
     }
 
     async deleteFilter(req: DeleteFilterRequest, token: string): Promise<Filter> {
-        const path = `users/${req.userId}/filters/${req.name}?currencyType=${req.currencyType}`;
+        const path = `users/${req.id}/filters/${req.name}?currencyType=${req.currencyType}`;
         const headers = {
             Authorization: `Bearer ${token}`,
         };

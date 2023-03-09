@@ -85,6 +85,10 @@ type FilterScreenProps = {
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+type SavedFiltersScreenProps = {
+    currencyType: CurrencyType;
+};
+
 type EditTagScreenProps = {
     tag: Tag;
 };
@@ -120,6 +124,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     FilterScreen: FilterScreenProps;
+    SavedFiltersScreen: SavedFiltersScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
     ReportSelectionScreen: ReportSelectionScreenProps;

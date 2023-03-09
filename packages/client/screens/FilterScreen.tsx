@@ -8,9 +8,12 @@ import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../serv
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { farChevronRight } from "../components/icons/regular/farChevronRight";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
+
+    const isFocused = useIsFocused();
 
     const filtersByDate = getFiltersByDateStrings();
     
@@ -19,13 +22,15 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
+    const [filterByContact, setFilterByContact] = React.useState<String[]>([]);
+
     type RadioProps = {
         value: string;
         setValue: React.Dispatch<React.SetStateAction<string>>;
         options: string[];
     };
 
-    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && route.params.contactFilters.length === 0;
+    const areFiltersDefault = filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && filterByContact.length === 0;
 
     function ResetLink() {
         return (
@@ -55,6 +60,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             });
         })();
     }, [filterByTransaction, filterByDate, route.params.contactFilters]);
+
+    React.useEffect(() => {
+        setFilterByContact(route.params.contactFilters);
+    }, [route.params.contactFilters, isFocused])
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -116,26 +125,26 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     background: "text.200",
                 }}
             >
-                        <HStack height="50px" alignItems="center">
-                            <Text fontWeight={"semibold"} color={"text.500"}>
-                                Filter by Contact
-                            </Text>
-                            {route.params.contactFilters.map((contact)=>(
-                                <Text>
-                                    {contact}
-                                </Text>
-                            ))}
-                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                        </HStack>
-                    </Pressable>
+                <HStack height="50px" alignItems="center">
+                    <Text fontWeight={"semibold"} color={"text.500"}>
+                        Filter by Contact
+                    </Text>
+                    {filterByContact.map((contact)=>(
+                        <Text>
+                            {contact}
+                        </Text>
+                    ))}
+                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
             <Box marginTop="20px" />
             <Button
                 style={
-                    filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]
+                    filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1] && filterByContact.length === 0
                         ? styles.applyButtonDisabled
                         : styles.applyButton
                 }
-                disabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
+                disabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1] && filterByContact.length === 0}
                 onPress={() => {
                     const filters = [filterByTransaction];
 

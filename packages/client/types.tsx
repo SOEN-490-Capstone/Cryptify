@@ -80,16 +80,18 @@ type WalletSettingsScreenProps = {
 type FilterScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    contactFilters: string[];
-    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
     wallet: WalletWithBalance;
+    isUsingSavedFilter: boolean;
+    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type FilterContactScreenProps = {
-    filters: string[];
+type SavedFiltersScreenProps = {
+    currencyType: CurrencyType;
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    contactFilters: string[];
-    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    setFilterByTransaction: React.Dispatch<React.SetStateAction<string>>;
+    setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
+    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type EditTagScreenProps = {
@@ -127,7 +129,7 @@ export type HomeStackParamList = {
     TransactionsListScreen: TransactionsListScreenProps;
     WalletQRCodeScreen: WalletQRCodeProps;
     FilterScreen: FilterScreenProps;
-    FilterContactScreen: FilterContactScreenProps;
+    SavedFiltersScreen: SavedFiltersScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
     ReportSelectionScreen: ReportSelectionScreenProps;

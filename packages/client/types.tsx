@@ -80,6 +80,8 @@ type WalletSettingsScreenProps = {
 type FilterScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    contactFilters: string[];
+    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
     wallet: WalletWithBalance;
     isUsingSavedFilter: boolean;
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -95,6 +97,10 @@ type SavedFiltersScreenProps = {
 };
 
 type FilterContactScreenProps = {
+    filters: string[];
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    contactFilters: string[];
+    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type EditTagScreenProps = {

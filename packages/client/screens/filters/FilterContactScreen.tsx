@@ -1,5 +1,5 @@
 import { View } from "../../components/Themed";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, Pressable, StyleSheet } from "react-native";
 import { Text, Radio, Box, Button, HStack, Link, Center, Checkbox } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
@@ -11,6 +11,7 @@ import { AuthContext } from "../../components/contexts/AuthContext";
 import { falAddressBook } from "../../components/icons/light/falAddressBook";
 import { ContactsGateway } from "../../gateways/contacts_gateway";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import { RollOutLeft } from "react-native-reanimated";
 
 export default function FilterContactScreen({ route, navigation }: HomeStackScreenProps<"FilterContactScreen">) {
     const contactsGateway = new ContactsGateway();
@@ -19,6 +20,18 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
 
     const { token, user } = React.useContext(AuthContext);
     const [contactsWithHeader, setContactsWithHeader] = React.useState<ContactWithHeader[]>([]);
+
+    async function handleCheckboxChange(contact: string){
+        console.log(contact)
+        if(route.params.contactFilters.includes(contact)){
+            route.params.setContactFilters(route.params.contactFilters.filter((c)=>(c !== contact)));
+        }
+        else{
+            route.params.setContactFilters([...route.params.contactFilters, contact]);
+            console.log(JSON.stringify(route.params.contactFilters))
+        }        
+        console.log(JSON.stringify(route.params.contactFilters))
+    }
 
     React.useEffect(() => {
         (async () => {
@@ -49,6 +62,21 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
         })();
     }, [isFocused]);
 
+    React.useEffect(() => {
+        (() => {
+            navigation.setOptions({
+                headerRight: () => (
+                    <Pressable
+                    onPress={() => (route.params.setContactFilters([]))}>
+                        <Text>
+                            Reset
+                        </Text>
+                    </Pressable>
+                ),
+            });
+        })();
+    });
+
     const stickyHeaderIndices = contactsWithHeader.flatMap((obj) =>
         obj.header ? [contactsWithHeader.indexOf(obj)] : [],
     ); 
@@ -61,7 +89,7 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                     <FontAwesomeIcon icon={falAddressBook} style={styles.contactBook} size={56} />
                     <Text style={styles.contactBookText}>You do not have any contacts.</Text>
                 </Center>
-            ) : (
+            ) : (        
                 <FlatList
                     data={contactsWithHeader}
                     renderItem={({ item }) => (
@@ -78,18 +106,18 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                                 </Box>
                             ) : (
                                 <HStack>
-                                    <Checkbox value={item.contact.contactName}>
-                                    <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                                        {item.contact.contactName}
-                                    </Text>
+                                    <Checkbox value={item.contact.contactName} onChange={()=>handleCheckboxChange(item.contact.contactName)}>
+                                        <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                                            {item.contact.contactName}
+                                        </Text>
                                     </Checkbox>
-                                </HStack>
-                                
+                                </HStack>  
                             )}
                         </>
                     )}
                     stickyHeaderIndices={stickyHeaderIndices}
                 />
+                
             )}
         </View>
 

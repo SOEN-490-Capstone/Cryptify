@@ -58,7 +58,7 @@ import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 import EditContactScreen from "../screens/contacts/EditContactScreen";
 import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
-import FilterContactScreen from "../screens/filters/FilterContactScreen";
+import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -221,10 +221,10 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 }}
             />
             <HomeStack.Screen
-                name="FilterContactScreen"
-                component={FilterContactScreen}
+                name="SavedFiltersScreen"
+                component={SavedFiltersScreen}
                 options={{
-                    title: "Filter by Contact",
+                    title: "Saved Filters",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

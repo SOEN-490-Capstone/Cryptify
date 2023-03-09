@@ -10,13 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import { farChevronRight } from "../../components/icons/regular/farChevronRight";
-import { useIsFocused } from "@react-navigation/native";
+import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
+import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
-
-    const isFocused = useIsFocused();
 
     const filtersByDate = getFiltersByDateStrings();
 
@@ -25,18 +23,16 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
-    const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
-
     type RadioProps = {
         value: string;
         setValue: React.Dispatch<React.SetStateAction<string>>;
         options: string[];
     };
 
-    const areFiltersDefault =
-       () => filterByTransaction === filtersByTransaction[0] &&
-        filterByDate === filtersByDate[0] &&
-        filterByContact.length === 0;const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
+    const areFiltersDefault = () =>
+       () => filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+
+    const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
     function ResetLink() {
         return (
@@ -143,6 +139,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 Filter by date
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
+            <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             <Pressable
                 marginTop="30px"
@@ -186,10 +183,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 )}
             <Button
                 style={styles.applyButton}
-                isDisabled={
-                    filterByTransaction === route.params.filters[0] &&
-                    filterByDate === route.params.filters[1]
-                }
+                isDisabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
                 onPress={() => {
                     const filters = [filterByTransaction];
 
@@ -233,14 +227,5 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         marginTop: "auto",
-    },
-    applyButtonDisabled: {
-        marginTop: "auto",
-        opacity: 0.6,
-    },
-    chevronRightIcon: {
-        color: "#A3A3A3",
-        marginLeft: "auto",
-        marginRight: 5,
     },
 });

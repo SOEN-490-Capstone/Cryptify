@@ -17,7 +17,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
     const [filters, setFilters] = React.useState<string[]>([]);
-    const [contactFilters, setContactFilters] = React.useState<string[]>([]);
+    const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
     const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
 
     React.useEffect(() => {
@@ -29,10 +29,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                         <Pressable
                             onPress={() => {
                                 props.navigation.navigate("FilterScreen", {
-                                    filters: filters,
-                                    setFilters: setFilters,
-                                    contactFilters: contactFilters,
-                                    setContactFilters: setContactFilters,
+                                    filters,
+                                    setFilters,
                                     wallet: props.route.params.wallet,
                                     isUsingSavedFilter,
                                     setIsUsingSavedFilter,
@@ -65,13 +63,12 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
             props.route.params.wallet.address,
             [...props.route.params.transactions],
             filtersDisplayed,
-            contactFilters,
         );
 
         setTransactions(
             SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.wallet.address),
         );
-    }, [filters, contactFilters]);
+    }, [filters]);
 
     // To Do Move into components folder for later use.
     function FiltersBadges() {
@@ -96,28 +93,6 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                             <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
                         </Pressable>
                     </HStack>
-
-                    {contactFilters.map((filter) => (
-                        <HStack key={filter} style={styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {filter}
-                            </Text>
-
-                            <Pressable
-                                onPress={() => {
-                                    // This removes the current filter when the XMark is pressed.
-                                    setContactFilters(contactFilters.filter((f) => f !== filter));
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
-                        </HStack>
-                    ))}
 
                     {filtersDisplayed.map((filter) => (
                         <HStack key={filter} style={styles.badge}>
@@ -147,9 +122,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 
     return (
         <View style={styles.view}>
-            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest" || contactFilters.length > 0) && (
-                <FiltersBadges />
-            )}
+            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest") && <FiltersBadges />}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
@@ -167,8 +140,6 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                                 props.navigation.navigate("FilterScreen", {
                                     filters,
                                     setFilters,
-                                    contactFilters,
-                                    setContactFilters,
                                     wallet: props.route.params.wallet,
                                     isUsingSavedFilter,
                                     setIsUsingSavedFilter,

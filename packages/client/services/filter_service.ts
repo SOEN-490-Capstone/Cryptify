@@ -13,7 +13,6 @@ export function getFiltersByDateStrings(): string[] {
     return ["All transactions", "Past 90 days", currentYear.toString(), previousYear.toString(), "Custom Dates"];
 }
 
-
 export function filterTransctions(
     currencyType: CurrencyType,
     walletAddress: string,
@@ -69,31 +68,16 @@ export function filterTransctions(
                     new Date(fromDate) <= new Date(transaction.createdAt) &&
                     new Date(toDate) >= new Date(transaction.createdAt),
             );
-        }        
-        // if(!filtersByContacts.includes("All Contacts")){
-        //     transactions = transactions.filter(
-        //         (transaction) =>
-        //             transaction.contactIn?.contactName === filter ||
-        //             transaction.contactIn?.contactName === filter
-        //     );
-        // } 
+        }
     });
 
-    // contactFilters.map((contact) => {
-    //     if(contactFilters.length !== 0){
-    //         transactions = transactions.filter
-    //     }
-    // })
-
-
-    if(contactFilters.length !== 0){
+    if (contactFilters.length !== 0) {
         transactions = transactions.filter(
             (transaction) =>
-            contactFilters.includes(transaction.contactIn?.contactName ?? "") ||
-            contactFilters.includes(transaction.contactOut?.contactName ?? "")
-        )
+                contactFilters.includes(transaction.contactIn?.contactName ?? "") ||
+                contactFilters.includes(transaction.contactOut?.contactName ?? ""),
+        );
     }
-    
 
     return transactions;
 }

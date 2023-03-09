@@ -15,28 +15,10 @@ export class FiltersService {
     ) {}
 
     async findAll(req: GetFiltersRequest): Promise<Filter[]> {
-        const filters = await this.filtersRepository.findBy({
-            userId: req.userId,
+        return this.filtersRepository.findBy({
+            userId: req.id,
             currencyType: req.currencyType,
         });
-
-        function hydrateRange(filter: Filter): Filter {
-            if (filter.start === "curr") {
-                filter.start = (+new Date()).toString();
-            } else if (filter.start[0] === "-") {
-                filter.start = (+new Date() + +filter.start).toString();
-            }
-
-            if (filter.end === "curr") {
-                filter.end = (+new Date()).toString();
-            } else if (filter.end[0] === "-") {
-                filter.end = (+new Date() + +filter.end).toString();
-            }
-
-            return filter;
-        }
-
-        return filters.map((filter) => hydrateRange(filter));
     }
 
     async create(req: CreateFilterRequest): Promise<Filter> {
@@ -54,7 +36,7 @@ export class FiltersService {
             .setUserId(req.userId)
             .setCurrencyType(req.currencyType)
             .setTxns(req.txnIn, req.txnOut)
-            .setRange(req.start, req.end)
+            .setRange(req.range)
             .setTagNames(req.tagNames)
             .setContactNames(req.contactNames)
             .build();
@@ -64,7 +46,7 @@ export class FiltersService {
 
     async delete(req: DeleteFilterRequest): Promise<Filter> {
         const filter = await this.filtersRepository.findOneBy({
-            userId: req.userId,
+            userId: req.id,
             name: req.name,
             currencyType: req.currencyType,
         });

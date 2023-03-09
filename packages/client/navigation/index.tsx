@@ -41,7 +41,7 @@ import { AddressShareButton } from "../components/AddressShareButton";
 import WalletSettingsScreen from "../screens/WalletSettingsScreen";
 import TagsSettingsScreen from "../screens/TagsSettingsScreen";
 import AddTagsScreen from "../screens/AddTagsScreen";
-import FilterScreen from "../screens/filters/FilterScreen";
+import FilterScreen from "../screens/FilterScreen";
 import EditTagScreen from "../screens/EditTagScreen";
 import TransactionTagsScreen from "../screens/TransactionTagsScreen";
 import AddTransactionTagsScreen from "../screens/AddTransactionTagsScreen";
@@ -58,7 +58,6 @@ import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 import EditContactScreen from "../screens/contacts/EditContactScreen";
 import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
-import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -211,20 +210,6 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={FilterScreen}
                 options={{
                     title: "Filter",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 17,
-                        fontWeight: "600",
-                    },
-                    headerShadowVisible: false,
-                    headerTitleAlign: "center",
-                }}
-            />
-            <HomeStack.Screen
-                name="SavedFiltersScreen"
-                component={SavedFiltersScreen}
-                options={{
-                    title: "Saved Filters",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

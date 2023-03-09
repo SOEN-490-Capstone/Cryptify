@@ -83,17 +83,6 @@ type FilterScreenProps = {
     contactFilters: string[];
     setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
     wallet: WalletWithBalance;
-    isUsingSavedFilter: boolean;
-    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-type SavedFiltersScreenProps = {
-    currencyType: CurrencyType;
-    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    setFilterByTransaction: React.Dispatch<React.SetStateAction<string>>;
-    setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
-    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FilterContactScreenProps = {
@@ -139,8 +128,6 @@ export type HomeStackParamList = {
     WalletQRCodeScreen: WalletQRCodeProps;
     FilterScreen: FilterScreenProps;
     FilterContactScreen: FilterContactScreenProps;
-    SavedFiltersScreen: SavedFiltersScreenProps;
-    SavedFiltersScreen: SavedFiltersScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;
     ReportSelectionScreen: ReportSelectionScreenProps;

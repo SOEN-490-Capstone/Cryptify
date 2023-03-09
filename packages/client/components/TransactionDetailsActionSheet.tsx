@@ -2,7 +2,7 @@ import React from "react";
 import { Actionsheet, useDisclose, Radio, Text, Pressable, Link, Box } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { farEllipsis } from "../icons/regular/farEllipsis";
+import { farEllipsis } from "./icons/regular/farEllipsis";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { Transaction } from "@cryptify/common/src/domain/entities/transaction";

@@ -1,13 +1,11 @@
-import { View } from "../../components/Themed";
+import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
 import { Text, Radio, Box, Button, HStack, Link, Pressable } from "native-base";
-import { HomeStackScreenProps } from "../../types";
+import { HomeStackScreenProps } from "../types";
 import React from "react";
-import DateBox from "../../components/DateBox";
-import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
-import { farBookmark } from "../../components/icons/regular/farBookmark";
+import DateBox from "../components/DateBox";
+import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { farChevronRight } from "../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -32,9 +30,9 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     };
 
     const areFiltersDefault =
-       () => filterByTransaction === filtersByTransaction[0] &&
+        filterByTransaction === filtersByTransaction[0] &&
         filterByDate === filtersByDate[0] &&
-        filterByContact.length === 0;const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
+        filterByContact.length === 0;
 
     function ResetLink() {
         return (
@@ -49,8 +47,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     setFilterByDate(filtersByDate[0]);
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
                     route.params.setContactFilters([]);
-                    route.params.setIsUsingSavedFilter(false);
-                    setIsFilterSaved(false);
                     navigation.goBack();
                 }}
             >
@@ -62,32 +58,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
-                headerRight: () => (
-                    <HStack space={"15px"}>
-                        {!areFiltersDefault() && <ResetLink />}
-                        <Pressable
-                            onPress={() =>
-                                navigation.navigate("SavedFiltersScreen", {
-                                    currencyType: route.params.wallet.currencyType,
-                                    setFilters: route.params.setFilters,
-                                    setFilterByTransaction,
-                                    setFilterByDate,
-                                    setIsUsingSavedFilter: route.params.setIsUsingSavedFilter,
-                                    setIsFilterSaved,
-                                })
-                            }
-                        >
-                            {isFilterSaved ? (
-                                <FontAwesomeIcon icon={fasBookmark} size={22} color={"#0077E6"} />
-                            ) : (
-                                <FontAwesomeIcon icon={farBookmark} size={22} />
-                            )}
-                        </Pressable>
-                    </HStack>
-                ),
+                headerRight: () => !areFiltersDefault && <ResetLink />,
             });
         })();
-    }, [filterByTransaction, filterByDate, isFilterSaved, route.params.contactFilters]);
+    }, [filterByTransaction, filterByDate, route.params.contactFilters]);
 
     React.useEffect(() => {
         setFilterByContact(route.params.contactFilters);
@@ -167,26 +141,18 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 </HStack>
             </Pressable>
             <Box marginTop="20px" />
-            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            {!(filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]) &&
-                (!isFilterSaved ||
-                    !(filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1])) && (
-                    <SaveFilterActionSheet
-                        setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
-                        setIsFilterSaved={setIsFilterSaved}
-                        setFilters={route.params.setFilters}
-                        filterByTransaction={filterByTransaction}
-                        filterByDate={filterByDate}
-                        fromDate={fromDate}
-                        toDate={toDate}
-                        currencyType={route.params.wallet.currencyType}
-                    />
-                )}
             <Button
-                style={styles.applyButton}
-                isDisabled={
+                style={
                     filterByTransaction === route.params.filters[0] &&
-                    filterByDate === route.params.filters[1]
+                    filterByDate === route.params.filters[1] &&
+                    filterByContact.length === 0
+                        ? styles.applyButtonDisabled
+                        : styles.applyButton
+                }
+                disabled={
+                    filterByTransaction === route.params.filters[0] &&
+                    filterByDate === route.params.filters[1] &&
+                    filterByContact.length === 0
                 }
                 onPress={() => {
                     const filters = [filterByTransaction];
@@ -207,8 +173,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         }
                     }
                     route.params.setFilters(filters);
-                    route.params.setIsUsingSavedFilter(false);
-                    setIsFilterSaved(false);
                     navigation.goBack();
                 }}
                 testID="applyFiltersSubmit"

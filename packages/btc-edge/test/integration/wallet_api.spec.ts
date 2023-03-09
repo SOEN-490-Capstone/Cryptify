@@ -31,7 +31,6 @@ describe("Wallets", () => {
             name: "Bitcoin Wallet",
             currencyType: "BITCOIN",
             balance: "0.000001",
-            transactions: [],
         };
 
         it("should create the wallet and return the wallet with the balance", async () => {

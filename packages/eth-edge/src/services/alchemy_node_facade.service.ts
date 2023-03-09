@@ -1,6 +1,8 @@
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { Injectable } from "@nestjs/common";
-import { Transaction, TransactionBuilder } from "@cryptify/common/src/domain/entities/transaction";
+import { normalizeCurrency } from "@cryptify/common/src/utils/currency_utils";
+import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
+import Web3 from "web3";
 import { AlchemyDecorator } from "@cryptify/eth-edge/src/services/alchemy_decorator";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 
@@ -50,21 +52,23 @@ export class AlchemyNodeServiceFacade {
         // from ETHER to WEI so we can represent them as BigIntegers
         return Promise.all(
             transfers.map(async (transfer) => {
-                const txnBuilder = new TransactionBuilder()
-                    .setAddress(transfer.hash)
-                    .setWalletIn(transfer.to)
-                    .setWalletOut(transfer.from)
-                    .setAmount(transfer.value)
-                    .setCreatedAt(transfer.metadata.blockTimestamp);
+                const transaction: Transaction = {
+                    id: -1,
+                    transactionAddress: transfer.hash,
+                    walletIn: transfer.to,
+                    walletOut: transfer.from,
+                    amount: Web3.utils.toWei(normalizeCurrency(transfer.value), "ether"),
+                    createdAt: new Date(transfer.metadata.blockTimestamp),
+                    tags: [],
+                };
 
                 const transactionDetails = await this.getTransaction(transfer.hash);
                 if (transactionDetails) {
-                    txnBuilder
-                        .setGasPrice(transactionDetails.gasPrice.toString())
-                        .setGasLimit(transactionDetails.gasLimit.toString());
+                    transaction.gasPrice = transactionDetails.gasPrice.toString();
+                    transaction.gasLimit = transactionDetails.gasLimit.toString();
                 }
 
-                return txnBuilder.build();
+                return transaction;
             }),
         );
     }
@@ -73,8 +77,7 @@ export class AlchemyNodeServiceFacade {
         // This function can fail sometimes from the ethereum node side so in that case we just won't assign the
         // transaction the extra details, in the future we can try to implement a retry mechanism on this
         try {
-            // We need to await before the return here so we can catch any error coming from rejecting the promise
-            return await this.alchemy.getTransaction(hash);
+            return this.alchemy.getTransaction(hash);
         } catch (e) {
             return null;
         }

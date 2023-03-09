@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Wallet, WalletBuilder } from "@cryptify/common/src/domain/entities/wallet";
+import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { CreateWalletRequest } from "@cryptify/common/src/requests/create_wallet_request";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
@@ -26,17 +26,19 @@ export class WalletsService {
         private readonly transactionWatcherService: TransactionWatcherService,
     ) {}
 
-    async create(req: CreateWalletRequest): Promise<WalletWithBalance> {
-        const { address, userId, name } = req;
+    async create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance> {
+        const { address, userId, name } = createWalletReq;
 
         if (await this.walletRepository.findOneBy({ address, userId })) {
-            throw new BadRequestException(ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(req.currencyType)));
+            throw new BadRequestException(
+                ERROR_WALLET_ALREADY_ADDED_TO_ACCOUNT(titleCase(createWalletReq.currencyType)),
+            );
         }
         if (await this.walletRepository.findOneBy({ name, userId })) {
             throw new BadRequestException(ERROR_WALLET_NAME_ALREADY_ADDED_TO_ACCOUNT);
         }
 
-        await this.walletRepository.insert(this.walletRepository.create(req));
+        await this.walletRepository.insert(this.walletRepository.create(createWalletReq));
 
         // Parallelize getting the wallet balance, backfilling the transactions in the db, and
         // subscribing to the transaction messages for the new wallet is fine since there are
@@ -47,12 +49,11 @@ export class WalletsService {
             this.transactionWatcherService.subscribeAddress(address),
         ]);
 
-        return new WalletBuilder()
-            .setAddress(req.address)
-            .setName(req.name)
-            .setUserId(req.userId)
-            .setBalance(balance)
-            .build();
+        const wallet = await this.walletRepository.findOneBy({
+            address,
+            userId,
+        });
+        return { ...wallet, balance };
     }
 
     async findAll(userId: number): Promise<WalletWithBalance[]> {
@@ -65,9 +66,10 @@ export class WalletsService {
         // Once all the balances have been retrieved zip the lists together and map through them to construct the final
         // object, Promise.all will return the values in the same order we inputted them meaning the wallets and balances
         // will line up when we zip them
-        return zip(wallets, balances).map(([wallet, balance]) =>
-            new WalletBuilder().setWallet(wallet).setBalance(balance).build(),
-        );
+        return zip(wallets, balances).map(([wallet, balance]) => ({
+            ...wallet,
+            balance,
+        }));
     }
 
     async findOne(address: string, userId: number): Promise<Wallet> {
@@ -81,7 +83,7 @@ export class WalletsService {
             this.walletRepository.countBy({ address: deleteWalletReq.address }),
         ]);
 
-        // We delete the wallet the database and then we proceed to remove the webhook
+        //We delete the wallet the database and then we proceed to remove the webhook
         await Promise.all([
             this.walletRepository.delete({ address: deleteWalletReq.address, userId: deleteWalletReq.id }),
             this.transactionWatcherService.unsubscribeAddress(deleteWalletReq.address),
@@ -93,7 +95,6 @@ export class WalletsService {
             // will see those transactions anyways
             this.transactionsService.cleanup(deleteWalletReq.address).catch(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
         }
-
-        return new WalletBuilder().setWallet(wallet).setBalance(balance).build();
+        return { ...wallet, balance };
     }
 }

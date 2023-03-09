@@ -147,7 +147,9 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 
     return (
         <View style={styles.view}>
-            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest" || contactFilters.length >0) && <FiltersBadges />}
+            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest" || contactFilters.length > 0) && (
+                <FiltersBadges />
+            )}
             {transactions.length == 0 ? (
                 <VStack style={styles.magnifyingGlass} margin="auto">
                     <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />

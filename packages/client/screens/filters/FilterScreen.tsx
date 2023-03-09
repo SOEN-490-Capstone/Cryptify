@@ -8,7 +8,7 @@ import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../s
 import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
-import { fasBookmark } from "../../components/icons/solid/fasBookmark";
+import { farChevronRight } from "../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
@@ -23,7 +23,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
-    const [filterByContact, setFilterByContact] = React.useState<String[]>([]);
+    const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
 
     type RadioProps = {
         value: string;
@@ -31,10 +31,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         options: string[];
     };
 
-    const areFiltersDefault = () =>
-        filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0] && filterByContact.length === 0;
-
-    const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
+    const areFiltersDefault =
+       () => filterByTransaction === filtersByTransaction[0] &&
+        filterByDate === filtersByDate[0] &&
+        filterByContact.length === 0;const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
     function ResetLink() {
         return (
@@ -91,7 +91,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 
     React.useEffect(() => {
         setFilterByContact(route.params.contactFilters);
-    }, [route.params.contactFilters, isFocused])
+    }, [route.params.contactFilters, isFocused]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -142,13 +142,16 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            <Pressable marginTop="30px"
-                onPress={() => navigation.navigate("FilterContactScreen", {
-                    filters: route.params.filters,
-                    setFilters: route.params.setFilters,
-                    contactFilters: route.params.contactFilters,
-                    setContactFilters: route.params.setContactFilters,
-                })}
+            <Pressable
+                marginTop="30px"
+                onPress={() =>
+                    navigation.navigate("FilterContactScreen", {
+                        filters: route.params.filters,
+                        setFilters: route.params.setFilters,
+                        contactFilters: route.params.contactFilters,
+                        setContactFilters: route.params.setContactFilters,
+                    })
+                }
                 _pressed={{
                     background: "text.200",
                 }}
@@ -157,10 +160,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     <Text fontWeight={"semibold"} color={"text.500"}>
                         Filter by Contact
                     </Text>
-                    {filterByContact.map((contact)=>(
-                        <Text color={"text.500"}>
-                            {contact},
-                        </Text>
+                    {filterByContact.map((contact) => (
+                        <Text color={"text.500"}>{contact},</Text>
                     ))}
                     <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                 </HStack>
@@ -183,7 +184,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 )}
             <Button
                 style={styles.applyButton}
-                isDisabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
+                isDisabled={
+                    filterByTransaction === route.params.filters[0] &&
+                    filterByDate === route.params.filters[1]
+                }
                 onPress={() => {
                     const filters = [filterByTransaction];
 

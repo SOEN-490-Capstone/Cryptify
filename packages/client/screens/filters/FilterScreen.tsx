@@ -9,9 +9,11 @@ import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
+import DateBox from "../components/DateBox";
+import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../services/filter_service";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
-import { fasBookmark } from "../../components/icons/solid/fasBookmark";
+import { farChevronRight } from "../components/icons/regular/farChevronRight";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
@@ -30,9 +32,9 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     };
 
     const areFiltersDefault = () =>
-       () => filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+        filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
 
-    const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
+    const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
     function ResetLink() {
         return (
@@ -46,10 +48,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
-                    route.params.setContactFilters([])
                     route.params.setIsUsingSavedFilter(false);
                     setIsFilterSaved(false);
-                    navigation.goBack();
                 }}
             >
                 Reset
@@ -85,11 +85,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 ),
             });
         })();
-    }, [filterByTransaction, filterByDate, isFilterSaved, route.params.contactFilters]);
-
-    React.useEffect(() => {
-        setFilterByContact(route.params.contactFilters);
-    }, [route.params.contactFilters, isFocused]);
+    }, [filterByTransaction, filterByDate, isFilterSaved]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -139,32 +135,20 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 Filter by date
             </Text>
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-            <Box marginTop="20px" />
-            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            <Pressable
-                marginTop="30px"
-                onPress={() =>
-                    navigation.navigate("FilterContactScreen", {
-                        filters: route.params.filters,
-                        setFilters: route.params.setFilters,
-                        contactFilters: route.params.contactFilters,
-                        setContactFilters: route.params.setContactFilters,
-                    })
-                }
+
+            <Pressable marginTop="30px"
+                onPress={() => navigation.navigate("FilterContactScreen", {})}
                 _pressed={{
                     background: "text.200",
                 }}
             >
-                <HStack height="50px" alignItems="center">
-                    <Text fontWeight={"semibold"} color={"text.500"}>
-                        Filter by Contact
-                    </Text>
-                    {filterByContact.map((contact) => (
-                        <Text color={"text.500"}>{contact},</Text>
-                    ))}
-                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                </HStack>
-            </Pressable>
+                        <HStack height="50px" alignItems="center">
+                            <Text fontWeight={"semibold"} color={"text.500"}>
+                                Filter by Contact
+                            </Text>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    </Pressable>
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
             {!(filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]) &&
@@ -227,5 +211,14 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         marginTop: "auto",
+    },
+    applyButtonDisabled: {
+        marginTop: "auto",
+        opacity: 0.6,
+    },
+    chevronRightIcon: {
+        color: "#A3A3A3",
+        marginLeft: "auto",
+        marginRight: 5,
     },
 });

@@ -57,7 +57,7 @@ import AccountScreen from "../screens/account/AccountScreen";
 import AccountTypeScreen from "../screens/account/AccountTypeScreen";
 import EditContactScreen from "../screens/contacts/EditContactScreen";
 import ContactOverviewScreen from "../screens/contacts/ContactOverviewScreen";
-import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
+import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 
 // TODO refactor this file to reduce code duplication and see if
@@ -235,10 +235,10 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 }}
             />
             <HomeStack.Screen
-                name="SavedFiltersScreen"
-                component={SavedFiltersScreen}
+                name="FilterContactScreen"
+                component={FilterContactScreen}
                 options={{
-                    title: "Saved Filters",
+                    title: "Filter",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

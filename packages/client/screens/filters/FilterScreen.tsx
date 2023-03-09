@@ -161,11 +161,13 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 }}
             >
                 <HStack height="50px" alignItems="center">
-                    <Text fontWeight={"semibold"} color={"text.500"}>
-                        Filter by Contact
+                    <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                        Contacts
                     </Text>
                     {filterByContact.map((contact) => (
-                        <Text color={"text.500"}>{contact},</Text>
+                        <Text color={"text.500"} marginRight="1">
+                            {contact},
+                        </Text>
                     ))}
                     <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                 </HStack>

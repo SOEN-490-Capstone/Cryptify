@@ -68,7 +68,7 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                             navigation.goBack()
                         )}
                     >
-                        <Text>Reset</Text>
+                        <Text color={"#007AFF"}>Reset</Text>
                     </Pressable>
                 ),
             });

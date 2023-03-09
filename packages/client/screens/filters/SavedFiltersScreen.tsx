@@ -1,22 +1,16 @@
 import { View } from "../../components/Themed";
-import {FlatList, StyleSheet} from "react-native";
-import {Text, Radio, Box, Button, HStack, Link, Center, Pressable} from "native-base";
+import { FlatList, StyleSheet } from "react-native";
+import { Text, Box, Center, Pressable } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
-import DateBox from "../../components/DateBox";
-import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
+import { getFiltersByTransactionStrings } from "../../services/filter_service";
 import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
-import { fasBookmark } from "../../components/icons/solid/fasBookmark";
-import {ContactsGateway} from "../../gateways/contacts_gateway";
-import {useIsFocused} from "@react-navigation/native";
-import {AuthContext} from "../../components/contexts/AuthContext";
-import {Contact} from "@cryptify/common/src/domain/entities/contact";
-import {falAddressBook} from "../../components/icons/light/falAddressBook";
-import {FiltersGateway} from "../../gateways/filters_gateway";
-import {Filter} from "@cryptify/common/src/domain/entities/filter";
-import {titleCase} from "@cryptify/common/src/utils/string_utils";
+import { useIsFocused } from "@react-navigation/native";
+import { AuthContext } from "../../components/contexts/AuthContext";
+import { FiltersGateway } from "../../gateways/filters_gateway";
+import { Filter } from "@cryptify/common/src/domain/entities/filter";
+import { titleCase } from "@cryptify/common/src/utils/string_utils";
 
 export default function SavedFiltersScreen({ route, navigation }: HomeStackScreenProps<"SavedFiltersScreen">) {
     const filtersGateway = new FiltersGateway();
@@ -29,11 +23,13 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
     React.useEffect(() => {
         (async () => {
             if (isFocused) {
-                const filters = await filtersGateway.findAllFilters({
-                    id: user.id,
-                    currencyType: route.params.currencyType
-                }, token);
-
+                const filters = await filtersGateway.findAllFilters(
+                    {
+                        id: user.id,
+                        currencyType: route.params.currencyType,
+                    },
+                    token,
+                );
 
                 let currChar = "";
                 const listData = filters.flatMap((filter) => {
@@ -71,7 +67,7 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
         }
 
         filters[1] = filter.range;
-        
+
         route.params.setFilters(filters);
         route.params.setFilterByTransaction(filters[0]);
         route.params.setFilterByDate(filters[1]);
@@ -91,7 +87,9 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
                 <Center alignItems="center" marginY="auto">
                     <Box marginTop="-10px"></Box>
                     <FontAwesomeIcon icon={farBookmark} style={styles.emptyIcon} size={56} color={"#404040"} />
-                    <Text style={styles.emptyText}>You do not have any saved filters{'\n'}for {titleCase(route.params.currencyType)} wallets.</Text>
+                    <Text style={styles.emptyText}>
+                        You do not have any saved filters{"\n"}for {titleCase(route.params.currencyType)} wallets.
+                    </Text>
                 </Center>
             ) : (
                 <FlatList

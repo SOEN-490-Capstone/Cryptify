@@ -52,15 +52,6 @@ export default function SaveFilterActionSheet({
         name: "",
     };
 
-    function getYearStart() {
-        const date = new Date();
-        date.setMonth(0);
-        date.setDate(1);
-        date.setHours(0);
-        date.setMinutes(0);
-        return +date;
-    }
-
     async function onSubmit(values: any, formikHelpers: any) {
         try {
             const filters = [filterByTransaction];

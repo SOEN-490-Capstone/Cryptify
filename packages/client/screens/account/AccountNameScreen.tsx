@@ -55,7 +55,7 @@ export default function AccountNameScreen() {
                             <Input
                                 value={values.firstName}
                                 onChangeText={handleChange("firstName")}
-                                placeholder="firstName"
+                                placeholder="First name"
                                 testID="firstName"
                             />
                             <FormControl.ErrorMessage>{touched.firstName && errors.firstName}</FormControl.ErrorMessage>
@@ -64,7 +64,7 @@ export default function AccountNameScreen() {
                             <Input
                                 value={values.lastName}
                                 onChangeText={handleChange("lastName")}
-                                placeholder="lastName"
+                                placeholder="Last name"
                                 testID="lastName"
                             />
                             <FormControl.ErrorMessage>{touched.lastName && errors.lastName}</FormControl.ErrorMessage>

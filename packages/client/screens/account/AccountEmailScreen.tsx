@@ -65,7 +65,7 @@ export default function AccountNameScreen() {
                             <Input
                                 value={values.email}
                                 onChangeText={handleChange("email")}
-                                placeholder="email"
+                                placeholder="Email"
                                 testID="email"
                             />
                             <FormControl.ErrorMessage>{touched.email && errors.email}</FormControl.ErrorMessage>
@@ -74,7 +74,7 @@ export default function AccountNameScreen() {
                             <Input
                                 value={values.confirmEmail}
                                 onChangeText={handleChange("confirmEmail")}
-                                placeholder="confirmEmail"
+                                placeholder="Confirm email"
                                 testID="confirmEmail"
                             />
                             <FormControl.ErrorMessage>

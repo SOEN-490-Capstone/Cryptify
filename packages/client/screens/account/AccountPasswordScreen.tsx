@@ -78,7 +78,7 @@ export default function AccountPasswordScreen() {
                                     </Pressable>
                                 }
                                 onChangeText={handleChange("currentPassword")}
-                                placeholder="current password"
+                                placeholder="Current password"
                                 testID="currentPassword"
                             />
                             <FormControl.ErrorMessage>{errors.currentPassword}</FormControl.ErrorMessage>
@@ -97,7 +97,7 @@ export default function AccountPasswordScreen() {
                                     </Pressable>
                                 }
                                 onChangeText={handleChange("newPassword")}
-                                placeholder="new password"
+                                placeholder="New password (6+ characters)"
                                 testID="newPassword"
                             />
                             <FormControl.ErrorMessage>{errors.newPassword}</FormControl.ErrorMessage>
@@ -116,15 +116,25 @@ export default function AccountPasswordScreen() {
                                     </Pressable>
                                 }
                                 onChangeText={handleChange("confirmNewPassword")}
-                                placeholder="confirm new password"
+                                placeholder="Confirm new password"
                                 testID="ConfirmNewPassword"
                             />
                             <FormControl.ErrorMessage>{errors.confirmNewPassword}</FormControl.ErrorMessage>
                         </FormControl>
                         <Button
-                            disabled={!!(errors.currentPassword && touched.currentPassword)}
+                            disabled={
+                                !!(
+                                    values.currentPassword?.length == 0 ||
+                                    values.newPassword?.length == 0 ||
+                                    values.confirmNewPassword?.length == 0
+                                )
+                            }
                             style={
-                                !!(errors.currentPassword && touched.currentPassword)
+                                !!(
+                                    values.currentPassword?.length == 0 ||
+                                    values.newPassword?.length == 0 ||
+                                    values.confirmNewPassword?.length == 0
+                                )
                                     ? styles.ButtonDisabled
                                     : styles.Button
                             }

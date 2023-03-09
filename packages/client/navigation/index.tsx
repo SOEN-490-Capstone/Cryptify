@@ -583,7 +583,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 name="AccountPasswordScreen"
                 component={AccountPasswordScreen}
                 options={{
-                    title: "Update Password",
+                    title: "Change Password",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

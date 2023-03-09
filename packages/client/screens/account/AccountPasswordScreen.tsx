@@ -122,22 +122,14 @@ export default function AccountPasswordScreen() {
                             <FormControl.ErrorMessage>{errors.confirmNewPassword}</FormControl.ErrorMessage>
                         </FormControl>
                         <Button
-                            disabled={
+                            isDisabled={
                                 !!(
                                     values.currentPassword?.length == 0 ||
                                     values.newPassword?.length == 0 ||
                                     values.confirmNewPassword?.length == 0
                                 )
                             }
-                            style={
-                                !!(
-                                    values.currentPassword?.length == 0 ||
-                                    values.newPassword?.length == 0 ||
-                                    values.confirmNewPassword?.length == 0
-                                )
-                                    ? styles.ButtonDisabled
-                                    : styles.Button
-                            }
+                            style={styles.Button}
                             onPress={submitForm}
                         >
                             Save changes

@@ -69,16 +69,11 @@ export default function AccountNameScreen() {
                             />
                             <FormControl.ErrorMessage>{touched.lastName && errors.lastName}</FormControl.ErrorMessage>
                             <Button
-                                disabled={
+                                isDisabled={
                                     intitialValues.firstName === values.firstName &&
                                     intitialValues.lastName === values.lastName
                                 }
-                                style={
-                                    intitialValues.firstName === values.firstName &&
-                                    intitialValues.lastName === values.lastName
-                                        ? styles.ButtonDisabled
-                                        : styles.Button
-                                }
+                                style={styles.Button}
                                 onPress={submitForm}
                             >
                                 Save changes

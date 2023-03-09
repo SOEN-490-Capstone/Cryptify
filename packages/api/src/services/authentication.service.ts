@@ -37,13 +37,13 @@ export class AuthenticationService {
         return this.signToken(user);
     }
 
-    async isUsersPassword(password: string, userId: number): Promise<string> {
+    async verify(password: string, userId: number): Promise<string> {
         const user = await this.usersService.findOneById(userId);
 
         return await bcrypt.compare(password, user.password);
     }
 
-    async createNewPassword(password: string): Promise<string> {
+    async encode(password: string): Promise<string> {
         return await bcrypt.hash(password, 10);
     }
 

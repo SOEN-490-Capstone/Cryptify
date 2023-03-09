@@ -29,7 +29,9 @@ export default function MultiLineListItem({
             </Text>
             {altValue && <Text flex={1}>{altValue}</Text>}
             <HStack space="10px">
-                <Text>{value}</Text>
+                <Text flex={1} minWidth={250}>
+                    {value}
+                </Text>
                 {copy && <Copy label={labelCopy ? labelCopy : label} value={value} />}
             </HStack>
         </VStack>

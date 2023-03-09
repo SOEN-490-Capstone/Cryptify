@@ -81,8 +81,8 @@ export default function AccountNameScreen() {
                                 {touched.confirmEmail && errors.confirmEmail}
                             </FormControl.ErrorMessage>
                             <Button
-                                disabled={!(values.confirmEmail && values.email)}
-                                style={!(values.confirmEmail && values.email) ? styles.ButtonDisabled : styles.Button}
+                                isDisabled={!(values.confirmEmail && values.email)}
+                                style={styles.Button}
                                 onPress={submitForm}
                             >
                                 Save changes

@@ -1,7 +1,7 @@
 import { View } from "../../components/Themed";
 import React from "react";
-import { Button, VStack } from "native-base";
-import { Alert, StyleSheet } from "react-native";
+import { Button, HStack, VStack, Text } from "native-base";
+import { Alert, Pressable, StyleSheet } from "react-native";
 import { SettingsStackScreenProps } from "../../types";
 import MultiLineListItem from "../../components/list/MultiLineListItem";
 import { AuthContext } from "../../components/contexts/AuthContext";
@@ -10,6 +10,8 @@ import { UsersGateway } from "../../gateways/users_gateway";
 import StorageService from "../../services/storage_service";
 import { KEY_JWT } from "../../constants/storage_keys";
 import { User } from "@cryptify/common/src/domain/entities/user";
+import { farChevronRight } from "../../components/icons/regular/farChevronRight";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export default function AccountScreen({ navigation }: SettingsStackScreenProps<"AccountScreen">) {
     const usersGateway = new UsersGateway();
@@ -37,13 +39,27 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
     return (
         <View style={styles.view}>
             <VStack space="20px" flex={1}>
-                <MultiLineListItem label={"Name"} value={`${user.firstName} ${user.lastName}`} />
-                <MultiLineListItem label={"Email"} value={`${user.email}`} />
+                <MultiLineListItem
+                    label={"Name"}
+                    value={`${user.firstName} ${user.lastName}`}
+                    inlineLink={() => navigation.navigate("AccountNameScreen")}
+                />
+                <MultiLineListItem
+                    label={"Email"}
+                    value={`${user.email}`}
+                    inlineLink={() => navigation.navigate("AccountEmailScreen")}
+                />
                 <MultiLineListItem
                     label={"Account Type"}
                     value={titleCase(user.role)}
                     inlineLink={() => navigation.navigate("AccountTypeScreen")}
                 />
+                <Pressable onPress={() => navigation.navigate("AccountPasswordScreen")}>
+                    <HStack alignItems="center">
+                        <Text>Password</Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
                 <Button
                     variant="outline"
                     _text={{ color: "error.500" }}
@@ -63,5 +79,9 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 15,
         paddingTop: 10,
+    },
+    chevronRightIcon: {
+        color: "#A3A3A3",
+        marginLeft: "auto",
     },
 });

@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Link, Pressable } from "native-base";
+import {Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView} from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
 import DateBox from "../../components/DateBox";
@@ -136,99 +136,107 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 
     return (
         <View style={styles.view}>
-            <Text fontWeight={"semibold"} color={"text.500"}>
-                Filter by transaction
-            </Text>
-            <RadioGroup options={filtersByTransaction} value={filterByTransaction} setValue={setFilterByTransaction} />
-            <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
-                Filter by date
-            </Text>
-            <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-            <Box marginTop="20px" />
-            {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            <Pressable
-                marginTop="30px"
-                onPress={() =>
-                    navigation.navigate("FilterContactScreen", {
-                        filters: route.params.filters,
-                        setFilters: route.params.setFilters,
-                        contactFilters: route.params.contactFilters,
-                        setContactFilters: route.params.setContactFilters,
-                    })
-                }
-                _pressed={{
-                    background: "text.200",
-                }}
-            >
-                <HStack height="50px" alignItems="center">
-                    <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
-                        Contacts
-                    </Text>
-                    {filterByContact.map((contact) => (
-                        <Text color={"text.500"} marginRight="1">
-                            {contact},
+            <ScrollView style={styles.scrollView}>
+                <Box marginTop="20px" />
+                <Text fontWeight={"semibold"} color={"text.500"}>
+                    Filter by transaction
+                </Text>
+                <RadioGroup options={filtersByTransaction} value={filterByTransaction} setValue={setFilterByTransaction} />
+                <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
+                    Filter by date
+                </Text>
+                <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
+                {filterByDate === filtersByDate[filtersByDate.length - 1] && (
+                    <>
+                        <Box marginTop="20px" />
+                        <CustomDates />
+                    </>
+                )}
+                <Pressable
+                    marginTop="30px"
+                    onPress={() =>
+                        navigation.navigate("FilterContactScreen", {
+                            filters: route.params.filters,
+                            setFilters: route.params.setFilters,
+                            contactFilters: route.params.contactFilters,
+                            setContactFilters: route.params.setContactFilters,
+                        })
+                    }
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                >
+                    <HStack height="50px" alignItems="center">
+                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                            Contacts
                         </Text>
-                    ))}
-                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                </HStack>
-            </Pressable>
-            <Box marginTop="20px" />
-            {!(
-                filterByTransaction === filtersByTransaction[0] &&
-                filterByDate === filtersByDate[0] &&
-                filterByContact.length === 0
-            ) &&
-                (!isFilterSaved ||
-                    !(
+                        {filterByContact.map((contact) => (
+                            <Text color={"text.500"} marginRight="1" key={contact}>
+                                {contact},
+                            </Text>
+                        ))}
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <Box marginTop="25px" />
+                {!(
+                        filterByTransaction === filtersByTransaction[0] &&
+                        filterByDate === filtersByDate[0] &&
+                        filterByContact.length === 0
+                    ) &&
+                    (!isFilterSaved ||
+                        !(
+                            filterByTransaction === route.params.filters[0] &&
+                            filterByDate === route.params.filters[1] &&
+                            filterByContact.length === 0
+                        )) && (
+                        <SaveFilterActionSheet
+                            setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
+                            setIsFilterSaved={setIsFilterSaved}
+                            setFilters={route.params.setFilters}
+                            filterByTransaction={filterByTransaction}
+                            filterByDate={filterByDate}
+                            fromDate={fromDate}
+                            toDate={toDate}
+                            currencyType={route.params.wallet.currencyType}
+                        />
+                    )}
+                <Box marginTop="25px" />
+                <Button
+                    style={styles.applyButton}
+                    isDisabled={
                         filterByTransaction === route.params.filters[0] &&
                         filterByDate === route.params.filters[1] &&
                         filterByContact.length === 0
-                    )) && (
-                    <SaveFilterActionSheet
-                        setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
-                        setIsFilterSaved={setIsFilterSaved}
-                        setFilters={route.params.setFilters}
-                        filterByTransaction={filterByTransaction}
-                        filterByDate={filterByDate}
-                        fromDate={fromDate}
-                        toDate={toDate}
-                        currencyType={route.params.wallet.currencyType}
-                    />
-                )}
-            <Button
-                style={styles.applyButton}
-                isDisabled={
-                    filterByTransaction === route.params.filters[0] &&
-                    filterByDate === route.params.filters[1] &&
-                    filterByContact.length === 0
-                }
-                onPress={() => {
-                    const filters = [filterByTransaction];
-
-                    // this checks if the filter selected for the date is "custom date"
-                    // since we need to have special logic that would add the two dates selected
-                    if (filterByDate === "Custom Dates" && fromDate && toDate) {
-                        const dateFormate = new Intl.DateTimeFormat("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "2-digit",
-                        });
-
-                        filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
-                    } else {
-                        if (filterByDate !== "Custom Dates") {
-                            filters.push(filterByDate);
-                        }
                     }
-                    route.params.setFilters(filters);
-                    route.params.setIsUsingSavedFilter(false);
-                    setIsFilterSaved(false);
-                    navigation.goBack();
-                }}
-                testID="applyFiltersSubmit"
-            >
-                Apply filters
-            </Button>
+                    onPress={() => {
+                        const filters = [filterByTransaction];
+
+                        // this checks if the filter selected for the date is "custom date"
+                        // since we need to have special logic that would add the two dates selected
+                        if (filterByDate === "Custom Dates" && fromDate && toDate) {
+                            const dateFormate = new Intl.DateTimeFormat("en-US", {
+                                year: "numeric",
+                                month: "short",
+                                day: "2-digit",
+                            });
+
+                            filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+                        } else {
+                            if (filterByDate !== "Custom Dates") {
+                                filters.push(filterByDate);
+                            }
+                        }
+                        route.params.setFilters(filters);
+                        route.params.setIsUsingSavedFilter(false);
+                        setIsFilterSaved(false);
+                        navigation.goBack();
+                    }}
+                    testID="applyFiltersSubmit"
+                >
+                    Apply filters
+                </Button>
+            </ScrollView>
         </View>
     );
 }
@@ -236,15 +244,16 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+    },
+    scrollView: {
         paddingHorizontal: 15,
-        paddingBottom: 15,
-        paddingTop: 20,
     },
     RadioItem: {
         marginTop: 20,
     },
     applyButton: {
         marginTop: "auto",
+        marginBottom: 15,
     },
     chevronRightIcon: {
         color: "#A3A3A3",

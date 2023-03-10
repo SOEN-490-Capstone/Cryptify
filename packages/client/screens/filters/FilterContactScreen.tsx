@@ -106,22 +106,20 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                                 <HStack>
                                     {route.params.contactFilters.includes(item.contact.contactName) ? (
                                         <Checkbox
+                                            style={{ paddingVertical: 10, marginHorizontal: 15 }}
                                             value={item.contact.contactName}
                                             defaultIsChecked
                                             onChange={() => handleCheckboxChange(item.contact.contactName)}
                                         >
-                                            <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                                                {item.contact.contactName}
-                                            </Text>
+                                            <Text style={{ paddingVertical: 10 }}>{item.contact.contactName}</Text>
                                         </Checkbox>
                                     ) : (
                                         <Checkbox
+                                            style={{ paddingVertical: 10, marginHorizontal: 15 }}
                                             value={item.contact.contactName}
                                             onChange={() => handleCheckboxChange(item.contact.contactName)}
                                         >
-                                            <Text style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                                                {item.contact.contactName}
-                                            </Text>
+                                            <Text style={{ paddingVertical: 10 }}>{item.contact.contactName}</Text>
                                         </Checkbox>
                                     )}
                                 </HStack>
@@ -143,7 +141,6 @@ type ContactWithHeader = {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingHorizontal: 15,
         paddingBottom: 15,
         paddingTop: 20,
     },

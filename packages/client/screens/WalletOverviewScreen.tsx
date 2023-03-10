@@ -119,7 +119,7 @@ export default function WalletOverviewScreen({ route, navigation }: HomeStackScr
             </HStack>
             {isLoading || transactions.length > 0 ? (
                 <TransactionsList
-                    transactions={transactions}
+                    transactions={[...transactions.slice(0, 10)]}
                     wallet={wallet}
                     displaySeparation={false}
                     navigation={navigation}

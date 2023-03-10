@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import {Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView} from "native-base";
+import { Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
 import DateBox from "../../components/DateBox";
@@ -141,7 +141,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 <Text fontWeight={"semibold"} color={"text.500"}>
                     Filter by transaction
                 </Text>
-                <RadioGroup options={filtersByTransaction} value={filterByTransaction} setValue={setFilterByTransaction} />
+                <RadioGroup
+                    options={filtersByTransaction}
+                    value={filterByTransaction}
+                    setValue={setFilterByTransaction}
+                />
                 <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
                     Filter by date
                 </Text>
@@ -180,10 +184,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 </Pressable>
                 <Box marginTop="25px" />
                 {!(
-                        filterByTransaction === filtersByTransaction[0] &&
-                        filterByDate === filtersByDate[0] &&
-                        filterByContact.length === 0
-                    ) &&
+                    filterByTransaction === filtersByTransaction[0] &&
+                    filterByDate === filtersByDate[0] &&
+                    filterByContact.length === 0
+                ) &&
                     (!isFilterSaved ||
                         !(
                             filterByTransaction === route.params.filters[0] &&

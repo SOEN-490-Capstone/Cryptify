@@ -74,8 +74,8 @@ export function filterTransctions(
     if (contactFilters.length !== 0) {
         transactions = transactions.filter(
             (transaction) =>
-                contactFilters.includes(transaction.contactIn?.contactName ?? "") ||
-                contactFilters.includes(transaction.contactOut?.contactName ?? ""),
+                (transaction.contactIn?.contactName && contactFilters.includes(transaction.contactIn.contactName)) ||
+                (transaction.contactOut?.contactName && contactFilters.includes(transaction.contactOut.contactName)),
         );
     }
     return transactions;

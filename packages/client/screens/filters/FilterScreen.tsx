@@ -53,8 +53,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
                     route.params.setIsUsingSavedFilter(false);
                     route.params.setContactFilters([]);
+                    setFilterByContact([]);
                     setIsFilterSaved(false);
-                    navigation.goBack();
                 }}
             >
                 Reset
@@ -179,8 +179,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 filterByContact.length === 0
             ) &&
                 (!isFilterSaved ||
-                    (!(filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]) &&
-                        filterByContact.length === 0)) && (
+                    !(
+                        filterByTransaction === route.params.filters[0] &&
+                        filterByDate === route.params.filters[1] &&
+                        filterByContact.length === 0
+                    )) && (
                     <SaveFilterActionSheet
                         setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
                         setIsFilterSaved={setIsFilterSaved}

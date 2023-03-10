@@ -19,6 +19,7 @@ import { Formik } from "formik";
 import { FiltersGateway } from "../gateways/filters_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AuthContext } from "./contexts/AuthContext";
+import { useKeyboardBottomInset } from "../hooks/useKeyboardBottomInset";
 
 type Props = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
@@ -46,6 +47,7 @@ export default function SaveFilterActionSheet({
     const { token, user } = React.useContext(AuthContext);
 
     const { isOpen, onOpen, onClose } = useDisclose();
+    const bottomInset = useKeyboardBottomInset();
     const toast = useToast();
 
     const initialValues = {
@@ -127,7 +129,7 @@ export default function SaveFilterActionSheet({
                 </HStack>
             </Pressable>
             <Actionsheet isOpen={isOpen} onClose={onClose}>
-                <Actionsheet.Content>
+                <Actionsheet.Content bottom={bottomInset}>
                     <VStack space={"20px"} minWidth={"100%"} paddingX={"15px"} paddingBottom={"15px"}>
                         <Text fontWeight={"semibold"} style={styles.headerStyle} marginX={"auto"}>
                             Save Filter

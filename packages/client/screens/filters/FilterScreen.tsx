@@ -9,8 +9,12 @@ import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
+import { farChevronRight } from "../../components/icons/regular/farChevronRight";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
+    const isFocused = useIsFocused();
+
     const filtersByTransaction = getFiltersByTransactionStrings(route.params.wallet.currencyType);
 
     const filtersByDate = getFiltersByDateStrings();
@@ -20,6 +24,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
+    const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
+
     type RadioProps = {
         value: string;
         setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +33,9 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     };
 
     const areFiltersDefault = () =>
-        filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0];
+        filterByTransaction === filtersByTransaction[0] &&
+        filterByDate === filtersByDate[0] &&
+        filterByContact.length === 0;
 
     const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
@@ -44,6 +52,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     setFilterByDate(filtersByDate[0]);
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
                     route.params.setIsUsingSavedFilter(false);
+                    route.params.setContactFilters([]);
+                    setFilterByContact([]);
                     setIsFilterSaved(false);
                 }}
             >
@@ -51,6 +61,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             </Link>
         );
     }
+
+    React.useEffect(() => {
+        setFilterByContact(route.params.contactFilters);
+    }, [route.params.contactFilters, isFocused]);
 
     React.useEffect(() => {
         (() => {
@@ -80,7 +94,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 ),
             });
         })();
-    }, [filterByTransaction, filterByDate, isFilterSaved]);
+    }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -132,9 +146,44 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
             <Box marginTop="20px" />
             {filterByDate === filtersByDate[filtersByDate.length - 1] && <CustomDates />}
-            {!(filterByTransaction === filtersByTransaction[0] && filterByDate === filtersByDate[0]) &&
+            <Pressable
+                marginTop="30px"
+                onPress={() =>
+                    navigation.navigate("FilterContactScreen", {
+                        filters: route.params.filters,
+                        setFilters: route.params.setFilters,
+                        contactFilters: route.params.contactFilters,
+                        setContactFilters: route.params.setContactFilters,
+                    })
+                }
+                _pressed={{
+                    background: "text.200",
+                }}
+            >
+                <HStack height="50px" alignItems="center">
+                    <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                        Contacts
+                    </Text>
+                    {filterByContact.map((contact) => (
+                        <Text color={"text.500"} marginRight="1">
+                            {contact},
+                        </Text>
+                    ))}
+                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
+            <Box marginTop="20px" />
+            {!(
+                filterByTransaction === filtersByTransaction[0] &&
+                filterByDate === filtersByDate[0] &&
+                filterByContact.length === 0
+            ) &&
                 (!isFilterSaved ||
-                    !(filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1])) && (
+                    !(
+                        filterByTransaction === route.params.filters[0] &&
+                        filterByDate === route.params.filters[1] &&
+                        filterByContact.length === 0
+                    )) && (
                     <SaveFilterActionSheet
                         setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
                         setIsFilterSaved={setIsFilterSaved}
@@ -148,7 +197,11 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 )}
             <Button
                 style={styles.applyButton}
-                isDisabled={filterByTransaction === route.params.filters[0] && filterByDate === route.params.filters[1]}
+                isDisabled={
+                    filterByTransaction === route.params.filters[0] &&
+                    filterByDate === route.params.filters[1] &&
+                    filterByContact.length === 0
+                }
                 onPress={() => {
                     const filters = [filterByTransaction];
 
@@ -192,5 +245,10 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         marginTop: "auto",
+    },
+    chevronRightIcon: {
+        color: "#A3A3A3",
+        marginLeft: "auto",
+        marginRight: 5,
     },
 });

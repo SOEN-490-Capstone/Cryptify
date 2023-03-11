@@ -117,48 +117,27 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                         </Pressable>
                     </HStack>
                 ))}
-                    {tagFilters.map((filter) => (
-                        <HStack key={filter} style={styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {filter}
-                            </Text>
+                {tagFilters.map((filter) => (
+                    <HStack key={filter} style={styles.badge}>
+                        <Text
+                            size={"footnote1"}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={styles.badgeText}
+                        >
+                            {filter}
+                        </Text>
 
-                            <Pressable
-                                onPress={() => {
-                                    // This removes the current filter when the XMark is pressed.
-                                    setTagFilters(tagFilters.filter((f) => f !== filter));
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
-                        </HStack>
-                    ))}
-                    {tagFilters.map((filter) => (
-                        <HStack key={filter} style={styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {filter}
-                            </Text>
-
-                            <Pressable
-                                onPress={() => {
-                                    // This removes the current filter when the XMark is pressed.
-                                    setTagFilters(tagFilters.filter((f) => f !== filter));
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
-                        </HStack>
-                    ))}
+                        <Pressable
+                            onPress={() => {
+                                // This removes the current filter when the XMark is pressed.
+                                setTagFilters(tagFilters.filter((f) => f !== filter));
+                            }}
+                        >
+                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                        </Pressable>
+                    </HStack>
+                ))}
 
                 {filtersDisplayed.map((filter) => (
                     <HStack key={filter} style={styles.badge}>

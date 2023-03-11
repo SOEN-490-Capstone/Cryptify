@@ -62,6 +62,7 @@ import AccountEmailScreen from "../screens/account/AccountEmailScreen";
 import AccountPasswordScreen from "../screens/account/AccountPasswordScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
+import FilterTagScreen from "../screens/filters/FilterTagScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -242,6 +243,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={FilterContactScreen}
                 options={{
                     title: "Filter by Contact",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="FilterTagScreen"
+                component={FilterTagScreen}
+                options={{
+                    title: "Filter by Tag",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

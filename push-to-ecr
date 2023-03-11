@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Build images
+docker build --target production -t cryptify-api-prod -f ./packages/docker/api.Dockerfile .
+docker build --target production -t cryptify-eth-edge-prod -f ./packages/docker/eth-edge.Dockerfile .
+docker build --target production -t cryptify-btc-edge-prod -f ./packages/docker/btc-edge.Dockerfile .
+docker build -t cryptify-db-prod -f ./packages/docker/db.Dockerfile .
+
+# Tag images with ECR URI
+docker tag cryptify-api-prod $1/cryptify-api
+docker tag cryptify-eth-edge-prod $1/cryptify-eth-edge
+docker tag cryptify-btc-edge-prod $1/cryptify-btc-edge
+docker tag cryptify-db-prod $1/cryptify-db
+
+# Authenticate with AWS
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $1/cryptify-api
+
+# Push images to repository
+docker push $1/cryptify-api
+docker push $1/cryptify-eth-edge
+docker push $1/cryptify-btc-edge
+docker push $1/cryptify-db

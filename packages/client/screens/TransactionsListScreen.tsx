@@ -76,73 +76,66 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     // To Do Move into components folder for later use.
     function FiltersBadges() {
         return (
-            <View style={{ height: 35 }}>
-                <ScrollView horizontal>
-                    <HStack style={sortType === "sortDateNewest" ? { display: "none" } : styles.badge}>
+            <ScrollView horizontal marginX={"10px"}>
+                <HStack style={sortType === "sortDateNewest" ? { display: "none" } : styles.badge}>
+                    <Text size={"footnote1"} fontWeight={"semibold"} color={"darkBlue.500"} style={styles.badgeText}>
+                        {SortService.sortBadgeValues(sortType)}
+                    </Text>
+
+                    <Pressable
+                        onPress={() => {
+                            setSortType("sortDateNewest");
+                        }}
+                    >
+                        <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                    </Pressable>
+                </HStack>
+
+                {/*Since contacts use a different filter array, we need to have render the badge separately*/}
+                {contactFilters.map((filter) => (
+                    <HStack key={filter} style={styles.badge}>
                         <Text
                             size={"footnote1"}
                             fontWeight={"semibold"}
                             color={"darkBlue.500"}
                             style={styles.badgeText}
                         >
-                            {SortService.sortBadgeValues(sortType)}
+                            {filter}
                         </Text>
 
                         <Pressable
                             onPress={() => {
-                                setSortType("sortDateNewest");
+                                // This removes the current filter when the XMark is pressed.
+                                setContactFilters(contactFilters.filter((f) => f !== filter));
                             }}
                         >
                             <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
                         </Pressable>
                     </HStack>
+                ))}
 
-                    {/*Since contacts use a different filter array, we need to have render the badge separately*/}
-                    {contactFilters.map((filter) => (
-                        <HStack key={filter} style={styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {filter}
-                            </Text>
+                {filtersDisplayed.map((filter) => (
+                    <HStack key={filter} style={styles.badge}>
+                        <Text
+                            size={"footnote1"}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={styles.badgeText}
+                        >
+                            {filter}
+                        </Text>
 
-                            <Pressable
-                                onPress={() => {
-                                    // This removes the current filter when the XMark is pressed.
-                                    setContactFilters(contactFilters.filter((f) => f !== filter));
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
-                        </HStack>
-                    ))}
-
-                    {filtersDisplayed.map((filter) => (
-                        <HStack key={filter} style={styles.badge}>
-                            <Text
-                                size={"footnote1"}
-                                fontWeight={"semibold"}
-                                color={"darkBlue.500"}
-                                style={styles.badgeText}
-                            >
-                                {filter}
-                            </Text>
-
-                            <Pressable
-                                onPress={() => {
-                                    // This removes the current filter when the XMark is pressed.
-                                    setFilters(filtersDisplayed.filter((f) => f !== filter));
-                                }}
-                            >
-                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                            </Pressable>
-                        </HStack>
-                    ))}
-                </ScrollView>
-            </View>
+                        <Pressable
+                            onPress={() => {
+                                // This removes the current filter when the XMark is pressed.
+                                setFilters(filtersDisplayed.filter((f) => f !== filter));
+                            }}
+                        >
+                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                        </Pressable>
+                    </HStack>
+                ))}
+            </ScrollView>
         );
     }
 
@@ -197,11 +190,13 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+        paddingTop: 10,
     },
     badge: {
         backgroundColor: "#DBF4FF",
         borderRadius: 100,
-        marginRight: 15,
+        marginHorizontal: 5,
+        marginBottom: 15,
         paddingVertical: 8,
         paddingHorizontal: 15,
         height: 35,

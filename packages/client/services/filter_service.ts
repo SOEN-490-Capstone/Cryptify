@@ -19,6 +19,7 @@ export function filterTransctions(
     transactions: Transaction[],
     filters: string[],
     contactFilters: string[],
+    tagFilters: string[],
 ): Transaction[] {
     const filtersByTransaction = getFiltersByTransactionStrings(currencyType);
     const filtersByDate = getFiltersByDateStrings();
@@ -76,6 +77,11 @@ export function filterTransctions(
             (transaction) =>
                 (transaction.contactIn?.contactName && contactFilters.includes(transaction.contactIn.contactName)) ||
                 (transaction.contactOut?.contactName && contactFilters.includes(transaction.contactOut.contactName)),
+        );
+    }
+    if (tagFilters.length !== 0) {
+        transactions = transactions.filter((transaction) =>
+            transaction.tags.some((v) => tagFilters.includes(v.tagName)),
         );
     }
     return transactions;

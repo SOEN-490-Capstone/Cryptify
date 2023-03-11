@@ -11,6 +11,7 @@ import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 import { farChevronRight } from "../../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
+import TagItem from "../../components/tags/TagItem";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const isFocused = useIsFocused();
@@ -25,6 +26,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
     const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
+    const [filterByTag, setFilterByTag] = React.useState<string[]>([]);
 
     type RadioProps = {
         value: string;
@@ -35,7 +37,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     const areFiltersDefault = () =>
         filterByTransaction === filtersByTransaction[0] &&
         filterByDate === filtersByDate[0] &&
-        filterByContact.length === 0;
+        filterByContact.length === 0 &&
+        filterByTag.length === 0;
 
     const [isFilterSaved, setIsFilterSaved] = React.useState(route.params.isUsingSavedFilter);
 
@@ -53,7 +56,9 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
                     route.params.setIsUsingSavedFilter(false);
                     route.params.setContactFilters([]);
+                    route.params.setTagFilters([]);
                     setFilterByContact([]);
+                    setFilterByTag([]);
                     setIsFilterSaved(false);
                 }}
             >
@@ -65,6 +70,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     React.useEffect(() => {
         setFilterByContact(route.params.contactFilters);
     }, [route.params.contactFilters, isFocused]);
+
+    React.useEffect(() => {
+        setFilterByTag(route.params.tagFilters);
+    }, [route.params.tagFilters, isFocused]);
 
     React.useEffect(() => {
         (() => {
@@ -94,7 +103,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 ),
             });
         })();
-    }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact]);
+    }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact, filterByTag]);
 
     function RadioGroup({ options, value, setValue }: RadioProps) {
         return (
@@ -157,7 +166,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     </>
                 )}
                 <Pressable
-                    marginTop="30px"
+                    marginTop="25px"
                     onPress={() =>
                         navigation.navigate("FilterContactScreen", {
                             filters: route.params.filters,
@@ -180,19 +189,55 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             </Text>
                         ))}
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
+            <Pressable
+                marginTop="25px"
+                onPress={() =>
+                    navigation.navigate("FilterTagScreen", {
+                        filters: route.params.filters,
+                        setFilters: route.params.setFilters,
+                        tagFilters: route.params.tagFilters,
+                        setTagFilters: route.params.setTagFilters,
+                    })
+                }
+                _pressed={{
+                    background: "text.200",
+                }}
+            >
+                <HStack height="50px" alignItems="center">
+                    <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                        Tags
+                    </Text>
+                    {filterByTag.map((tag) => (
+                        <Pressable
+                            borderRadius={"8px"}
+                            backgroundColor="gray.100"
+                            style={ styles.badge}
+                        >
+                            <HStack space={"10px"} alignItems={"center"}>
+                                <Text size={"subheadline"} fontWeight={"semibold"}>
+                                    {tag}
+                                </Text>
+                            </HStack>
+                        </Pressable>
+                    ))}
+                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
                 <Box marginTop="25px" />
                 {!(
                     filterByTransaction === filtersByTransaction[0] &&
                     filterByDate === filtersByDate[0] &&
-                    filterByContact.length === 0
+                    filterByContact.length === 0 &&
+                filterByTag.length === 0
                 ) &&
                     (!isFilterSaved ||
                         !(
                             filterByTransaction === route.params.filters[0] &&
                             filterByDate === route.params.filters[1] &&
-                            filterByContact.length === 0
+                            filterByContact.length === 0 &&
+                        filterByTag.length === 0
                         )) && (
                         <SaveFilterActionSheet
                             setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
@@ -211,7 +256,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     isDisabled={
                         filterByTransaction === route.params.filters[0] &&
                         filterByDate === route.params.filters[1] &&
-                        filterByContact.length === 0
+                        filterByContact.length === 0 &&
+                    filterByTag.length === 0
                     }
                     onPress={() => {
                         const filters = [filterByTransaction];
@@ -263,5 +309,15 @@ const styles = StyleSheet.create({
         color: "#A3A3A3",
         marginLeft: "auto",
         marginRight: 5,
+    },
+    tags: {
+        marginBottom: -13,
+    },
+    badge: {
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        marginRight: 13,
+        marginBottom: 13,
+        justifyContent: "center",
     },
 });

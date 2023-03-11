@@ -19,6 +19,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     const [filters, setFilters] = React.useState<string[]>([]);
     const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
     const [contactFilters, setContactFilters] = React.useState<string[]>([]);
+    const [tagFilters, setTagFilters] = React.useState<string[]>([]);
 
     React.useEffect(() => {
         (() => {
@@ -36,6 +37,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                                     setIsUsingSavedFilter,
                                     contactFilters: contactFilters,
                                     setContactFilters: setContactFilters,
+                                    tagFilters: tagFilters,
+                                    setTagFilters: setTagFilters,
                                 });
                             }}
                             testID="filterTransactionsButton"
@@ -66,12 +69,13 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
             [...props.route.params.transactions],
             filtersDisplayed,
             contactFilters,
+            tagFilters,
         );
 
         setTransactions(
             SortService.sortTransactions(sortType, DisplayedTransaction, props.route.params.wallet.address),
         );
-    }, [filters, contactFilters]);
+    }, [filters, contactFilters, tagFilters]);
 
     // To Do Move into components folder for later use.
     function FiltersBadges() {
@@ -119,6 +123,27 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                             </Pressable>
                         </HStack>
                     ))}
+                    {tagFilters.map((filter) => (
+                        <HStack key={filter} style={styles.badge}>
+                            <Text
+                                size={"footnote1"}
+                                fontWeight={"semibold"}
+                                color={"darkBlue.500"}
+                                style={styles.badgeText}
+                            >
+                                {filter}
+                            </Text>
+
+                            <Pressable
+                                onPress={() => {
+                                    // This removes the current filter when the XMark is pressed.
+                                    setTagFilters(tagFilters.filter((f) => f !== filter));
+                                }}
+                            >
+                                <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                            </Pressable>
+                        </HStack>
+                    ))}
 
                     {filtersDisplayed.map((filter) => (
                         <HStack key={filter} style={styles.badge}>
@@ -148,7 +173,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 
     return (
         <View style={styles.view}>
-            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest" || contactFilters.length > 0) && (
+            {(filtersDisplayed.length > 0 || sortType !== "sortDateNewest" || contactFilters.length > 0 || tagFilters.length>0) && (
                 <FiltersBadges />
             )}
             {transactions.length == 0 ? (
@@ -173,6 +198,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                                     setIsUsingSavedFilter,
                                     contactFilters,
                                     setContactFilters,
+                                    tagFilters: tagFilters,
+                                    setTagFilters: setTagFilters,
                                 });
                             }}
                         >

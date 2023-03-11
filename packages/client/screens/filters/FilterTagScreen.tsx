@@ -22,7 +22,7 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
     React.useEffect(() => {
         (async () => {
             const tags = await tagsGateway.findAllTags({ id: user.id }, token);
-            setTransactionTags(tags.filter((tag)=> route.params.tagFilters.includes(tag.tagName)));
+            setTransactionTags(tags.filter((tag) => route.params.tagFilters.includes(tag.tagName)));
             setTransactionTagsNotAdded(tags.filter((tag) => !route.params.tagFilters.includes(tag.tagName)));
         })();
     }, []);

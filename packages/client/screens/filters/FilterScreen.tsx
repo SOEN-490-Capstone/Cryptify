@@ -11,7 +11,6 @@ import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 import { farChevronRight } from "../../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
-import TagItem from "../../components/tags/TagItem";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const isFocused = useIsFocused();
@@ -200,11 +199,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         Tags
                     </Text>
                     {filterByTag.map((tag) => (
-                        <Pressable
-                            borderRadius={"8px"}
-                            backgroundColor="gray.100"
-                            style={ styles.badge}
-                        >
+                        <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge}>
                             <HStack space={"10px"} alignItems={"center"}>
                                 <Text size={"subheadline"} fontWeight={"semibold"}>
                                     {tag}

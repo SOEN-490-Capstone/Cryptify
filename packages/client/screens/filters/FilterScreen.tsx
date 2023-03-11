@@ -218,6 +218,36 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         </Pressable>
                     ))}
                     <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                </HStack>
+            </Pressable>
+            <Pressable
+                marginTop="25px"
+                onPress={() =>
+                    navigation.navigate("FilterTagScreen", {
+                        filters: route.params.filters,
+                        setFilters: route.params.setFilters,
+                        tagFilters: route.params.tagFilters,
+                        setTagFilters: route.params.setTagFilters,
+                    })
+                }
+                _pressed={{
+                    background: "text.200",
+                }}
+            >
+                <HStack height="50px" alignItems="center">
+                    <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                        Tags
+                    </Text>
+                    {filterByTag.map((tag) => (
+                        <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge}>
+                            <HStack space={"10px"} alignItems={"center"}>
+                                <Text size={"subheadline"} fontWeight={"semibold"}>
+                                    {tag}
+                                </Text>
+                            </HStack>
+                        </Pressable>
+                    ))}
+                    <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
                 <Box marginTop="25px" />
@@ -232,8 +262,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             filterByTransaction === route.params.filters[0] &&
                             filterByDate === route.params.filters[1] &&
                             filterByContact.length === 0 &&
-                        filterByTag.length === 0
-                        )) && (
+                        filterByTag.length === 0&&
+                        filterByTag.length === 0)) && (
                         <SaveFilterActionSheet
                             setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
                             setIsFilterSaved={setIsFilterSaved}

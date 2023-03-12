@@ -7,11 +7,31 @@ import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
 import { VStack } from "native-base";
 import MultiLineListItem from "../components/list/MultiLineListItem";
+import SingleLineListItem from "../components/list/SingleLineListItem";
 import WalletDetailsComponent from "../components/WalletDetailsComponent";
+import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 
-export default function WalletSettingsScreen({ navigation, route }: SettingsStackScreenProps<"WalletSettingsScreen">) {
+type Props = {
+    wallet: WalletWithBalance;
+};
+
+export default function WalletSettingsScreen(
+    { navigation, route }: SettingsStackScreenProps<"WalletSettingsScreen">,
+    { wallet }: Props,
+) {
     const { token, user } = React.useContext(AuthContext);
     const walletsGateway = new WalletsGateway();
+    var btcFormat = "";
+
+    if (route.params.wallet.address.charAt(0) == "1") {
+        btcFormat = "P2PKH";
+    } else if (route.params.wallet.address.charAt(0) == "3") {
+        btcFormat = "P2SH";
+    } else if (route.params.wallet.address.charAt(0) == "b") {
+        btcFormat = "Bech32";
+    } else {
+        btcFormat = "Undefined";
+    }
 
     function handleDeleteWallet(): void {
         Alert.alert("Do you want to remove this wallet?", "You cannot undo this action.", [
@@ -34,7 +54,7 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
                 <VStack space={"20px"}>
                     <MultiLineListItem label="Name" value={route.params.wallet.name} />
                     <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
-                    {/* Comment for Pola: Add BTC feature here */}
+                    {wallet.currencyType == "BITCOIN" && <SingleLineListItem label="Format" value={btcFormat} />}
                 </VStack>
                 <Button
                     variant="outline"

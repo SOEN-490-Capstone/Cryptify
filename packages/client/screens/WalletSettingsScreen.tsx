@@ -1,13 +1,26 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../types";
-import { Button } from "native-base";
+import { Button, VStack } from "native-base";
 import { Alert, StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { WalletsGateway } from "../gateways/wallets_gateway";
-import { VStack } from "native-base";
 import MultiLineListItem from "../components/list/MultiLineListItem";
+import SingleLineListItem from "../components/list/SingleLineListItem";
 import WalletDetailsComponent from "../components/WalletDetailsComponent";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+
+function getBtcFormat(address: string): string {
+    if (address.charAt(0) == "1") {
+        return "P2PKH";
+    } else if (address.charAt(0) == "3") {
+        return "P2SH";
+    } else if (address.charAt(0) == "b") {
+        return "Bech32";
+    } else {
+        return "";
+    }
+}
 
 export default function WalletSettingsScreen({ navigation, route }: SettingsStackScreenProps<"WalletSettingsScreen">) {
     const { token, user } = React.useContext(AuthContext);
@@ -29,12 +42,14 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
 
     return (
         <View style={styles.view}>
-            <VStack space={"20px"}>
+            <VStack space={"30px"}>
                 <WalletDetailsComponent wallet={route.params.wallet} />
                 <VStack space={"20px"}>
                     <MultiLineListItem label="Name" value={route.params.wallet.name} />
                     <MultiLineListItem label="Address" value={route.params.wallet.address} copy={true} />
-                    {/* Comment for Pola: Add BTC feature here */}
+                    {route.params.wallet.currencyType === CurrencyType.BITCOIN && (
+                        <SingleLineListItem label="Format" value={getBtcFormat(route.params.wallet.address)} />
+                    )}
                 </VStack>
                 <Button
                     variant="outline"

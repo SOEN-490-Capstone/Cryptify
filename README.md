@@ -167,6 +167,15 @@ If you run into issues with the database or need to reset it for any reason foll
     $ docker run -p 3001:80 cryptify-api-prod
     ```
 
+## Deploying to AWS
+
+1. Run script to push all containers to ECR, ask team member for URN if needed
+   ```
+   ./push-to-ecr <AWS URN>
+   ```
+2. Run `cryptify-task` in AWS console under the `cryptify-cluster` cluster. Make sure to use the `cryptify-user` IAM role and `CryptifyGroup` security group
+3. Configure task to run on `.25 vCPU | .5 GB` and Fargate spot instance
+
 ## Server
 
 ### Style Guide

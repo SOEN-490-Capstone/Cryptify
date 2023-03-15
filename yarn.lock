@@ -10423,6 +10423,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
+    expo-barcode-scanner: ~11.5.0
     prettier: ^2.5.1
     sonarqube-scanner: ^2.8.2
   languageName: unknown
@@ -12432,6 +12433,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-barcode-scanner@npm:~11.5.0":
+  version: 11.5.0
+  resolution: "expo-barcode-scanner@npm:11.5.0"
+  dependencies:
+    "@expo/config-plugins": ~5.0.0
+    expo-image-loader: ~3.2.0
+  peerDependencies:
+    expo: "*"
+  checksum: dedf44ca51bd8a61f0ff0d2232bb49021e42c8ac2b37e97f24d3121ccdeadf40fd557a1b63189c547914d1fba0ed72046a2bd795967994f25f233f733b93dfb0
+  languageName: node
+  linkType: hard
+
 "expo-clipboard@npm:^3.1.0":
   version: 3.1.0
   resolution: "expo-clipboard@npm:3.1.0"
@@ -12534,6 +12547,15 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: fa82616614b393ecb8e7dce91de8043c0e7b5ebc2145ec816b37179bef5ac2b81fdf3ea750b93d47e3702978f08f6b40373c91844098cc62ed43b42d7d73ed63
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~3.2.0":
+  version: 3.2.0
+  resolution: "expo-image-loader@npm:3.2.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 0d24716c7c2dd194cbc0d360765b822ca2b53eaafab6d9cb8dcc84f088dedce68d13d6d3a6eba998e24944333ba8856dbb11a0dceb367ac30b2ae488b1339626
   languageName: node
   linkType: hard
 

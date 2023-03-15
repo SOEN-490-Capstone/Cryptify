@@ -36,6 +36,14 @@
                 "projectId": "3330c4ab-c29a-412d-b0b9-2e342080a637"
             }
         },
-        "plugins": ["@config-plugins/detox"]
+        "plugins": [
+            "@config-plugins/detox",
+            [
+                "expo-barcode-scanner",
+                {
+                    "cameraPermission": "This app uses the camera to scan a wallet QR code."
+                }
+            ]
+        ]
     }
 }

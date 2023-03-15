@@ -28,5 +28,8 @@
         "eslint-plugin-unused-imports": "^2.0.0",
         "prettier": "^2.5.1",
         "sonarqube-scanner": "^2.8.2"
+    },
+    "dependencies": {
+        "expo-barcode-scanner": "~11.5.0"
     }
 }

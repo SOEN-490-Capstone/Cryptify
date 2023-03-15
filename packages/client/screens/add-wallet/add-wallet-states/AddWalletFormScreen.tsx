@@ -17,6 +17,8 @@ import { HttpError } from "@cryptify/common/src/errors/http_error";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { AuthContext } from "../../../components/contexts/AuthContext";
+import { QRCodeScannerInputIcon } from "../../../components/QRCodeScannerInputIcon";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type Props = {
     currencyType: CurrencyType;
@@ -26,6 +28,7 @@ type Props = {
     setInitialValues: React.Dispatch<React.SetStateAction<CreateWalletRequest>>;
     initialErrors: FormikErrors<any>;
     setInitialErrors: React.Dispatch<React.SetStateAction<FormikErrors<any>>>;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
 export default function AddWalletFormScreen({
@@ -36,6 +39,7 @@ export default function AddWalletFormScreen({
     setInitialValues,
     initialErrors,
     setInitialErrors,
+    navigation,
 }: Props) {
     const walletsGateway = new WalletsGateway();
 
@@ -127,7 +131,7 @@ export default function AddWalletFormScreen({
                     validationSchema={createWalletSchema}
                     onSubmit={onSubmitCreateWallet}
                 >
-                    {({ values, errors, touched, handleChange, submitForm }) => (
+                    {({ values, errors, touched, handleChange, submitForm, setFieldValue, setValues }) => (
                         <VStack space="13" style={styles.addWalletForm}>
                             <FormControl isInvalid={!!(errors.name && (touched.address || initialValues.name != ""))}>
                                 <Input
@@ -146,6 +150,13 @@ export default function AddWalletFormScreen({
                                     onChangeText={handleChange("address")}
                                     placeholder={displayData.addressInput}
                                     testID="walletAddress"
+                                    InputRightElement={
+                                        <QRCodeScannerInputIcon
+                                            fieldKey={"address"}
+                                            setFieldValue={setFieldValue}
+                                            navigation={navigation}
+                                        />
+                                    }
                                 />
                                 <FormControl.ErrorMessage>{errors.address}</FormControl.ErrorMessage>
                             </FormControl>

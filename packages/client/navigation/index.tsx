@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { ColorSchemeName } from "react-native";
+import { ColorSchemeName, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -63,6 +63,7 @@ import AccountPasswordScreen from "../screens/account/AccountPasswordScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import FilterTagScreen from "../screens/filters/FilterTagScreen";
+import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -125,6 +126,33 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                         </Pressable>
                     ),
                 })}
+            />
+            <HomeStack.Screen
+                name="QRCodeScannerScreen"
+                component={QRCodeScannerScreen}
+                options={{
+                    title: "",
+                    headerShadowVisible: false,
+                    headerBackVisible: false,
+                    headerLeft: () => null,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                            testID="headerRightButton"
+                        >
+                            <FontAwesomeIcon
+                                icon={farXMark}
+                                color="#FFFFFF"
+                                size={26}
+                                style={styles.QRCodeScannerScreenBackButton}
+                            />
+                        </Pressable>
+                    ),
+                    headerTransparent: true,
+                    gestureEnabled: false,
+                }}
             />
             <HomeStack.Screen
                 name="TransactionDetailsScreen"
@@ -541,6 +569,32 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 })}
             />
             <SettingsStack.Screen
+                name="QRCodeScannerScreen"
+                component={QRCodeScannerScreen}
+                options={{
+                    title: "",
+                    headerShadowVisible: false,
+                    headerBackVisible: false,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                            testID="headerRightButton"
+                        >
+                            <FontAwesomeIcon
+                                icon={farXMark}
+                                color="#FFFFFF"
+                                size={26}
+                                style={styles.QRCodeScannerScreenBackButton}
+                            />
+                        </Pressable>
+                    ),
+                    headerTransparent: true,
+                    gestureEnabled: false,
+                }}
+            />
+            <SettingsStack.Screen
                 name="EditTagScreen"
                 component={EditTagScreen}
                 options={{
@@ -755,3 +809,16 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         </NavigationContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    QRCodeScannerScreenBackButton: {
+        marginTop: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 2.5,
+    },
+});

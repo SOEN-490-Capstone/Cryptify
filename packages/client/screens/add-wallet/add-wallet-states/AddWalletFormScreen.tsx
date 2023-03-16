@@ -131,7 +131,7 @@ export default function AddWalletFormScreen({
                     validationSchema={createWalletSchema}
                     onSubmit={onSubmitCreateWallet}
                 >
-                    {({ values, errors, touched, handleChange, submitForm, setFieldValue, setValues }) => (
+                    {({ values, errors, touched, handleChange, submitForm, setFieldValue }) => (
                         <VStack space="13" style={styles.addWalletForm}>
                             <FormControl isInvalid={!!(errors.name && (touched.address || initialValues.name != ""))}>
                                 <Input
@@ -154,6 +154,7 @@ export default function AddWalletFormScreen({
                                         <QRCodeScannerInputIcon
                                             fieldKey={"address"}
                                             setFieldValue={setFieldValue}
+                                            currencyType={currencyType}
                                             navigation={navigation}
                                         />
                                     }

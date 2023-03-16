@@ -3,6 +3,7 @@ import Web3 from "web3";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { validate } from "./wav";
+import { CurrencyTypeUILabels } from "@cryptify/common/src/domain/currency_type_ui_labels";
 
 const btcTxRegex = /^[a-fA-F0-9]{64}$/;
 const ethTxRegex = /^0x([A-Fa-f0-9]{64})$/;
@@ -16,6 +17,15 @@ export function getCurrencyType(address: string): CurrencyType {
     }
 
     throw new Error("Currency type not supported");
+}
+
+export function getCurrencyTypeUILabel(currencyType: CurrencyType): string {
+    switch (currencyType) {
+        case CurrencyType.ETHEREUM:
+            return CurrencyTypeUILabels.ETHEREUM;
+        case CurrencyType.BITCOIN:
+            return CurrencyTypeUILabels.BITCOIN;
+    }
 }
 
 export function normalizeCurrency(amount: number): string {

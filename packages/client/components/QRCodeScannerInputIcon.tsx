@@ -4,6 +4,7 @@ import { falQRCode } from "./icons/light/falQRCode";
 import { Alert, Linking, Pressable, StyleSheet } from "react-native";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 type Props = {
     fieldKey: string;

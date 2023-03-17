@@ -1,4 +1,4 @@
-import { by, device, element } from "detox";
+import { by, device, element, expect } from "detox";
 
 export async function pressBackLeft() {
     if (device.getPlatform() === "android") {
@@ -21,4 +21,20 @@ export async function pressBackRight() {
 
 export async function pause(millis = 2000): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, millis));
+}
+
+export async function signIn() {
+    await element(by.id("signInButton")).tap();
+    await expect(element(by.text("Welcome back"))).toBeVisible();
+    await element(by.id("email")).typeText("john@example.com");
+    await element(by.id("password")).typeText("Test123!");
+    await element(by.text("Sign in")).tap();
+}
+
+export async function openQRCodeScannerScreen() {
+    await element(by.id("qrCodeScannerInputIcon")).tap();
+}
+
+export async function closeQRCodeScannerScreen() {
+    await element(by.id("closeQRCodeScannerScreenButton")).tap();
 }

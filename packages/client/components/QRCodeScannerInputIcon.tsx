@@ -57,7 +57,7 @@ export function QRCodeScannerInputIcon(props: Props) {
     };
 
     return (
-        <Pressable onPress={displayQRCodeScannerScreen} testID="QRCodeScannerInputIcon">
+        <Pressable onPress={displayQRCodeScannerScreen} testID="qrCodeScannerInputIcon">
             <FontAwesomeIcon icon={falQRCode} style={styles.qrCodeIcon} size={20} />
         </Pressable>
     );

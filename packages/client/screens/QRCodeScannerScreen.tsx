@@ -2,7 +2,7 @@ import { Box, Center, Text, useToast, View } from "native-base";
 import React from "react";
 import { HomeStackScreenProps, SettingsStackScreenProps } from "../types";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { BarCodeBounds, BarCodeScanner } from "expo-barcode-scanner";
+import { BarCodeBounds, BarCodeScanner, Constants } from "expo-barcode-scanner";
 import { StyleSheet } from "react-native";
 import { getCurrencyTypeUILabel, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
 import { StatusBar } from "expo-status-bar";
@@ -25,7 +25,7 @@ export default function QRCodeScannerScreen(props: Props) {
 
     const styles = getStyles(bounds);
 
-    const sleep = (t) => new Promise((res) => setTimeout(res, t));
+    const sleep = (t: number | undefined) => new Promise((res) => setTimeout(res, t));
 
     const invalidAddressToast = (currencyType: string) => {
         if (!toast.isActive(toastId)) {
@@ -54,6 +54,8 @@ export default function QRCodeScannerScreen(props: Props) {
         }
     };
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const handleBarCodeScanned = async ({ data, bounds }) => {
         setScanned(true);
 
@@ -70,7 +72,7 @@ export default function QRCodeScannerScreen(props: Props) {
             props.navigation.pop();
         }
 
-        // Reset QR Code borders or else they will stay on the screen forever
+        // Reset QR Code borders or else they will stay on the screen forever when a QR code is not scanned.
         setBounds(initialBounds);
 
         setScanned(false);
@@ -80,7 +82,7 @@ export default function QRCodeScannerScreen(props: Props) {
         <View flex={1} style={{ position: "relative" }}>
             <StatusBar style="dark" hidden={true} />
             <BarCodeScanner
-                barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+                barCodeTypes={[Constants.BarCodeType.qr]}
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={styles.barCodeScanner}
             />
@@ -177,19 +179,19 @@ const getStyles = (bounds: { origin: any; size: any }) =>
             borderColor: "#FFD60A",
         },
         horizontalBorder: {
-            width: bounds.size.width * 0.25,
+            width: bounds.size.width * 0.2,
             height: 0,
         },
         verticalBorder: {
             width: 0,
-            height: bounds.size.height * 0.25,
+            height: bounds.size.height * 0.2,
         },
         borderTopLeft: {
             left: bounds.origin.x,
             top: bounds.origin.y,
         },
         borderTopRight: {
-            left: bounds.origin.x + bounds.size.width - bounds.size.width * 0.25,
+            left: bounds.origin.x + bounds.size.width - bounds.size.width * 0.2,
             top: bounds.origin.y,
         },
         borderBottomLeft: {
@@ -197,7 +199,7 @@ const getStyles = (bounds: { origin: any; size: any }) =>
             top: bounds.origin.y + bounds.size.height,
         },
         borderBottomRight: {
-            left: bounds.origin.x + bounds.size.width - bounds.size.width * 0.25 + 3,
+            left: bounds.origin.x + bounds.size.width - bounds.size.width * 0.2 + 3,
             top: bounds.origin.y + bounds.size.height,
         },
         borderRightTop: {
@@ -206,7 +208,7 @@ const getStyles = (bounds: { origin: any; size: any }) =>
         },
         borderRightBottom: {
             left: bounds.origin.x + bounds.size.width,
-            top: bounds.origin.y + bounds.size.height - bounds.size.height * 0.25,
+            top: bounds.origin.y + bounds.size.height - bounds.size.height * 0.2,
         },
         borderLeftTop: {
             left: bounds.origin.x,
@@ -214,7 +216,7 @@ const getStyles = (bounds: { origin: any; size: any }) =>
         },
         borderLeftBottom: {
             left: bounds.origin.x,
-            top: bounds.origin.y + bounds.size.height - bounds.size.height * 0.25,
+            top: bounds.origin.y + bounds.size.height - bounds.size.height * 0.2,
         },
         borderTopLeftRadius: {
             borderTopLeftRadius: 10,

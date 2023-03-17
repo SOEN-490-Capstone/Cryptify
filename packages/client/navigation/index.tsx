@@ -140,7 +140,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                             onPress={() => {
                                 navigation.goBack();
                             }}
-                            testID="headerRightButton"
+                            testID="closeQRCodeScannerScreenButton"
                         >
                             <FontAwesomeIcon
                                 icon={farXMark}
@@ -580,7 +580,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                             onPress={() => {
                                 navigation.goBack();
                             }}
-                            testID="headerRightButton"
+                            testID="closeQRCodeScannerScreenButton"
                         >
                             <FontAwesomeIcon
                                 icon={farXMark}

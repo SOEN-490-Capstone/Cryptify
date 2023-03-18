@@ -36,25 +36,23 @@ export function QRCodeScannerInputIcon(props: Props) {
     };
 
     const displayQRCodeScannerScreen = async () => {
-        const previousPermission = permission;
+        const oldPermission = permission;
 
-        requestPermission().then((permission) => {
-            if (permission.granted) {
-                props.navigation.navigate("QRCodeScannerScreen", {
-                    fieldKey: props.fieldKey,
-                    setFieldValue: props.setFieldValue,
-                    currencyType: props.currencyType,
-                });
+        const newPermission = await requestPermission();
+
+        if (newPermission.granted) {
+            props.navigation.navigate("QRCodeScannerScreen", {
+                fieldKey: props.fieldKey,
+                setFieldValue: props.setFieldValue,
+                currencyType: props.currencyType,
+            });
+        } else {
+            if (oldPermission?.status == "undetermined" && !newPermission.granted) {
+                return;
             } else {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                if (previousPermission.status == "undetermined" && !permission.granted) {
-                    return;
-                } else {
-                    cameraAccessDeniedAlert();
-                }
+                cameraAccessDeniedAlert();
             }
-        });
+        }
     };
 
     return (

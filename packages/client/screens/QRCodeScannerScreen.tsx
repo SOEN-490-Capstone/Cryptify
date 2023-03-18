@@ -54,16 +54,14 @@ export default function QRCodeScannerScreen(props: Props) {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const handleBarCodeScanned = async ({ data, bounds }) => {
+    const handleBarCodeScanned = async ({ data, bounds }: any) => {
         setScanned(true);
 
         setBounds(bounds);
 
         // Add a small delay to allow the QR Code borders to be drawn before the
         // QR Code is scanned. This is to increase the user accessibility and experience.
-        await sleep(750);
+        await sleep(350);
 
         if (!isValidCurrencyAddress(String(data), currencyType)) {
             invalidAddressToast(getCurrencyTypeUILabel(currencyType));

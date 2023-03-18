@@ -3,4 +3,4 @@ export enum CurrencyTypeUILabels {
     BITCOIN = "Bitcoin",
 }
 
-export const currencyTypeUILabels = [CurrencyTypeUILabels.BITCOIN, CurrencyTypeUILabels.ETHEREUM] as const;
+export const CURRENCY_TYPE_UI_LABELS = [CurrencyTypeUILabels.BITCOIN, CurrencyTypeUILabels.ETHEREUM] as const;

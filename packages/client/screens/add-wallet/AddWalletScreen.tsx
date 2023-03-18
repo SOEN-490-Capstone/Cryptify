@@ -40,6 +40,7 @@ export default function AddWalletScreen({ route, navigation }: Props) {
                 setInitialValues={setInitialValues}
                 initialErrors={initialError}
                 setInitialErrors={setInitialErrors}
+                navigation={navigation}
             />
         );
     }

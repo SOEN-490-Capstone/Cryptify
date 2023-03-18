@@ -13,6 +13,7 @@ import { User } from "@cryptify/common/src/domain/entities/user";
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
+import React from "react";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -137,6 +138,12 @@ type AddContactScreenProps = {
     prefilledWalletAddress?: string;
 };
 
+type QRCodeScannerScreenProps = {
+    fieldKey: string;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    currencyType: CurrencyType;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -156,6 +163,7 @@ export type HomeStackParamList = {
     TransactionHistoryReportScreen: TransactionHistoryReportScreenProps;
     ContactsListScreen: ContactListScreenProps;
     AddContactScreen: AddContactScreenProps;
+    QRCodeScannerScreen: QRCodeScannerScreenProps;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> = CompositeScreenProps<
@@ -191,6 +199,7 @@ export type SettingsStackParamList = {
     AccountEmailScreen: undefined;
     AccountPasswordScreen: undefined;
     AccountTypeScreen: undefined;
+    QRCodeScannerScreen: QRCodeScannerScreenProps;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

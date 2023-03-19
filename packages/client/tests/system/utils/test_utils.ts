@@ -1,4 +1,4 @@
-import { by, device, DeviceLaunchAppConfig, element, expect } from "detox";
+import { by, device, element, expect } from "detox";
 import { openAppForDebugBuild } from "./open_app_for_debug_build";
 
 export async function pressBackLeft() {
@@ -16,7 +16,7 @@ export async function pressBackLeft() {
     }
 }
 
-export async function launchApp(config: DeviceLaunchAppConfig) {
+export async function launchApp(config = { newInstance: true } as Detox.DeviceLaunchAppConfig) {
     await device.launchApp(config);
     await openAppForDebugBuild();
 }

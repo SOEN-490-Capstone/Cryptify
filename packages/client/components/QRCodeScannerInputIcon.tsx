@@ -5,10 +5,11 @@ import { Alert, Linking, Pressable, StyleSheet } from "react-native";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { FormikHelpers } from "formik/dist/types";
 
 type Props = {
     fieldKey: string;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    setFieldValue: FormikHelpers<any>["setFieldValue"];
     currencyType: CurrencyType;
     navigation: CompositeNavigationProp<any, any>;
 };

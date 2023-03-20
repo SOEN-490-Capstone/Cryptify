@@ -44,7 +44,7 @@ export default function QRCodeScannerScreen(props: Props) {
                                     style={styles.toastText}
                                     textAlign={"center"}
                                 >
-                                    This QR Code does not contain a valid {currencyType} wallet address.
+                                    This QR code does not contain a valid {currencyType} wallet address.
                                 </Text>
                             </Center>
                         </Box>
@@ -59,8 +59,8 @@ export default function QRCodeScannerScreen(props: Props) {
 
         setBounds(bounds);
 
-        // Add a small delay to allow the QR Code borders to be drawn before the
-        // QR Code is scanned. This is to increase the user accessibility and experience.
+        // Add a small delay to allow the QR code borders to be drawn before the
+        // QR code is scanned. This is to increase the user accessibility and experience.
         await sleep(350);
 
         if (!isValidCurrencyAddress(String(data), currencyType)) {
@@ -70,7 +70,7 @@ export default function QRCodeScannerScreen(props: Props) {
             props.navigation.goBack();
         }
 
-        // Reset QR Code borders or else they will stay on the screen forever when a QR code is not scanned.
+        // Reset QR code borders or else they will stay on the screen forever when a QR code is not scanned.
         setBounds(initialBounds);
 
         setScanned(false);
@@ -84,7 +84,7 @@ export default function QRCodeScannerScreen(props: Props) {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={styles.barCodeScanner}
             />
-            {/* QR Code Focused Borders */}
+            {/* QR code Focused Borders */}
             {bounds.origin !== initialBounds.origin && (
                 <>
                     <View

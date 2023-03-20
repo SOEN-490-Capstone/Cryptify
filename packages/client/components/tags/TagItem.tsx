@@ -7,7 +7,7 @@ import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
     tag: Tag;
-    key: number;
+    key: number | string;
     onTagPress?: (tag: Tag) => void | Promise<void>;
     tagIcon?: IconDefinition | IconProp;
     tagIconColor?: string | "#404040";

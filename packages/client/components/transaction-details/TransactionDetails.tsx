@@ -177,7 +177,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
                                 }
                             >
                                 {SortService.sortTransactionTagsAlphabetically(transactionTags).map((tag, i) => (
-                                    <VStack key={i}>
+                                    <VStack key={tag.tagName}>
                                         {/* Dummy badges solely used to calculate dimensions when rendered on the UI
                                             and immediately hidden from the UI once all badges have been measured. */}
                                         <Box style={dummyTagsContainerRender ? {} : { display: "none" }}>
@@ -210,7 +210,7 @@ export function TransactionDetails({ txn, wallet, navigation, otherDetails }: Pr
                                             backgroundColor="gray.100"
                                             px={"10px"}
                                             py={"5px"}
-                                            key={i}
+                                            key={tag.tagName}
                                             style={[styles.badge, tagRenderState[i] ? {} : { display: "none" }]}
                                         >
                                             <Text size={"subheadline"} fontWeight={"semibold"} isTruncated>

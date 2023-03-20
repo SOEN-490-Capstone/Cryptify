@@ -85,7 +85,7 @@ export default function CollapsibleFormSection({
                     render={(arrayHelpers) => (
                         <View>
                             {wallets?.map((wallet, i) => (
-                                <View style={wallets.length > 1 ? { marginTop: 13 } : { marginTop: 20 }} key={i}>
+                                <View style={wallets.length > 1 ? { marginTop: 13 } : { marginTop: 20 }} key={wallet}>
                                     <FormControl isInvalid={!!(currencyErrors?.[i] && currencyTouched)}>
                                         <Input
                                             value={wallet}

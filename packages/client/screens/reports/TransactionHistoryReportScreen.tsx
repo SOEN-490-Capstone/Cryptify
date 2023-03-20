@@ -54,28 +54,39 @@ export default function TransactionHistoryReportScreen({
         return +date;
     }
 
-    async function onPress(): Promise<void> {
-        const startDate =
-            filterByDate === filtersByDate[0]
-                ? 0
-                : filterByDate === filtersByDate[1]
-                ? +new Date() - 1000 * 60 * 60 * 24 * 90
-                : filterByDate === filtersByDate[2]
-                ? getYearStart()
-                : filterByDate === filtersByDate[3]
-                ? getYearStart() - 1000 * 60 * 60 * 24 * 365
-                : +(fromDate || 0);
+    const getStartDate = () => {
+        switch (filterByDate) {
+            case filtersByDate[0]:
+                return 0;
+            case filtersByDate[1]:
+                return +new Date() - 1000 * 60 * 60 * 24 * 90;
+            case filtersByDate[2]:
+                return getYearStart();
+            case filtersByDate[3]:
+                return getYearStart() - 1000 * 60 * 60 * 24 * 365;
+            default:
+                return +(fromDate || 0);
+        }
+    };
 
-        const endDate =
-            filterByDate === filtersByDate[0]
-                ? +new Date() + 1000 * 60 * 60 * 24
-                : filterByDate === filtersByDate[1]
-                ? +new Date() + 1000 * 60 * 60 * 24
-                : filterByDate === filtersByDate[2]
-                ? getYearStart() + 1000 * 60 * 60 * 24 * 365
-                : filterByDate === filtersByDate[3]
-                ? getYearStart() - 1000 * 60 * 60 * 24
-                : +(toDate || 0);
+    const getEndDate = () => {
+        switch (filterByDate) {
+            case filtersByDate[0]:
+                return +new Date() + 1000 * 60 * 60 * 24;
+            case filtersByDate[1]:
+                return +new Date() + 1000 * 60 * 60 * 24;
+            case filtersByDate[2]:
+                return getYearStart() + 1000 * 60 * 60 * 24 * 365;
+            case filtersByDate[3]:
+                return getYearStart() - 1000 * 60 * 60 * 24;
+            default:
+                return +(toDate || 0);
+        }
+    };
+
+    async function onPress(): Promise<void> {
+        const startDate = getStartDate();
+        const endDate = getEndDate();
 
         const req = {
             userId: user.id,

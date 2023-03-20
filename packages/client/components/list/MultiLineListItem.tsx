@@ -27,7 +27,7 @@ export default function MultiLineListItem({
             <Text size={"subheadline"} color={"text.500"}>
                 {label}
             </Text>
-            {altValue && <Text flex={1}>{altValue}</Text>}
+            {!!altValue && <Text flex={1}>{altValue}</Text>}
             <HStack space="10px">
                 <Text flex={1} minWidth={250}>
                     {value}

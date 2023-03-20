@@ -21,10 +21,10 @@ export default function AddWalletSelectionScreen({ navigation }: Props) {
                 Add a Wallet
             </Text>
             <VStack style={styles.currencyTypeStack} space="2px">
-                {currenciesDisplayData.map((currency, i) => (
+                {currenciesDisplayData.map((currency) => (
                     <Pressable
                         onPress={() => navigation.navigate("AddWalletScreen", { currencyType: currency.type })}
-                        key={i}
+                        key={currency.type}
                         style={styles.currencyTypeItem}
                         _pressed={{
                             background: "text.200",

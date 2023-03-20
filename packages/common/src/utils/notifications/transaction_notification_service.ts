@@ -30,20 +30,22 @@ export class TransactionNotificationService {
                         relations: { user: true },
                     });
 
-                    wallets.map(async (wallet) => {
-                        if (!wallet.user.areNotificationsEnabled) {
-                            return;
-                        }
-                        // After all the processing is done to build the standard transaction notification we then
-                        // delegate the actual sending of the notification to a concrete implementation. This allows us
-                        // to centralize all the pre-processing and formatting in a single place while allowing for a
-                        // module notification system
-                        await this.notificationStrategyFactory.get(NotificationStrategy.EMAIL).sendNotification({
-                            to: wallet.user.email,
-                            title: this.getTitle(key, currencyType),
-                            body: this.getBody(key, wallet, transaction, currencyType),
-                        });
-                    });
+                    await Promise.all(
+                        wallets.map(async (wallet) => {
+                            if (!wallet.user.areNotificationsEnabled) {
+                                return;
+                            }
+                            // After all the processing is done to build the standard transaction notification we then
+                            // delegate the actual sending of the notification to a concrete implementation. This allows us
+                            // to centralize all the pre-processing and formatting in a single place while allowing for a
+                            // module notification system
+                            await this.notificationStrategyFactory.get(NotificationStrategy.EMAIL).sendNotification({
+                                to: wallet.user.email,
+                                title: this.getTitle(key, currencyType),
+                                body: this.getBody(key, wallet, transaction, currencyType),
+                            });
+                        }),
+                    );
                 });
             }),
         );

@@ -46,9 +46,11 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
             navigation.setOptions({
                 headerRight: () => (
                     <Pressable
-                        onPress={() => (
-                            route.params.tagFilters.splice(0), route.params.setTagFilters([]), navigation.goBack()
-                        )}
+                        onPress={() => {
+                            route.params.tagFilters.splice(0);
+                            route.params.setTagFilters([]);
+                            navigation.goBack();
+                        }}
                     >
                         <Text color={"#007AFF"}>Reset</Text>
                     </Pressable>

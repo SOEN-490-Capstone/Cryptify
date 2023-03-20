@@ -10,7 +10,7 @@ import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "nativ
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
-import { filterTransctions } from "../services/filter_service";
+import { filterTransactions } from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(props: HomeStackScreenProps<"TransactionsListScreen">) {
@@ -63,7 +63,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
     const filtersDisplayed = filters.filter((f) => f !== "All transactions");
 
     React.useEffect(() => {
-        const DisplayedTransaction = filterTransctions(
+        const DisplayedTransaction = filterTransactions(
             props.route.params.wallet.currencyType,
             props.route.params.wallet.address,
             [...props.route.params.transactions],

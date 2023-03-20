@@ -14,7 +14,6 @@ export function getTransactionCount(transactions: Transaction[]): number {
     return transactions.length;
 }
 
-// Todo refactor when Bitcoin is added
 export function getTransactionTotalReceived(address: string, transactions: Transaction[], type: CurrencyType): string {
     if (type == CurrencyType.ETHEREUM) {
         const totalInWei = transactions
@@ -39,7 +38,6 @@ export function getTransactionTotalReceived(address: string, transactions: Trans
     return "";
 }
 
-// Todo refactor when Bitcoin is added
 export function getTransactionTotalSent(address: string, transactions: Transaction[], type: CurrencyType): string {
     if (type == CurrencyType.ETHEREUM) {
         const totalInWei = transactions

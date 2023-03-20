@@ -62,11 +62,11 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
             navigation.setOptions({
                 headerRight: () => (
                     <Pressable
-                        onPress={() => (
-                            route.params.contactFilters.splice(0),
-                            route.params.setContactFilters([]),
-                            navigation.goBack()
-                        )}
+                        onPress={() => {
+                            route.params.contactFilters.splice(0);
+                            route.params.setContactFilters([]);
+                            navigation.goBack();
+                        }}
                     >
                         <Text color={"#007AFF"}>Reset</Text>
                     </Pressable>

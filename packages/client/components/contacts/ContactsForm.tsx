@@ -77,7 +77,7 @@ export default function ContactsForm(props: Props) {
 
     return (
         <Formik innerRef={props.formikRef} initialValues={initialValues} onSubmit={onSubmit}>
-            {({ values, errors, touched, handleChange, submitForm }) => (
+            {({ values, errors, touched, handleChange, submitForm, setFieldValue }) => (
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
                         <Input
@@ -102,6 +102,8 @@ export default function ContactsForm(props: Props) {
                                 placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
                                 initialIsCollapsed={!props.contact}
                                 isPrefilledAddContact={false}
+                                setFieldValue={setFieldValue}
+                                navigation={props.navigation}
                             />
                             <CollapsibleFormSection
                                 values={values}
@@ -112,6 +114,8 @@ export default function ContactsForm(props: Props) {
                                 placeholder={"Wallet address (Begins with 0x)"}
                                 initialIsCollapsed={!props.contact}
                                 isPrefilledAddContact={false}
+                                setFieldValue={setFieldValue}
+                                navigation={props.navigation}
                             />
                         </>
                     ) : (
@@ -123,6 +127,8 @@ export default function ContactsForm(props: Props) {
                             touched={touched}
                             initialIsCollapsed={false}
                             isPrefilledAddContact={true}
+                            setFieldValue={setFieldValue}
+                            navigation={props.navigation}
                         />
                     )}
                     {!props.contact && (

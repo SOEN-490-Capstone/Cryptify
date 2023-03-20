@@ -32,7 +32,7 @@ export default function TagsGallery({
 }: Props) {
     return (
         <VStack space={"20px"} style={styles}>
-            {title && (
+            {!!title && (
                 <Text fontWeight={"semibold"} size={"title3"}>
                     {title}
                 </Text>
@@ -41,7 +41,7 @@ export default function TagsGallery({
                 {tags.map((tag, i) => (
                     <TagItem
                         tag={tag}
-                        key={i}
+                        key={tag.tagName}
                         testID={tagTestIDPrefix ? `${tagTestIDPrefix}-${i}` : undefined}
                         onTagPress={onTagPress}
                         tagIcon={tagIcon}

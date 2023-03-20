@@ -209,7 +209,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             Tags
                         </Text>
                         {filterByTag.map((tag) => (
-                            <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge}>
+                            <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge} key={tag}>
                                 <HStack space={"10px"} alignItems={"center"}>
                                     <Text size={"subheadline"} fontWeight={"semibold"}>
                                         {tag}

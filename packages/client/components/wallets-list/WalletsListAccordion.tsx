@@ -78,7 +78,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
             <>
                 {walletsByType[currency.type].map((wallet, i) => (
                     <Pressable
-                        key={i}
+                        key={wallet.address}
                         style={{
                             ...styles.walletItemWrapper,
                             borderBottomLeftRadius: i === walletsByType[currency.type].length - 1 ? 10 : 0,
@@ -123,7 +123,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
             {currenciesDisplayData.map(
                 (currency, i) =>
                     walletsByType[currency.type].length > 0 && (
-                        <Box key={i}>
+                        <Box key={currency.type}>
                             <Accordion
                                 sections={[currency]}
                                 activeSections={activeSections[currency.type]}

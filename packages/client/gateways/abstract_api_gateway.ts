@@ -3,7 +3,7 @@ import { HttpError } from "@cryptify/common/src/errors/http_error";
 
 export abstract class AbstractApiGateway extends AbstractGateway {
     protected constructor() {
-        const uri = `http://${process.env.API_URL}:${process.env.API_PORT}`;
+        const uri = `http://10.0.2.2:${process.env.API_PORT}`;
         super(uri, fetch);
     }
 

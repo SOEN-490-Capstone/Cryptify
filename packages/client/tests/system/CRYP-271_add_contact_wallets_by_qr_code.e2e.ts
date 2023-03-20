@@ -13,6 +13,10 @@ import {
 import { addContact, displayContactsScreen, editContact } from "./utils/test_contact_utils";
 
 describe("CRYP-271 Add a contact's wallet by scanning a QR Code", () => {
+    // Dev Note: For all the following tests, scanning a QR code cannot be tested because the emulator's camera is not able to scan it.
+    // This also means we cannot test the toast message that displays after scanning an incorrect QR code. This functionality could not
+    // be successfully mocked either. As a result, whenever the QRCodeScannerScreen is displayed we are only asserting/testing that it is opened and closed.
+
     it("Should be able to open the QR Code scanner to add a Bitcoin wallet by scanning its QR Code to a new contact", async () => {
         await launchApp({
             newInstance: true,
@@ -137,13 +141,13 @@ describe("CRYP-271 Add a contact's wallet by scanning a QR Code", () => {
         await pause();
     });
 
+    // Dev Note: This test, when run on Android, will always pass because Detox only supports permission's for iOS emulators.
+    // As a result, all permissions are granted by default for Android emulators and cannot be changed.
+    //
+    // See the following links for more information:
+    // - https://wix.github.io/Detox/docs/next/api/device/#2-permissionsset-runtime-permissions-ios-only
+    // - https://github.com/wix/Detox/issues/477
     it("Should not be able to open the QR Code scanner with ungranted camera permissions (iOS only)", async () => {
-        // Dev Note: This test, when run on Android, will always pass because Detox only supports permission's for iOS emulators.
-        // As a result, all permissions are granted by default for Android emulators and cannot be changed.
-        //
-        // See the following links for more information:
-        // - https://wix.github.io/Detox/docs/next/api/device/#2-permissionsset-runtime-permissions-ios-only
-        // - https://github.com/wix/Detox/issues/477
         if (device.getPlatform() === "android") {
             return;
         }
@@ -185,6 +189,7 @@ describe("CRYP-271 Add a contact's wallet by scanning a QR Code", () => {
         await expect(element(by.text("Settings")).atIndex(0)).toBeVisible();
     };
 
+    // Go to the Settings screen from Edit a Contact screen to sign out (handled in afterEach)
     const displaySettingsFromEditContact = async () => {
         await element(by.id("cancelEditContactButton")).tap();
         await pressBackLeft();

@@ -15,6 +15,7 @@ import { TransactionsService } from "@cryptify/eth-edge/src/services/transaction
 import { AlchemyNodeGateway } from "@cryptify/eth-edge/src/gateways/alchemy_node.gateway";
 import { zip } from "@cryptify/common/src/utils/function_utils";
 import { DeleteWalletRequest } from "@cryptify/common/src/requests/delete_wallet_request";
+import { UpdateWalletRequest } from "@cryptify/common/src/requests/update_wallet_request";
 
 @Injectable()
 export class WalletsService {
@@ -95,6 +96,17 @@ export class WalletsService {
             // will see those transactions anyways
             this.transactionsService.cleanup(deleteWalletReq.address).catch(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
         }
+
+        return new WalletBuilder().setWallet(wallet).setBalance(balance).build();
+    }
+
+    async update(updateWalletReq: UpdateWalletRequest): Promise<WalletWithBalance> {
+        const wallet = await this.findOne(updateWalletReq.address, updateWalletReq.userId);
+        wallet.name = updateWalletReq.name;
+        const [, balance] = await Promise.all([
+            this.walletRepository.save(wallet),
+            this.alchemyNodeServiceFacade.getBalance(updateWalletReq.address),
+        ]);
 
         return new WalletBuilder().setWallet(wallet).setBalance(balance).build();
     }

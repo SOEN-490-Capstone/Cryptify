@@ -213,6 +213,9 @@ export type GuestStackParamList = {
     SignUpScreen: undefined;
     SignInScreen: undefined;
     SignUpNotificationsScreen: SignUpNotificationsScreenProps;
+    ResetPasswordEmailScreen: undefined;
+    ResetPasswordSuccessScreen: undefined;
+    ResetPasswordFailureScreen: undefined;
 };
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<

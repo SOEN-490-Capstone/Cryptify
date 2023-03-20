@@ -64,6 +64,7 @@ import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import FilterTagScreen from "../screens/filters/FilterTagScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
+import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEmailScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -736,6 +737,15 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="SignUpNotificationsScreen"
                 component={SignUpNotificationsScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <GuestStack.Screen
+                name="ResetPasswordEmailScreen"
+                component={ResetPasswordEmailScreen}
                 options={{
                     title: "",
                     headerTintColor: "#404040",

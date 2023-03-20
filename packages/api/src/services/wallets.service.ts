@@ -8,6 +8,7 @@ import { GetWalletsRequest } from "@cryptify/common/src/requests/get_wallet_requ
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { EdgeGatewayStrategyFactory } from "@cryptify/api/src/gateways/edge-gateway/edge_gateway_strategy_factory";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
+import { UpdateWalletRequest } from "@cryptify/common/src/requests/update_wallet_request";
 
 @Injectable()
 export class WalletsService {
@@ -38,5 +39,10 @@ export class WalletsService {
         );
         const walletsByType = await Promise.all(strategies.map((strategy) => strategy.getWallets(req)));
         return walletsByType.flat();
+    }
+
+    async update(req: UpdateWalletRequest): Promise<WalletWithBalance> {
+        const edgeGatewayStrategy = this.edgeGatewayStrategyFactory.get(getCurrencyType(req.address));
+        return edgeGatewayStrategy.updateWallet(req);
     }
 }

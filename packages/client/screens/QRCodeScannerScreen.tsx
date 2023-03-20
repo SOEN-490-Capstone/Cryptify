@@ -67,7 +67,7 @@ export default function QRCodeScannerScreen(props: Props) {
             invalidAddressToast(getCurrencyTypeUILabel(currencyType));
         } else {
             setFieldValue(fieldKey, String(data));
-            props.navigation.pop();
+            props.navigation.goBack();
         }
 
         // Reset QR Code borders or else they will stay on the screen forever when a QR code is not scanned.

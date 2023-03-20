@@ -1,4 +1,5 @@
 import { by, device, element, expect } from "detox";
+import { openAppForDebugBuild } from "./open_app_for_debug_build";
 
 export async function pressBackLeft() {
     if (device.getPlatform() === "android") {
@@ -15,12 +16,21 @@ export async function pressBackLeft() {
     }
 }
 
+export async function launchApp(config = { newInstance: true } as Detox.DeviceLaunchAppConfig) {
+    await device.launchApp(config);
+    await openAppForDebugBuild();
+}
+
 export async function pressBackRight() {
     await element(by.id("headerRightButton")).tap();
 }
 
 export async function pause(millis = 2000): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, millis));
+}
+
+export async function closeKeyboard(formFieldId: string) {
+    await element(by.id(formFieldId)).tapReturnKey();
 }
 
 export async function signIn() {
@@ -31,8 +41,17 @@ export async function signIn() {
     await element(by.text("Sign in")).tap();
 }
 
-export async function openQRCodeScannerScreen() {
-    await element(by.id("qrCodeScannerInputIcon")).tap();
+export async function signOut() {
+    await element(by.id("signOutButton")).tap();
+    await expect(element(by.id("logo"))).toBeVisible();
+}
+
+export async function openQRCodeScannerScreen(index = 0) {
+    await element(by.id("qrCodeScannerInputIcon")).atIndex(index).tap();
+}
+
+export async function assertQRCodeScannerScreenIsOpen() {
+    await expect(element(by.id("closeQRCodeScannerScreenButton"))).toBeVisible();
 }
 
 export async function closeQRCodeScannerScreen() {

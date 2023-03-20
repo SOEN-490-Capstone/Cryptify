@@ -14,6 +14,7 @@ import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { WalletWithBalance } from "@cryptify/common/src/domain/wallet_with_balance";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import React from "react";
+import { FormikHelpers } from "formik/dist/types";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -140,7 +141,7 @@ type AddContactScreenProps = {
 
 type QRCodeScannerScreenProps = {
     fieldKey: string;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    setFieldValue: FormikHelpers<any>["setFieldValue"];
     currencyType: CurrencyType;
 };
 

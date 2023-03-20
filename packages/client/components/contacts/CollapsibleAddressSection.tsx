@@ -26,7 +26,7 @@ export default function CollapsibleAddressSection({ addresses, type }: Props) {
 
     return (
         <VStack space={"15px"}>
-            <Pressable onPress={() => setIsCollapsed(!isCollapsed)} testID="walletCollapsibleButton">
+            <Pressable onPress={() => setIsCollapsed(!isCollapsed)} testID={`walletCollapsibleButton${type}`}>
                 <HStack>
                     <FontAwesomeIcon
                         style={{ ...displayDataMap[type].styles, marginRight: 10 }}

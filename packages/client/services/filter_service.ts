@@ -22,7 +22,7 @@ function applyBaseFilters(
     const filtersByTransaction = getFiltersByTransactionStrings(currencyType);
     const filtersByDate = getFiltersByDateStrings();
     const dateToday = new Date();
-    
+
     // filter for incoming transactions
     if (filtersByTransaction[1] === filter) {
         transactions = transactions.filter((transaction) => transaction.walletIn === walletAddress);
@@ -67,7 +67,7 @@ function applyBaseFilters(
                 new Date(toDate) >= new Date(transaction.createdAt),
         );
     }
-    
+
     return transactions;
 }
 
@@ -79,7 +79,7 @@ export function filterTransactions(
     contactFilters: string[],
     tagFilters: string[],
 ): Transaction[] {
-    filters.forEach((filter) => transactions = applyBaseFilters(filter, currencyType, walletAddress, transactions));
+    filters.forEach((filter) => (transactions = applyBaseFilters(filter, currencyType, walletAddress, transactions)));
 
     if (contactFilters.length !== 0) {
         transactions = transactions.filter(
@@ -93,6 +93,6 @@ export function filterTransactions(
             transaction.tags.some((v) => tagFilters.includes(v.tagName)),
         );
     }
-    
+
     return transactions;
 }

@@ -53,7 +53,7 @@ export default function TransactionHistoryReportScreen({
         date.setMinutes(0);
         return +date;
     }
-    
+
     const getStartDate = () => {
         switch (filterByDate) {
             case filtersByDate[0]:
@@ -67,8 +67,8 @@ export default function TransactionHistoryReportScreen({
             default:
                 return +(fromDate || 0);
         }
-    }
-    
+    };
+
     const getEndDate = () => {
         switch (filterByDate) {
             case filtersByDate[0]:
@@ -82,7 +82,7 @@ export default function TransactionHistoryReportScreen({
             default:
                 return +(toDate || 0);
         }
-    }
+    };
 
     async function onPress(): Promise<void> {
         const startDate = getStartDate();

@@ -121,7 +121,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
     return (
         <>
             {currenciesDisplayData.map(
-                (currency, i) =>
+                (currency) =>
                     walletsByType[currency.type].length > 0 && (
                         <Box key={currency.type}>
                             <Accordion

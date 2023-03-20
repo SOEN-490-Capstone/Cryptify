@@ -44,7 +44,7 @@ export class TransactionNotificationService {
                                 title: this.getTitle(key, currencyType),
                                 body: this.getBody(key, wallet, transaction, currencyType),
                             });
-                        })
+                        }),
                     );
                 });
             }),

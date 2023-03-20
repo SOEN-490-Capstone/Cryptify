@@ -25,7 +25,7 @@ export class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
 
     async updateWallet(req: UpdateWalletRequest): Promise<WalletWithBalance> {
         const path = `users/${req.userId}/wallets/${req.address}`;
-        return this.request<WalletWithBalance>(Method.PUT, {}, path, null);
+        return this.request<WalletWithBalance>(Method.PUT, {}, path, req);
     }
 
     async getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]> {

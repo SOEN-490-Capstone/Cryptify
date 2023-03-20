@@ -101,14 +101,12 @@ export class WalletsService {
     }
 
     async update(updateWalletReq: UpdateWalletRequest): Promise<WalletWithBalance> {
+        const wallet = await this.findOne(updateWalletReq.address, updateWalletReq.userId);
+        wallet.name = updateWalletReq.name;
         const [, balance] = await Promise.all([
-            this.walletRepository.update(
-                { userId: updateWalletReq.userId, address: updateWalletReq.address },
-                { name: updateWalletReq.name },
-            ),
+            this.walletRepository.save(wallet),
             this.alchemyNodeServiceFacade.getBalance(updateWalletReq.address),
         ]);
-        const wallet = await this.findOne(updateWalletReq.address, updateWalletReq.userId);
 
         return new WalletBuilder().setWallet(wallet).setBalance(balance).build();
     }

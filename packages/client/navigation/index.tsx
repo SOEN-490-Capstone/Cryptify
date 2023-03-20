@@ -130,7 +130,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
             <HomeStack.Screen
                 name="QRCodeScannerScreen"
                 component={QRCodeScannerScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerShadowVisible: false,
                     headerBackVisible: false,
@@ -152,7 +152,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     ),
                     headerTransparent: true,
                     gestureEnabled: false,
-                }}
+                })}
             />
             <HomeStack.Screen
                 name="TransactionDetailsScreen"
@@ -571,10 +571,11 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
             <SettingsStack.Screen
                 name="QRCodeScannerScreen"
                 component={QRCodeScannerScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerShadowVisible: false,
                     headerBackVisible: false,
+                    headerLeft: () => null,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -592,7 +593,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     ),
                     headerTransparent: true,
                     gestureEnabled: false,
-                }}
+                })}
             />
             <SettingsStack.Screen
                 name="EditTagScreen"

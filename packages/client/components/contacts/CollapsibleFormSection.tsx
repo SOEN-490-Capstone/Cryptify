@@ -9,10 +9,12 @@ import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { farChevronDown } from "../icons/regular/farChevronDown";
 import { farChevronUp } from "../icons/regular/farChevronUp";
 import Collapsible from "react-native-collapsible";
-import { FieldArray, FormikErrors, FormikTouched } from "formik";
+import { FieldArray, FormikErrors, FormikHelpers, FormikTouched } from "formik";
 import { View } from "../Themed";
 import { falCircleXMark } from "../icons/light/falCircleXMark";
 import { farCirclePlus } from "../icons/regular/farCirclePlus";
+import { QRCodeScannerInputIcon } from "../QRCodeScannerInputIcon";
+import { CompositeNavigationProp } from "@react-navigation/native";
 
 type CreateContactRequestPayload = {
     contactName: string;
@@ -25,22 +27,26 @@ type AddWalletFieldArrayProps = {
     values: CreateContactRequestPayload;
     handleChange: any;
     currencyType: CurrencyType;
+    setFieldValue: FormikHelpers<any>["setFieldValue"];
     errors: FormikErrors<CreateContactRequestPayload>;
     touched: FormikTouched<CreateContactRequestPayload>;
     placeholder?: string;
     initialIsCollapsed: boolean;
     isPrefilledAddContact: boolean;
+    navigation: CompositeNavigationProp<any, any>;
 };
 
 export default function CollapsibleFormSection({
     values,
     handleChange,
     currencyType,
+    setFieldValue,
     errors,
     touched,
     placeholder,
     initialIsCollapsed,
     isPrefilledAddContact,
+    navigation,
 }: AddWalletFieldArrayProps) {
     const currencyIcon = currencyType === CurrencyType.BITCOIN ? faBitcoin : faEthereum;
     const iconColor = currencyType === CurrencyType.BITCOIN ? "#F7931A" : "#3C3C3D";
@@ -58,7 +64,7 @@ export default function CollapsibleFormSection({
                 onPress={() => {
                     setIsCollapsed(!isCollapsed);
                 }}
-                testID="walletCollapsibleButton"
+                testID={`walletCollapsibleButton${currencyType}`}
             >
                 <HStack style={{ marginTop: 40 }}>
                     <FontAwesomeIcon style={{ marginRight: 10 }} color={iconColor} icon={currencyIcon} size={26} />
@@ -87,24 +93,32 @@ export default function CollapsibleFormSection({
                                             placeholder={placeholder}
                                             rightElement={
                                                 !isPrefilledAddContact ? (
-                                                    <Pressable
-                                                        onPress={() => {
-                                                            arrayHelpers.remove(i);
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon
-                                                            color={"#EF4444"}
-                                                            style={{ marginRight: 12 }}
-                                                            size={20}
-                                                            icon={falCircleXMark}
+                                                    <>
+                                                        <QRCodeScannerInputIcon
+                                                            fieldKey={`${walletListString}[${i}]`}
+                                                            setFieldValue={setFieldValue}
+                                                            currencyType={currencyType}
+                                                            navigation={navigation}
                                                         />
-                                                    </Pressable>
+                                                        <Pressable
+                                                            onPress={() => {
+                                                                arrayHelpers.remove(i);
+                                                            }}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                color={"#EF4444"}
+                                                                style={{ marginRight: 12 }}
+                                                                size={20}
+                                                                icon={falCircleXMark}
+                                                            />
+                                                        </Pressable>
+                                                    </>
                                                 ) : (
                                                     <></>
                                                 )
                                             }
                                             isDisabled={isPrefilledAddContact}
-                                            testID="walletAddressInput"
+                                            testID={`walletAddressInput${currencyType}`}
                                         />
                                         <FormControl.ErrorMessage>
                                             {currencyErrors ? currencyErrors[i] : ""}

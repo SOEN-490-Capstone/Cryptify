@@ -5,7 +5,7 @@ import { Transaction } from "@cryptify/common/src/domain/entities/transaction";
 import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { BlockchainComGateway } from "@cryptify/btc-edge/src/gateways/blockchain_com_gateway";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Injectable()
 export class TransactionsService {

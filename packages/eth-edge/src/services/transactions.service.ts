@@ -10,7 +10,7 @@ import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { TransactionNotificationService } from "@cryptify/common/src/utils/notifications/transaction_notification_service";
-import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
+import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 
 @Injectable()
 export class TransactionsService {

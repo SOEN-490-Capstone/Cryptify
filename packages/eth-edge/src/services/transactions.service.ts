@@ -10,6 +10,7 @@ import { WalletsService } from "./wallets.service";
 import { Wallet } from "@cryptify/common/src/domain/entities/wallet";
 import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
 import { TransactionNotificationService } from "@cryptify/common/src/utils/notifications/transaction_notification_service";
+import {CurrencyType} from "@cryptify/common/src/domain/currency_type";
 
 @Injectable()
 export class TransactionsService {
@@ -73,7 +74,7 @@ export class TransactionsService {
     }
 
     async findAll(userId: number): Promise<Transaction[]> {
-        const wallets = await this.walletsService.findAll(userId);
+        const wallets = await this.walletsRepository.find({ where: { currencyType: CurrencyType.ETHEREUM, userId } });
         const addresses = wallets.map((wallet) => wallet.address.toLowerCase());
 
         return this.transactionsRepository.find({

@@ -65,6 +65,9 @@ import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import FilterTagScreen from "../screens/filters/FilterTagScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEmailScreen";
+import CreateNewPasswordScreen from "../screens/reset-password/createNewPasswordScreen";
+import ResetPasswordFailureScreen from "../screens/reset-password/reset-password-sates/resetPasswordFailureScreen";
+import ResetPassworSuccessScreen from "../screens/reset-password/reset-password-sates/resetPasswordSuccessScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -746,6 +749,33 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="ResetPasswordEmailScreen"
                 component={ResetPasswordEmailScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <GuestStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <GuestStack.Screen
+                name="ResetPasswordSuccessScreen"
+                component={ResetPassworSuccessScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+                        <GuestStack.Screen
+                name="ResetPasswordFailureScreen"
+                component={ResetPasswordFailureScreen}
                 options={{
                     title: "",
                     headerTintColor: "#404040",

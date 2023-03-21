@@ -214,6 +214,7 @@ export type GuestStackParamList = {
     SignInScreen: undefined;
     SignUpNotificationsScreen: SignUpNotificationsScreenProps;
     ResetPasswordEmailScreen: undefined;
+    CreateNewPasswordScreen: undefined;
     ResetPasswordSuccessScreen: undefined;
     ResetPasswordFailureScreen: undefined;
 };

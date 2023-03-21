@@ -4,28 +4,45 @@ import { Button, FormControl, Input, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { Formik } from "formik";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
-import { resetPasswordEmailSchema } from "@cryptify/common/src/validations/reset_password_email_schema";
+import { forgotPasswordSchema } from "@cryptify/common/src/validations/forgot_password_schema";
+import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
+import { AuthGateway } from "../../gateways/auth_gateway";
+import { GuestStackScreenProps } from "../../types";
 
-export default function ResetPasswordEmailScreen() {
 
-    function onSubmitResetPassword(){
+export default function ResetPasswordEmailScreen(navigation: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
+    async function onSubmitResetPassword( values: ForgotPasswordRequest ) {
 
+        try{
+            const gateway = new AuthGateway();
+            await gateway.forgotPassword(values);
+            navigation.navigation.navigate("ResetPasswordSuccessScreen");
+        }catch(e){
+            navigation.navigation.navigate("ResetPasswordFailureScreen");
+        }
     }
 
     const initialValues = {
-        email: ""
-    }
+        email: "",
+    };
 
     return (
         <View style={styles.container}>
-            <Text size={"title3"} fontWeight={"semibold"}>
+            <Text size={"title1"} fontWeight={"semibold"}>
                 Reset your password
             </Text>
 
-            <Text>Enter the email address associated with your account and we'll send you instructions to reset your password.</Text>
-            <Formik initialValues={initialValues} validationSchema={resetPasswordEmailSchema} onSubmit={onSubmitResetPassword}>
+            <Text style={{marginVertical: 20}}>
+                Enter the email address associated with your account and we'll send you instructions to reset your
+                password.
+            </Text>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={forgotPasswordSchema}
+                onSubmit={onSubmitResetPassword}
+            >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
+                    <VStack space="13" style={{ marginHorizontal: 0, marginTop: 10, width: "100%"}}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -38,7 +55,7 @@ export default function ResetPasswordEmailScreen() {
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <Button style={{ marginTop: 7 }} onPress={submitForm}>
-                            Sign in
+                            Send instructions
                         </Button>
                     </VStack>
                 )}

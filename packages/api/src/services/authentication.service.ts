@@ -7,6 +7,9 @@ import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
+import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
+import { EmailNotificationStrategy } from "@cryptify/common/src/utils/notifications/email_notification_strategy";
+import { ForgotPasswordService } from "@cryptify/common/src/utils/notifications/forgot_password_notification_service";
 
 @Injectable()
 export class AuthenticationService {
@@ -14,6 +17,7 @@ export class AuthenticationService {
         private jwtService: JwtService,
         @Inject(forwardRef(() => UsersService))
         private usersService: UsersService,
+        private forgotPasswordService: ForgotPasswordService,
     ) {}
 
     async signUp(signUpReq: SignUpRequest): Promise<JwtToken> {
@@ -35,6 +39,17 @@ export class AuthenticationService {
         }
 
         return this.signToken(user);
+    }
+
+    async ForgotPassword(forgotPasswordReq: ForgotPasswordRequest): Promise<void> {
+        const user = await this.usersService.findOne(forgotPasswordReq.email);
+        
+        if(!user) {
+            throw new ForbiddenException("email is not in the system");
+        }
+
+        const token = this.signToken(user);
+        this.forgotPasswordService.sendForgotPassword(user, token);
     }
 
     async verify(password: string, userId: number): Promise<string> {

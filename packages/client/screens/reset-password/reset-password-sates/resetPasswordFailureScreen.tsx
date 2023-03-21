@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function ResetPasswordFailureScreen(){
-    return (<></>);
+export default function ResetPasswordFailureScreen() {
+    return <></>;
 }

@@ -84,7 +84,9 @@ export default function SignInScreen(navigation: GuestStackScreenProps<"SignInSc
                             />
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Link onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")}>forgot Password?</Link>
+                        <Link onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")}>
+                            forgot Password?
+                        </Link>
                         <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign in
                         </Button>

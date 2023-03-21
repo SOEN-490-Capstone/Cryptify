@@ -3,8 +3,10 @@ import { AuthenticationService } from "@cryptify/api/src/services/authentication
 import { JwtToken } from "@cryptify/common/src/domain/jwt_token";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
+import { ResetPasswordEmailRequest } from "@cryptify/common/src/requests/reset_password_email_request";
 import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
+import { resetPasswordEmailSchema } from "@cryptify/common/src/validations/reset_password_email_schema";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
 
 @Controller("auth")
@@ -23,5 +25,10 @@ export class AuthenticationController {
         const signInReq = await useValidate(signInSchema, body);
 
         return await this.authService.signIn(signInReq);
+    }
+
+    @Post("resetemail")
+    async resetPasswordEmail(@Body() body: ResetPasswordEmailRequest): Promise<void> {
+
     }
 }

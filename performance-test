@@ -9,6 +9,6 @@ docker-compose exec api yarn workspace @cryptify/common db:seed
 
 yarn workspace @cryptify/performance-tests build
 
-k6 run --out csv=./packages/performance-tests/results/sprint-6/$1.csv ./packages/performance-tests/dist/$1.js
+k6 run --out csv=./packages/performance-tests/results/sprint-9/$1.csv ./packages/performance-tests/dist/$1.js
 
 docker-compose down > /dev/null 2>&1

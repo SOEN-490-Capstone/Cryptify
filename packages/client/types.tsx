@@ -214,10 +214,18 @@ export type GuestStackParamList = {
     SignInScreen: undefined;
     SignUpNotificationsScreen: SignUpNotificationsScreenProps;
     ResetPasswordEmailScreen: undefined;
-    CreateNewPasswordScreen: undefined;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
     ResetPasswordSuccessScreen: undefined;
     ResetPasswordFailureScreen: undefined;
 };
+
+export type CreateNewPasswordScreenProps = {
+    token: string;
+}
+
+export type LinkStackParamList = {
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
+}
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<
     BottomTabScreenProps<GuestStackParamList, T>,
@@ -237,6 +245,7 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
 export type RootStackParamList = {
     Guest: NavigatorScreenParams<GuestStackParamList> | undefined;
     Root: NavigatorScreenParams<RootTabParamList> | undefined;
+    Link: NavigatorScreenParams<LinkStackParamList> | undefined;
     NotFound: undefined;
 };
 

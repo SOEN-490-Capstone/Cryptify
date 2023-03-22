@@ -13,6 +13,13 @@ const linking: LinkingOptions<RootStackParamList> = {
     prefixes: [Linking.createURL("/")],
     config: {
         screens: {
+
+            Link: {
+                screens: {
+                    CreateNewPasswordScreen: "forgot-password/:token",
+                }
+            },
+
             Root: {
                 screens: {
                     HomeScreen: {
@@ -37,6 +44,7 @@ const linking: LinkingOptions<RootStackParamList> = {
                     },
                 },
             },
+
             NotFound: "*",
         },
     },

@@ -19,6 +19,8 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
     const [showNewPassword, setShowNewPass] = React.useState(false);
     const [showConfirmNewPassword, setShowConfirmNewPass] = React.useState(false);
 
+    const accessToken = navigation.route.params.token;
+
     async function onSubmitCreateNewPassword(
         values: UpdateUserRequest,
         formikHelpers: FormikHelpers<UpdateUserRequest>,
@@ -62,7 +64,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                 onSubmit={onSubmitCreateNewPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={5}>
+                    <VStack space={4} marginTop={5} style={{width: "100%"}}>
                         <FormControl isInvalid={!!(errors.newPassword && touched.newPassword)}>
                             <Input
                                 value={values.newPassword}

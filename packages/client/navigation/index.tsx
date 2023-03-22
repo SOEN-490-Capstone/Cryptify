@@ -11,6 +11,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import {
     GuestStackParamList,
     HomeStackParamList,
+    LinkStackParamList,
     RootStackParamList,
     RootTabParamList,
     SettingsStackParamList,
@@ -68,6 +69,7 @@ import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEma
 import CreateNewPasswordScreen from "../screens/reset-password/createNewPasswordScreen";
 import ResetPasswordFailureScreen from "../screens/reset-password/reset-password-sates/resetPasswordFailureScreen";
 import ResetPassworSuccessScreen from "../screens/reset-password/reset-password-sates/resetPasswordSuccessScreen";
+import * as Linking from "expo-linking";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -786,6 +788,14 @@ function GuestStackScreen() {
     );
 }
 
+const LinkStack = createNativeStackNavigator<LinkStackParamList>();
+
+function LinkStackScreen() {
+            return (<LinkStack.Navigator>
+                <LinkStack.Screen name="CreateNewPasswordScreen" component={CreateNewPasswordScreen} options={{ headerShown: false }} />
+                </LinkStack.Navigator>)
+}
+
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
@@ -845,7 +855,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
                 ) : (
                     <Stack.Screen name="Guest" component={GuestStackScreen} options={{ headerShown: false }} />
                 )}
-                <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
+                <Stack.Screen name="Link" component={LinkStackScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

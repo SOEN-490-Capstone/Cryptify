@@ -8,6 +8,7 @@ import { SignUpRequest } from "@cryptify/common/src/requests/sign_up_request";
 import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
 import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
+import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
 import { EmailNotificationStrategy } from "@cryptify/common/src/utils/notifications/email_notification_strategy";
 import { ForgotPasswordService } from "@cryptify/common/src/utils/notifications/forgot_password_notification_service";
 
@@ -50,6 +51,14 @@ export class AuthenticationService {
 
         const token = this.signToken(user);
         this.forgotPasswordService.sendForgotPassword(user, token);
+    }
+
+    async ResetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void> {
+        const object = this.jwtService.decode(resetPasswordReq.token);
+        console.log(object);
+        if(object["sub"]){
+            this.usersService.update({userId: object["sub"], newPassword: resetPasswordReq.password})
+        }
     }
 
     async verify(password: string, userId: number): Promise<string> {

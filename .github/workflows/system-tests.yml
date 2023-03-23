@@ -8,11 +8,11 @@ on:
 
 jobs:
     build:
-        runs-on: macos-latest
+        runs-on: macos-12
         timeout-minutes: 30
         
         env:
-            DEVELOPER_DIR: /Applications/Xcode_11.2.app
+            DEVELOPER_DIR: /Applications/Xcode_14.0.1.app
         
         steps:
             - name: Checkout
@@ -34,9 +34,10 @@ jobs:
             - name: Update Pods
               run: |
                   gem update cocoapods xcodeproj
-                  cd ios && pod install && cd ..
+                  cd ./packages/client/ios && pod install && cd ../../..
             - run: brew tap wix/brew
             - run: brew install applesimutils
+            - run: brew install xcbeautify 
             - run: ./system-test ios
 #            - run: yarn detox build e2e --configuration ios.sim.release
 #            - run: yarn detox test e2e --configuration ios.sim.release --cleanup --debug-synchronization 200

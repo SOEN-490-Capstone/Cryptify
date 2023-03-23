@@ -34,7 +34,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
 
 
             console.log(navigation.navigation);
-            navigation.navigation.goBack();
+            navigation.navigation.navigate("SignInScreen");
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("newPassword", error.message);

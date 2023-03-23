@@ -14,9 +14,10 @@ const linking: LinkingOptions<RootStackParamList> = {
     config: {
         screens: {
 
-            Link: {
+            Guest: {
                 screens: {
                     CreateNewPasswordScreen: "forgot-password/:token",
+                    WelcomeScreen: "Welcome"
                 }
             },
 

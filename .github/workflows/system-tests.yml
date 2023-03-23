@@ -17,11 +17,21 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+              with:
+                fetch-depth: 1
               
-            - name: Node
+            - name: Use Node.js
               uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+                  cache: 'npm'
+
+            - name: Rebuild detox
+              if: steps.cache.outputs.cache-hit == 'true'
+              run: yarn detox clean-framework-cache && yarn detox build-framework-cache
 
             - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'true'
               run: yarn install
 
             - name: Cache Pods
@@ -38,6 +48,4 @@ jobs:
             - run: brew tap wix/brew
             - run: brew install applesimutils
             - run: brew install xcbeautify 
-            - run: ./system-test ios
-#            - run: yarn detox build e2e --configuration ios.sim.release
-#            - run: yarn detox test e2e --configuration ios.sim.release --cleanup --debug-synchronization 200
+            - run: ./system-test ios build

@@ -4,6 +4,7 @@ import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { AbstractApiGateway } from "./abstract_api_gateway";
 import { Method } from "@cryptify/common/src/utils/gateway/abstract_gateway";
 import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
+import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
 
 export class AuthGateway extends AbstractApiGateway {
     constructor() {
@@ -22,6 +23,11 @@ export class AuthGateway extends AbstractApiGateway {
 
     async forgotPassword(req: ForgotPasswordRequest): Promise<void> {
         const path = "auth/forgot-password";
+        this.request<void>(Method.POST, {}, path, req);
+    }
+
+    async resetPassword(req: ResetPasswordRequest): Promise<void> {
+        const path = "auth/reset-password";
         this.request<void>(Method.POST, {}, path, req);
     }
 }

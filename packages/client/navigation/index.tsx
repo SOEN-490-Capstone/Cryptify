@@ -775,7 +775,7 @@ function GuestStackScreen() {
                     headerShadowVisible: false,
                 }}
             />
-                        <GuestStack.Screen
+            <GuestStack.Screen
                 name="ResetPasswordFailureScreen"
                 component={ResetPasswordFailureScreen}
                 options={{

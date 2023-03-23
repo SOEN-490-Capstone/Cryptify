@@ -8,6 +8,8 @@ import { signUpSchema } from "@cryptify/common/src/validations/sign_up_schema";
 import { signInSchema } from "@cryptify/common/src/validations/sign_in_schema";
 import { forgotPasswordSchema } from "@cryptify/common/src/validations/forgot_password_schema";
 import { useValidate } from "@cryptify/common/src/hooks/use_validate";
+import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
+import { resetPasswordSchema } from "@cryptify/common/src/validations/reset_password_schema";
 
 @Controller("auth")
 export class AuthenticationController {
@@ -32,5 +34,12 @@ export class AuthenticationController {
         const forgotPasswordReq = await useValidate(forgotPasswordSchema, body);
 
         await this.authService.ForgotPassword(forgotPasswordReq);
+    }
+
+    @Post("reset-password")
+    async resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
+        const resetPasswordReq = await useValidate(resetPasswordSchema, body);
+
+        await this.authService.ResetPassword(resetPasswordReq);
     }
 }

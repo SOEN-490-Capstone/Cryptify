@@ -224,11 +224,12 @@ export type CreateNewPasswordScreenProps = {
 }
 
 export type LinkStackParamList = {
+    SignInScreen: undefined;
     CreateNewPasswordScreen: CreateNewPasswordScreenProps;
 }
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<
-    BottomTabScreenProps<GuestStackParamList, T>,
+    BottomTabScreenProps<GuestStackParamList & LinkStackParamList, T>,
     RootStackScreenProps<keyof RootStackParamList>
 >;
 

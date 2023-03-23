@@ -57,7 +57,7 @@ export class AuthenticationService {
         const object = this.jwtService.decode(resetPasswordReq.token);
         console.log(object);
         if(object["sub"]){
-            this.usersService.update({userId: object["sub"], newPassword: resetPasswordReq.password})
+            await this.usersService.updatePassword(object["sub"], resetPasswordReq.password)
         }
     }
 

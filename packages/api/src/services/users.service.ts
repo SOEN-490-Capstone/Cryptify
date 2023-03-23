@@ -10,6 +10,7 @@ import { WalletsService } from "@cryptify/api/src/services/wallets.service";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { AuthenticationService } from "./authentication.service";
+import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
 
 @Injectable()
 export class UsersService {
@@ -72,6 +73,13 @@ export class UsersService {
             user.role = updateUserRequest.role;
         }
 
+        return this.userRepository.save(user);
+    }
+
+    async updatePassword(userId: number, newPassword: string): Promise<User> {
+        const user = await this.findOneById(userId);
+
+        user.password = await this.authService.encode(newPassword);
         return this.userRepository.save(user);
     }
 

@@ -11,30 +11,30 @@ import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_req
 import { falEye } from "../../components/icons/light/falEye";
 import { falEyeSlash } from "../../components/icons/light/falEyeSlash";
 import { GuestStackScreenProps } from "../../types";
+import { AuthGateway } from "../../gateways/auth_gateway";
+import { resetPasswordSchema } from "@cryptify/common/src/validations/reset_password_schema";
+import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
 
 export default function CreateNewPasswordScreen(navigation: GuestStackScreenProps<"CreateNewPasswordScreen">) {
-    const usersGateway = new UsersGateway();
+    const authGateway = new AuthGateway();
 
-    const { token, user, setUser } = React.useContext(AuthContext);
     const [showNewPassword, setShowNewPass] = React.useState(false);
     const [showConfirmNewPassword, setShowConfirmNewPass] = React.useState(false);
 
     const accessToken = navigation.route.params.token;
 
+    type formValues = ResetPasswordRequest & { confirmNewPassword: string }
+
     async function onSubmitCreateNewPassword(
-        values: UpdateUserRequest,
-        formikHelpers: FormikHelpers<UpdateUserRequest>,
+        values: formValues,
+        formikHelpers: FormikHelpers<formValues>,
     ) {
         try {
-            const user = await usersGateway.update(
-                { userId: values.userId, currentPassword: values.currentPassword, newPassword: values.newPassword },
-                token,
-            );
-            setUser(user);
+            await authGateway.resetPassword({token: accessToken, password: values.password});
 
-            values.newPassword = "";
-            values.confirmNewPassword = "";
-            navigation.navigation.navigate("SignInScreen");
+
+            console.log(navigation.navigation);
+            navigation.navigation.goBack();
         } catch (error) {
             if (error instanceof Error) {
                 formikHelpers.setFieldError("newPassword", error.message);
@@ -43,9 +43,9 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
     }
 
     const initialValues = {
-        userId: user.id,
-        newPassword: "",
-        confirmNewPassword: "",
+        token: accessToken,
+        password: "",
+        confirmNewPassword: ""
     };
 
     return (
@@ -60,14 +60,14 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
             </Text>
             <Formik
                 initialValues={initialValues}
-                validationSchema={updateUserSchema}
+                validationSchema={resetPasswordSchema}
                 onSubmit={onSubmitCreateNewPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
                     <VStack space={4} marginTop={5} style={{width: "100%"}}>
-                        <FormControl isInvalid={!!(errors.newPassword && touched.newPassword)}>
+                        <FormControl isInvalid={!!(errors.password && touched.password)}>
                             <Input
-                                value={values.newPassword}
+                                value={values.password}
                                 type={showNewPassword ? "text" : "password"}
                                 InputRightElement={
                                     <Pressable onPress={() => setShowNewPass(!showNewPassword)}>
@@ -78,11 +78,11 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                                         />
                                     </Pressable>
                                 }
-                                onChangeText={handleChange("newPassword")}
+                                onChangeText={handleChange("password")}
                                 placeholder="New password (6+ characters)"
                                 testID="newPassword"
                             />
-                            <FormControl.ErrorMessage>{errors.newPassword}</FormControl.ErrorMessage>
+                            <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={!!(errors.confirmNewPassword && touched.confirmNewPassword)}>
                             <Input
@@ -104,7 +104,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                             <FormControl.ErrorMessage>{errors.confirmNewPassword}</FormControl.ErrorMessage>
                         </FormControl>
                         <Button
-                            disabled={!!(values.newPassword?.length == 0 || values.confirmNewPassword?.length == 0)}
+                            disabled={!!(values.password?.length == 0 || values.confirmNewPassword?.length == 0)}
                             onPress={submitForm}
                         >
                             Reset Password

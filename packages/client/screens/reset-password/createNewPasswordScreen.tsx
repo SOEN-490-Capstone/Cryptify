@@ -4,10 +4,6 @@ import { Button, FormControl, Input, Pressable, Text, VStack } from "native-base
 import { StyleSheet } from "react-native";
 import { Formik, FormikHelpers } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { updateUserSchema } from "@cryptify/common/src/validations/update_user_schema";
-import { AuthContext } from "../../components/contexts/AuthContext";
-import { UsersGateway } from "../../gateways/users_gateway";
-import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_request";
 import { falEye } from "../../components/icons/light/falEye";
 import { falEyeSlash } from "../../components/icons/light/falEyeSlash";
 import { GuestStackScreenProps } from "../../types";
@@ -23,15 +19,11 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
 
     const accessToken = navigation.route.params.token;
 
-    type formValues = ResetPasswordRequest & { confirmNewPassword: string }
+    type formValues = ResetPasswordRequest & { confirmNewPassword: string };
 
-    async function onSubmitCreateNewPassword(
-        values: formValues,
-        formikHelpers: FormikHelpers<formValues>,
-    ) {
+    async function onSubmitCreateNewPassword(values: formValues, formikHelpers: FormikHelpers<formValues>) {
         try {
-            await authGateway.resetPassword({token: accessToken, password: values.password});
-
+            await authGateway.resetPassword({ token: accessToken, password: values.password });
 
             console.log(navigation.navigation);
             navigation.navigation.navigate("SignInScreen");
@@ -45,7 +37,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
     const initialValues = {
         token: accessToken,
         password: "",
-        confirmNewPassword: ""
+        confirmNewPassword: "",
     };
 
     return (
@@ -64,7 +56,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                 onSubmit={onSubmitCreateNewPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={5} style={{width: "100%"}}>
+                    <VStack space={4} marginTop={5} style={{ width: "100%" }}>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
                             <Input
                                 value={values.password}

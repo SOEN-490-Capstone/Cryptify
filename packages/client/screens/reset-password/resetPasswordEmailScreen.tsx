@@ -12,20 +12,17 @@ import { KEY_JWT } from "../../constants/storage_keys";
 import StorageService from "../../services/storage_service";
 import { AuthContext } from "../../components/contexts/AuthContext";
 
-
 export default function ResetPasswordEmailScreen(navigation: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
-
     const { setToken } = React.useContext(AuthContext);
 
-    async function onSubmitResetPassword( values: ForgotPasswordRequest ) {
-
-        try{
+    async function onSubmitResetPassword(values: ForgotPasswordRequest) {
+        try {
             const gateway = new AuthGateway();
             await gateway.forgotPassword(values);
             await StorageService.remove(KEY_JWT);
             setToken("");
             navigation.navigation.navigate("ResetPasswordSuccessScreen");
-        }catch(e){
+        } catch (e) {
             navigation.navigation.navigate("ResetPasswordFailureScreen");
         }
     }
@@ -40,7 +37,7 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                 Reset your password
             </Text>
 
-            <Text style={{marginVertical: 20}}>
+            <Text style={{ marginVertical: 20 }}>
                 Enter the email address associated with your account and we'll send you instructions to reset your
                 password.
             </Text>
@@ -50,7 +47,7 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                 onSubmit={onSubmitResetPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13" style={{ marginHorizontal: 0, marginTop: 10, width: "100%"}}>
+                    <VStack space="13" style={{ marginHorizontal: 0, marginTop: 10, width: "100%" }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}

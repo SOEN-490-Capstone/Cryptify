@@ -8,14 +8,13 @@ import { JwtToken } from "../../domain/jwt_token";
 export class ForgotPasswordService {
     constructor(
         private readonly emailNotificationStrategy: EmailNotificationStrategy,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
     ) {}
 
     async sendForgotPassword(user: User, token: JwtToken): Promise<void> {
-
         const appName = this.configService.get<string>("APP_NAME");
         const appIP = this.configService.get<string>("APP_URL");
-        const appPort = this.configService.get<string>("APP_PORT");;
+        const appPort = this.configService.get<string>("APP_PORT");
 
         const uri = `${appName}://${appIP}:${appPort}/--/forgot-password/${token.accessToken}`;
 

@@ -13,12 +13,11 @@ const linking: LinkingOptions<RootStackParamList> = {
     prefixes: [Linking.createURL("/")],
     config: {
         screens: {
-
             Guest: {
                 screens: {
                     CreateNewPasswordScreen: "forgot-password/:token",
-                    WelcomeScreen: "Welcome"
-                }
+                    WelcomeScreen: "Welcome",
+                },
             },
 
             Root: {

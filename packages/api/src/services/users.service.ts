@@ -10,7 +10,6 @@ import { WalletsService } from "@cryptify/api/src/services/wallets.service";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { AuthenticationService } from "./authentication.service";
-import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
 
 @Injectable()
 export class UsersService {

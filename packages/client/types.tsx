@@ -226,7 +226,7 @@ export type GuestStackParamList = {
 
 export type CreateNewPasswordScreenProps = {
     token: string;
-}
+};
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<
     BottomTabScreenProps<GuestStackParamList, T>,

@@ -5,7 +5,6 @@ import React from "react";
 import { ColorSchemeName, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import {
@@ -389,7 +388,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -717,7 +716,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 }}
             />
-             <SettingsStack.Screen
+            <SettingsStack.Screen
                 name="ResetPasswordEmailScreen"
                 component={ResetPasswordEmailScreen}
                 options={{
@@ -733,7 +732,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -753,7 +752,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -773,7 +772,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -851,7 +850,7 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
@@ -871,7 +870,7 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => (<></>),
+                    headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {

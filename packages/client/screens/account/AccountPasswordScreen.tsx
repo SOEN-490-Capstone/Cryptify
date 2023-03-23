@@ -84,8 +84,11 @@ export default function AccountPasswordScreen(navigation: SettingsStackScreenPro
                             />
                             <FormControl.ErrorMessage>{errors.currentPassword}</FormControl.ErrorMessage>
                         </FormControl>
-                        <Link onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")} _text={{ color: "darkBlue.500", fontWeight: "400" }}
-                        isUnderlined={false}>
+                        <Link
+                            onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")}
+                            _text={{ color: "darkBlue.500", fontWeight: "400" }}
+                            isUnderlined={false}
+                        >
                             forgot Password?
                         </Link>
                         <FormControl isInvalid={!!(errors.newPassword && touched.newPassword)}>

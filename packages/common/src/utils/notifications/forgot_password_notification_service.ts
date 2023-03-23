@@ -5,26 +5,24 @@ import { EmailNotificationStrategy } from "./email_notification_strategy";
 import { JwtToken } from "../../domain/jwt_token";
 
 @Injectable()
-export class ForgotPasswordService {
+export class AuthNotificationService {
     constructor(
         private readonly emailNotificationStrategy: EmailNotificationStrategy,
         private readonly configService: ConfigService,
     ) {}
 
-    async sendForgotPassword(user: User, token: JwtToken): Promise<void> {
+    async sendForgotPasswordEmail(user: User, token: JwtToken): Promise<void> {
         const appName = this.configService.get<string>("APP_NAME");
         const appIP = this.configService.get<string>("APP_URL");
         const appPort = this.configService.get<string>("APP_PORT");
 
         const uri = `${appName}://${appIP}:${appPort}/--/forgot-password/${token.accessToken}`;
 
-        console.log(user);
-
         const title = `Reset your password`;
         const body = `Hi ${user.firstName},<br/>
-        you recently requested to reset your password.<br/>
+        You recently requested to reset your password. Please click on the link below to proceed.<br/>
         <a href=${uri}>Click to reset your password</a><br/>
-        if you did not request a password reset please ignore this email.`;
+        If you did not request a password reset, please ignore this email.`;
 
         await this.emailNotificationStrategy.sendNotification({
             to: user.email,

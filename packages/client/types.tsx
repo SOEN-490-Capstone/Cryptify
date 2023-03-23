@@ -145,6 +145,10 @@ type QRCodeScannerScreenProps = {
     currencyType: CurrencyType;
 };
 
+export type CreateNewPasswordScreenProps = {
+    token: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -222,10 +226,6 @@ export type GuestStackParamList = {
     CreateNewPasswordScreen: CreateNewPasswordScreenProps;
     ResetPasswordSuccessScreen: undefined;
     ResetPasswordFailureScreen: undefined;
-};
-
-export type CreateNewPasswordScreenProps = {
-    token: string;
 };
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<

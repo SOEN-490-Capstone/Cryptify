@@ -25,7 +25,6 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
         try {
             await authGateway.resetPassword({ token: accessToken, password: values.password });
 
-            console.log(navigation.navigation);
             navigation.navigation.navigate("SignInScreen");
         } catch (error) {
             if (error instanceof Error) {
@@ -42,13 +41,12 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
 
     return (
         <View style={styles.container}>
-            <Text size={"title3"} fontWeight={"semibold"}>
-                Reset your password
+            <Text size={"title1"} fontWeight={"semibold"}>
+                Create new password
             </Text>
 
-            <Text>
-                Enter the email address associated with your account and we'll send you instructions to reset your
-                password.
+            <Text size={"callout"} style={{ marginTop: 20, textAlign: "center" }}>
+                Your new password must be different from your previously used password.
             </Text>
             <Formik
                 initialValues={initialValues}
@@ -56,7 +54,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                 onSubmit={onSubmitCreateNewPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={5} style={{ width: "100%" }}>
+                    <VStack space={"13px"} marginTop={"35px"} style={{ width: "100%" }}>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
                             <Input
                                 value={values.password}
@@ -96,7 +94,8 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                             <FormControl.ErrorMessage>{errors.confirmNewPassword}</FormControl.ErrorMessage>
                         </FormControl>
                         <Button
-                            disabled={!!(values.password?.length == 0 || values.confirmNewPassword?.length == 0)}
+                            style={{ marginTop: 7 }}
+                            isDisabled={!!(values.password.length == 0 || values.confirmNewPassword.length == 0)}
                             onPress={submitForm}
                         >
                             Reset Password
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        padding: 20,
+        padding: 15,
     },
     eyeIcon: {
         color: "#404040",

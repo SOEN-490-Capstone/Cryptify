@@ -838,11 +838,12 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="ResetPasswordEmailScreen"
                 component={ResetPasswordEmailScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                }}
+                    headerLeft: () => BackButton(navigation),
+                })}
             />
             <GuestStack.Screen
                 name="CreateNewPasswordScreen"

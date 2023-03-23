@@ -1,4 +1,4 @@
-import { ForbiddenException, Inject, Injectable, forwardRef } from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable, NotFoundException, forwardRef } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { User } from "@cryptify/common/src/domain/entities/user";
 import * as bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ import { SignInRequest } from "@cryptify/common/src/requests/sign_in_request";
 import { ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
 import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
 import { ResetPasswordRequest } from "@cryptify/common/src/requests/reset_password_request";
-import { ForgotPasswordService } from "@cryptify/common/src/utils/notifications/forgot_password_notification_service";
+import { AuthNotificationService } from "@cryptify/common/src/utils/notifications/forgot_password_notification_service";
 
 @Injectable()
 export class AuthenticationService {
@@ -17,7 +17,7 @@ export class AuthenticationService {
         private jwtService: JwtService,
         @Inject(forwardRef(() => UsersService))
         private usersService: UsersService,
-        private forgotPasswordService: ForgotPasswordService,
+        private forgotPasswordService: AuthNotificationService,
     ) {}
 
     async signUp(signUpReq: SignUpRequest): Promise<JwtToken> {
@@ -41,25 +41,25 @@ export class AuthenticationService {
         return this.signToken(user);
     }
 
-    async ForgotPassword(forgotPasswordReq: ForgotPasswordRequest): Promise<void> {
+    async forgotPassword(forgotPasswordReq: ForgotPasswordRequest): Promise<void> {
         const user = await this.usersService.findOne(forgotPasswordReq.email);
 
         if (!user) {
-            throw new ForbiddenException();
+            throw new NotFoundException();
         }
 
         const token = this.signToken(user);
-        this.forgotPasswordService.sendForgotPassword(user, token);
+        await this.forgotPasswordService.sendForgotPasswordEmail(user, token);
     }
 
-    async ResetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void> {
-        const object = this.jwtService.decode(resetPasswordReq.token);
+    async resetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void> {
+        const token = this.jwtService.decode(resetPasswordReq.token);
 
-        if (!object["sub"]) {
+        if (!token["sub"]) {
             throw new ForbiddenException();
         }
 
-        await this.usersService.updatePassword(object["sub"], resetPasswordReq.password);
+        await this.usersService.updatePassword(token["sub"], resetPasswordReq.password);
     }
 
     async verify(password: string, userId: number): Promise<string> {

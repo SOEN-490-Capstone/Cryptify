@@ -37,7 +37,7 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                 Reset your password
             </Text>
 
-            <Text style={{ marginVertical: 20 }}>
+            <Text textAlign={"center"} size={"callout"}>
                 Enter the email address associated with your account and we'll send you instructions to reset your
                 password.
             </Text>
@@ -47,7 +47,7 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                 onSubmit={onSubmitResetPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13" style={{ marginHorizontal: 0, marginTop: 10, width: "100%" }}>
+                    <VStack space="13px" style={{ marginHorizontal: 0, marginTop: 15, width: "100%" }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -59,7 +59,11 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                                 {errors.email != ERROR_NOP && errors.email}
                             </FormControl.ErrorMessage>
                         </FormControl>
-                        <Button style={{ marginTop: 7 }} onPress={submitForm}>
+                        <Button
+                            style={{ marginTop: 7 }}
+                            onPress={submitForm}
+                            isDisabled={!!(values?.email.length === 0)}
+                        >
                             Send instructions
                         </Button>
                     </VStack>
@@ -74,6 +78,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        padding: 20,
+        padding: 15,
     },
 });

@@ -33,13 +33,13 @@ export class AuthenticationController {
     async forgotPassword(@Body() body: ForgotPasswordRequest): Promise<void> {
         const forgotPasswordReq = await useValidate(forgotPasswordSchema, body);
 
-        await this.authService.ForgotPassword(forgotPasswordReq);
+        await this.authService.forgotPassword(forgotPasswordReq);
     }
 
     @Post("reset-password")
     async resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
         const resetPasswordReq = await useValidate(resetPasswordSchema, body);
 
-        await this.authService.ResetPassword(resetPasswordReq);
+        await this.authService.resetPassword(resetPasswordReq);
     }
 }

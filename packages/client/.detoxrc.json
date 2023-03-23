@@ -19,7 +19,7 @@
             "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk"
         },
         "android.release": {
-            "type": "android.apk",
+            "type": "android.emulator",
             "build": "cd android && ./gradlew :app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release && cd ..",
             "binaryPath": "android/app/build/outputs/apk/release/app-release.apk"
         }
@@ -52,8 +52,8 @@
             "app": "android.debug"
         },
         "android.release": {
-            "device": "emulator",
-            "app": "android.release"
+            "app": "android.release",
+            "name":"emu"
         }
     }
 }

@@ -48,35 +48,31 @@ export default function SignUpScreen({ navigation }: GuestStackScreenProps<"Sign
         }
     }
     return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text size={"title1"} fontWeight={"bold"} style={styles.title}>
+        <View style={styles.view}>
+            <Text size={"title1"} fontWeight={"semibold"} textAlign={"center"}>
                 Create an account
             </Text>
             <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmitSignUp}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
-                        <HStack space="13" justifyContent="center">
-                            <FormControl isInvalid={!!(errors.firstName && touched.firstName)} style={{ flex: 1 }}>
-                                <Input
-                                    value={values.firstName}
-                                    onChangeText={handleChange("firstName")}
-                                    placeholder="First name"
-                                    testID="firstName"
-                                />
-
-                                <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
-                            </FormControl>
-
-                            <FormControl isInvalid={!!(errors.lastName && touched.lastName)} style={{ flex: 1 }}>
-                                <Input
-                                    value={values.lastName}
-                                    onChangeText={handleChange("lastName")}
-                                    placeholder="Last name"
-                                    testID="lastName"
-                                />
-                                <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
-                            </FormControl>
-                        </HStack>
+                    <VStack space="13px" style={{ marginTop: 35 }}>
+                        <FormControl isInvalid={!!(errors.firstName && touched.firstName)}>
+                            <Input
+                                value={values.firstName}
+                                onChangeText={handleChange("firstName")}
+                                placeholder="First name"
+                                testID="firstName"
+                            />
+                            <FormControl.ErrorMessage>{errors.firstName}</FormControl.ErrorMessage>
+                        </FormControl>
+                        <FormControl isInvalid={!!(errors.lastName && touched.lastName)}>
+                            <Input
+                                value={values.lastName}
+                                onChangeText={handleChange("lastName")}
+                                placeholder="Last name"
+                                testID="lastName"
+                            />
+                            <FormControl.ErrorMessage>{errors.lastName}</FormControl.ErrorMessage>
+                        </FormControl>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -103,7 +99,6 @@ export default function SignUpScreen({ navigation }: GuestStackScreenProps<"Sign
                                 placeholder="Password (6+ characters)"
                                 testID="password"
                             />
-
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={!!(errors.confirmPassword && touched.confirmPassword)}>
@@ -126,7 +121,6 @@ export default function SignUpScreen({ navigation }: GuestStackScreenProps<"Sign
 
                             <FormControl.ErrorMessage>{errors.confirmPassword}</FormControl.ErrorMessage>
                         </FormControl>
-
                         <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign up
                         </Button>
@@ -138,8 +132,10 @@ export default function SignUpScreen({ navigation }: GuestStackScreenProps<"Sign
 }
 
 const styles = StyleSheet.create({
-    title: {
-        textAlign: "center",
+    view: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 15,
     },
     eyeIcon: {
         color: "#404040",

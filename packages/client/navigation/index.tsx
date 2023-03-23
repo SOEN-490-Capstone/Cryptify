@@ -67,6 +67,7 @@ import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEma
 import CreateNewPasswordScreen from "../screens/reset-password/createNewPasswordScreen";
 import ResetPasswordFailureScreen from "../screens/reset-password/reset-password-sates/resetPasswordFailureScreen";
 import ResetPassworSuccessScreen from "../screens/reset-password/reset-password-sates/resetPasswordSuccessScreen";
+import NotFoundScreen from "../screens/NotFoundScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -955,6 +956,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
                 ) : (
                     <Stack.Screen name="Guest" component={GuestStackScreen} options={{ headerShown: false }} />
                 )}
+                <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

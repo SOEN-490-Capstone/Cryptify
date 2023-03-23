@@ -45,7 +45,7 @@ export class AuthenticationService {
         const user = await this.usersService.findOne(forgotPasswordReq.email);
 
         if (!user) {
-            throw new ForbiddenException("email is not in the system");
+            throw new ForbiddenException();
         }
 
         const token = this.signToken(user);
@@ -54,10 +54,12 @@ export class AuthenticationService {
 
     async ResetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void> {
         const object = this.jwtService.decode(resetPasswordReq.token);
-        console.log(object);
-        if (object["sub"]) {
-            await this.usersService.updatePassword(object["sub"], resetPasswordReq.password);
+
+        if (!object["sub"]) {
+            throw new ForbiddenException();
         }
+
+        await this.usersService.updatePassword(object["sub"], resetPasswordReq.password);
     }
 
     async verify(password: string, userId: number): Promise<string> {

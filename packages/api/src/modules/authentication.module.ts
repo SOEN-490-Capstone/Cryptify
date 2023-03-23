@@ -6,12 +6,14 @@ import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "../strategies/jwt.strategy";
 import { ConfigService } from "@nestjs/config";
+import { NotificationsModule } from "@cryptify/common/src/utils/notifications/notifications.module";
 
 @Module({
     controllers: [AuthenticationController],
     imports: [
         forwardRef(() => UsersModule),
         PassportModule,
+        NotificationsModule,
         JwtModule.registerAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => ({

@@ -145,6 +145,10 @@ type QRCodeScannerScreenProps = {
     currencyType: CurrencyType;
 };
 
+export type CreateNewPasswordScreenProps = {
+    token: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
     AddWalletSelectionScreen: undefined;
@@ -164,6 +168,7 @@ export type HomeStackParamList = {
     TransactionHistoryReportScreen: TransactionHistoryReportScreenProps;
     ContactsListScreen: ContactListScreenProps;
     AddContactScreen: AddContactScreenProps;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
     QRCodeScannerScreen: QRCodeScannerScreenProps;
 };
 
@@ -201,6 +206,10 @@ export type SettingsStackParamList = {
     AccountPasswordScreen: undefined;
     AccountTypeScreen: undefined;
     QRCodeScannerScreen: QRCodeScannerScreenProps;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
+    ResetPasswordEmailScreen: undefined;
+    ResetPasswordSuccessScreen: undefined;
+    ResetPasswordFailureScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<
@@ -213,6 +222,10 @@ export type GuestStackParamList = {
     SignUpScreen: undefined;
     SignInScreen: undefined;
     SignUpNotificationsScreen: SignUpNotificationsScreenProps;
+    ResetPasswordEmailScreen: undefined;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
+    ResetPasswordSuccessScreen: undefined;
+    ResetPasswordFailureScreen: undefined;
 };
 
 export type GuestStackScreenProps<T extends keyof GuestStackParamList> = CompositeScreenProps<

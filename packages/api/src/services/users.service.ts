@@ -75,6 +75,13 @@ export class UsersService {
         return this.userRepository.save(user);
     }
 
+    async updatePassword(userId: number, newPassword: string): Promise<User> {
+        const user = await this.findOneById(userId);
+
+        user.password = await this.authService.encode(newPassword);
+        return this.userRepository.save(user);
+    }
+
     async delete(req: DeleteUserRequest): Promise<User> {
         const { id } = req;
 

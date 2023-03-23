@@ -5,7 +5,6 @@ import React from "react";
 import { ColorSchemeName, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import {
@@ -64,6 +63,11 @@ import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import FilterTagScreen from "../screens/filters/FilterTagScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
+import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEmailScreen";
+import CreateNewPasswordScreen from "../screens/reset-password/createNewPasswordScreen";
+import ResetPasswordFailureScreen from "../screens/reset-password/reset-password-sates/resetPasswordFailureScreen";
+import ResetPassworSuccessScreen from "../screens/reset-password/reset-password-sates/resetPasswordSuccessScreen";
+import NotFoundScreen from "../screens/NotFoundScreen";
 
 // TODO refactor this file to reduce code duplication and see if
 // there is a way to centralize some of the styling between
@@ -377,6 +381,26 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                 }}
+            />
+            <HomeStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
         </HomeStack.Navigator>
     );
@@ -693,6 +717,75 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 }}
             />
+            <SettingsStack.Screen
+                name="ResetPasswordEmailScreen"
+                component={ResetPasswordEmailScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <SettingsStack.Screen
+                name="ResetPasswordSuccessScreen"
+                component={ResetPassworSuccessScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="ResetPasswordFailureScreen"
+                component={ResetPasswordFailureScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
         </SettingsStack.Navigator>
     );
 }
@@ -736,6 +829,65 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="SignUpNotificationsScreen"
                 component={SignUpNotificationsScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <GuestStack.Screen
+                name="ResetPasswordEmailScreen"
+                component={ResetPasswordEmailScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => BackButton(navigation),
+                })}
+            />
+            <GuestStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <GuestStack.Screen
+                name="ResetPasswordSuccessScreen"
+                component={ResetPassworSuccessScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <GuestStack.Screen
+                name="ResetPasswordFailureScreen"
+                component={ResetPasswordFailureScreen}
                 options={{
                     title: "",
                     headerTintColor: "#404040",

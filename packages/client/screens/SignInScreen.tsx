@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Input, Button, VStack, FormControl, Pressable, Text } from "native-base";
+import { Input, Button, VStack, FormControl, Pressable, Text, Link } from "native-base";
+import { GuestStackScreenProps } from "../types";
 import { View } from "../components/Themed";
 import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -16,7 +17,7 @@ import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { UsersGateway } from "../gateways/users_gateway";
 
-export default function SignInScreen() {
+export default function SignInScreen(navigation: GuestStackScreenProps<"SignInScreen">) {
     const authGateway = new AuthGateway();
     const usersGateway = new UsersGateway();
 
@@ -83,6 +84,13 @@ export default function SignInScreen() {
                             />
                             <FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>
                         </FormControl>
+                        <Link
+                            onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")}
+                            _text={{ color: "darkBlue.500", fontWeight: "semibold" }}
+                            isUnderlined={false}
+                        >
+                            Forgot Password?
+                        </Link>
                         <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign in
                         </Button>

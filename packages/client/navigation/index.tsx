@@ -382,6 +382,26 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     headerTitleAlign: "center",
                 }}
             />
+            <HomeStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
         </HomeStack.Navigator>
     );
 }

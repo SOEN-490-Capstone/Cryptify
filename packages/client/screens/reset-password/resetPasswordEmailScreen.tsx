@@ -8,14 +8,22 @@ import { forgotPasswordSchema } from "@cryptify/common/src/validations/forgot_pa
 import { ForgotPasswordRequest } from "@cryptify/common/src/requests/forgot_password_request";
 import { AuthGateway } from "../../gateways/auth_gateway";
 import { GuestStackScreenProps } from "../../types";
+import { KEY_JWT } from "../../constants/storage_keys";
+import StorageService from "../../services/storage_service";
+import { AuthContext } from "../../components/contexts/AuthContext";
 
 
 export default function ResetPasswordEmailScreen(navigation: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
+
+    const { setToken } = React.useContext(AuthContext);
+
     async function onSubmitResetPassword( values: ForgotPasswordRequest ) {
 
         try{
             const gateway = new AuthGateway();
             await gateway.forgotPassword(values);
+            await StorageService.remove(KEY_JWT);
+            setToken("");
             navigation.navigation.navigate("ResetPasswordSuccessScreen");
         }catch(e){
             navigation.navigation.navigate("ResetPasswordFailureScreen");

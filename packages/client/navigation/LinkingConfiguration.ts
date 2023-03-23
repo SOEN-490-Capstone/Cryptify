@@ -23,7 +23,6 @@ const linking: LinkingOptions<RootStackParamList> = {
 
             Root: {
                 screens: {
-
                     HomeScreen: {
                         screens: {
                             HomeScreen: "Home",

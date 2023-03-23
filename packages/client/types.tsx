@@ -164,6 +164,7 @@ export type HomeStackParamList = {
     TransactionHistoryReportScreen: TransactionHistoryReportScreenProps;
     ContactsListScreen: ContactListScreenProps;
     AddContactScreen: AddContactScreenProps;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
     QRCodeScannerScreen: QRCodeScannerScreenProps;
 };
 

@@ -46,13 +46,13 @@ export default function SignInScreen() {
     }
 
     return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text size={"title1"} fontWeight={"bold"} style={styles.title}>
+        <View style={styles.view}>
+            <Text size={"title1"} fontWeight={"semibold"} textAlign={"center"}>
                 Welcome back
             </Text>
             <Formik initialValues={initialValues} validationSchema={signInSchema} onSubmit={onSubmitSignIn}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13" style={{ marginHorizontal: 20, marginTop: 35 }}>
+                    <VStack space="13px" style={{ marginTop: 35 }}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -94,8 +94,10 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        textAlign: "center",
+    view: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 15,
     },
     eyeIcon: {
         color: "#404040",

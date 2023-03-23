@@ -201,6 +201,10 @@ export type SettingsStackParamList = {
     AccountPasswordScreen: undefined;
     AccountTypeScreen: undefined;
     QRCodeScannerScreen: QRCodeScannerScreenProps;
+    CreateNewPasswordScreen: CreateNewPasswordScreenProps;
+    ResetPasswordEmailScreen: undefined;
+    ResetPasswordSuccessScreen: undefined;
+    ResetPasswordFailureScreen: undefined;
 };
 
 export type SettingsStackScreenProps<T extends keyof SettingsStackParamList> = CompositeScreenProps<

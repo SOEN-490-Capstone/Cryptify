@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import React from "react";
-import { Box, Button, FormControl, Input, useToast, Text, VStack, Pressable } from "native-base";
+import { Box, Button, FormControl, Input, useToast, Text, VStack, Pressable, Link } from "native-base";
 import { StyleSheet } from "react-native";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { updateUserSchema } from "@cryptify/common/src/validations/update_user_schema";
@@ -10,8 +10,9 @@ import { UpdateUserRequest } from "@cryptify/common/src/requests/update_user_req
 import { falEye } from "../../components/icons/light/falEye";
 import { falEyeSlash } from "../../components/icons/light/falEyeSlash";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { SettingsStackScreenProps } from "../../types";
 
-export default function AccountPasswordScreen() {
+export default function AccountPasswordScreen(navigation: SettingsStackScreenProps<"AccountPasswordScreen">) {
     const usersGateway = new UsersGateway();
 
     const { token, user, setUser } = React.useContext(AuthContext);
@@ -83,6 +84,10 @@ export default function AccountPasswordScreen() {
                             />
                             <FormControl.ErrorMessage>{errors.currentPassword}</FormControl.ErrorMessage>
                         </FormControl>
+                        <Link onPress={() => navigation.navigation.navigate("ResetPasswordEmailScreen")} _text={{ color: "darkBlue.500", fontWeight: "400" }}
+                        isUnderlined={false}>
+                            forgot Password?
+                        </Link>
                         <FormControl isInvalid={!!(errors.newPassword && touched.newPassword)}>
                             <Input
                                 value={values.newPassword}

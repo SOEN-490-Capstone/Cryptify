@@ -11,7 +11,6 @@ import SignUpScreen from "../screens/SignUpScreen";
 import {
     GuestStackParamList,
     HomeStackParamList,
-    LinkStackParamList,
     RootStackParamList,
     RootTabParamList,
     SettingsStackParamList,
@@ -698,6 +697,75 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerTitleAlign: "center",
                 }}
             />
+             <SettingsStack.Screen
+                name="ResetPasswordEmailScreen"
+                component={ResetPasswordEmailScreen}
+                options={{
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                }}
+            />
+            <SettingsStack.Screen
+                name="ResetPasswordSuccessScreen"
+                component={ResetPassworSuccessScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="ResetPasswordFailureScreen"
+                component={ResetPasswordFailureScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
+            <SettingsStack.Screen
+                name="CreateNewPasswordScreen"
+                component={CreateNewPasswordScreen}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerTintColor: "#404040",
+                    headerShadowVisible: false,
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
+            />
         </SettingsStack.Navigator>
     );
 }
@@ -759,20 +827,42 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="CreateNewPasswordScreen"
                 component={CreateNewPasswordScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                }}
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
             <GuestStack.Screen
                 name="ResetPasswordSuccessScreen"
                 component={ResetPassworSuccessScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                }}
+                    headerLeft: () => (<></>),
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
             <GuestStack.Screen
                 name="ResetPasswordFailureScreen"

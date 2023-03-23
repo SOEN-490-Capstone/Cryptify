@@ -10425,6 +10425,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
     prettier: ^2.5.1
+    react-native-email-link: ^1.14.5
     sonarqube-scanner: ^2.8.2
   languageName: unknown
   linkType: soft
@@ -21488,6 +21489,16 @@ __metadata:
   dependencies:
     dotenv: ^16.0.0
   checksum: 3bc8ef4fc2acc930b754ff6b7ae5f5abdf38864e717bced7459902c6b3f8262db234001530ee296f40112a5db467635ba249ae64b954ec29ab84dc80c2c47312
+  languageName: node
+  linkType: hard
+
+"react-native-email-link@npm:^1.14.5":
+  version: 1.14.5
+  resolution: "react-native-email-link@npm:1.14.5"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-native: ">=0.40.0"
+  checksum: bdaab56359004c9ec13a83eb4655230e431bc0573b2d35572f2bc7213447fbf2445d97d895beba27dcf66fdcf28ca7983a462346693e1b1f8d65c409897d1151
   languageName: node
   linkType: hard
 

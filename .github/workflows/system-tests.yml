@@ -11,46 +11,46 @@ jobs:
         runs-on: macos-latest
         timeout-minutes: 30
         
+        env:
+            DEVELOPER_DIR: /Applications/Xcode_11.2.app
+        
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
-              
+              uses: actions/checkout@v1
+              with:
+                  fetch-depth: 1
+
             - name: Node
               uses: actions/setup-node@v1
 
-            - name: Use specific Java version for sdkmanager to work
-              uses: actions/setup-java@v3
+            - name: Cache node modules
+              uses: actions/cache@v1
+              id: cache
               with:
-                distribution: 'temurin' 
-                java-version: '17'
+                  path: node_modules
+                  key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
-            - name: Download Android Emulator Image
-              run: |
-                  echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
-                  echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
-                  $ANDROID_HOME/emulator/emulator -list-avds
-            - name: Install node_modules
-              run: |
-                  yarn install --frozen-lockfile
+            - name: Rebuild detox
+              if: steps.cache.outputs.cache-hit == 'true'
+              run: yarn detox clean-framework-cache && yarn detox build-framework-cache
 
-#            - name: Build for detox
-#              run: |
-#                  yarn build-detox-android
-            - name: Android Emulator
-              timeout-minutes: 10
-              continue-on-error: true
-              run: |
-                  echo "Starting emulator"
-                  nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
-                  $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-                  $ANDROID_HOME/platform-tools/adb devices
-                  echo "Emulator started"
-            - name: Android Detox
-              run: ./system-test
+            - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'true'
+              run: yarn install
 
-#            - name: Store Detox artifacts on test failure
-#              uses: actions/upload-artifact@v3
-#              if: failure()
-#              with:
-#                  name: detox-artifacts
-#                  path: artifacts # Default path for Detox artifacts
+            - name: Cache Pods
+              uses: actions/cache@v1
+              id: podcache
+              with:
+                  path: ios/Pods
+                  key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+            - name: Update Pods
+              run: |
+                  gem update cocoapods xcodeproj
+                  cd ios && pod install && cd ..
+            - run: brew tap wix/brew
+            - run: brew install applesimutils
+            - run: ./system-test ios
+#            - run: yarn detox build e2e --configuration ios.sim.release
+#            - run: yarn detox test e2e --configuration ios.sim.release --cleanup --debug-synchronization 200

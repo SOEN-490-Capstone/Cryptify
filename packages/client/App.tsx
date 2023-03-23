@@ -14,7 +14,6 @@ import { AuthContext } from "./components/contexts/AuthContext";
 import { KEY_JWT } from "./constants/storage_keys";
 import { UsersGateway } from "./gateways/users_gateway";
 import { User } from "@cryptify/common/src/domain/entities/user";
-import * as Linking from "expo-linking";
 
 export default function App() {
     const usersGateway = new UsersGateway();
@@ -41,18 +40,6 @@ export default function App() {
         setUser,
         user,
     };
-
-    function handleDeepLink(event: any){
-        const data = Linking.parse(event.url);
-        console.log(data);
-    }
-
-    React.useEffect(() => {
-        const event = Linking.addEventListener("url", handleDeepLink);
-        return () => {
-            event.remove();
-        }
-    }, [])
 
     // Runs only once on app startup and sets the token from local storage
     React.useEffect(() => {

@@ -30,7 +30,6 @@ import { RouteProp } from "@react-navigation/core/src/types";
 import { farPlus } from "../components/icons/regular/farPlus";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import { AuthContext } from "../components/contexts/AuthContext";
-import HomeHeader from "../components/HomeHeader";
 import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 import WalletDetailsScreen from "../screens/WalletDetailsScreen";
 import WalletOverviewScreen from "../screens/WalletOverviewScreen";
@@ -88,14 +87,10 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    headerTitle: () => <HomeHeader />,
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 28,
-                        fontWeight: "600",
-                    },
+                    headerTitle: "",
                     headerShadowVisible: false,
                     headerLeft: () => null,
+                    headerShown: false,
                 }}
             />
             <HomeStack.Screen

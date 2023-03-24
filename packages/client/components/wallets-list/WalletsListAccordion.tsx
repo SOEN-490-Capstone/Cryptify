@@ -59,6 +59,7 @@ export function WalletsListAccordion({ wallets, showCurrencyTotals, navigation, 
                         currency={currency}
                         amount={amount}
                         fontWeight={"semibold"}
+                        amountStyles={styles.walletTotalAmount}
                         currencyCodeStyles={styles.walletTotalCurrencyCode}
                     />
                 ) : (
@@ -158,6 +159,9 @@ const styles = StyleSheet.create({
     },
     walletTotalCurrencyCode: {
         marginRight: 5,
+    },
+    walletTotalAmount: {
+        marginLeft: "auto",
     },
     bitcoinIcon: {
         color: "#F7931A",

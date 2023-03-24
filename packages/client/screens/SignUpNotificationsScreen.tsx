@@ -61,7 +61,7 @@ export default function SignUpNotificationsScreen(props: GuestStackScreenProps<"
     return (
         <View style={styles.view}>
             <Center alignItems="center" marginY="auto">
-                <FontAwesomeIcon icon={falBell} marginTop={"80px"} color={"#0077E6"} size={96} />
+                <FontAwesomeIcon icon={falBell} style={styles.bellIcon} color={"#0077E6"} size={96} />
                 <Text size={"title3"} fontWeight={"semibold"} marginBottom="15px" marginTop="30px">
                     Enable Notifications
                 </Text>
@@ -96,5 +96,8 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
+    },
+    bellIcon: {
+        marginTop: 80,
     },
 });

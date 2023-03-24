@@ -833,6 +833,8 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    headerBackVisible: false,
+                    gestureEnabled: false,
                 }}
             />
             <GuestStack.Screen

@@ -1,9 +1,9 @@
 import React from "react";
 import { View } from "../components/Themed";
-import { Center, Text, Button } from "native-base";
+import { Center, Text, Button, Link, VStack } from "native-base";
 import { Alert, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { farBell } from "../components/icons/regular/farBell";
+import { falBell } from "../components/icons/light/falBell";
 import { AuthContext } from "../components/contexts/AuthContext";
 import { GuestStackScreenProps } from "../types";
 import { UsersGateway } from "../gateways/users_gateway";
@@ -60,23 +60,34 @@ export default function SignUpNotificationsScreen(props: GuestStackScreenProps<"
 
     return (
         <View style={styles.view}>
-            <Center alignItems="center" marginY="auto" marginLeft={44} marginRight={44}>
-                <FontAwesomeIcon icon={farBell} style={styles.bellIcon} size={96} />
-                <Text size={"title3"} fontWeight={"semibold"} marginBottom={15}>
-                    Enable Notifications.
+            <Center alignItems="center" marginY="auto">
+                <FontAwesomeIcon icon={falBell} style={styles.bellIcon} color={"#0077E6"} size={96} />
+                <Text size={"title3"} fontWeight={"semibold"} marginBottom="15px" marginTop="30px">
+                    Enable Notifications
                 </Text>
-                <Text>We'll send you notifications to keep you up to date with your crypto assets.</Text>
+                <Text textAlign={"center"}>
+                    We’ll send you notifications to keep you up to date with your crypto assets.
+                </Text>
             </Center>
-            <Button onPress={() => submitNotification(true)} testID="enableNotificationsSubmit">
-                Enable notifications
-            </Button>
-            <Button
-                style={styles.notNowButton}
-                onPress={() => submitNotification(false)}
-                testID="disableNotificationsSubmit"
-            >
-                <Text color={"darkBlue.500"}>Not Now</Text>
-            </Button>
+            <Center style={{ flex: 1 }}></Center>
+            <VStack space={"20px"} marginBottom="20px">
+                <Button onPress={() => submitNotification(true)} testID="enableNotificationsSubmit">
+                    Enable notifications
+                </Button>
+                <Center>
+                    <Link
+                        _text={{
+                            color: "darkBlue.500",
+                            fontWeight: "semibold",
+                        }}
+                        isUnderlined={false}
+                        onPress={() => submitNotification(false)}
+                        testID="disableNotificationsSubmit"
+                    >
+                        Not now
+                    </Link>
+                </Center>
+            </VStack>
         </View>
     );
 }
@@ -85,17 +96,14 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 30,
-        paddingBottom: 15,
     },
     bellIcon: {
-        marginVertical: 30,
-        marginRight: 10,
+        marginTop: 80,
         // darkBlue.500
         color: "#0077E6",
     },
     notNowButton: {
-        marginVertical: 20,
+        marginTop: 20,
         backgroundColor: "white",
     },
 });

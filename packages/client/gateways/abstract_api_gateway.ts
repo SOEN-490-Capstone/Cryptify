@@ -3,7 +3,8 @@ import { HttpError } from "@cryptify/common/src/errors/http_error";
 
 export abstract class AbstractApiGateway extends AbstractGateway {
     protected constructor() {
-        const uri = `http://${process.env.API_URL || "127.0.0.1"}:${process.env.API_PORT || "3001"}`;
+        // Default for system tests to use deployed service IP
+        const uri = `http://${process.env.API_URL || "3.141.46.148"}:${process.env.API_PORT}`;
         super(uri, fetch);
     }
 

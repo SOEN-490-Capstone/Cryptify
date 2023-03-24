@@ -421,9 +421,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 name="SettingsScreen"
                 component={SettingsScreen}
                 options={{
-                    title: "",
-                    headerShadowVisible: false,
-                    headerLeft: () => null,
+                    headerShown: false,
                 }}
             />
             <SettingsStack.Screen

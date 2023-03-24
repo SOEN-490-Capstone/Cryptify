@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
+        paddingTop: 40,
     },
     button: {
         paddingHorizontal: 10,

@@ -29,7 +29,7 @@ export default function SignUpNotificationsScreen(props: GuestStackScreenProps<"
                 "Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.",
                 [
                     {
-                        text: "Cancel",
+                        text: "Don't Allow",
                         style: "cancel",
                         onPress: () => {
                             setToken(props.route.params.token.accessToken);

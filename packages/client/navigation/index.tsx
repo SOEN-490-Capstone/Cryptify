@@ -421,12 +421,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                 name="SettingsScreen"
                 component={SettingsScreen}
                 options={{
-                    title: "Settings",
-                    headerTintColor: "#404040",
-                    headerTitleStyle: {
-                        fontSize: 28,
-                        fontWeight: "600",
-                    },
+                    title: "",
                     headerShadowVisible: false,
                     headerLeft: () => null,
                 }}

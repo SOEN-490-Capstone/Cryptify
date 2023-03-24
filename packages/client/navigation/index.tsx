@@ -87,9 +87,6 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    headerTitle: "",
-                    headerShadowVisible: false,
-                    headerLeft: () => null,
                     headerShown: false,
                 }}
             />

@@ -14,7 +14,7 @@ import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AddWalletState } from "./add_wallet_state";
 import NotFoundScreen from "../../NotFoundScreen";
 import { HttpError } from "@cryptify/common/src/errors/http_error";
-import { getCurrencyType } from "@cryptify/common/src/utils/currency_utils";
+import { getCurrencyType, getCurrencyTypeUILabel } from "@cryptify/common/src/utils/currency_utils";
 import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
 import { AuthContext } from "../../../components/contexts/AuthContext";
 import { QRCodeScannerInputIcon } from "../../../components/QRCodeScannerInputIcon";
@@ -111,7 +111,7 @@ export default function AddWalletFormScreen({
         return <NotFoundScreen />;
     }
 
-    const buttonText = `Add ${titleCase(currencyType)} Wallet`;
+    const buttonText = `Add ${getCurrencyTypeUILabel(currencyType)} wallet`;
 
     return (
         displayData && (
@@ -132,7 +132,7 @@ export default function AddWalletFormScreen({
                     onSubmit={onSubmitCreateWallet}
                 >
                     {({ values, errors, touched, handleChange, submitForm, setFieldValue }) => (
-                        <VStack space="13" style={styles.addWalletForm}>
+                        <VStack space="13px" marginTop="35px">
                             <FormControl isInvalid={!!(errors.name && (touched.address || initialValues.name != ""))}>
                                 <Input
                                     value={values.name}
@@ -161,11 +161,7 @@ export default function AddWalletFormScreen({
                                 />
                                 <FormControl.ErrorMessage>{errors.address}</FormControl.ErrorMessage>
                             </FormControl>
-                            <Button
-                                style={styles.addWalletFormButton}
-                                onPress={submitForm}
-                                testID="submitAddWalletButton"
-                            >
+                            <Button marginTop="7px" onPress={submitForm} testID="submitAddWalletButton">
                                 {buttonText}
                             </Button>
                         </VStack>
@@ -180,13 +176,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 15,
-    },
-    addWalletForm: {
-        marginTop: 35,
-    },
-    addWalletFormButton: {
-        marginTop: 7,
+        paddingTop: 20,
     },
     bitcoinIcon: {
         color: "#F7931A",

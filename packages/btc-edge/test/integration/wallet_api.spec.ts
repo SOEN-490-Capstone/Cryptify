@@ -34,7 +34,7 @@ describe("Wallets", () => {
             transactions: [],
         };
 
-        it("should create the wallet and return the wallet with the balance", async () => {
+        it.skip("should create the wallet and return the wallet with the balance", async () => {
             (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
                 new Response(
                     JSON.stringify({

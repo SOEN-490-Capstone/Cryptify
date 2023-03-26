@@ -46,7 +46,7 @@ export default function () {
 
         check(res, {
             "status is 200": () => res.status === 200,
-        })
+        });
     })();
 
     // Get all contacts
@@ -57,6 +57,5 @@ export default function () {
         check(res, {
             "status is 200": () => res.status === 200,
         });
-
     })();
 }

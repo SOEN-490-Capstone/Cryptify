@@ -81,6 +81,32 @@ describe("Users", () => {
             });
         });
 
+        it("should update users email", async () => {
+            const res = await agent(app.getHttpServer())
+                .patch("/users/1")
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    userId: 1,
+                    firstName: "fName",
+                    lastName: "lName",
+                    email: "john2@example.com",
+                    areNotificationsEnabled: true,
+                    role: Role.PRO,
+                });
+
+            expect(res.status).toEqual(200);
+            expect(res.body).toEqual({
+                id: 1,
+                firstName: "fName",
+                lastName: "lName",
+                email: "john2@example.com",
+                password: "$2b$10$qRyrAC.2KfxbUOne4Rh9LuQnexiHJsjO4p1jX3rNVkQkDRkenaW22",
+                areNotificationsEnabled: true,
+                role: Role.PRO,
+                createdAt: "2022-10-20T20:12:19.693Z",
+            });
+        });
+
         it("should return error when user id not matching token", async () => {
             const res = await agent(app.getHttpServer())
                 .patch("/users/1")
@@ -108,7 +134,7 @@ describe("Users", () => {
             expect(res.status).toEqual(401);
         });
 
-        it("should return 404 error when user not found", async () => {
+        it("should return 400 error when user not found", async () => {
             const res = await agent(app.getHttpServer())
                 .patch("/users/2")
                 .set(
@@ -119,6 +145,44 @@ describe("Users", () => {
                     userId: 2,
                     areNotificationsEnabled: true,
                 });
+
+            expect(res.status).toEqual(400);
+        });
+
+        it("should return 403 error when updating password with incorrect old password", async () => {
+            const res = await agent(app.getHttpServer())
+                .patch("/users/1")
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    userId: 1,
+                    currentPassword: "Wrong123!",
+                    newPassword: "Test123!!",
+                    confirmNewPassword: "Test123!!",
+                });
+
+            expect(res.status).toEqual(403);
+        });
+
+        it("should update users password", async () => {
+            const res = await agent(app.getHttpServer())
+                .patch("/users/1")
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    userId: 1,
+                    currentPassword: "Test123!",
+                    newPassword: "Test123!!",
+                    confirmNewPassword: "Test123!!",
+                });
+
+            expect(res.status).toEqual(200);
+        });
+    });
+
+    describe("DELETE /users/:id", () => {
+        it("should return a 400 when user not found", async () => {
+            const res = await agent(app.getHttpServer())
+                .delete(`/users/2`)
+                .set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY3NDg2OTI1OCwiZXhwIjozMTcyMTkzMTE2NTh9.42mOhgjfmexVY4v-cNBJiDv4PiV5dcdG3A0hKIuKfso`);
 
             expect(res.status).toEqual(400);
         });

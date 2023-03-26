@@ -7,10 +7,14 @@ import { WalletsModule } from "@cryptify/api/src/modules/wallets.module";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { AuthenticationModule } from "./authentication.module";
-import {Filter} from "@cryptify/common/src/domain/entities/filter";
+import { Filter } from "@cryptify/common/src/domain/entities/filter";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User, Tag, Contact, Filter]), WalletsModule, forwardRef(() => AuthenticationModule)],
+    imports: [
+        TypeOrmModule.forFeature([User, Tag, Contact, Filter]),
+        WalletsModule,
+        forwardRef(() => AuthenticationModule),
+    ],
     providers: [UsersService],
     exports: [UsersService],
     controllers: [UsersController],

@@ -4,6 +4,7 @@ import { AppModule } from "../../src/modules/app.module";
 import { INestApplication } from "@nestjs/common";
 import { ERROR_EMAIL_IN_USE, ERROR_EMAIL_OR_PASSWORD_INCORRECT } from "@cryptify/common/src/errors/error_messages";
 import { seedDB } from "@cryptify/common/src/db/seed_db";
+import { token } from "@cryptify/api/test/fixtures/token_fixtures";
 
 describe("Authentication", () => {
     let app: INestApplication;
@@ -86,6 +87,44 @@ describe("Authentication", () => {
 
             expect(res.status).toEqual(403);
             expect(res.body.message).toEqual(ERROR_EMAIL_OR_PASSWORD_INCORRECT);
+        });
+    });
+
+    describe("POST /auth/forgot-password", () => {
+        it("should send a forgot password email to user", async () => {
+            const res = await agent(app.getHttpServer()).post("/auth/forgot-password").send({
+                email: "john@example.com",
+            });
+
+            expect(res.status).toEqual(201);
+        });
+
+        it("should return 404 if email not associated to user", async () => {
+            const res = await agent(app.getHttpServer()).post("/auth/forgot-password").send({
+                email: "john123@example.com",
+            });
+
+            expect(res.status).toEqual(404);
+        });
+    });
+
+    describe("POST /auth/reset-password", () => {
+        it("should update users password in db", async () => {
+            const res = await agent(app.getHttpServer()).post("/auth/reset-password").send({
+                token,
+                password: "MyNewPass123!",
+            });
+
+            expect(res.status).toEqual(201);
+        });
+
+        it("should return 403 error if token is invalud", async () => {
+            const res = await agent(app.getHttpServer()).post("/auth/reset-password").send({
+                token: "invalidtoken123",
+                password: "MyNewPass123!",
+            });
+
+            expect(res.status).toEqual(403);
         });
     });
 

@@ -55,11 +55,11 @@ export class AuthenticationService {
     async resetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void> {
         const token = this.jwtService.decode(resetPasswordReq.token);
 
-        if (!token["sub"]) {
+        if (!token?.sub) {
             throw new ForbiddenException();
         }
 
-        await this.usersService.updatePassword(token["sub"], resetPasswordReq.password);
+        await this.usersService.updatePassword(token.sub, resetPasswordReq.password);
     }
 
     async verify(password: string, userId: number): Promise<string> {

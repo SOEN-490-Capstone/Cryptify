@@ -10,6 +10,7 @@ import { WalletsService } from "@cryptify/api/src/services/wallets.service";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { Contact } from "@cryptify/common/src/domain/entities/contact";
 import { AuthenticationService } from "./authentication.service";
+import { Filter } from "@cryptify/common/src/domain/entities/filter";
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,8 @@ export class UsersService {
         private tagRepository: Repository<Tag>,
         @InjectRepository(Contact)
         private contactRepository: Repository<Contact>,
+        @InjectRepository(Filter)
+        private filterRepository: Repository<Filter>,
     ) {}
 
     async create(signUpReq: SignUpRequest): Promise<User> {
@@ -94,6 +97,7 @@ export class UsersService {
             this.walletsService.findAll({ id }),
             this.tagRepository.delete({ userId: id }),
             this.contactRepository.delete({ userId: id }),
+            this.filterRepository.delete({ userId: id }),
         ]);
 
         // Manually delete the wallets through the edge services so that any cleanup process that needs to happen with

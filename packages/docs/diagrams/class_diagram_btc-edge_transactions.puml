@@ -3,16 +3,41 @@ enum CurrencyType {
     ETHEREUM
     BITCOIN
 }
+enum CurrencyTypeUILabels {
+    ETHEREUM
+    BITCOIN
+}
+interface WalletWithBalance extends Wallet {
+    +balance: string
+}
 class Wallet {
     +address: string
     +userId: number
     +name: string
-    +user: User
+    +user?: User
     +currencyType: CurrencyType
     +transactions: Transaction[]
 }
+class WalletBuilder {
+    -address: string
+    -userId: number
+    -name: string
+    -user: User
+    -transactions: Transaction[]
+    -balance: string
+    +setAddress(address: string): this
+    +setUserId(userId: number): this
+    +setName(name: string): this
+    +setUser(user: User): this
+    +setTransactions(transactions: Transaction[]): this
+    +setWallet(wallet: Wallet): this
+    +setBalance(balance: string): this
+    +build(): WalletWithBalance
+}
 class ContactAddress {
     +walletAddress: string
+    +userId: number
+    +user?: User
     +contacts?: Contact[]
 }
 class Contact {
@@ -34,6 +59,35 @@ enum Role {
     BASIC
     PRO
 }
+class Filter {
+    +name: string
+    +userId: number
+    +user?: User
+    +currencyType: CurrencyType
+    +txnIn: boolean
+    +txnOut: boolean
+    +range: string
+    +tagNames: string[]
+    +contactNames: string[]
+}
+class FilterBuilder {
+    -name: string
+    -userId: number
+    -currencyType: CurrencyType
+    -txnIn: boolean
+    -txnOut: boolean
+    -range: string
+    -tagNames: string[]
+    -contactNames: string[]
+    +setName(name: string): this
+    +setUserId(userId: number): this
+    +setCurrencyType(type: CurrencyType): this
+    +setTxns(txnIn: boolean, txnOut: boolean): this
+    +setRange(range: string): this
+    +setTagNames(names: string[]): this
+    +setContactNames(names: string[]): this
+    +build(): Filter
+}
 class User {
     +id: number
     +firstName: string
@@ -43,9 +97,10 @@ class User {
     +areNotificationsEnabled: boolean
     +role: Role
     +createdAt: Date
-    +wallets: Wallet[]
-    +tags: Tag[]
-    +contacts: Contact[]
+    +wallets?: Wallet[]
+    +tags?: Tag[]
+    +contacts?: Contact[]
+    +filters?: Filter[]
 }
 class Tag {
     +tagName: string
@@ -57,19 +112,43 @@ class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
-    +contactIn: Contact
     +walletOut: string
-    +contactOut: Contact
     +amount: string
-    +gasPrice: string
-    +gasLimit: string
+    +gasPrice?: string
+    +gasLimit?: string
     +createdAt: Date
     +tags: Tag[]
+    +contactIn?: Contact
+    +contactOut?: Contact
+}
+class TransactionBuilder {
+    -id: number
+    -address: string
+    -walletIn: string
+    -walletOut: string
+    -contactIn: Contact
+    -contactOut: Contact
+    -amount: string
+    -gasPrice: string
+    -gasLimit: string
+    -createdAt: Date
+    -tags: Tag[]
+    +setId(id: number): this
+    +setAddress(address: string): this
+    +setWalletIn(address: string): this
+    +setWalletOut(address: string): this
+    +setContactIn(contact: Contact): this
+    +setContactOut(contact: Contact): this
+    +setAmount(amount: number): this
+    +setGasPrice(price: string): this
+    +setGasLimit(limit: string): this
+    +setCreatedAt(timestamp: string): this
+    +setTags(tags: Tag[]): this
+    +setTransaction(transaction: Transaction): this
+    +build(): Transaction
 }
 interface CreateWalletRequest extends InferType
-interface WalletWithBalance extends Wallet {
-    +balance: string
-}
+interface UpdateWalletRequest extends InferType
 abstract class AbstractNotificationStrategy {
     +{abstract} sendNotification(notification: Notification): Promise<void>
 }
@@ -238,10 +317,11 @@ class WalletsService {
     -transactionsService: TransactionsService
     -blockchainComGateway: BlockchainComGateway
     -transactionWatcherService: TransactionWatcherService
-    +create(createWalletReq: CreateWalletRequest): Promise<WalletWithBalance>
+    +create(req: CreateWalletRequest): Promise<WalletWithBalance>
     +findAll(userId: number): Promise<WalletWithBalance[]>
     +findOne(address: string, userId: number): Promise<Wallet>
     +delete(deleteWalletReq: DeleteWalletRequest): Promise<WalletWithBalance>
+    +update(updateWalletReq: UpdateWalletRequest): Promise<WalletWithBalance>
 }
 class TransactionsService {
     -transactionsRepository: Repository<Transaction>
@@ -260,18 +340,33 @@ class TransactionsController {
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+WalletBuilder --> "1" User
+WalletBuilder --> "*" Transaction
+WalletBuilder --> "1" Transaction
+WalletBuilder --> "1" Wallet
+WalletBuilder --> "1" WalletWithBalance
+ContactAddress --> "1" User
 ContactAddress --> "*" Contact
 Contact --> "1" User
 Contact --> "*" ContactAddress
 ContactBuilder --> "1" Contact
+Filter --> "1" User
+Filter --> "1" CurrencyType
+FilterBuilder --> "1" CurrencyType
+FilterBuilder --> "1" Filter
 User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
+User --> "*" Filter
 Tag --> "1" User
 Tag --> "*" Transaction
-Transaction --> "1" Contact
 Transaction --> "*" Tag
+Transaction --> "1" Contact
+TransactionBuilder --> "1" Contact
+TransactionBuilder --> "*" Tag
+TransactionBuilder --> "1" Tag
+TransactionBuilder --> "1" Transaction
 AbstractNotificationStrategy --> "1" Notification
 EmailNotificationStrategy --> "1" Notification
 NotificationStrategyFactory --> "1" EmailNotificationStrategy
@@ -306,6 +401,7 @@ WalletsService --> "1" CreateWalletRequest
 WalletsService --> "1" WalletWithBalance
 WalletsService --> "*" WalletWithBalance
 WalletsService --> "1" DeleteWalletRequest
+WalletsService --> "1" UpdateWalletRequest
 TransactionsService --> "1" Transaction
 TransactionsService --> "1" BlockchainComGateway
 TransactionsService --> "1" WalletsService

@@ -1,13 +1,39 @@
 @startuml
+class JwtAuthGuard
+class CanAccessResourceGuard implements CanActivate {
+    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+}
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+interface GetFiltersRequest extends InferType
 class Tag {
     +tagName: string
     +userId: number
     +user: User
     +transactions: Transaction[]
 }
-enum CurrencyType {
-    ETHEREUM
-    BITCOIN
+class ContactAddress {
+    +walletAddress: string
+    +userId: number
+    +user?: User
+    +contacts?: Contact[]
+}
+class Contact {
+    +contactName: string
+    +userId: number
+    +user?: User
+    +addresses: ContactAddress[]
+}
+class ContactBuilder {
+    -contactName: string
+    -userId: number
+    -addresses: string[]
+    +setContactName(name: string): this
+    +setUserId(userId: number): this
+    +setAddresses(addresses: string[]): this
+    +build(): Contact
 }
 enum CurrencyTypeUILabels {
     ETHEREUM
@@ -83,6 +109,20 @@ enum Role {
     BASIC
     PRO
 }
+class User {
+    +id: number
+    +firstName: string
+    +lastName: string
+    +email: string
+    +password: string
+    +areNotificationsEnabled: boolean
+    +role: Role
+    +createdAt: Date
+    +wallets?: Wallet[]
+    +tags?: Tag[]
+    +contacts?: Contact[]
+    +filters?: Filter[]
+}
 class Filter {
     +name: string
     +userId: number
@@ -112,73 +152,30 @@ class FilterBuilder {
     +setContactNames(names: string[]): this
     +build(): Filter
 }
-class User {
-    +id: number
-    +firstName: string
-    +lastName: string
-    +email: string
-    +password: string
-    +areNotificationsEnabled: boolean
-    +role: Role
-    +createdAt: Date
-    +wallets?: Wallet[]
-    +tags?: Tag[]
-    +contacts?: Contact[]
-    +filters?: Filter[]
-}
-class ContactAddress {
-    +walletAddress: string
-    +userId: number
-    +user?: User
-    +contacts?: Contact[]
-}
-class Contact {
-    +contactName: string
-    +userId: number
-    +user?: User
-    +addresses: ContactAddress[]
-}
-class ContactBuilder {
-    -contactName: string
-    -userId: number
-    -addresses: string[]
-    +setContactName(name: string): this
-    +setUserId(userId: number): this
-    +setAddresses(addresses: string[]): this
-    +build(): Contact
-}
-interface CreateContactRequest extends InferType
-interface DeleteContactRequest extends InferType
-interface UpdateContactRequest {
-    +userId: number
-    +contactName: string
-    +newName?: string
-    +walletAddrs?: string[]
-}
-class ContactsService {
-    -contactRepository: Repository<Contact>
-    +findAll(userId: number): Promise<Contact[]>
-    +create(createContactRequest: CreateContactRequest): Promise<Contact>
-    +update(updateContactRequest: UpdateContactRequest): Promise<Contact>
-    +delete(deleteContactRequest: DeleteContactRequest): Promise<Contact>
-}
-interface GetContactsRequest extends InferType
-class JwtAuthGuard
-class CanAccessResourceGuard implements CanActivate {
-    +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
+interface CreateFilterRequest extends InferType
+interface DeleteFilterRequest extends InferType
+class FiltersService {
+    -filtersRepository: Repository<Filter>
+    +findAll(req: GetFiltersRequest): Promise<Filter[]>
+    +create(req: CreateFilterRequest): Promise<Filter>
+    +delete(req: DeleteFilterRequest): Promise<Filter>
 }
 class CanMutateResourceGuard implements CanActivate {
     +canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
 }
-class ContactsController {
-    -contactsService: ContactsService
-    +findAll(params: GetContactsRequest): Promise<Contact[]>
-    +create(body: CreateContactRequest): Promise<Contact>
-    +update(body: UpdateContactRequest): Promise<Contact>
-    +delete(params: DeleteContactRequest): Promise<Contact>
+class FiltersController {
+    -filtersService: FiltersService
+    +get(params: GetFiltersRequest, query: any): Promise<Filter[]>
+    +create(body: CreateFilterRequest): Promise<Filter>
+    +delete(params: DeleteFilterRequest, query: any): Promise<Filter>
 }
 Tag --> "1" User
 Tag --> "*" Transaction
+ContactAddress --> "1" User
+ContactAddress --> "*" Contact
+Contact --> "1" User
+Contact --> "*" ContactAddress
+ContactBuilder --> "1" Contact
 Transaction --> "*" Tag
 Transaction --> "1" Contact
 TransactionBuilder --> "1" Contact
@@ -193,30 +190,24 @@ WalletBuilder --> "*" Transaction
 WalletBuilder --> "1" Transaction
 WalletBuilder --> "1" Wallet
 WalletBuilder --> "1" WalletWithBalance
-Filter --> "1" User
-Filter --> "1" CurrencyType
-FilterBuilder --> "1" CurrencyType
-FilterBuilder --> "1" Filter
 User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
 User --> "*" Filter
-ContactAddress --> "1" User
-ContactAddress --> "*" Contact
-Contact --> "1" User
-Contact --> "*" ContactAddress
-ContactBuilder --> "1" Contact
-ContactsService --> "1" Contact
-ContactsService --> "*" Contact
-ContactsService --> "1" CreateContactRequest
-ContactsService --> "1" UpdateContactRequest
-ContactsService --> "1" DeleteContactRequest
-ContactsController --> "1" ContactsService
-ContactsController --> "1" GetContactsRequest
-ContactsController --> "*" Contact
-ContactsController --> "1" CreateContactRequest
-ContactsController --> "1" Contact
-ContactsController --> "1" UpdateContactRequest
-ContactsController --> "1" DeleteContactRequest
+Filter --> "1" User
+Filter --> "1" CurrencyType
+FilterBuilder --> "1" CurrencyType
+FilterBuilder --> "1" Filter
+FiltersService --> "1" Filter
+FiltersService --> "1" GetFiltersRequest
+FiltersService --> "*" Filter
+FiltersService --> "1" CreateFilterRequest
+FiltersService --> "1" DeleteFilterRequest
+FiltersController --> "1" FiltersService
+FiltersController --> "1" GetFiltersRequest
+FiltersController --> "*" Filter
+FiltersController --> "1" CreateFilterRequest
+FiltersController --> "1" Filter
+FiltersController --> "1" DeleteFilterRequest
 @enduml

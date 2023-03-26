@@ -8,6 +8,8 @@ class Tag {
 }
 class ContactAddress {
     +walletAddress: string
+    +userId: number
+    +user?: User
     +contacts?: Contact[]
 }
 class Contact {
@@ -25,34 +27,112 @@ class ContactBuilder {
     +setAddresses(addresses: string[]): this
     +build(): Contact
 }
+enum CurrencyType {
+    ETHEREUM
+    BITCOIN
+}
+enum CurrencyTypeUILabels {
+    ETHEREUM
+    BITCOIN
+}
 class Transaction {
     +id: number
     +transactionAddress: string
     +walletIn: string
-    +contactIn: Contact
     +walletOut: string
-    +contactOut: Contact
     +amount: string
-    +gasPrice: string
-    +gasLimit: string
+    +gasPrice?: string
+    +gasLimit?: string
     +createdAt: Date
     +tags: Tag[]
+    +contactIn?: Contact
+    +contactOut?: Contact
 }
-enum CurrencyType {
-    ETHEREUM
-    BITCOIN
+class TransactionBuilder {
+    -id: number
+    -address: string
+    -walletIn: string
+    -walletOut: string
+    -contactIn: Contact
+    -contactOut: Contact
+    -amount: string
+    -gasPrice: string
+    -gasLimit: string
+    -createdAt: Date
+    -tags: Tag[]
+    +setId(id: number): this
+    +setAddress(address: string): this
+    +setWalletIn(address: string): this
+    +setWalletOut(address: string): this
+    +setContactIn(contact: Contact): this
+    +setContactOut(contact: Contact): this
+    +setAmount(amount: number): this
+    +setGasPrice(price: string): this
+    +setGasLimit(limit: string): this
+    +setCreatedAt(timestamp: string): this
+    +setTags(tags: Tag[]): this
+    +setTransaction(transaction: Transaction): this
+    +build(): Transaction
+}
+interface WalletWithBalance extends Wallet {
+    +balance: string
 }
 class Wallet {
     +address: string
     +userId: number
     +name: string
-    +user: User
+    +user?: User
     +currencyType: CurrencyType
     +transactions: Transaction[]
+}
+class WalletBuilder {
+    -address: string
+    -userId: number
+    -name: string
+    -user: User
+    -transactions: Transaction[]
+    -balance: string
+    +setAddress(address: string): this
+    +setUserId(userId: number): this
+    +setName(name: string): this
+    +setUser(user: User): this
+    +setTransactions(transactions: Transaction[]): this
+    +setWallet(wallet: Wallet): this
+    +setBalance(balance: string): this
+    +build(): WalletWithBalance
 }
 enum Role {
     BASIC
     PRO
+}
+class Filter {
+    +name: string
+    +userId: number
+    +user?: User
+    +currencyType: CurrencyType
+    +txnIn: boolean
+    +txnOut: boolean
+    +range: string
+    +tagNames: string[]
+    +contactNames: string[]
+}
+class FilterBuilder {
+    -name: string
+    -userId: number
+    -currencyType: CurrencyType
+    -txnIn: boolean
+    -txnOut: boolean
+    -range: string
+    -tagNames: string[]
+    -contactNames: string[]
+    +setName(name: string): this
+    +setUserId(userId: number): this
+    +setCurrencyType(type: CurrencyType): this
+    +setTxns(txnIn: boolean, txnOut: boolean): this
+    +setRange(range: string): this
+    +setTagNames(names: string[]): this
+    +setContactNames(names: string[]): this
+    +build(): Filter
 }
 class User {
     +id: number
@@ -63,9 +143,10 @@ class User {
     +areNotificationsEnabled: boolean
     +role: Role
     +createdAt: Date
-    +wallets: Wallet[]
-    +tags: Tag[]
-    +contacts: Contact[]
+    +wallets?: Wallet[]
+    +tags?: Tag[]
+    +contacts?: Contact[]
+    +filters?: Filter[]
 }
 interface SignUpRequest extends InferType
 interface UpdateUserRequest {
@@ -73,16 +154,16 @@ interface UpdateUserRequest {
     +firstName?: string
     +lastName?: string
     +email?: string
-    +password?: string
+    +confirmEmail?: string
+    +currentPassword?: string
+    +newPassword?: string
+    +confirmNewPassword?: string
     +areNotificationsEnabled?: boolean
     +role?: Role
 }
 interface DeleteUserRequest extends InferType
 interface CreateWalletRequest extends InferType
 interface DeleteWalletRequest extends InferType
-interface WalletWithBalance extends Wallet {
-    +balance: string
-}
 interface GetWalletsRequest extends InferType
 abstract class AbstractGateway {
     -uri: string
@@ -105,15 +186,18 @@ abstract class AbstractServiceGateway extends AbstractGateway {
     #handleError(response: any): Promise<void>
 }
 interface GetTransactionsRequest extends InferType
+interface UpdateWalletRequest extends InferType
 abstract class AbstractEdgeGatewayStrategy extends AbstractServiceGateway {
     +{abstract} createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
     +{abstract} deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
     +{abstract} getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +{abstract} updateWallet(req: UpdateWalletRequest): Promise<WalletWithBalance>
     +{abstract} getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
 }
 class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     -configService: ConfigService<Record<string, unknown>, false>
     +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +updateWallet(req: UpdateWalletRequest): Promise<WalletWithBalance>
     +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
     +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
@@ -121,6 +205,7 @@ class EthEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
 class BtcEdgeGatewayStrategy extends AbstractEdgeGatewayStrategy {
     -configService: ConfigService<Record<string, unknown>, false>
     +createWallet(req: CreateWalletRequest): Promise<WalletWithBalance>
+    +updateWallet(req: UpdateWalletRequest): Promise<WalletWithBalance>
     +getWallets(req: GetWalletsRequest): Promise<WalletWithBalance[]>
     +getTransactions(req: GetTransactionsRequest): Promise<Transaction[]>
     +deleteWallet(req: DeleteWalletRequest): Promise<WalletWithBalance>
@@ -135,16 +220,55 @@ class WalletsService {
     +create(req: CreateWalletRequest): Promise<WalletWithBalance>
     +delete(req: DeleteWalletRequest): Promise<WalletWithBalance>
     +findAll(req: GetWalletsRequest): Promise<WalletWithBalance[]>
+    +update(req: UpdateWalletRequest): Promise<WalletWithBalance>
+}
+interface SignInRequest extends InferType
+interface ForgotPasswordRequest extends InferType
+interface ResetPasswordRequest extends InferType
+abstract class AbstractNotificationStrategy {
+    +{abstract} sendNotification(notification: Notification): Promise<void>
+}
+interface Notification {
+    +to: string
+    +title: string
+    +body: string
+    +attachment?: { filename: string; content: string; }
+}
+class EmailNotificationStrategy extends AbstractNotificationStrategy {
+    -transporter: nodemailer.Transporter
+    -from: string
+    -configService: ConfigService<Record<string, unknown>, false>
+    +sendNotification(notification: Notification): Promise<void>
+}
+class AuthNotificationService {
+    -emailNotificationStrategy: EmailNotificationStrategy
+    -configService: ConfigService<Record<string, unknown>, false>
+    +sendForgotPasswordEmail(user: User, token: JwtToken): Promise<void>
+}
+class AuthenticationService {
+    -jwtService: JwtService
+    -usersService: UsersService
+    -forgotPasswordService: AuthNotificationService
+    +signUp(signUpReq: SignUpRequest): Promise<JwtToken>
+    +signIn(signInReq: SignInRequest): Promise<JwtToken>
+    +forgotPassword(forgotPasswordReq: ForgotPasswordRequest): Promise<void>
+    +resetPassword(resetPasswordReq: ResetPasswordRequest): Promise<void>
+    +verify(password: string, userId: number): Promise<string>
+    +encode(password: string): Promise<string>
+    -signToken(user: User): JwtToken
 }
 class UsersService {
     -walletsService: WalletsService
+    -authService: AuthenticationService
     -userRepository: Repository<User>
     -tagRepository: Repository<Tag>
     -contactRepository: Repository<Contact>
+    -filterRepository: Repository<Filter>
     +create(signUpReq: SignUpRequest): Promise<User>
     +findOne(email: string): Promise<User>
     +findOneById(id: number): Promise<User>
     +update(updateUserRequest: UpdateUserRequest): Promise<User>
+    +updatePassword(userId: number, newPassword: string): Promise<User>
     +delete(req: DeleteUserRequest): Promise<User>
 }
 class CanMutateResourceGuard implements CanActivate {
@@ -158,19 +282,34 @@ class UsersController {
 }
 Tag --> "1" User
 Tag --> "*" Transaction
+ContactAddress --> "1" User
 ContactAddress --> "*" Contact
 Contact --> "1" User
 Contact --> "*" ContactAddress
 ContactBuilder --> "1" Contact
-Transaction --> "1" Contact
 Transaction --> "*" Tag
+Transaction --> "1" Contact
+TransactionBuilder --> "1" Contact
+TransactionBuilder --> "*" Tag
+TransactionBuilder --> "1" Tag
+TransactionBuilder --> "1" Transaction
 Wallet --> "1" User
 Wallet --> "1" CurrencyType
 Wallet --> "*" Transaction
+WalletBuilder --> "1" User
+WalletBuilder --> "*" Transaction
+WalletBuilder --> "1" Transaction
+WalletBuilder --> "1" Wallet
+WalletBuilder --> "1" WalletWithBalance
+Filter --> "1" User
+Filter --> "1" CurrencyType
+FilterBuilder --> "1" CurrencyType
+FilterBuilder --> "1" Filter
 User --> "1" Role
 User --> "*" Wallet
 User --> "*" Tag
 User --> "*" Contact
+User --> "*" Filter
 UpdateUserRequest --> "1" Role
 AbstractGateway --> "1" Method
 AbstractEdgeGatewayStrategy --> "1" CreateWalletRequest
@@ -178,10 +317,12 @@ AbstractEdgeGatewayStrategy --> "1" WalletWithBalance
 AbstractEdgeGatewayStrategy --> "1" DeleteWalletRequest
 AbstractEdgeGatewayStrategy --> "1" GetWalletsRequest
 AbstractEdgeGatewayStrategy --> "*" WalletWithBalance
+AbstractEdgeGatewayStrategy --> "1" UpdateWalletRequest
 AbstractEdgeGatewayStrategy --> "1" GetTransactionsRequest
 AbstractEdgeGatewayStrategy --> "*" Transaction
 EthEdgeGatewayStrategy --> "1" CreateWalletRequest
 EthEdgeGatewayStrategy --> "1" WalletWithBalance
+EthEdgeGatewayStrategy --> "1" UpdateWalletRequest
 EthEdgeGatewayStrategy --> "1" GetWalletsRequest
 EthEdgeGatewayStrategy --> "*" WalletWithBalance
 EthEdgeGatewayStrategy --> "1" GetTransactionsRequest
@@ -189,6 +330,7 @@ EthEdgeGatewayStrategy --> "*" Transaction
 EthEdgeGatewayStrategy --> "1" DeleteWalletRequest
 BtcEdgeGatewayStrategy --> "1" CreateWalletRequest
 BtcEdgeGatewayStrategy --> "1" WalletWithBalance
+BtcEdgeGatewayStrategy --> "1" UpdateWalletRequest
 BtcEdgeGatewayStrategy --> "1" GetWalletsRequest
 BtcEdgeGatewayStrategy --> "*" WalletWithBalance
 BtcEdgeGatewayStrategy --> "1" GetTransactionsRequest
@@ -204,10 +346,24 @@ WalletsService --> "1" WalletWithBalance
 WalletsService --> "1" DeleteWalletRequest
 WalletsService --> "1" GetWalletsRequest
 WalletsService --> "*" WalletWithBalance
+WalletsService --> "1" UpdateWalletRequest
+AbstractNotificationStrategy --> "1" Notification
+EmailNotificationStrategy --> "1" Notification
+AuthNotificationService --> "1" EmailNotificationStrategy
+AuthNotificationService --> "1" User
+AuthenticationService --> "1" UsersService
+AuthenticationService --> "1" AuthNotificationService
+AuthenticationService --> "1" SignUpRequest
+AuthenticationService --> "1" SignInRequest
+AuthenticationService --> "1" ForgotPasswordRequest
+AuthenticationService --> "1" ResetPasswordRequest
+AuthenticationService --> "1" User
 UsersService --> "1" WalletsService
+UsersService --> "1" AuthenticationService
 UsersService --> "1" User
 UsersService --> "1" Tag
 UsersService --> "1" Contact
+UsersService --> "1" Filter
 UsersService --> "1" SignUpRequest
 UsersService --> "1" UpdateUserRequest
 UsersService --> "1" DeleteUserRequest

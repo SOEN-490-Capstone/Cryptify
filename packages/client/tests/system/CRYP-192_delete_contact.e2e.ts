@@ -23,10 +23,10 @@ describe("CRYP-192 Delete contact", () => {
         await element(by.id("contactsButton")).tap();
         await element(by.id("contactListItem")).atIndex(0).tap();
         await element(by.text("Edit")).tap();
-        
+
         await element(by.text("Delete contact")).tap();
         await element(by.text("DELETE")).tap();
-        
+
         await pause();
     });
 });

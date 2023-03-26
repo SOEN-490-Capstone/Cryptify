@@ -21,7 +21,7 @@ describe("CRYP-204 Delete user account", () => {
         // Nav to contacts screen
         await element(by.id("settingsTab")).tap();
         await element(by.id("accountButton")).tap();
-        
+
         await element(by.id("deleteAccountButton")).tap();
         await element(by.text("DELETE")).tap();
 

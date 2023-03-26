@@ -26,7 +26,7 @@ describe("CRYP-32 Saved filters", () => {
         await element(by.id("filterTransactionsButton")).tap();
         await element(by.text("Ethereum in")).tap();
         await element(by.text("Save this filter")).tap();
-        
+
         await element(by.id("addFilterInput")).typeText("My Filter");
         await element(by.text("Save filter")).tap();
 

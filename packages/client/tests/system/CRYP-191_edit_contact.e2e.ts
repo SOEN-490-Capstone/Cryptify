@@ -25,7 +25,7 @@ describe("CRYP-191 Edit contact", () => {
         await element(by.text("Edit")).tap();
 
         await expect(element(by.text("Edit a Contact"))).toBeVisible();
-        
+
         await pause();
     });
 });

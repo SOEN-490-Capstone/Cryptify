@@ -24,7 +24,7 @@ describe("CRYP-263 Contacts details", () => {
         await element(by.id("contactListItem")).atIndex(0).tap();
 
         await expect(element(by.text("Jason"))).toBeVisible();
-        
+
         await pause();
     });
 });

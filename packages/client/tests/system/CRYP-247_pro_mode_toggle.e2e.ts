@@ -22,7 +22,7 @@ describe("CRYP-247 Pro mode toggle", () => {
         await element(by.id("settingsTab")).tap();
         await element(by.id("accountButton")).tap();
         await element(by.id("Account TypeButton")).tap();
-        
+
         await element(by.text("Enable Pro")).tap();
         await element(by.text("Disable Pro")).tap();
 

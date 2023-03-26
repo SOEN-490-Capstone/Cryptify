@@ -38,7 +38,7 @@ export default function MultiLineListItem({
     );
 
     return !!inlineLink ? (
-        <Pressable onPress={inlineLink}>
+        <Pressable onPress={inlineLink} testID={`${label}Button`}>
             <HStack alignItems="center">
                 {item}
                 <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />

@@ -46,15 +46,12 @@ describe("Contacts", () => {
         });
 
         it("should return status 400 if contact with same name already exists", async () => {
-            await agent(app.getHttpServer())
-                .post("/users/1/contacts")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    userId: 1,
-                    contactName: "John Doe",
-                    walletAddrs: [],
-                });
-            
+            await agent(app.getHttpServer()).post("/users/1/contacts").set("Authorization", `Bearer ${token}`).send({
+                userId: 1,
+                contactName: "John Doe",
+                walletAddrs: [],
+            });
+
             const res = await agent(app.getHttpServer())
                 .post("/users/1/contacts")
                 .set("Authorization", `Bearer ${token}`)
@@ -94,7 +91,7 @@ describe("Contacts", () => {
 
             expect(res.status).toEqual(200);
         });
-        
+
         it("should return status 200 and update contact name", async () => {
             const res = await agent(app.getHttpServer())
                 .patch("/users/1/contacts/Jason")
@@ -117,7 +114,7 @@ describe("Contacts", () => {
                     contactName: "John Doe",
                     walletAddrs: ["0xf46337d130B5aA72627De1B2aA20229B38C57bF9"],
                 });
-            
+
             const res = await agent(app.getHttpServer())
                 .patch("/users/1/contacts/Jason")
                 .set("Authorization", `Bearer ${token}`)
@@ -149,7 +146,7 @@ describe("Contacts", () => {
             const res = await agent(app.getHttpServer())
                 .delete("/users/1/contacts/Jason")
                 .set("Authorization", `Bearer ${token}`);
-            
+
             expect(res.status).toEqual(200);
         });
 

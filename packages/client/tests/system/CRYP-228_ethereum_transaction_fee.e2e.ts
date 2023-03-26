@@ -2,7 +2,7 @@ import { openAppForDebugBuild } from "./utils/open_app_for_debug_build";
 import { by, device, expect, element } from "detox";
 import { pause } from "./utils/test_utils";
 
-describe("CRYP-30 Ethereum transaction details", () => {
+describe("CRYP-228 Ethereum transaction fee", () => {
     beforeEach(async () => {
         await device.launchApp({
             newInstance: true,
@@ -10,7 +10,7 @@ describe("CRYP-30 Ethereum transaction details", () => {
         await openAppForDebugBuild();
     });
 
-    it("Should be able to view details of an Ethereum transaction", async () => {
+    it("Should be able to view the transaction fee of an Ethereum transaction", async () => {
         // Sign in
         await element(by.id("signInButton")).tap();
         await expect(element(by.text("Welcome back"))).toBeVisible();

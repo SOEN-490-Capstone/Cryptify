@@ -29,6 +29,7 @@ describe("CRYP-32 Saved filters", () => {
 
         await element(by.id("addFilterInput")).typeText("My Filter");
         await element(by.text("Save filter")).tap();
+        await element(by.text("Save filter")).tap();
 
         // Assert correct filter label
         await expect(element(by.text("Filter"))).toBeVisible();

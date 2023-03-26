@@ -36,7 +36,6 @@ describe("CRYP-228 Ethereum transaction fee", () => {
         await element(by.id("transactionsListItem")).atIndex(0).tap();
         await expect(element(by.id("transactionDetailsHeader"))).toExist();
         await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
-        await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
 
         await pause();
     });

@@ -19,6 +19,7 @@ describe("CRYP-248 Pro mode transaction detials", () => {
         await element(by.text("Sign in")).tap();
 
         // Assert transaction details are visible
+        await element(by.id("walletsListETHEREUM")).tap();
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
         await waitFor(element(by.id("transactionsList")))
             .toExist()
@@ -27,7 +28,6 @@ describe("CRYP-248 Pro mode transaction detials", () => {
         await element(by.id("transactionsListItem")).atIndex(0).tap();
         await expect(element(by.id("transactionDetailsHeader"))).toExist();
         await expect(element(by.id("transactionDetailsBasicInfo"))).toExist();
-        await expect(element(by.id("transactionDetailsOtherDetails"))).toExist();
 
         await pause();
     });

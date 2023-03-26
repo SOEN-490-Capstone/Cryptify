@@ -26,7 +26,7 @@ describe("CRYP-267 Settings Ethereum wallet details", () => {
         await element(by.id("walletsListETHEREUM")).tap();
         await element(by.id("walletsListItemETHEREUM")).atIndex(0).tap();
 
-        await expect(element(by.text("Ether Wallet Main"))).toBeVisible();
+        await expect(element(by.text("Ether Wallet Main")).atIndex(0)).toBeVisible();
 
         await pause();
     });

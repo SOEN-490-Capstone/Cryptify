@@ -26,7 +26,7 @@ describe("CRYP-265 Settings Bitcoin wallet details", () => {
         await element(by.id("walletsListBITCOIN")).tap();
         await element(by.id("walletsListItemBITCOIN")).atIndex(0).tap();
 
-        await expect(element(by.text("Main Bitcoin"))).toBeVisible();
+        await expect(element(by.text("Main Bitcoin")).atIndex(0)).toBeVisible();
 
         await pause();
     });

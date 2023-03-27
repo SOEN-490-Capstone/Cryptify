@@ -56,7 +56,7 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
                 />
                 <Pressable onPress={() => navigation.navigate("AccountPasswordScreen")}>
                     <HStack alignItems="center">
-                        <Text>Password</Text>
+                        <Text>Change Password</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>

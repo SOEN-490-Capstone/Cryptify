@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
+        paddingTop: 20,
+        paddingBottom: 15,
     },
     chevronRightIcon: {
         color: "#A3A3A3",

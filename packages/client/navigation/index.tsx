@@ -429,7 +429,13 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     headerShadowVisible: false,
                     headerTitleAlign: "center",
                     headerRight: () => (
-                        <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")}>
+                        <Pressable
+                            onPress={() =>
+                                navigation.navigate("AddWalletSelectionScreen", {
+                                    addWalletStartScreenName: "ViewWalletsScreen",
+                                })
+                            }
+                        >
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                     ),

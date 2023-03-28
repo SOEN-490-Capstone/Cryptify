@@ -16,7 +16,7 @@ export function TitleTextWithIcon({ icon, iconStyles, iconSize, textSize, space,
     return (
         <VStack space={`${space}px`} alignItems="center">
             <FontAwesomeIcon icon={icon} style={iconStyles} size={iconSize} />
-            <Text size={textSize} fontWeight={"semibold"}>
+            <Text size={textSize} fontWeight={"semibold"} textAlign={"center"}>
                 {children}
             </Text>
         </VStack>

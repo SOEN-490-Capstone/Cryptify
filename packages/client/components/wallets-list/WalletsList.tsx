@@ -39,7 +39,7 @@ export default function WalletsList(props: Props) {
     }, [isFocused]);
 
     return isLoading || wallets.length > 0 ? (
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
             <WalletsListAccordion
                 wallets={wallets}
                 navigation={props.navigation}
@@ -57,9 +57,6 @@ export default function WalletsList(props: Props) {
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        paddingHorizontal: 15,
-    },
     noWalletsText: {
         marginTop: 15,
     },

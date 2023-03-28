@@ -64,6 +64,7 @@ export default function AddWalletScreen({ route, navigation }: Props) {
                 currencyType={currencyType}
                 setState={setState}
                 walletName={walletName}
+                addWalletStartScreenName={addWalletStartScreenName}
                 navigation={navigation}
             />
         );

@@ -1,6 +1,6 @@
 import { View } from "../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, HStack, Center, VStack } from "native-base";
+import { Text, HStack, Center, VStack, Box } from "native-base";
 import { HomeStackScreenProps } from "../types";
 import React from "react";
 import { titleCase } from "@cryptify/common/src/utils/string_utils";
@@ -15,34 +15,38 @@ export default function WalletQRCodeScreen({ route }: HomeStackScreenProps<"Wall
 
     return (
         <View style={styles.view}>
-            <Text size={"subheadline"} testID="QRCodeHeader">
-                Copy and share this information to add{" "}
-                <Text style={{ fontWeight: "600" }}>
-                    {titleCase(wallet.currencyType)} ({typeToISOCode[wallet.currencyType]}){" "}
+            <VStack space={"20px"}>
+                <Text size={"subheadline"} testID="QRCodeHeader">
+                    Copy and share this information to add{" "}
+                    <Text style={{ fontWeight: "600" }}>
+                        {titleCase(wallet.currencyType)} ({typeToISOCode[wallet.currencyType]}){" "}
+                    </Text>
+                    from another source. A{" "}
+                    <Text style={{ fontWeight: "600" }} underline>
+                        network fee{" "}
+                    </Text>
+                    could be required for a transfer to this wallet.
                 </Text>
-                from another source. A{" "}
-                <Text style={{ fontWeight: "600" }} underline>
-                    network fee{" "}
-                </Text>
-                could be required for a transfer to this wallet.
-            </Text>
 
-            <Center style={styles.qrCode}>
-                <QRCode value={wallet.address} size={200} logoMargin={0} />
-            </Center>
+                <Center>
+                    <Box style={styles.qrCode}>
+                        <QRCode value={wallet.address} size={176} logoMargin={0} />
+                    </Box>
+                </Center>
 
-            <VStack space={"15px"}>
-                <MultiLineListItem label="Name" value={wallet.name} />
-                <MultiLineListItem label="Address" value={wallet.address} copy={true} />
+                <VStack space={"15px"}>
+                    <MultiLineListItem label="Name" value={wallet.name} />
+                    <MultiLineListItem label="Address" value={wallet.address} copy={true} />
+                </VStack>
+
+                <HStack style={styles.info} testID="QRCodeWarning">
+                    <FontAwesomeIcon icon={farCircleInfo} size={16} />
+                    <Text size={"footnote2"} style={styles.infoText}>
+                        Never enter this address by hand and only send {titleCase(wallet.currencyType)} (
+                        {typeToISOCode[wallet.currencyType]}) to this address.
+                    </Text>
+                </HStack>
             </VStack>
-
-            <HStack style={styles.info} testID="QRCodeWarning">
-                <FontAwesomeIcon icon={farCircleInfo} size={16} />
-                <Text size={"footnote2"} style={styles.infoText}>
-                    Never enter this address by hand and only send {titleCase(wallet.currencyType)} (
-                    {typeToISOCode[wallet.currencyType]}) to this address.
-                </Text>
-            </HStack>
         </View>
     );
 }
@@ -55,10 +59,13 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     qrCode: {
-        paddingVertical: 20,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        borderColor: "#E5E5E5",
+        borderWidth: 1,
+        borderRadius: 10,
     },
     info: {
-        marginTop: 20,
         borderRadius: 10,
         backgroundColor: "#FFEDD5",
         paddingHorizontal: 12,

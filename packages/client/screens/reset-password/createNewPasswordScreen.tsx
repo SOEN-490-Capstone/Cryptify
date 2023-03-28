@@ -98,7 +98,7 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
                             isDisabled={!!(values.password.length == 0 || values.confirmNewPassword.length == 0)}
                             onPress={submitForm}
                         >
-                            Reset Password
+                            Reset password
                         </Button>
                     </VStack>
                 )}

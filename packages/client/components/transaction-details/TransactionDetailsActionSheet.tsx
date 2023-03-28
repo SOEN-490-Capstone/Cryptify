@@ -1,5 +1,5 @@
 import React from "react";
-import { Actionsheet, useDisclose, Radio, Text, Pressable, Link, Box } from "native-base";
+import { Actionsheet, useDisclose, Text, Pressable, Link } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farEllipsis } from "../icons/regular/farEllipsis";
@@ -23,37 +23,31 @@ export default function TransactionDetailsActionSheet({ wallet, navigation, tran
                 <FontAwesomeIcon icon={farEllipsis} size={22} />
             </Pressable>
             <Actionsheet isOpen={isOpen} onClose={onClose}>
-                <Actionsheet.Content>
+                <Actionsheet.Content paddingBottom={"15px"}>
                     <Text fontWeight={"semibold"} style={styles.headerStyle} marginX={"auto"}>
                         Options
                     </Text>
-                    <Radio.Group
-                        name="transactionOptions"
-                        accessibilityLabel="transactionOptions"
-                        onChange={() => onClose()}
-                    >
-                        <Actionsheet.Item>
-                            <Link
-                                style={styles.option}
-                                isUnderlined={false}
-                                _text={{
-                                    color: "darkBlue.500",
-                                    fontWeight: "semibold",
-                                }}
-                                onPress={() =>
-                                    navigation.navigate("ContactsListScreen", {
-                                        prefilledWalletAddress: isIncomingTransaction
-                                            ? transaction.walletOut
-                                            : transaction.walletIn,
-                                    })
-                                }
-                                testID="addContactActionSheetButton"
-                            >
-                                {isIncomingTransaction ? "Add sender contact" : "Add recipient contact"}
-                            </Link>
-                        </Actionsheet.Item>
-                    </Radio.Group>
-                    <Box paddingBottom={"15px"}></Box>
+                    <Actionsheet.Item>
+                        <Link
+                            style={styles.option}
+                            isUnderlined={false}
+                            _text={{
+                                color: "darkBlue.500",
+                                fontWeight: "semibold",
+                            }}
+                            onPress={() => {
+                                onClose();
+                                navigation.navigate("ContactsListScreen", {
+                                    prefilledWalletAddress: isIncomingTransaction
+                                        ? transaction.walletOut
+                                        : transaction.walletIn,
+                                });
+                            }}
+                            testID="addContactActionSheetButton"
+                        >
+                            {isIncomingTransaction ? "Add sender contact" : "Add recipient contact"}
+                        </Link>
+                    </Actionsheet.Item>
                 </Actionsheet.Content>
             </Actionsheet>
         </>

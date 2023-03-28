@@ -54,7 +54,10 @@ export default function SettingsScreen({ navigation }: SettingsStackScreenProps<
 
     return (
         <View style={styles.view}>
-            <VStack space="7.5px">
+            <Text size={"title1"} fontWeight={"semibold"}>
+                Settings
+            </Text>
+            <VStack space="2px" marginTop="20px">
                 {items.map((item) => (
                     <Pressable
                         onPress={item.onPress}
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
+        paddingTop: 40,
     },
     button: {
         paddingHorizontal: 10,
@@ -97,6 +100,5 @@ const styles = StyleSheet.create({
     chevronRightIcon: {
         color: "#A3A3A3",
         marginLeft: "auto",
-        marginRight: 5,
     },
 });

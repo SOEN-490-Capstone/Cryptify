@@ -6,12 +6,21 @@ import WalletsList from "../components/wallets-list/WalletsList";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { fasCirclePlusSolid } from "../components/icons/solid/fasCirclePlusSolid";
+import { AuthContext } from "../components/contexts/AuthContext";
 
 export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScreen">) {
+    const { user } = React.useContext(AuthContext);
+
     return (
         <View style={styles.view}>
-            <VStack space="15px" flex={1}>
-                <HStack style={styles.walletsListTitleContainer} justifyContent="space-between" alignItems="center">
+            <HStack flexWrap={"wrap"}>
+                <Text size={"title1"}>Hello, </Text>
+                <Text size={"title1"} fontWeight={"semibold"} textTransform={"capitalize"}>
+                    {user.firstName}
+                </Text>
+            </HStack>
+            <VStack space="15px" flex={1} marginTop="30px">
+                <HStack justifyContent="space-between" alignItems="center">
                     <Text size={"title3"} fontWeight={"semibold"}>
                         Wallets
                     </Text>
@@ -28,10 +37,8 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-    },
-    walletsListTitleContainer: {
         paddingHorizontal: 15,
-        marginTop: 20,
+        paddingTop: 40,
     },
     addWalletIcon: {
         color: "#404040",

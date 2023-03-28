@@ -55,7 +55,9 @@ export default function AccountScreen({ navigation }: SettingsStackScreenProps<"
                     inlineLink={() => navigation.navigate("AccountTypeScreen")}
                 />
                 <Pressable onPress={() => navigation.navigate("AccountPasswordScreen")}>
-                    <HStack alignItems="center">
+
+                    <HStack height={"44px"} alignItems="center">
+
                         <Text>Change Password</Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
+        paddingTop: 20,
+        paddingBottom: 15,
     },
     chevronRightIcon: {
         color: "#A3A3A3",

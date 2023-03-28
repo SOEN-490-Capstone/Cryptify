@@ -25,12 +25,16 @@ function applyBaseFilters(
 
     // filter for incoming transactions
     if (filtersByTransaction[1] === filter) {
-        transactions = transactions.filter((transaction) => transaction.walletIn === walletAddress);
+        transactions = transactions.filter(
+            (transaction) => transaction.walletIn.toLowerCase() === walletAddress.toLowerCase(),
+        );
     }
 
     // filter for outgoing transactions
     if (filtersByTransaction[2] === filter) {
-        transactions = transactions.filter((transaction) => transaction.walletOut === walletAddress);
+        transactions = transactions.filter(
+            (transaction) => transaction.walletOut.toLowerCase() === walletAddress.toLowerCase(),
+        );
     }
 
     // filter for transactions that happened the passed 90 days

@@ -220,9 +220,8 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 
 const styles = StyleSheet.create({
     view: {
-        paddingTop: 10,
-        Color: "#FFFFFF",
         flex: 1,
+        paddingTop: 20,
     },
     badge: {
         backgroundColor: "#DBF4FF",

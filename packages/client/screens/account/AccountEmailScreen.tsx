@@ -21,8 +21,19 @@ export default function AccountNameScreen() {
     };
 
     async function handleUpdate(values: UpdateUserRequest, formikHelpers: FormikHelpers<UpdateUserRequest>) {
+        const newEmail = values.email;
+        const oldEmail = user.email;
+
         try {
-            const user = await usersGateway.update({ userId: values.userId, email: values.email }, token);
+            if (newEmail == oldEmail) {
+                formikHelpers.setFieldError("email", "This email address is already associated with your account.");
+                return;
+            }
+
+            const user = await usersGateway.update(
+                { userId: values.userId, email: values.email, confirmEmail: values.confirmEmail },
+                token,
+            );
             setUser(user);
 
             toast.show({
@@ -32,7 +43,7 @@ export default function AccountNameScreen() {
                     return (
                         <Box style={styles.toastBox}>
                             <Text size={"footnote1"} fontWeight={"semibold"} color={"white"} style={styles.toastText}>
-                                Email updated succesfully
+                                Email updated successfully
                             </Text>
                         </Box>
                     );
@@ -43,8 +54,8 @@ export default function AccountNameScreen() {
             values.email = "";
         } catch (error) {
             if (error instanceof Error) {
-                formikHelpers.setFieldError("email", error.message);
                 formikHelpers.setFieldError("confirmEmail", error.message);
+                formikHelpers.setFieldError("email", error.message);
             }
         }
     }
@@ -53,12 +64,12 @@ export default function AccountNameScreen() {
         <View style={styles.view}>
             <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={5}>
+                    <VStack space={4}>
                         <Text size={"title2"} fontWeight={"semibold"}>
                             Current
                         </Text>
                         <Text>{user.email}</Text>
-                        <Text size={"title2"} fontWeight={"semibold"}>
+                        <Text size={"title2"} marginTop={5} fontWeight={"semibold"}>
                             New
                         </Text>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>

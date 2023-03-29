@@ -133,6 +133,7 @@ type ContactWithHeader = {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
+        paddingTop: 20,
     },
     contactBook: {
         alignItems: "center",

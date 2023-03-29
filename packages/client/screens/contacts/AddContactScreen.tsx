@@ -27,8 +27,5 @@ export default function AddContactScreen(props: Props) {
 const styles = StyleSheet.create({
     view: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingTop: 30,
-        paddingBottom: 15,
     },
 });

@@ -1,11 +1,19 @@
 import React from "react";
 import { Formik, FormikHelpers, FormikProps } from "formik";
-import { Button, FormControl, Input, ScrollView } from "native-base";
+import { Box, Button, FormControl, Input, ScrollView, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
-import { titleCase } from "@cryptify/common/src/utils/string_utils";
-import { getCurrencyType, isValidCurrencyAddress } from "@cryptify/common/src/utils/currency_utils";
-import { ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY } from "@cryptify/common/src/errors/error_messages";
+import {
+    getCurrencyType,
+    getCurrencyTypeUILabel,
+    isValidCurrencyAddress,
+} from "@cryptify/common/src/utils/currency_utils";
+import {
+    ERROR_CONTACT_NAME_EMPTY,
+    ERROR_CONTACT_NAME_TOO_LONG,
+    ERROR_CONTACT_NAME_INVALID_CHARACTERS,
+    ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY,
+} from "@cryptify/common/src/errors/error_messages";
 import { ContactsGateway } from "../../gateways/contacts_gateway";
 import { AuthContext } from "../contexts/AuthContext";
 import CollapsibleFormSection from "./CollapsibleFormSection";
@@ -78,78 +86,99 @@ export default function ContactsForm(props: Props) {
     return (
         <Formik innerRef={props.formikRef} initialValues={initialValues} onSubmit={onSubmit}>
             {({ values, errors, touched, handleChange, submitForm, setFieldValue }) => (
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
-                        <Input
-                            value={values.contactName}
-                            autoFocus={!props.contact}
-                            onChangeText={handleChange("contactName")}
-                            placeholder="Name"
-                            maxLength={20}
-                            keyboardType={"ascii-capable"}
-                            testID="contactNameInput"
-                        />
-                        <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
-                    </FormControl>
-                    {!props.prefilledWalletAddress ? (
-                        <>
+                <>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.scrollView}>
+                        <FormControl isInvalid={!!(errors.contactName && touched.contactName)}>
+                            <Input
+                                value={values.contactName}
+                                autoFocus={!props.contact}
+                                onChangeText={handleChange("contactName")}
+                                placeholder="Name"
+                                maxLength={20}
+                                keyboardType={"ascii-capable"}
+                                testID="contactNameInput"
+                            />
+                            <FormControl.ErrorMessage>{errors.contactName}</FormControl.ErrorMessage>
+                        </FormControl>
+                        {!props.prefilledWalletAddress ? (
+                            <VStack paddingBottom={140}>
+                                <CollapsibleFormSection
+                                    values={values}
+                                    handleChange={handleChange}
+                                    currencyType={CurrencyType.BITCOIN}
+                                    errors={errors}
+                                    touched={touched}
+                                    placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
+                                    initialIsCollapsed={false}
+                                    isPrefilledAddContact={false}
+                                    setFieldValue={setFieldValue}
+                                    navigation={props.navigation}
+                                />
+                                <CollapsibleFormSection
+                                    values={values}
+                                    handleChange={handleChange}
+                                    currencyType={CurrencyType.ETHEREUM}
+                                    errors={errors}
+                                    touched={touched}
+                                    placeholder={"Wallet address (Begins with 0x)"}
+                                    initialIsCollapsed={false}
+                                    isPrefilledAddContact={false}
+                                    setFieldValue={setFieldValue}
+                                    navigation={props.navigation}
+                                />
+                            </VStack>
+                        ) : (
                             <CollapsibleFormSection
                                 values={values}
                                 handleChange={handleChange}
-                                currencyType={CurrencyType.BITCOIN}
+                                currencyType={getCurrencyType(props.prefilledWalletAddress)}
                                 errors={errors}
                                 touched={touched}
-                                placeholder={"Wallet address (Begins with 1, 3, or bc1)"}
-                                initialIsCollapsed={!props.contact}
-                                isPrefilledAddContact={false}
+                                initialIsCollapsed={false}
+                                isPrefilledAddContact={true}
                                 setFieldValue={setFieldValue}
                                 navigation={props.navigation}
                             />
-                            <CollapsibleFormSection
-                                values={values}
-                                handleChange={handleChange}
-                                currencyType={CurrencyType.ETHEREUM}
-                                errors={errors}
-                                touched={touched}
-                                placeholder={"Wallet address (Begins with 0x)"}
-                                initialIsCollapsed={!props.contact}
-                                isPrefilledAddContact={false}
-                                setFieldValue={setFieldValue}
-                                navigation={props.navigation}
-                            />
-                        </>
-                    ) : (
-                        <CollapsibleFormSection
-                            values={values}
-                            handleChange={handleChange}
-                            currencyType={getCurrencyType(props.prefilledWalletAddress)}
-                            errors={errors}
-                            touched={touched}
-                            initialIsCollapsed={false}
-                            isPrefilledAddContact={true}
-                            setFieldValue={setFieldValue}
-                            navigation={props.navigation}
-                        />
-                    )}
+                        )}
+                    </ScrollView>
                     {!props.contact && (
-                        <Button
-                            style={styles.addContactButton}
-                            isDisabled={values.contactName.length === 0}
-                            onPress={submitForm}
-                            testID="submitCreateContactButton"
-                        >
-                            Add Contact
-                        </Button>
+                        <Box style={styles.addContactButtonContainer}>
+                            <Button
+                                isDisabled={
+                                    props.prefilledWalletAddress
+                                        ? values.contactName.length === 0
+                                        : values.contactName.length === 0 &&
+                                          values.ethWallets.map((addr) => addr.length).reduce((a, b) => a + b, 0) ===
+                                              0 &&
+                                          values.btcWallets.map((addr) => addr.length).reduce((a, b) => a + b, 0) === 0
+                                }
+                                onPress={submitForm}
+                                testID="submitCreateContactButton"
+                            >
+                                Add Contact
+                            </Button>
+                        </Box>
                     )}
-                </ScrollView>
+                </>
             )}
         </Formik>
     );
 }
 
 const styles = StyleSheet.create({
-    addContactButton: {
-        marginTop: "auto",
+    scrollView: {
+        paddingTop: 40,
+        paddingHorizontal: 15,
+    },
+    addContactButtonContainer: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingHorizontal: 15,
+        paddingBottom: 15,
+        paddingTop: 8,
+        backgroundColor: "white",
     },
 });
 
@@ -167,6 +196,18 @@ export function handleErrors(
     const currencies = [CurrencyType.BITCOIN, CurrencyType.ETHEREUM];
     let hasError = false;
 
+    // Check if the contact name is empty, is less max length of 65 characters, and contains only alphabetic and spaces
+    if (values.contactName.length === 0) {
+        formikHelpers.setFieldError("contactName", ERROR_CONTACT_NAME_EMPTY);
+        hasError = true;
+    } else if (values.contactName.length > 65) {
+        formikHelpers.setFieldError("contactName", ERROR_CONTACT_NAME_TOO_LONG);
+        hasError = true;
+    } else if (!/^[a-zA-Z ]+$/.test(values.contactName)) {
+        formikHelpers.setFieldError("contactName", ERROR_CONTACT_NAME_INVALID_CHARACTERS);
+        hasError = true;
+    }
+
     // checking for errors for each currency in the list
     currencies.forEach((currencyType) => {
         const wallets = currencyType === CurrencyType.BITCOIN ? values.btcWallets : values.ethWallets;
@@ -180,7 +221,7 @@ export function handleErrors(
                 if (!isAddressValid) {
                     formikHelpers.setFieldError(
                         `${walletListString}[${i}]`,
-                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(titleCase(currencyType)).split(":")[1],
+                        ERROR_WALLET_ADDRESS_INVALID_FOR_CURRENCY(getCurrencyTypeUILabel(currencyType)).split(":")[1],
                     );
                     hasError = true;
                 }

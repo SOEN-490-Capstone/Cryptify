@@ -105,8 +105,8 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
 
     return (
         <View style={styles.view}>
-            <ScrollView style={styles.scrollView}>
-                <VStack space={"35px"} paddingTop={"30px"} paddingBottom={"10px"}>
+            <ScrollView>
+                <VStack>
                     <ContactsForm
                         prefilledWalletAddress={undefined}
                         contact={props.route.params.contact}
@@ -119,6 +119,7 @@ export default function EditContactScreen(props: SettingsStackScreenProps<"EditC
                         _text={{ color: "error.500" }}
                         onPress={handleDeleteContact}
                         testID="deleteContactButton"
+                        style={styles.deleteButton}
                     >
                         Delete contact
                     </Button>
@@ -132,7 +133,9 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
     },
-    scrollView: {
-        paddingHorizontal: 15,
+    deleteButton: {
+        marginHorizontal: 15,
+        marginTop: -85,
+        marginBottom: 15,
     },
 });

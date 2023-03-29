@@ -5,7 +5,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { FormControl, HStack, Input, Text, Pressable } from "native-base";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { farChevronDown } from "../icons/regular/farChevronDown";
 import { farChevronUp } from "../icons/regular/farChevronUp";
 import Collapsible from "react-native-collapsible";
@@ -15,6 +14,7 @@ import { falCircleXMark } from "../icons/light/falCircleXMark";
 import { farCirclePlus } from "../icons/regular/farCirclePlus";
 import { QRCodeScannerInputIcon } from "../QRCodeScannerInputIcon";
 import { CompositeNavigationProp } from "@react-navigation/native";
+import { getCurrencyTypeUILabel } from "@cryptify/common/src/utils/currency_utils";
 
 type CreateContactRequestPayload = {
     contactName: string;
@@ -56,6 +56,18 @@ export default function CollapsibleFormSection({
     const currencyTouched = currencyType === CurrencyType.BITCOIN ? touched.btcWallets : touched.ethWallets;
     const walletListString = currencyType === CurrencyType.BITCOIN ? "btcWallets" : "ethWallets";
 
+    const addWalletButtonText = (walletsAmount: number) => {
+        if (walletsAmount > 0) {
+            return "Add another " + getCurrencyTypeUILabel(currencyType) + " wallet";
+        } else {
+            if (currencyType === CurrencyType.BITCOIN) {
+                return "Add a Bitcoin wallet";
+            } else {
+                return "Add an Ethereum wallet";
+            }
+        }
+    };
+
     const [isCollapsed, setIsCollapsed] = React.useState<boolean>(initialIsCollapsed);
 
     return (
@@ -66,10 +78,10 @@ export default function CollapsibleFormSection({
                 }}
                 testID={`walletCollapsibleButton${currencyType}`}
             >
-                <HStack style={{ marginTop: 40 }}>
-                    <FontAwesomeIcon style={{ marginRight: 10 }} color={iconColor} icon={currencyIcon} size={26} />
-                    <Text fontWeight={"semibold"} size={"title3"}>
-                        {titleCase(currencyType)} Wallets
+                <HStack marginTop={"35px"} alignItems="center">
+                    <FontAwesomeIcon color={iconColor} icon={currencyIcon} size={26} />
+                    <Text fontWeight={"semibold"} size={"title3"} marginLeft={"10px"}>
+                        {getCurrencyTypeUILabel(currencyType)} Wallets
                     </Text>
                     {isCollapsed ? (
                         <FontAwesomeIcon style={styles.chevronIcon} size={18} icon={farChevronDown} />
@@ -85,8 +97,11 @@ export default function CollapsibleFormSection({
                     render={(arrayHelpers) => (
                         <View>
                             {wallets?.map((wallet, i) => (
-                                <View style={wallets.length > 1 ? { marginTop: 13 } : { marginTop: 20 }} key={wallet}>
-                                    <FormControl isInvalid={!!(currencyErrors?.[i] && currencyTouched)}>
+                                <View key={`${walletListString}[${i}]`}>
+                                    <FormControl
+                                        style={i > 1 ? { marginTop: 13 } : { marginTop: 15 }}
+                                        isInvalid={!!(currencyErrors?.[i] && currencyTouched)}
+                                    >
                                         <Input
                                             value={wallet}
                                             onChangeText={handleChange(`${walletListString}[${i}]`)}
@@ -134,14 +149,10 @@ export default function CollapsibleFormSection({
                                         }}
                                         testID={`addAnother${currencyType}`}
                                     >
-                                        <HStack style={{ marginTop: 13 }} alignItems={"center"}>
+                                        <HStack style={{ marginTop: 15 }} space={"10px"} alignItems={"center"}>
                                             <FontAwesomeIcon color={"#0077E6"} icon={farCirclePlus} size={18} />
-                                            <Text
-                                                style={{ marginLeft: 10 }}
-                                                color={"darkBlue.500"}
-                                                fontWeight={"semibold"}
-                                            >
-                                                Add another {titleCase(currencyType)} wallet
+                                            <Text color={"darkBlue.500"} fontWeight={"semibold"} size={"callout"}>
+                                                {addWalletButtonText(wallets.length)}
                                             </Text>
                                         </HStack>
                                     </Pressable>
@@ -159,5 +170,6 @@ const styles = StyleSheet.create({
     chevronIcon: {
         marginLeft: "auto",
         marginRight: 5,
+        color: "#A3A3A3",
     },
 });

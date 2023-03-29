@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "../../components/Themed";
-import { Button, FormControl, Input, Text, VStack } from "native-base";
+import { Button, Center, FormControl, Input, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { Formik } from "formik";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
@@ -32,22 +32,24 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
     };
 
     return (
-        <View style={styles.container}>
-            <Text size={"title1"} fontWeight={"semibold"}>
-                Reset your password
-            </Text>
+        <View style={styles.view}>
+            <VStack space={"20px"}>
+                <Text textAlign={"center"} size={"title1"} fontWeight={"semibold"}>
+                    Reset your password
+                </Text>
 
-            <Text textAlign={"center"} size={"callout"}>
-                Enter the email address associated with your account and we'll send you instructions to reset your
-                password.
-            </Text>
+                <Text textAlign={"center"} size={"callout"}>
+                    Enter the email address associated with your account and we'll send you instructions to reset your
+                    password.
+                </Text>
+            </VStack>
             <Formik
                 initialValues={initialValues}
                 validationSchema={forgotPasswordSchema}
                 onSubmit={onSubmitResetPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space="13px" style={{ marginHorizontal: 0, marginTop: 15, width: "100%" }}>
+                    <VStack space={"20px"} marginTop={"35px"}>
                         <FormControl isInvalid={!!(errors.email && touched.email)}>
                             <Input
                                 value={values.email}
@@ -60,7 +62,6 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <Button
-                            style={{ marginTop: 7 }}
                             onPress={submitForm}
                             isDisabled={!!(values?.email.length === 0)}
                         >
@@ -74,10 +75,9 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
 }
 
 const styles = StyleSheet.create({
-    container: {
+    view: {
         flex: 1,
-        alignItems: "center",
         justifyContent: "center",
-        padding: 15,
+        paddingHorizontal: 15,
     },
 });

@@ -27,6 +27,7 @@ declare global {
 
 type AddWalletScreenProps = {
     currencyType: CurrencyType;
+    addWalletStartScreenName: string;
 };
 
 type TransactionDetailsProps = {
@@ -149,9 +150,13 @@ export type CreateNewPasswordScreenProps = {
     token: string;
 };
 
+export type AddWalletSelectionScreenProps = {
+    addWalletStartScreenName: string;
+};
+
 export type HomeStackParamList = {
     HomeScreen: undefined;
-    AddWalletSelectionScreen: undefined;
+    AddWalletSelectionScreen: AddWalletSelectionScreenProps;
     AddWalletScreen: AddWalletScreenProps;
     TransactionDetailsScreen: TransactionDetailsProps;
     WalletOverviewScreen: WalletOverviewScreenProps;
@@ -188,7 +193,7 @@ type EditContactScreenProps = {
 
 export type SettingsStackParamList = {
     SettingsScreen: undefined;
-    AddWalletSelectionScreen: undefined;
+    AddWalletSelectionScreen: AddWalletSelectionScreenProps;
     AddWalletScreen: AddWalletScreenProps;
     ViewWalletsScreen: ViewWalletsScreenProps;
     WalletSettingsScreen: WalletSettingsScreenProps;

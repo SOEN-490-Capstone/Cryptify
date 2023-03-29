@@ -14,7 +14,7 @@ type Props = CompositeScreenProps<
     SettingsStackScreenProps<"AddWalletSelectionScreen">
 >;
 
-export default function AddWalletSelectionScreen({ navigation }: Props) {
+export default function AddWalletSelectionScreen({ route, navigation }: Props) {
     return (
         <View style={styles.view}>
             <Text size={"title1"} fontWeight={"semibold"}>
@@ -23,7 +23,12 @@ export default function AddWalletSelectionScreen({ navigation }: Props) {
             <VStack style={styles.currencyTypeStack} space="2px">
                 {currenciesDisplayData.map((currency) => (
                     <Pressable
-                        onPress={() => navigation.navigate("AddWalletScreen", { currencyType: currency.type })}
+                        onPress={() =>
+                            navigation.navigate("AddWalletScreen", {
+                                currencyType: currency.type,
+                                addWalletStartScreenName: route.params.addWalletStartScreenName,
+                            })
+                        }
                         key={currency.type}
                         style={styles.currencyTypeItem}
                         _pressed={{

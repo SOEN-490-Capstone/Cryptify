@@ -33,7 +33,7 @@ describe("CRYP-24 Add wallet", () => {
         await waitFor(element(by.text("Add another Ethereum wallet")))
             .toBeVisible()
             .withTimeout(5000);
-        await element(by.id("backToWalletsButton")).tap();
+        await element(by.id("backToButton")).tap();
 
         // Assert ethereum wallets
         await element(by.id("walletsListETHEREUM")).tap();

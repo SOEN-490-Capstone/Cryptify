@@ -13,7 +13,7 @@ import { FormikErrors } from "formik";
 type Props = CompositeScreenProps<HomeStackScreenProps<"AddWalletScreen">, SettingsStackScreenProps<"AddWalletScreen">>;
 
 export default function AddWalletScreen({ route, navigation }: Props) {
-    const currencyType = route.params.currencyType;
+    const { currencyType, addWalletStartScreenName } = route.params;
 
     const [state, setState] = React.useState(AddWalletState.FORM);
     const [walletName, setWalletName] = React.useState<string>("");
@@ -53,6 +53,7 @@ export default function AddWalletScreen({ route, navigation }: Props) {
                 currencyType={currencyType}
                 setState={setState}
                 walletName={walletName}
+                addWalletStartScreenName={addWalletStartScreenName}
                 navigation={navigation}
             />
         );
@@ -63,6 +64,7 @@ export default function AddWalletScreen({ route, navigation }: Props) {
                 currencyType={currencyType}
                 setState={setState}
                 walletName={walletName}
+                addWalletStartScreenName={addWalletStartScreenName}
                 navigation={navigation}
             />
         );

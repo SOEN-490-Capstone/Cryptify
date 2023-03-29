@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     bellIcon: {
-        marginTop: 80,
+        marginTop: 60,
     },
 });

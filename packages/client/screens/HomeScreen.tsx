@@ -24,7 +24,14 @@ export default function HomeScreen({ navigation }: HomeStackScreenProps<"HomeScr
                     <Text size={"title3"} fontWeight={"semibold"}>
                         Wallets
                     </Text>
-                    <Pressable onPress={() => navigation.navigate("AddWalletSelectionScreen")} testID="addWalletButton">
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate("AddWalletSelectionScreen", {
+                                addWalletStartScreenName: "HomeScreen",
+                            })
+                        }
+                        testID="addWalletButton"
+                    >
                         <FontAwesomeIcon icon={fasCirclePlusSolid} style={styles.addWalletIcon} size={22} />
                     </Pressable>
                 </HStack>

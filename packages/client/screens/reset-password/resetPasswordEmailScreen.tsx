@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "../../components/Themed";
-import { Button, Center, FormControl, Input, Text, VStack } from "native-base";
+import { Button, FormControl, Input, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { Formik } from "formik";
 import { ERROR_NOP } from "@cryptify/common/src/errors/error_messages";
@@ -12,8 +12,8 @@ import { KEY_JWT } from "../../constants/storage_keys";
 import StorageService from "../../services/storage_service";
 import { AuthContext } from "../../components/contexts/AuthContext";
 
-export default function ResetPasswordEmailScreen(navigation: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
-    const { setToken } = React.useContext(AuthContext);
+export default function ResetPasswordEmailScreen({ navigation }: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
+    const { setToken, user } = React.useContext(AuthContext);
 
     async function onSubmitResetPassword(values: ForgotPasswordRequest) {
         try {
@@ -21,14 +21,14 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
             await gateway.forgotPassword(values);
             await StorageService.remove(KEY_JWT);
             setToken("");
-            navigation.navigation.navigate("ResetPasswordSuccessScreen");
+            navigation.navigate("ResetPasswordSuccessScreen");
         } catch (e) {
-            navigation.navigation.navigate("ResetPasswordFailureScreen");
+            navigation.navigate("ResetPasswordFailureScreen");
         }
     }
 
     const initialValues = {
-        email: "",
+        email: user.email || "",
     };
 
     return (
@@ -56,15 +56,13 @@ export default function ResetPasswordEmailScreen(navigation: GuestStackScreenPro
                                 onChangeText={handleChange("email")}
                                 placeholder="Email"
                                 testID="email"
+                                isDisabled={!!user.email}
                             />
                             <FormControl.ErrorMessage>
                                 {errors.email != ERROR_NOP && errors.email}
                             </FormControl.ErrorMessage>
                         </FormControl>
-                        <Button
-                            onPress={submitForm}
-                            isDisabled={!!(values?.email.length === 0)}
-                        >
+                        <Button onPress={submitForm} isDisabled={!!(values?.email.length === 0)}>
                             Send instructions
                         </Button>
                     </VStack>

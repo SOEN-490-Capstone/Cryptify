@@ -381,6 +381,7 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    gestureEnabled: false,
                     headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
@@ -764,6 +765,7 @@ function SettingsStackScreen({ navigation, route }: { route: RouteProp<any, any>
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    gestureEnabled: false,
                     headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
@@ -795,10 +797,11 @@ function GuestStackScreen() {
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
                     headerBackVisible: false,
+                    gestureEnabled: false,
                     headerRight: () => (
                         <Pressable
                             onPress={() => {
-                                navigation.goBack();
+                                navigation.navigate("WelcomeScreen");
                             }}
                             testID="headerRightButton"
                         >
@@ -814,7 +817,8 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                    headerLeft: () => BackButton(navigation),
+                    headerLeft: () => BackButton(navigation, "WelcomeScreen"),
+                    gestureEnabled: false,
                 })}
             />
             <GuestStack.Screen

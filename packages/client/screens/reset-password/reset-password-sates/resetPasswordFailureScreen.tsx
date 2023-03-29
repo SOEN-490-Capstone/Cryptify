@@ -1,12 +1,14 @@
 import React from "react";
 import { View } from "../../../components/Themed";
-import { Button, Center, Text, VStack } from "native-base";
+import { Button, Center, Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falEnvelope } from "../../../components/icons/light/falEnvelope";
 import { GuestStackScreenProps } from "../../../types";
 
-export default function ResetPasswordFailureScreen({ navigation }: GuestStackScreenProps<"ResetPasswordFailureScreen">) {
+export default function ResetPasswordFailureScreen({
+    navigation,
+}: GuestStackScreenProps<"ResetPasswordFailureScreen">) {
     return (
         <View style={styles.view}>
             <Center alignItems="center">

@@ -21,15 +21,7 @@ export default function AccountNameScreen() {
     };
 
     async function handleUpdate(values: UpdateUserRequest, formikHelpers: FormikHelpers<UpdateUserRequest>) {
-        const newEmail = values.email;
-        const oldEmail = user.email;
-
         try {
-            if (newEmail == oldEmail) {
-                formikHelpers.setFieldError("email", "This email address is already associated with your account.");
-                return;
-            }
-
             const user = await usersGateway.update(
                 { userId: values.userId, email: values.email, confirmEmail: values.confirmEmail },
                 token,
@@ -97,7 +89,7 @@ export default function AccountNameScreen() {
                                     </FormControl.ErrorMessage>
                                 </FormControl>
                                 <Button
-                                    isDisabled={!(values.confirmEmail && values.email)}
+                                    isDisabled={!((values.confirmEmail && values.email)) || values.email == user.email}
                                     onPress={submitForm}
                                     marginTop={"7px"}
                                 >

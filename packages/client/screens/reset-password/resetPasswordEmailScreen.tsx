@@ -12,7 +12,7 @@ import { KEY_JWT } from "../../constants/storage_keys";
 import StorageService from "../../services/storage_service";
 import { AuthContext } from "../../components/contexts/AuthContext";
 
-export default function ResetPasswordEmailScreen({ navigation }: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
+export default function ResetPasswordEmailScreen(navigation: GuestStackScreenProps<"ResetPasswordEmailScreen">) {
     const { setToken, user } = React.useContext(AuthContext);
 
     async function onSubmitResetPassword(values: ForgotPasswordRequest) {
@@ -21,9 +21,9 @@ export default function ResetPasswordEmailScreen({ navigation }: GuestStackScree
             await gateway.forgotPassword(values);
             await StorageService.remove(KEY_JWT);
             setToken("");
-            navigation.navigate("ResetPasswordSuccessScreen");
+            navigation.navigation.navigate("ResetPasswordSuccessScreen");
         } catch (e) {
-            navigation.navigate("ResetPasswordFailureScreen");
+            navigation.navigation.navigate("ResetPasswordFailureScreen");
         }
     }
 

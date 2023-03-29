@@ -22,7 +22,10 @@ export default function AccountNameScreen() {
 
     async function handleUpdate(values: UpdateUserRequest, formikHelpers: FormikHelpers<UpdateUserRequest>) {
         try {
-            const user = await usersGateway.update({ userId: values.userId, email: values.email }, token);
+            const user = await usersGateway.update(
+                { userId: values.userId, email: values.email, confirmEmail: values.confirmEmail },
+                token,
+            );
             setUser(user);
 
             toast.show({
@@ -32,7 +35,7 @@ export default function AccountNameScreen() {
                     return (
                         <Box style={styles.toastBox}>
                             <Text size={"footnote1"} fontWeight={"semibold"} color={"white"} style={styles.toastText}>
-                                Email updated succesfully
+                                Email updated successfully
                             </Text>
                         </Box>
                     );
@@ -43,8 +46,8 @@ export default function AccountNameScreen() {
             values.email = "";
         } catch (error) {
             if (error instanceof Error) {
-                formikHelpers.setFieldError("email", error.message);
                 formikHelpers.setFieldError("confirmEmail", error.message);
+                formikHelpers.setFieldError("email", error.message);
             }
         }
     }
@@ -53,41 +56,47 @@ export default function AccountNameScreen() {
         <View style={styles.view}>
             <Formik initialValues={intitialValues} validationSchema={updateUserSchema} onSubmit={handleUpdate}>
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={4} marginTop={5}>
-                        <Text size={"title2"} fontWeight={"semibold"}>
-                            Current
-                        </Text>
-                        <Text>{user.email}</Text>
-                        <Text size={"title2"} fontWeight={"semibold"}>
-                            New
-                        </Text>
-                        <FormControl isInvalid={!!(errors.email && touched.email)}>
-                            <Input
-                                value={values.email}
-                                onChangeText={handleChange("email")}
-                                placeholder="Email"
-                                testID="email"
-                            />
-                            <FormControl.ErrorMessage>{touched.email && errors.email}</FormControl.ErrorMessage>
-                        </FormControl>
-                        <FormControl isInvalid={!!(errors.confirmEmail && touched.confirmEmail)}>
-                            <Input
-                                value={values.confirmEmail}
-                                onChangeText={handleChange("confirmEmail")}
-                                placeholder="Confirm email"
-                                testID="confirmEmail"
-                            />
-                            <FormControl.ErrorMessage>
-                                {touched.confirmEmail && errors.confirmEmail}
-                            </FormControl.ErrorMessage>
-                            <Button
-                                isDisabled={!(values.confirmEmail && values.email)}
-                                style={styles.Button}
-                                onPress={submitForm}
-                            >
-                                Save changes
-                            </Button>
-                        </FormControl>
+                    <VStack space={"35px"}>
+                        <VStack space={"20px"}>
+                            <Text size={"title3"} fontWeight={"semibold"}>
+                                Current
+                            </Text>
+                            <Text>{user.email}</Text>
+                        </VStack>
+                        <VStack>
+                            <Text size={"title3"} fontWeight={"semibold"}>
+                                New
+                            </Text>
+                            <VStack space={"13px"} marginTop={"15px"}>
+                                <FormControl isInvalid={!!(errors.email && touched.email)}>
+                                    <Input
+                                        value={values.email}
+                                        onChangeText={handleChange("email")}
+                                        placeholder="Email"
+                                        testID="email"
+                                    />
+                                    <FormControl.ErrorMessage>{touched.email && errors.email}</FormControl.ErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!(errors.confirmEmail && touched.confirmEmail)}>
+                                    <Input
+                                        value={values.confirmEmail}
+                                        onChangeText={handleChange("confirmEmail")}
+                                        placeholder="Confirm email"
+                                        testID="confirmEmail"
+                                    />
+                                    <FormControl.ErrorMessage>
+                                        {touched.confirmEmail && errors.confirmEmail}
+                                    </FormControl.ErrorMessage>
+                                </FormControl>
+                                <Button
+                                    isDisabled={!(values.confirmEmail && values.email) || values.email == user.email}
+                                    onPress={submitForm}
+                                    marginTop={"7px"}
+                                >
+                                    Save changes
+                                </Button>
+                            </VStack>
+                        </VStack>
                     </VStack>
                 )}
             </Formik>
@@ -99,14 +108,7 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         paddingHorizontal: 15,
-        paddingTop: 10,
-    },
-    Button: {
-        marginTop: 20,
-    },
-    ButtonDisabled: {
-        opacity: 0.6,
-        marginTop: 20,
+        paddingTop: 20,
     },
     toastBox: {
         backgroundColor: "#404040",

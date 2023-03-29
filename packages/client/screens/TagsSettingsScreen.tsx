@@ -38,11 +38,7 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
             props.navigation.setOptions({
                 headerRight: () => (
                     <>
-                        <Pressable
-                            onPress={() => props.navigation.navigate("AddTagsScreen")}
-                            style={styles.plusIcon}
-                            testID="addTagButton"
-                        >
+                        <Pressable onPress={() => props.navigation.navigate("AddTagsScreen")} testID="addTagButton">
                             <FontAwesomeIcon icon={farPlus} color="#404040" size={22} />
                         </Pressable>
                         {isEditMode ? (
@@ -54,19 +50,25 @@ export default function TagsSettingsScreen(props: SettingsStackScreenProps<"Tags
                                     fontWeight: "semibold",
                                 }}
                                 testID="editTagDone"
+                                marginLeft={"15px"}
                             >
                                 Done
                             </Link>
-                        ) : (
-                            <Link onPress={() => setIsEditMode(true)} isUnderlined={false} testID="editTagEdit">
+                        ) : tags.length > 0 ? (
+                            <Link
+                                onPress={() => setIsEditMode(true)}
+                                isUnderlined={false}
+                                testID="editTagEdit"
+                                marginLeft={"15px"}
+                            >
                                 Edit
                             </Link>
-                        )}
+                        ) : null}
                     </>
                 ),
             });
         })();
-    }, [isEditMode]);
+    }, [isEditMode, tags]);
 
     return tags.length === 0 ? (
         <View style={styles.view}>
@@ -105,8 +107,5 @@ const styles = StyleSheet.create({
     },
     tagIcon: {
         color: "#404040",
-    },
-    plusIcon: {
-        marginRight: 15,
     },
 });

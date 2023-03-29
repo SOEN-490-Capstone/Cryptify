@@ -845,6 +845,7 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    gestureEnabled: false,
                     headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
@@ -865,6 +866,7 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    gestureEnabled: false,
                     headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable
@@ -885,6 +887,7 @@ function GuestStackScreen() {
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
+                    gestureEnabled: false,
                     headerLeft: () => <></>,
                     headerRight: () => (
                         <Pressable

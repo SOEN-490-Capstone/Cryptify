@@ -40,21 +40,23 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
     };
 
     return (
-        <View style={styles.container}>
-            <Text size={"title1"} fontWeight={"semibold"}>
-                Create new password
-            </Text>
+        <View style={styles.view}>
+            <VStack space={"20px"}>
+                <Text textAlign={"center"} size={"title1"} fontWeight={"semibold"}>
+                    Create new password
+                </Text>
 
-            <Text size={"callout"} style={{ marginTop: 20, textAlign: "center" }}>
-                Your new password must be different from your previously used password.
-            </Text>
+                <Text textAlign={"center"} size={"callout"}>
+                    Your new password must be different from your previously used password.
+                </Text>
+            </VStack>
             <Formik
                 initialValues={initialValues}
                 validationSchema={resetPasswordSchema}
                 onSubmit={onSubmitCreateNewPassword}
             >
                 {({ values, errors, touched, handleChange, submitForm }) => (
-                    <VStack space={"13px"} marginTop={"35px"} style={{ width: "100%" }}>
+                    <VStack space={"13px"} marginTop={"35px"}>
                         <FormControl isInvalid={!!(errors.password && touched.password)}>
                             <Input
                                 value={values.password}
@@ -108,11 +110,10 @@ export default function CreateNewPasswordScreen(navigation: GuestStackScreenProp
 }
 
 const styles = StyleSheet.create({
-    container: {
+    view: {
         flex: 1,
-        alignItems: "center",
         justifyContent: "center",
-        padding: 15,
+        paddingHorizontal: 15,
     },
     eyeIcon: {
         color: "#404040",

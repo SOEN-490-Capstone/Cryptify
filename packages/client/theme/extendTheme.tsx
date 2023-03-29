@@ -6,6 +6,7 @@ import { input } from "./components/input";
 import { formControlErrorMessage } from "./components/form-control";
 import { ActionsheetContent, ActionsheetItem } from "./components/actionsheet";
 import { radio } from "./components/radio";
+import { checkbox } from "./components/checkbox";
 
 export default function () {
     return extendTheme({
@@ -18,6 +19,7 @@ export default function () {
             ActionsheetContent: ActionsheetContent,
             ActionsheetItem: ActionsheetItem,
             Radio: radio,
+            Checkbox: checkbox,
         },
     });
 }

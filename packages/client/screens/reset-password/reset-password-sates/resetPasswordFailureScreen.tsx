@@ -1,51 +1,38 @@
 import React from "react";
 import { View } from "../../../components/Themed";
-import { Button, Text, VStack } from "native-base";
+import { Button, Center, Text, VStack } from "native-base";
 import { StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { falEnvelope } from "../../../components/icons/light/falEnvelope";
 import { GuestStackScreenProps } from "../../../types";
 
-export default function ResetPasswordFailureScreen(navigation: GuestStackScreenProps<"ResetPasswordFailureScreen">) {
+export default function ResetPasswordFailureScreen({ navigation }: GuestStackScreenProps<"ResetPasswordFailureScreen">) {
     return (
-        <View style={styles.container}>
-            <VStack style={styles.content}>
+        <View style={styles.view}>
+            <Center alignItems="center">
                 <FontAwesomeIcon icon={falEnvelope} color={"#0077E6"} style={styles.envelopeIcon} size={96} />
-                <Text size={"title3"} fontWeight={"semibold"}>
+                <Text size={"title3"} fontWeight={"semibold"} marginBottom="15px" marginTop="30px">
                     Could Not Send Email
                 </Text>
-                <Text style={{ paddingHorizontal: 40, marginTop: 15, textAlign: "center" }}>
+                <Text textAlign={"center"}>
                     An error occured while sending password recovery instructions to your email.
                 </Text>
-            </VStack>
-
-            <VStack style={styles.footer}>
-                <Button onPress={() => navigation.navigation.goBack()} style={{ width: "100%", marginBottom: 20 }}>
-                    Try again
-                </Button>
-            </VStack>
+            </Center>
+            <Center style={{ flex: 1 }}></Center>
+            <Button onPress={() => navigation.goBack()} marginBottom={"20px"}>
+                Try again
+            </Button>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    view: {
         paddingHorizontal: 15,
         flex: 1,
         justifyContent: "center",
     },
-    content: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 50,
-    },
-    footer: {
-        alignItems: "center",
-        marginBottom: 15,
-        justifyContent: "center",
-    },
     envelopeIcon: {
-        marginTop: 20,
-        marginBottom: 30,
+        marginTop: 60,
     },
 });

@@ -881,11 +881,22 @@ function GuestStackScreen() {
             <GuestStack.Screen
                 name="ResetPasswordFailureScreen"
                 component={ResetPasswordFailureScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "",
                     headerTintColor: "#404040",
                     headerShadowVisible: false,
-                }}
+                    headerLeft: () => <></>,
+                    headerRight: () => (
+                        <Pressable
+                            onPress={() => {
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={farXMark} color="#404040" size={22} />
+                        </Pressable>
+                    ),
+                })}
             />
         </GuestStack.Navigator>
     );

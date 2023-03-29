@@ -89,7 +89,7 @@ export default function SignInScreen(navigation: GuestStackScreenProps<"SignInSc
                             _text={{ color: "darkBlue.500", fontWeight: "semibold" }}
                             isUnderlined={false}
                         >
-                            Forgot Password?
+                            Forgot password?
                         </Link>
                         <Button style={{ marginTop: 7 }} onPress={submitForm}>
                             Sign in

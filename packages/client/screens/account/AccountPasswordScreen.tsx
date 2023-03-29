@@ -43,7 +43,7 @@ export default function AccountPasswordScreen(navigation: SettingsStackScreenPro
                     return (
                         <Box style={styles.toastBox}>
                             <Text size={"footnote1"} fontWeight={"semibold"} color={"white"} style={styles.toastText}>
-                                Password updated succesfully
+                                Password updated successfully
                             </Text>
                         </Box>
                     );
@@ -89,7 +89,7 @@ export default function AccountPasswordScreen(navigation: SettingsStackScreenPro
                             _text={{ color: "darkBlue.500", fontWeight: "semibold" }}
                             isUnderlined={false}
                         >
-                            Forgot Password?
+                            Forgot password?
                         </Link>
                         <FormControl isInvalid={!!(errors.newPassword && touched.newPassword)}>
                             <Input

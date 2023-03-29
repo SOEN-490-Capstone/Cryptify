@@ -89,7 +89,7 @@ export default function AccountNameScreen() {
                                     </FormControl.ErrorMessage>
                                 </FormControl>
                                 <Button
-                                    isDisabled={!((values.confirmEmail && values.email)) || values.email == user.email}
+                                    isDisabled={!(values.confirmEmail && values.email) || values.email == user.email}
                                     onPress={submitForm}
                                     marginTop={"7px"}
                                 >

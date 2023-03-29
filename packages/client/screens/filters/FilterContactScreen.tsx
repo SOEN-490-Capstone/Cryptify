@@ -17,12 +17,17 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
 
     const { token, user } = React.useContext(AuthContext);
     const [contactsWithHeader, setContactsWithHeader] = React.useState<ContactWithHeader[]>([]);
+    const [contactFilters, setContactFilters] = React.useState<string[]>([...route.params.contactFilters]);
 
     async function handleCheckboxChange(contact: string) {
-        if (route.params.contactFilters.includes(contact)) {
+        if (contactFilters.includes(contact)) {
+            setContactFilters((prev) => prev.filter((c) => c !== contact));
+
             route.params.contactFilters.splice(route.params.contactFilters.indexOf(contact), 1);
             route.params.setContactFilters(route.params.contactFilters);
         } else {
+            setContactFilters((prev) => [...prev, contact]);
+
             route.params.contactFilters.push(contact);
             route.params.setContactFilters([...route.params.contactFilters]);
         }
@@ -60,17 +65,20 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
-                headerRight: () => (
-                    <Pressable
-                        onPress={() => {
-                            route.params.contactFilters.splice(0);
-                            route.params.setContactFilters([]);
-                            navigation.goBack();
-                        }}
-                    >
-                        <Text color={"#007AFF"}>Reset</Text>
-                    </Pressable>
-                ),
+                headerRight: () =>
+                    contactFilters.length > 0 && (
+                        <Pressable
+                            onPress={() => {
+                                route.params.contactFilters.splice(0);
+                                route.params.setContactFilters([]);
+                                setContactFilters([...route.params.contactFilters]);
+                            }}
+                        >
+                            <Text color={"#007AFF"} fontWeight={"semibold"}>
+                                Reset
+                            </Text>
+                        </Pressable>
+                    ),
             });
         })();
     });
@@ -83,51 +91,44 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
         <View style={styles.view}>
             {contactsWithHeader.length === 0 ? (
                 <Center alignItems="center" marginY="auto">
-                    <Box marginTop="-10px"></Box>
-                    <FontAwesomeIcon icon={falAddressBook} style={styles.contactBook} size={56} />
-                    <Text style={styles.contactBookText}>You do not have any contacts.</Text>
+                    <FontAwesomeIcon icon={falAddressBook} size={56} />
+                    <Text marginTop={"15px"}>You do not have any contacts.</Text>
                 </Center>
             ) : (
-                <FlatList
-                    data={contactsWithHeader}
-                    renderItem={({ item }) => (
-                        <>
-                            {item.header ? (
-                                <Box background={"text.100"}>
-                                    <Text
-                                        color={"text.500"}
-                                        fontWeight={"semibold"}
-                                        style={{ paddingHorizontal: 15, paddingVertical: 5 }}
-                                    >
-                                        {item.contact.contactName}
-                                    </Text>
-                                </Box>
-                            ) : (
-                                <HStack>
-                                    {route.params.contactFilters.includes(item.contact.contactName) ? (
+                <>
+                    <FlatList
+                        data={contactsWithHeader}
+                        renderItem={({ item }) => (
+                            <>
+                                {item.header ? (
+                                    <Box background={"text.100"}>
+                                        <Text
+                                            color={"text.500"}
+                                            fontWeight={"semibold"}
+                                            style={{ paddingHorizontal: 15, paddingVertical: 5 }}
+                                        >
+                                            {item.contact.contactName}
+                                        </Text>
+                                    </Box>
+                                ) : (
+                                    <HStack key={item.contact.contactName}>
                                         <Checkbox
-                                            style={{ paddingVertical: 10, marginHorizontal: 15 }}
+                                            style={{ paddingVertical: 10, marginLeft: 15 }}
                                             value={item.contact.contactName}
-                                            defaultIsChecked
+                                            isChecked={contactFilters.includes(item.contact.contactName)}
                                             onChange={() => handleCheckboxChange(item.contact.contactName)}
                                         >
-                                            <Text style={{ paddingVertical: 10 }}>{item.contact.contactName}</Text>
+                                            <Text style={{ paddingVertical: 10, paddingRight: 15 }} isTruncated>
+                                                {item.contact.contactName}
+                                            </Text>
                                         </Checkbox>
-                                    ) : (
-                                        <Checkbox
-                                            style={{ paddingVertical: 10, marginHorizontal: 15 }}
-                                            value={item.contact.contactName}
-                                            onChange={() => handleCheckboxChange(item.contact.contactName)}
-                                        >
-                                            <Text style={{ paddingVertical: 10 }}>{item.contact.contactName}</Text>
-                                        </Checkbox>
-                                    )}
-                                </HStack>
-                            )}
-                        </>
-                    )}
-                    stickyHeaderIndices={stickyHeaderIndices}
-                />
+                                    </HStack>
+                                )}
+                            </>
+                        )}
+                        stickyHeaderIndices={stickyHeaderIndices}
+                    />
+                </>
             )}
         </View>
     );
@@ -143,23 +144,5 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 15,
         paddingTop: 20,
-    },
-    RadioItem: {
-        marginTop: 20,
-    },
-    applyButton: {
-        marginTop: "auto",
-    },
-    applyButtonDisabled: {
-        marginTop: "auto",
-        opacity: 0.6,
-    },
-    contactBook: {
-        alignItems: "center",
-    },
-    contactBookText: {
-        textAlign: "center",
-        maxWidth: 265,
-        marginTop: 15,
     },
 });

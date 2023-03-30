@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView } from "native-base";
+import { Text, Box, Button, HStack, Link, Pressable, ScrollView, Badge, VStack } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
@@ -25,12 +25,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 
     const [filterByContact, setFilterByContact] = React.useState<string[]>([...route.params.contactFilters]);
     const [filterByTag, setFilterByTag] = React.useState<string[]>([...route.params.tagFilters]);
-
-    type RadioProps = {
-        value: string;
-        setValue: React.Dispatch<React.SetStateAction<string>>;
-        options: string[];
-    };
 
     const areFiltersDefault = () =>
         filterByTransaction === filtersByTransaction[0] &&
@@ -97,26 +91,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         })();
     }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact, filterByTag]);
 
-    function RadioGroup({ options, value, setValue }: RadioProps) {
-        return (
-            <Radio.Group
-                name="myRadioGroup"
-                value={value}
-                onChange={(nextValue) => {
-                    setValue(nextValue);
-                }}
-            >
-                {options.map((option) => (
-                    <Box style={styles.RadioItem} key={option}>
-                        <Radio key={option} value={option} color={"darkBlue.500"}>
-                            {option}
-                        </Radio>
-                    </Box>
-                ))}
-            </Radio.Group>
-        );
-    }
-
     function renderFilterByContact() {
         let contacts = "";
 
@@ -135,17 +109,45 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
-                <Box marginTop="20px" />
-                <Text fontWeight={"semibold"} color={"text.500"}>
-                    Filter by transaction
-                </Text>
-                <RadioGroup
-                    options={filtersByTransaction}
-                    value={filterByTransaction}
-                    setValue={setFilterByTransaction}
-                />
+                <VStack alignItems="left" marginTop={"20px"} space={"10px"}>
+                    <Text color={"text.700"}>Transaction</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <HStack>
+                            {filtersByTransaction.map((option) => (
+                                <Pressable
+                                    key={option}
+                                    onPress={() => {
+                                        setFilterByTransaction(option);
+                                        setIsFilterSaved(false);
+                                    }}
+                                >
+                                    <Badge
+                                        borderRadius={"8px"}
+                                        backgroundColor="gray.100"
+                                        px={"10px"}
+                                        py={"5px"}
+                                        key={option}
+                                        style={[
+                                            styles.badge,
+                                            filterByTransaction === option
+                                                ? { borderColor: "#404040", borderWidth: 1 }
+                                                : {},
+                                        ]}
+                                    >
+                                        <Text
+                                            size={"subheadline"}
+                                            fontWeight={filterByTransaction === option ? "semibold" : "regular"}
+                                        >
+                                            {option}
+                                        </Text>
+                                    </Badge>
+                                </Pressable>
+                            ))}
+                        </HStack>
+                    </ScrollView>
+                </VStack>
                 <Pressable
-                    marginTop="25px"
+                    marginTop="15px"
                     onPress={() =>
                         navigation.navigate("FilterDateScreen", {
                             filters: route.params.filters,
@@ -255,7 +257,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         }
 
                         route.params.setFilters(filters);
-                        route.params.setIsUsingSavedFilter(false);
                         route.params.setContactFilters(filterByContact);
                         route.params.setTagFilters(filterByTag);
                         route.params.setIsUsingSavedFilter(isFilterSaved);
@@ -285,10 +286,7 @@ const styles = StyleSheet.create({
         marginLeft: "auto",
     },
     badge: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        marginRight: 13,
-        marginBottom: 13,
+        marginRight: 10,
         justifyContent: "center",
     },
     applyFiltersButtonContainer: {

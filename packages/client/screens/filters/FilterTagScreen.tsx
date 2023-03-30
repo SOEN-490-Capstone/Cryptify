@@ -1,6 +1,6 @@
 import { View } from "../../components/Themed";
 import { Pressable, StyleSheet } from "react-native";
-import { Text, ScrollView } from "native-base";
+import { Text, ScrollView, Center, VStack } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
 import { AuthContext } from "../../components/contexts/AuthContext";
@@ -10,6 +10,8 @@ import { farXMark } from "../../components/icons/regular/farXMark";
 import { Tag } from "@cryptify/common/src/domain/entities/tag";
 import { farPlus } from "../../components/icons/regular/farPlus";
 import { TagsGateway } from "../../gateways/tags_gateway";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { falTags } from "../../components/icons/light/falTags";
 
 export default function FilterTagScreen({ route, navigation }: HomeStackScreenProps<"FilterTagScreen">) {
     const tagsGateway = new TagsGateway();
@@ -44,44 +46,57 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
     React.useEffect(() => {
         (() => {
             navigation.setOptions({
-                headerRight: () => (
-                    <Pressable
-                        onPress={() => {
-                            route.params.tagFilters.splice(0);
-                            route.params.setTagFilters([]);
-                            navigation.goBack();
-                        }}
-                    >
-                        <Text color={"#007AFF"}>Reset</Text>
-                    </Pressable>
-                ),
+                headerRight: () =>
+                    transactionTags.length > 0 && (
+                        <Pressable
+                            onPress={() => {
+                                route.params.tagFilters.splice(0);
+                                route.params.setTagFilters([]);
+                                setTransactionTagsNotAdded([...transactionTagsNotAdded, ...transactionTags]);
+                                setTransactionTags([]);
+                            }}
+                        >
+                            <Text color={"#007AFF"} fontWeight={"semibold"}>
+                                Reset
+                            </Text>
+                        </Pressable>
+                    ),
             });
         })();
     });
 
     return (
         <View style={styles.view}>
-            <ScrollView style={styles.scrollView}>
-                <TagsGallery
-                    title={"Selected Transaction"}
-                    tags={SortService.sortTransactionTagsAlphabetically(transactionTags)}
-                    onTagPress={(tag) => removeTransactionTag(tag)}
-                    tagIcon={farXMark}
-                    styles={styles.tagsAdded}
-                ></TagsGallery>
-                {transactionTagsNotAdded.length != 0 && (
-                    <TagsGallery
-                        title={"All Tags"}
-                        tags={SortService.sortTransactionTagsAlphabetically(transactionTagsNotAdded)}
-                        onTagPress={(tag: Tag) => {
-                            if (transactionTags.length < 10) addTransactionTag(tag);
-                        }}
-                        tagIcon={transactionTags.length < 10 ? farPlus : undefined}
-                        styles={styles.allTags}
-                        tagTestIDPrefix={"allTags"}
-                    />
-                )}
-            </ScrollView>
+            {transactionTags.length === 0 && transactionTagsNotAdded.length === 0 ? (
+                <Center alignItems="center" marginY="auto">
+                    <FontAwesomeIcon icon={falTags} size={56} />
+                    <Text marginTop={"15px"}>You do not have any tags.</Text>
+                </Center>
+            ) : (
+                <ScrollView style={styles.scrollView}>
+                    <VStack space={"40px"}>
+                        {transactionTags.length != 0 && (
+                            <TagsGallery
+                                title={"Selected Transaction"}
+                                tags={SortService.sortTransactionTagsAlphabetically(transactionTags)}
+                                onTagPress={(tag) => removeTransactionTag(tag)}
+                                tagIcon={farXMark}
+                                styles={styles.tagsAdded}
+                            />
+                        )}
+                        {transactionTagsNotAdded.length != 0 && (
+                            <TagsGallery
+                                title={"All Tags"}
+                                tags={SortService.sortTransactionTagsAlphabetically(transactionTagsNotAdded)}
+                                onTagPress={(tag: Tag) => addTransactionTag(tag)}
+                                tagIcon={farPlus}
+                                styles={styles.allTags}
+                                tagTestIDPrefix={"allTags"}
+                            />
+                        )}
+                    </VStack>
+                </ScrollView>
+            )}
         </View>
     );
 }
@@ -95,7 +110,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     allTags: {
-        marginTop: 40,
         paddingBottom: 15,
     },
     tagsAdded: {

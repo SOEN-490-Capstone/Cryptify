@@ -123,6 +123,22 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         );
     }
 
+    function renderFilterByContact() {
+        let contacts = "";
+
+        // build a contact string with all the contacts separated by commas
+        for (let i = 0; i < filterByContact.length; i++) {
+            if (i === filterByContact.length - 1) {
+                contacts += filterByContact[i];
+            } else {
+                contacts += filterByContact[i] + ", ";
+
+            }
+        }
+
+        return contacts ;
+    }
+
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
@@ -145,22 +161,20 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilterByDate,
                         })
                     }
-                    _pressed={{
-                        background: "text.200",
-                    }}
                 >
-                    <HStack height="50px" alignItems="center">
-                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                    <HStack height="44px" alignItems="center">
+                        <Text color={"text.700"} marginRight="15">
                             Date
                         </Text>
-                        <Text color={"text.500"} marginRight="1">
+                        <Box flex={1}></Box>
+                        <Text color={"text.500"} marginRight={"10px"}>
                             {filterByDate === filtersByDate[0] || filterByDate === "Custom Dates" ? "" : filterByDate}
                         </Text>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
                 <Pressable
-                    marginTop="25px"
+                    marginTop="15px"
                     onPress={() =>
                         navigation.navigate("FilterContactScreen", {
                             filters: route.params.filters,
@@ -169,24 +183,21 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setContactFilters: route.params.setContactFilters,
                         })
                     }
-                    _pressed={{
-                        background: "text.200",
-                    }}
                 >
-                    <HStack height="50px" alignItems="center">
-                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                    <HStack height="44px" alignItems="center">
+                        <Text color={"text.700"} marginRight="15">
                             Contacts
                         </Text>
-                        {filterByContact.map((contact) => (
-                            <Text color={"text.500"} marginRight="1" key={contact}>
-                                {contact},
+                        <Box flex={1}>
+                            <Text color={"text.500"} marginRight={"10px"} isTruncated style={{marginLeft: "auto"}}>
+                                {renderFilterByContact()}
                             </Text>
-                        ))}
+                        </Box>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
                 <Pressable
-                    marginTop="25px"
+                    marginTop="15px"
                     onPress={() =>
                         navigation.navigate("FilterTagScreen", {
                             filters: route.params.filters,
@@ -195,14 +206,12 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setTagFilters: route.params.setTagFilters,
                         })
                     }
-                    _pressed={{
-                        background: "text.200",
-                    }}
                 >
-                    <HStack height="50px" alignItems="center">
-                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                    <HStack height="44px" alignItems="center">
+                        <Text color={"text.700"} marginRight="15">
                             Tags
                         </Text>
+                        <Box flex={1}></Box>
                         {filterByTag.map((tag) => (
                             <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge} key={tag}>
                                 <HStack space={"10px"} alignItems={"center"}>
@@ -238,9 +247,9 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             currencyType={route.params.wallet.currencyType}
                         />
                     )}
-                <Box marginTop="25px" />
+            </ScrollView>
+            <Box style={styles.applyFiltersButtonContainer}>
                 <Button
-                    style={styles.applyButton}
                     isDisabled={
                         filterByTransaction === route.params.filters[0] &&
                         filterByDate === route.params.filters[1] &&
@@ -268,7 +277,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 >
                     Apply filters
                 </Button>
-            </ScrollView>
+            </Box>
         </View>
     );
 }
@@ -283,14 +292,9 @@ const styles = StyleSheet.create({
     RadioItem: {
         marginTop: 20,
     },
-    applyButton: {
-        marginTop: "auto",
-        marginBottom: 15,
-    },
     chevronRightIcon: {
         color: "#A3A3A3",
         marginLeft: "auto",
-        marginRight: 5,
     },
     badge: {
         paddingHorizontal: 15,
@@ -298,5 +302,15 @@ const styles = StyleSheet.create({
         marginRight: 13,
         marginBottom: 13,
         justifyContent: "center",
+    },
+    applyFiltersButtonContainer: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingHorizontal: 15,
+        paddingBottom: 15,
+        paddingTop: 8,
+        backgroundColor: "white",
     },
 });

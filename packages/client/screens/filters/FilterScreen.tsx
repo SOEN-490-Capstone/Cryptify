@@ -74,6 +74,12 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     }, [route.params.tagFilters, isFocused]);
 
     React.useEffect(() => {
+        if (filterByDate === "Custom Dates") {
+            setFilterByDate(filtersByDate[0]);
+        }
+    }, [filterByDate, isFocused]);
+
+    React.useEffect(() => {
         (() => {
             navigation.setOptions({
                 headerRight: () => (
@@ -132,11 +138,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 contacts += filterByContact[i];
             } else {
                 contacts += filterByContact[i] + ", ";
-
             }
         }
 
-        return contacts ;
+        return contacts;
     }
 
     return (
@@ -189,7 +194,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             Contacts
                         </Text>
                         <Box flex={1}>
-                            <Text color={"text.500"} marginRight={"10px"} isTruncated style={{marginLeft: "auto"}}>
+                            <Text color={"text.500"} marginRight={"10px"} isTruncated style={{ marginLeft: "auto" }}>
                                 {renderFilterByContact()}
                             </Text>
                         </Box>

@@ -15,6 +15,8 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     const [fromDate, setFromDate] = React.useState<Date | null>(getFromDate());
     const [toDate, setToDate] = React.useState<Date | null>(getToDate());
 
+    console.log("FilterDateScreen: " + JSON.stringify(route.params.filterByDate));
+
     function getFilterByDate() {
         if (route.params.filterByDate) {
             if (filtersByDate.includes(route.params.filterByDate)) {
@@ -28,7 +30,7 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     }
 
     function getFromDate(): Date | null {
-        if (route.params.filters[1]) {
+        if (route.params.filterByDate) {
             // Filter is a custom date
             if (!filtersByDate.includes(route.params.filterByDate)) {
                 return new Date(route.params.filterByDate.split(" - ")[0]);
@@ -39,7 +41,7 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     }
 
     function getToDate(): Date | null {
-        if (route.params.filters[1]) {
+        if (route.params.filterByDate) {
             // Filter is a custom date
             if (!filtersByDate.includes(route.params.filterByDate)) {
                 return new Date(route.params.filterByDate.split(" - ")[1]);
@@ -81,8 +83,6 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     React.useEffect(() => {
         if (fromDate && toDate) {
             const customDate = `${getFormattedDate(fromDate.toString())} - ${getFormattedDate(toDate.toString())}`;
-            route.params.filters[1] = customDate;
-            route.params.setFilters(route.params.filters);
             route.params.setFilterByDate(customDate);
         }
     }, [toDate, fromDate]);
@@ -90,8 +90,6 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     function handleRadioChange(nextValue: string) {
         setFilterByDate(nextValue);
         route.params.setFilterByDate(nextValue);
-        route.params.filters[1] = nextValue;
-        route.params.setFilters(route.params.filters);
     }
 
     type RadioProps = {

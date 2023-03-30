@@ -25,11 +25,13 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
 
             route.params.filterByContact.splice(route.params.filterByContact.indexOf(contact), 1);
             route.params.setFilterByContact(route.params.filterByContact);
+            route.params.setIsFilterSaved(false);
         } else {
             setContactFilters((prev) => [...prev, contact]);
 
             route.params.filterByContact.push(contact);
             route.params.setFilterByContact([...route.params.filterByContact]);
+            route.params.setIsFilterSaved(false);
         }
     }
 
@@ -72,6 +74,7 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                                 route.params.filterByContact.splice(0);
                                 route.params.setFilterByContact([]);
                                 setContactFilters([...route.params.filterByContact]);
+                                route.params.setIsFilterSaved(false);
                             }}
                         >
                             <Text color={"#007AFF"} fontWeight={"semibold"}>

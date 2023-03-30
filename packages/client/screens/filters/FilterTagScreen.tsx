@@ -34,6 +34,7 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
         setTransactionTagsNotAdded([...transactionTagsNotAdded, tag]);
         route.params.filterByTag.splice(route.params.filterByTag.indexOf(tag.tagName), 1);
         route.params.setFilterByTag(route.params.filterByTag);
+        route.params.setIsFilterSaved(false);
     }
 
     function addTransactionTag(tag: Tag) {
@@ -41,6 +42,7 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
         setTransactionTags([...transactionTags, tag]);
         route.params.filterByTag.push(tag.tagName);
         route.params.setFilterByTag([...route.params.filterByTag]);
+        route.params.setIsFilterSaved(false);
     }
 
     React.useEffect(() => {
@@ -54,6 +56,7 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
                                 route.params.setFilterByTag([]);
                                 setTransactionTagsNotAdded([...transactionTagsNotAdded, ...transactionTags]);
                                 setTransactionTags([]);
+                                route.params.setIsFilterSaved(false);
                             }}
                         >
                             <Text color={"#007AFF"} fontWeight={"semibold"}>

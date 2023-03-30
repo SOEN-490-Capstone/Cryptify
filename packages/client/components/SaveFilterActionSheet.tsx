@@ -29,16 +29,16 @@ type Props = {
     filterByContact: string[];
     filterByTag: string[];
     currencyType: CurrencyType;
-    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function SaveFilterActionSheet({
     setFilters,
-    setIsUsingSavedFilter,
     setIsFilterSaved,
     filterByTransaction,
     filterByDate,
+    filterByContact,
+    filterByTag,
     currencyType,
 }: Props) {
     const filtersGateway = new FiltersGateway();
@@ -77,8 +77,8 @@ export default function SaveFilterActionSheet({
                 txnIn: true,
                 txnOut: true,
                 range: filters[1],
-                tagNames: [],
-                contactNames: [],
+                tagNames: [...filterByTag],
+                contactNames: [...filterByContact],
             };
             if (filterByTransaction.endsWith("in")) {
                 req.txnIn = true;
@@ -91,7 +91,6 @@ export default function SaveFilterActionSheet({
             await filtersGateway.createFilter(req, token);
 
             onClose();
-            setIsUsingSavedFilter(true);
             setIsFilterSaved(true);
             toast.show({
                 placement: "top",

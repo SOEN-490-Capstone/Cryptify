@@ -15,6 +15,8 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     const [fromDate, setFromDate] = React.useState<Date | null>(getFromDate());
     const [toDate, setToDate] = React.useState<Date | null>(getToDate());
 
+    const initialCustomDate: { fromDate: Date | null; toDate: Date | null } = { fromDate, toDate };
+
     function getFilterByDate() {
         if (route.params.filterByDate) {
             if (filtersByDate.includes(route.params.filterByDate)) {
@@ -27,7 +29,7 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
         }
     }
 
-    function getFromDate(): Date | null {
+    function getFromDate() {
         if (route.params.filterByDate) {
             // Filter is a custom date
             if (!filtersByDate.includes(route.params.filterByDate)) {
@@ -38,7 +40,7 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
         return null;
     }
 
-    function getToDate(): Date | null {
+    function getToDate() {
         if (route.params.filterByDate) {
             // Filter is a custom date
             if (!filtersByDate.includes(route.params.filterByDate)) {
@@ -61,6 +63,7 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
                                 setFromDate(null);
                                 setFilterByDate(filtersByDate[0]);
                                 route.params.setFilterByDate(filtersByDate[0]);
+                                route.params.setIsFilterSaved(false);
                             }}
                         >
                             <Text color={"#007AFF"} fontWeight={"semibold"}>
@@ -82,12 +85,17 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
         if (fromDate && toDate) {
             const customDate = `${getFormattedDate(fromDate.toString())} - ${getFormattedDate(toDate.toString())}`;
             route.params.setFilterByDate(customDate);
+
+            if (initialCustomDate.fromDate !== fromDate || initialCustomDate.toDate !== toDate) {
+                route.params.setIsFilterSaved(false);
+            }
         }
     }, [toDate, fromDate]);
 
     function handleRadioChange(nextValue: string) {
         setFilterByDate(nextValue);
         route.params.setFilterByDate(nextValue);
+        route.params.setIsFilterSaved(false);
     }
 
     type RadioProps = {

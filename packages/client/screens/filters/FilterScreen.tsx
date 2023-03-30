@@ -51,7 +51,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
-                    route.params.setIsUsingSavedFilter(false);
                     setFilterByContact([]);
                     setFilterByTag([]);
                     setIsFilterSaved(false);
@@ -78,10 +77,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             onPress={() =>
                                 navigation.navigate("SavedFiltersScreen", {
                                     currencyType: route.params.wallet.currencyType,
-                                    setFilters: route.params.setFilters,
                                     setFilterByTransaction,
                                     setFilterByDate,
-                                    setIsUsingSavedFilter: route.params.setIsUsingSavedFilter,
+                                    setFilterByContact,
+                                    setFilterByTag,
                                     setIsFilterSaved,
                                 })
                             }
@@ -153,6 +152,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters: route.params.setFilters,
                             filterByDate,
                             setFilterByDate,
+                            setIsFilterSaved,
                         })
                     }
                 >
@@ -175,6 +175,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters: route.params.setFilters,
                             filterByContact,
                             setFilterByContact,
+                            setIsFilterSaved,
                         })
                     }
                 >
@@ -198,6 +199,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters: route.params.setFilters,
                             filterByTag,
                             setFilterByTag,
+                            setIsFilterSaved,
                         })
                     }
                 >
@@ -219,30 +221,18 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     </HStack>
                 </Pressable>
                 <Box marginTop="25px" />
-                {!(
-                    filterByTransaction === filtersByTransaction[0] &&
-                    filterByDate === filtersByDate[0] &&
-                    filterByContact.length === 0 &&
-                    filterByTag.length === 0
-                ) &&
-                    (!isFilterSaved ||
-                        !(
-                            filterByTransaction === route.params.filters[0] &&
-                            filterByDate === route.params.filters[1] &&
-                            filterByContact.length === 0 &&
-                            filterByTag.length === 0
-                        )) && (
-                        <SaveFilterActionSheet
-                            setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
-                            setIsFilterSaved={setIsFilterSaved}
-                            setFilters={route.params.setFilters}
-                            filterByTransaction={filterByTransaction}
-                            filterByDate={filterByDate}
-                            filterByContact={filterByContact}
-                            filterByTag={filterByTag}
-                            currencyType={route.params.wallet.currencyType}
-                        />
-                    )}
+                {/* If areFiltersDefault and isFilterSaved is false then display SaveFilterActionSheet*/}
+                {!areFiltersDefault() && !isFilterSaved && (
+                    <SaveFilterActionSheet
+                        setIsFilterSaved={setIsFilterSaved}
+                        setFilters={route.params.setFilters}
+                        filterByTransaction={filterByTransaction}
+                        filterByDate={filterByDate}
+                        filterByContact={filterByContact}
+                        filterByTag={filterByTag}
+                        currencyType={route.params.wallet.currencyType}
+                    />
+                )}
             </ScrollView>
             <Box style={styles.applyFiltersButtonContainer}>
                 <Button
@@ -268,7 +258,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         route.params.setIsUsingSavedFilter(false);
                         route.params.setContactFilters(filterByContact);
                         route.params.setTagFilters(filterByTag);
-                        setIsFilterSaved(false);
+                        route.params.setIsUsingSavedFilter(isFilterSaved);
                         navigation.goBack();
                     }}
                     testID="applyFiltersSubmit"

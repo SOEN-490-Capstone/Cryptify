@@ -97,6 +97,7 @@ type FilterContactScreenProps = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     filterByContact: string[];
     setFilterByContact: React.Dispatch<React.SetStateAction<string[]>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FilterTagScreenProps = {
@@ -104,6 +105,7 @@ type FilterTagScreenProps = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     filterByTag: string[];
     setFilterByTag: React.Dispatch<React.SetStateAction<string[]>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FilterDateScreenProps = {
@@ -111,14 +113,15 @@ type FilterDateScreenProps = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     filterByDate: string;
     setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type SavedFiltersScreenProps = {
     currencyType: CurrencyType;
-    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     setFilterByTransaction: React.Dispatch<React.SetStateAction<string>>;
     setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
-    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
+    setFilterByContact: React.Dispatch<React.SetStateAction<string[]>>;
+    setFilterByTag: React.Dispatch<React.SetStateAction<string[]>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

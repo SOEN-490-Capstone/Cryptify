@@ -133,7 +133,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                             color={"darkBlue.500"}
                             style={styles.badgeText}
                         >
-                            {filter}
+                            {"Tag: " + filter}
                         </Text>
 
                         <Pressable

@@ -95,15 +95,15 @@ type FilterScreenProps = {
 type FilterContactScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    contactFilters: string[];
-    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByContact: string[];
+    setFilterByContact: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type FilterTagScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    tagFilters: string[];
-    setTagFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByTag: string[];
+    setFilterByTag: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type FilterDateScreenProps = {

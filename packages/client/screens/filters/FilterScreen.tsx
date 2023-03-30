@@ -24,7 +24,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
     const [filterByContact, setFilterByContact] = React.useState<string[]>([...route.params.contactFilters]);
-    const [filterByTag, setFilterByTag] = React.useState<string[]>([]);
+    const [filterByTag, setFilterByTag] = React.useState<string[]>([...route.params.tagFilters]);
 
     type RadioProps = {
         value: string;
@@ -54,7 +54,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     route.params.setIsUsingSavedFilter(false);
                     setFilterByContact([]);
                     setFilterByTag([]);
-                    route.params.setTagFilters([]);
                     setIsFilterSaved(false);
                 }}
             >
@@ -62,10 +61,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             </Link>
         );
     }
-
-    React.useEffect(() => {
-        setFilterByTag(route.params.tagFilters);
-    }, [route.params.tagFilters, isFocused]);
 
     React.useEffect(() => {
         if (filterByDate === "Custom Dates") {
@@ -180,7 +175,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters: route.params.setFilters,
                             filterByContact,
                             setFilterByContact,
-                            setContactFilters: route.params.setContactFilters,
                         })
                     }
                 >
@@ -202,8 +196,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         navigation.navigate("FilterTagScreen", {
                             filters: route.params.filters,
                             setFilters: route.params.setFilters,
-                            tagFilters: route.params.tagFilters,
-                            setTagFilters: route.params.setTagFilters,
+                            filterByTag,
+                            setFilterByTag,
                         })
                     }
                 >
@@ -273,6 +267,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         route.params.setFilters(filters);
                         route.params.setIsUsingSavedFilter(false);
                         route.params.setContactFilters(filterByContact);
+                        route.params.setTagFilters(filterByTag);
                         setIsFilterSaved(false);
                         navigation.goBack();
                     }}

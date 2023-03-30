@@ -24,23 +24,23 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
     React.useEffect(() => {
         (async () => {
             const tags = await tagsGateway.findAllTags({ id: user.id }, token);
-            setTransactionTags(tags.filter((tag) => route.params.tagFilters.includes(tag.tagName)));
-            setTransactionTagsNotAdded(tags.filter((tag) => !route.params.tagFilters.includes(tag.tagName)));
+            setTransactionTags(tags.filter((tag) => route.params.filterByTag.includes(tag.tagName)));
+            setTransactionTagsNotAdded(tags.filter((tag) => !route.params.filterByTag.includes(tag.tagName)));
         })();
     }, []);
 
     function removeTransactionTag(tag: Tag) {
         setTransactionTags(transactionTags.filter((t) => t !== tag));
         setTransactionTagsNotAdded([...transactionTagsNotAdded, tag]);
-        route.params.tagFilters.splice(route.params.tagFilters.indexOf(tag.tagName), 1);
-        route.params.setTagFilters(route.params.tagFilters);
+        route.params.filterByTag.splice(route.params.filterByTag.indexOf(tag.tagName), 1);
+        route.params.setFilterByTag(route.params.filterByTag);
     }
 
     function addTransactionTag(tag: Tag) {
         setTransactionTagsNotAdded(transactionTagsNotAdded.filter((t) => t !== tag));
         setTransactionTags([...transactionTags, tag]);
-        route.params.tagFilters.push(tag.tagName);
-        route.params.setTagFilters([...route.params.tagFilters]);
+        route.params.filterByTag.push(tag.tagName);
+        route.params.setFilterByTag([...route.params.filterByTag]);
     }
 
     React.useEffect(() => {
@@ -50,8 +50,8 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
                     transactionTags.length > 0 && (
                         <Pressable
                             onPress={() => {
-                                route.params.tagFilters.splice(0);
-                                route.params.setTagFilters([]);
+                                route.params.filterByTag.splice(0);
+                                route.params.setFilterByTag([]);
                                 setTransactionTagsNotAdded([...transactionTagsNotAdded, ...transactionTags]);
                                 setTransactionTags([]);
                             }}

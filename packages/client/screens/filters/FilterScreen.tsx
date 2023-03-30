@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import { Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
-import DateBox from "../../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
 import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -124,24 +123,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         );
     }
 
-    const [fromDate, setFromDate] = React.useState<Date | null>(null);
-    const [toDate, setToDate] = React.useState<Date | null>(null);
-
-    function CustomDates() {
-        return (
-            <HStack>
-                <DateBox
-                    label="from"
-                    style={{ marginRight: 13 }}
-                    date={fromDate}
-                    maximumDate={toDate}
-                    setDate={setFromDate}
-                />
-                <DateBox label="to" date={toDate} minimumDate={fromDate} setDate={setToDate} />
-            </HStack>
-        );
-    }
-
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
@@ -154,16 +135,30 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     value={filterByTransaction}
                     setValue={setFilterByTransaction}
                 />
-                <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
-                    Filter by date
-                </Text>
-                <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-                {filterByDate === filtersByDate[filtersByDate.length - 1] && (
-                    <>
-                        <Box marginTop="20px" />
-                        <CustomDates />
-                    </>
-                )}
+                <Pressable
+                    marginTop="25px"
+                    onPress={() =>
+                        navigation.navigate("FilterDateScreen", {
+                            filters: route.params.filters,
+                            setFilters: route.params.setFilters,
+                            filterByDate,
+                            setFilterByDate,
+                        })
+                    }
+                    _pressed={{
+                        background: "text.200",
+                    }}
+                >
+                    <HStack height="50px" alignItems="center">
+                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                            Date
+                        </Text>
+                        <Text color={"text.500"} marginRight="1">
+                            {filterByDate === filtersByDate[0] || filterByDate === "Custom Dates" ? "" : filterByDate}
+                        </Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
                 <Pressable
                     marginTop="25px"
                     onPress={() =>
@@ -240,8 +235,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters={route.params.setFilters}
                             filterByTransaction={filterByTransaction}
                             filterByDate={filterByDate}
-                            fromDate={fromDate}
-                            toDate={toDate}
                             currencyType={route.params.wallet.currencyType}
                         />
                     )}
@@ -257,21 +250,15 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     onPress={() => {
                         const filters = [filterByTransaction];
 
-                        // this checks if the filter selected for the date is "custom date"
-                        // since we need to have special logic that would add the two dates selected
-                        if (filterByDate === "Custom Dates" && fromDate && toDate) {
-                            const dateFormate = new Intl.DateTimeFormat("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "2-digit",
-                            });
-
-                            filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+                        // If a custom date is selected, but at least one of the from or to dates are not selected,
+                        // then filterByDate value will be "Custom Dates" and not the date range. In this scenario,
+                        // use the default date filter value.
+                        if (filterByDate === "Custom Dates") {
+                            filters.push(filtersByDate[0]);
                         } else {
-                            if (filterByDate !== "Custom Dates") {
-                                filters.push(filterByDate);
-                            }
+                            filters.push(filterByDate);
                         }
+
                         route.params.setFilters(filters);
                         route.params.setIsUsingSavedFilter(false);
                         setIsFilterSaved(false);

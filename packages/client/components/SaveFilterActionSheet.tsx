@@ -20,13 +20,12 @@ import { FiltersGateway } from "../gateways/filters_gateway";
 import { CurrencyType } from "@cryptify/common/src/domain/currency_type";
 import { AuthContext } from "./contexts/AuthContext";
 import { useKeyboardBottomInset } from "../hooks/useKeyboardBottomInset";
+import { getFiltersByDateStrings } from "../services/filter_service";
 
 type Props = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     filterByTransaction: string;
     filterByDate: string;
-    fromDate: Date | null;
-    toDate: Date | null;
     currencyType: CurrencyType;
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,8 +37,6 @@ export default function SaveFilterActionSheet({
     setIsFilterSaved,
     filterByTransaction,
     filterByDate,
-    fromDate,
-    toDate,
     currencyType,
 }: Props) {
     const filtersGateway = new FiltersGateway();
@@ -54,25 +51,21 @@ export default function SaveFilterActionSheet({
         name: "",
     };
 
+    const filtersByDate = getFiltersByDateStrings();
+
     async function onSubmit(values: any, formikHelpers: any) {
         try {
             const filters = [filterByTransaction];
 
-            // this checks if the filter selected for the date is "custom date"
-            // since we need to have special logic that would add the two dates selected
-            if (filterByDate === "Custom Dates" && fromDate && toDate) {
-                const dateFormate = new Intl.DateTimeFormat("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "2-digit",
-                });
-
-                filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+            // If a custom date is selected, but at least one of the from or to dates are not selected,
+            // then filterByDate value will be "Custom Dates" and not the date range. In this scenario,
+            // use the default date filter value.
+            if (filterByDate === "Custom Dates") {
+                filters.push(filtersByDate[0]);
             } else {
-                if (filterByDate !== "Custom Dates") {
-                    filters.push(filterByDate);
-                }
+                filters.push(filterByDate);
             }
+
             setFilters(filters);
 
             const req = {

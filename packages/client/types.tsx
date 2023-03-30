@@ -106,6 +106,13 @@ type FilterTagScreenProps = {
     setTagFilters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
+type FilterDateScreenProps = {
+    filters: string[];
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByDate: string;
+    setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
+};
+
 type SavedFiltersScreenProps = {
     currencyType: CurrencyType;
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
@@ -166,6 +173,7 @@ export type HomeStackParamList = {
     FilterScreen: FilterScreenProps;
     FilterContactScreen: FilterContactScreenProps;
     FilterTagScreen: FilterTagScreenProps;
+    FilterDateScreen: FilterDateScreenProps;
     SavedFiltersScreen: SavedFiltersScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;

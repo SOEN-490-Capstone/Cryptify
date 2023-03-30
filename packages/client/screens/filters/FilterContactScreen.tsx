@@ -17,19 +17,19 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
 
     const { token, user } = React.useContext(AuthContext);
     const [contactsWithHeader, setContactsWithHeader] = React.useState<ContactWithHeader[]>([]);
-    const [contactFilters, setContactFilters] = React.useState<string[]>([...route.params.contactFilters]);
+    const [contactFilters, setContactFilters] = React.useState<string[]>([...route.params.filterByContact]);
 
     async function handleCheckboxChange(contact: string) {
         if (contactFilters.includes(contact)) {
             setContactFilters((prev) => prev.filter((c) => c !== contact));
 
-            route.params.contactFilters.splice(route.params.contactFilters.indexOf(contact), 1);
-            route.params.setContactFilters(route.params.contactFilters);
+            route.params.filterByContact.splice(route.params.filterByContact.indexOf(contact), 1);
+            route.params.setFilterByContact(route.params.filterByContact);
         } else {
             setContactFilters((prev) => [...prev, contact]);
 
-            route.params.contactFilters.push(contact);
-            route.params.setContactFilters([...route.params.contactFilters]);
+            route.params.filterByContact.push(contact);
+            route.params.setFilterByContact([...route.params.filterByContact]);
         }
     }
 
@@ -69,9 +69,9 @@ export default function FilterContactScreen({ route, navigation }: HomeStackScre
                     contactFilters.length > 0 && (
                         <Pressable
                             onPress={() => {
-                                route.params.contactFilters.splice(0);
-                                route.params.setContactFilters([]);
-                                setContactFilters([...route.params.contactFilters]);
+                                route.params.filterByContact.splice(0);
+                                route.params.setFilterByContact([]);
+                                setContactFilters([...route.params.filterByContact]);
                             }}
                         >
                             <Text color={"#007AFF"} fontWeight={"semibold"}>

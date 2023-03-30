@@ -26,6 +26,8 @@ type Props = {
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     filterByTransaction: string;
     filterByDate: string;
+    filterByContact: string[];
+    filterByTag: string[];
     currencyType: CurrencyType;
     setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;

@@ -10,13 +10,20 @@ import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "nativ
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
-import { filterTransactions } from "../services/filter_service";
+import {
+    filterTransactions,
+    getFiltersByDateStrings,
+    getFiltersByTransactionStrings,
+} from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(props: HomeStackScreenProps<"TransactionsListScreen">) {
+    const filtersByTransaction = getFiltersByTransactionStrings(props.route.params.wallet.currencyType);
+    const filtersByDate = getFiltersByDateStrings();
+
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
-    const [filters, setFilters] = React.useState<string[]>([]);
+    const [filters, setFilters] = React.useState<string[]>([filtersByTransaction[0], filtersByDate[0]]);
     const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
     const [contactFilters, setContactFilters] = React.useState<string[]>([]);
     const [tagFilters, setTagFilters] = React.useState<string[]>([]);

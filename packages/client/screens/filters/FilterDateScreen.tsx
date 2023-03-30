@@ -15,8 +15,6 @@ export default function FilterDateScreen({ route, navigation }: HomeStackScreenP
     const [fromDate, setFromDate] = React.useState<Date | null>(getFromDate());
     const [toDate, setToDate] = React.useState<Date | null>(getToDate());
 
-    console.log("FilterDateScreen: " + JSON.stringify(route.params.filterByDate));
-
     function getFilterByDate() {
         if (route.params.filterByDate) {
             if (filtersByDate.includes(route.params.filterByDate)) {

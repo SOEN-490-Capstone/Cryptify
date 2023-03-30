@@ -23,7 +23,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
-    const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
+    const [filterByContact, setFilterByContact] = React.useState<string[]>([...route.params.contactFilters]);
     const [filterByTag, setFilterByTag] = React.useState<string[]>([]);
 
     type RadioProps = {
@@ -51,12 +51,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
-                    route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
                     route.params.setIsUsingSavedFilter(false);
-                    route.params.setContactFilters([]);
-                    route.params.setTagFilters([]);
                     setFilterByContact([]);
                     setFilterByTag([]);
+                    route.params.setTagFilters([]);
                     setIsFilterSaved(false);
                 }}
             >
@@ -64,10 +62,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
             </Link>
         );
     }
-
-    React.useEffect(() => {
-        setFilterByContact(route.params.contactFilters);
-    }, [route.params.contactFilters, isFocused]);
 
     React.useEffect(() => {
         setFilterByTag(route.params.tagFilters);
@@ -184,7 +178,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         navigation.navigate("FilterContactScreen", {
                             filters: route.params.filters,
                             setFilters: route.params.setFilters,
-                            contactFilters: route.params.contactFilters,
+                            filterByContact,
+                            setFilterByContact,
                             setContactFilters: route.params.setContactFilters,
                         })
                     }
@@ -249,6 +244,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             setFilters={route.params.setFilters}
                             filterByTransaction={filterByTransaction}
                             filterByDate={filterByDate}
+                            filterByContact={filterByContact}
+                            filterByTag={filterByTag}
                             currencyType={route.params.wallet.currencyType}
                         />
                     )}
@@ -258,8 +255,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                     isDisabled={
                         filterByTransaction === route.params.filters[0] &&
                         filterByDate === route.params.filters[1] &&
-                        filterByContact.length === 0 &&
-                        filterByTag.length === 0
+                        JSON.stringify(filterByContact) === JSON.stringify(route.params.contactFilters) &&
+                        JSON.stringify(filterByTag) === JSON.stringify(route.params.tagFilters)
                     }
                     onPress={() => {
                         const filters = [filterByTransaction];
@@ -275,6 +272,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
 
                         route.params.setFilters(filters);
                         route.params.setIsUsingSavedFilter(false);
+                        route.params.setContactFilters(filterByContact);
                         setIsFilterSaved(false);
                         navigation.goBack();
                     }}

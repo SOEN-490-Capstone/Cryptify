@@ -1,6 +1,6 @@
 import React from "react";
 import { SettingsStackScreenProps } from "../types";
-import { Button, HStack, VStack, Text, FormControl, Input } from "native-base";
+import { Button, HStack, VStack, Text, FormControl, Input, Link } from "native-base";
 import { Alert, Pressable, StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import { AuthContext } from "../components/contexts/AuthContext";
@@ -101,15 +101,27 @@ export default function WalletSettingsScreen({ navigation, route }: SettingsStac
                                             />
                                             <FormControl.ErrorMessage>{errors.name}</FormControl.ErrorMessage>
                                         </FormControl>
-                                        <HStack space="15" flexDirection={"row-reverse"}>
-                                            <Button paddingX="16px" paddingY="6.5px" onPress={submitForm}>
+                                        <HStack space={"15px"} flexDirection={"row-reverse"} alignItems={"center"}>
+                                            <Button
+                                                onPress={submitForm}
+                                                height={"34px"}
+                                                width={"66px"}
+                                                _text={{ color: "white", fontWeight: "semibold", fontSize: "callout" }}
+                                                isDisabled={initialValues.name == values.name || values.name == ""}
+                                            >
                                                 Save
                                             </Button>
-                                            <Button backgroundColor={"white"} onPress={handleEditEnabled}>
-                                                <Text color="darkBlue.500" fontWeight={"semibold"}>
-                                                    Cancel
-                                                </Text>
-                                            </Button>
+                                            <Link
+                                                onPress={handleEditEnabled}
+                                                isUnderlined={false}
+                                                _text={{
+                                                    color: "darkBlue.500",
+                                                    fontWeight: "semibold",
+                                                    fontSize: "callout",
+                                                }}
+                                            >
+                                                Cancel
+                                            </Link>
                                         </HStack>
                                     </VStack>
                                 )}

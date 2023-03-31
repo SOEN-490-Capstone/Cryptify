@@ -95,23 +95,33 @@ type FilterScreenProps = {
 type FilterContactScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    contactFilters: string[];
-    setContactFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByContact: string[];
+    setFilterByContact: React.Dispatch<React.SetStateAction<string[]>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FilterTagScreenProps = {
     filters: string[];
     setFilters: React.Dispatch<React.SetStateAction<string[]>>;
-    tagFilters: string[];
-    setTagFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByTag: string[];
+    setFilterByTag: React.Dispatch<React.SetStateAction<string[]>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type FilterDateScreenProps = {
+    filters: string[];
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+    filterByDate: string;
+    setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
+    setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type SavedFiltersScreenProps = {
     currencyType: CurrencyType;
-    setFilters: React.Dispatch<React.SetStateAction<string[]>>;
     setFilterByTransaction: React.Dispatch<React.SetStateAction<string>>;
     setFilterByDate: React.Dispatch<React.SetStateAction<string>>;
-    setIsUsingSavedFilter: React.Dispatch<React.SetStateAction<boolean>>;
+    setFilterByContact: React.Dispatch<React.SetStateAction<string[]>>;
+    setFilterByTag: React.Dispatch<React.SetStateAction<string[]>>;
     setIsFilterSaved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -166,6 +176,7 @@ export type HomeStackParamList = {
     FilterScreen: FilterScreenProps;
     FilterContactScreen: FilterContactScreenProps;
     FilterTagScreen: FilterTagScreenProps;
+    FilterDateScreen: FilterDateScreenProps;
     SavedFiltersScreen: SavedFiltersScreenProps;
     TransactionTagsScreen: TransactionTagsScreenProps;
     AddTransactionTagsScreen: AddTransactionTagsScreenProps;

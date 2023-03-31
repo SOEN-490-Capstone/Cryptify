@@ -10,13 +10,20 @@ import { Pressable, Text, HStack, ScrollView, VStack, Center, Link } from "nativ
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { farBarsFilter } from "../components/icons/regular/farBarsFilter";
 import { facCircleXMark } from "../components/icons/solid/fasCircleXMark";
-import { filterTransactions } from "../services/filter_service";
+import {
+    filterTransactions,
+    getFiltersByDateStrings,
+    getFiltersByTransactionStrings,
+} from "../services/filter_service";
 import { falMagnifyingGlass } from "../components/icons/light/falMagnifyingGlass";
 
 export default function TransactionsListScreen(props: HomeStackScreenProps<"TransactionsListScreen">) {
+    const filtersByTransaction = getFiltersByTransactionStrings(props.route.params.wallet.currencyType);
+    const filtersByDate = getFiltersByDateStrings();
+
     const [transactions, setTransactions] = React.useState<Transaction[]>([...props.route.params.transactions]);
     const [sortType, setSortType] = React.useState("sortDateNewest");
-    const [filters, setFilters] = React.useState<string[]>([]);
+    const [filters, setFilters] = React.useState<string[]>([filtersByTransaction[0], filtersByDate[0]]);
     const [isUsingSavedFilter, setIsUsingSavedFilter] = React.useState(false);
     const [contactFilters, setContactFilters] = React.useState<string[]>([]);
     const [tagFilters, setTagFilters] = React.useState<string[]>([]);
@@ -96,6 +103,30 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                     </Pressable>
                 </HStack>
 
+                {filtersDisplayed.map((filter) => (
+                    <HStack key={filter} style={styles.badge}>
+                        <Text
+                            size={"footnote1"}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={styles.badgeText}
+                        >
+                            {filter}
+                        </Text>
+
+                        <Pressable
+                            onPress={() => {
+                                // Get the index of the filter that was pressed in the filters array and replace it with "All transactions"
+                                const index = filters.indexOf(filter);
+                                const newFilters = [...filters];
+                                newFilters[index] = "All transactions";
+                                setFilters(newFilters);
+                            }}
+                        >
+                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                        </Pressable>
+                    </HStack>
+                ))}
                 {/*Since contacts use a different filter array, we need to have render the badge separately*/}
                 {contactFilters.map((filter) => (
                     <HStack key={filter} style={styles.badge}>
@@ -126,35 +157,13 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                             color={"darkBlue.500"}
                             style={styles.badgeText}
                         >
-                            {filter}
+                            {"Tag: " + filter}
                         </Text>
 
                         <Pressable
                             onPress={() => {
                                 // This removes the current filter when the XMark is pressed.
                                 setTagFilters(tagFilters.filter((f) => f !== filter));
-                            }}
-                        >
-                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                        </Pressable>
-                    </HStack>
-                ))}
-
-                {filtersDisplayed.map((filter) => (
-                    <HStack key={filter} style={styles.badge}>
-                        <Text
-                            size={"footnote1"}
-                            fontWeight={"semibold"}
-                            color={"darkBlue.500"}
-                            style={styles.badgeText}
-                        >
-                            {filter}
-                        </Text>
-
-                        <Pressable
-                            onPress={() => {
-                                // This removes the current filter when the XMark is pressed.
-                                setFilters(filtersDisplayed.filter((f) => f !== filter));
                             }}
                         >
                             <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
@@ -173,7 +182,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                     contactFilters.length > 0 ||
                     tagFilters.length > 0) && <FiltersBadges />}
                 {transactions.length == 0 ? (
-                    <VStack style={styles.magnifyingGlass} margin="auto">
+                    <VStack mt={"190px"} style={styles.magnifyingGlass}>
                         <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
                         <Text style={styles.magnifyingGlassText}>
                             We could not find any transactions matching your filters.

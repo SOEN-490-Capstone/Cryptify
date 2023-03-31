@@ -1,9 +1,8 @@
 import { View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
-import { Text, Radio, Box, Button, HStack, Link, Pressable, ScrollView } from "native-base";
+import { Text, Box, Button, HStack, Link, Pressable, ScrollView, Badge, VStack } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
-import DateBox from "../../components/DateBox";
 import { getFiltersByDateStrings, getFiltersByTransactionStrings } from "../../services/filter_service";
 import { farBookmark } from "../../components/icons/regular/farBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -11,6 +10,7 @@ import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 import { farChevronRight } from "../../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
+import SortService from "../../services/sort_service";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const isFocused = useIsFocused();
@@ -24,14 +24,8 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     );
     const [filterByDate, setFilterByDate] = React.useState(route.params.filters[1] || filtersByDate[0]);
 
-    const [filterByContact, setFilterByContact] = React.useState<string[]>([]);
-    const [filterByTag, setFilterByTag] = React.useState<string[]>([]);
-
-    type RadioProps = {
-        value: string;
-        setValue: React.Dispatch<React.SetStateAction<string>>;
-        options: string[];
-    };
+    const [filterByContact, setFilterByContact] = React.useState<string[]>([...route.params.contactFilters]);
+    const [filterByTag, setFilterByTag] = React.useState<string[]>([...route.params.tagFilters]);
 
     const areFiltersDefault = () =>
         filterByTransaction === filtersByTransaction[0] &&
@@ -52,10 +46,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                 onPress={() => {
                     setFilterByTransaction(filtersByTransaction[0]);
                     setFilterByDate(filtersByDate[0]);
-                    route.params.setFilters([filtersByTransaction[0], filtersByDate[0]]);
-                    route.params.setIsUsingSavedFilter(false);
-                    route.params.setContactFilters([]);
-                    route.params.setTagFilters([]);
                     setFilterByContact([]);
                     setFilterByTag([]);
                     setIsFilterSaved(false);
@@ -67,12 +57,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     }
 
     React.useEffect(() => {
-        setFilterByContact(route.params.contactFilters);
-    }, [route.params.contactFilters, isFocused]);
-
-    React.useEffect(() => {
-        setFilterByTag(route.params.tagFilters);
-    }, [route.params.tagFilters, isFocused]);
+        if (filterByDate === "Custom Dates") {
+            setFilterByDate(filtersByDate[0]);
+        }
+    }, [filterByDate, isFocused]);
 
     React.useEffect(() => {
         (() => {
@@ -84,10 +72,10 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             onPress={() =>
                                 navigation.navigate("SavedFiltersScreen", {
                                     currencyType: route.params.wallet.currencyType,
-                                    setFilters: route.params.setFilters,
                                     setFilterByTransaction,
                                     setFilterByDate,
-                                    setIsUsingSavedFilter: route.params.setIsUsingSavedFilter,
+                                    setFilterByContact,
+                                    setFilterByTag,
                                     setIsFilterSaved,
                                 })
                             }
@@ -104,184 +92,181 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         })();
     }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact, filterByTag]);
 
-    function RadioGroup({ options, value, setValue }: RadioProps) {
-        return (
-            <Radio.Group
-                name="myRadioGroup"
-                value={value}
-                onChange={(nextValue) => {
-                    setValue(nextValue);
-                }}
-            >
-                {options.map((option) => (
-                    <Box style={styles.RadioItem} key={option}>
-                        <Radio key={option} value={option} color={"darkBlue.500"}>
-                            {option}
-                        </Radio>
-                    </Box>
-                ))}
-            </Radio.Group>
-        );
-    }
-
-    const [fromDate, setFromDate] = React.useState<Date | null>(null);
-    const [toDate, setToDate] = React.useState<Date | null>(null);
-
-    function CustomDates() {
-        return (
-            <HStack>
-                <DateBox
-                    label="from"
-                    style={{ marginRight: 13 }}
-                    date={fromDate}
-                    maximumDate={toDate}
-                    setDate={setFromDate}
-                />
-                <DateBox label="to" date={toDate} minimumDate={fromDate} setDate={setToDate} />
-            </HStack>
-        );
-    }
-
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
-                <Box marginTop="20px" />
-                <Text fontWeight={"semibold"} color={"text.500"}>
-                    Filter by transaction
-                </Text>
-                <RadioGroup
-                    options={filtersByTransaction}
-                    value={filterByTransaction}
-                    setValue={setFilterByTransaction}
-                />
-                <Text marginTop="30px" fontWeight={"semibold"} color={"text.500"}>
-                    Filter by date
-                </Text>
-                <RadioGroup options={filtersByDate} value={filterByDate} setValue={setFilterByDate} />
-                {filterByDate === filtersByDate[filtersByDate.length - 1] && (
-                    <>
-                        <Box marginTop="20px" />
-                        <CustomDates />
-                    </>
-                )}
+                <VStack marginTop={"20px"} space={"10px"}>
+                    <Text>Transaction</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <HStack>
+                            {filtersByTransaction.map((option) => (
+                                <Pressable
+                                    key={option}
+                                    onPress={() => {
+                                        setFilterByTransaction(option);
+                                        setIsFilterSaved(false);
+                                    }}
+                                >
+                                    <Badge
+                                        borderRadius={"8px"}
+                                        backgroundColor="gray.100"
+                                        px={"10px"}
+                                        py={"5px"}
+                                        key={option}
+                                        style={[
+                                            styles.badge,
+                                            filterByTransaction === option
+                                                ? { borderColor: "#404040", borderWidth: 1 }
+                                                : {},
+                                        ]}
+                                    >
+                                        <Text
+                                            size={"subheadline"}
+                                            fontWeight={filterByTransaction === option ? "semibold" : "regular"}
+                                        >
+                                            {option}
+                                        </Text>
+                                    </Badge>
+                                </Pressable>
+                            ))}
+                        </HStack>
+                    </ScrollView>
+                </VStack>
                 <Pressable
-                    marginTop="25px"
+                    marginTop="15px"
+                    onPress={() =>
+                        navigation.navigate("FilterDateScreen", {
+                            filters: route.params.filters,
+                            setFilters: route.params.setFilters,
+                            filterByDate,
+                            setFilterByDate,
+                            setIsFilterSaved,
+                        })
+                    }
+                >
+                    <HStack height="44px" alignItems="center">
+                        <Text color={"text.700"} marginRight="15">
+                            Date
+                        </Text>
+                        <Box flex={1}></Box>
+                        <Text color={"text.500"} marginRight={"10px"}>
+                            {filterByDate === filtersByDate[0] || filterByDate === "Custom Dates" ? "" : filterByDate}
+                        </Text>
+                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                    </HStack>
+                </Pressable>
+                <Pressable
+                    marginTop="15px"
                     onPress={() =>
                         navigation.navigate("FilterContactScreen", {
                             filters: route.params.filters,
                             setFilters: route.params.setFilters,
-                            contactFilters: route.params.contactFilters,
-                            setContactFilters: route.params.setContactFilters,
+                            filterByContact,
+                            setFilterByContact,
+                            setIsFilterSaved,
                         })
                     }
-                    _pressed={{
-                        background: "text.200",
-                    }}
                 >
-                    <HStack height="50px" alignItems="center">
-                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
+                    <HStack height="44px" alignItems="center">
+                        <Text color={"text.700"} marginRight="15">
                             Contacts
                         </Text>
-                        {filterByContact.map((contact) => (
-                            <Text color={"text.500"} marginRight="1" key={contact}>
-                                {contact},
+                        <Box flex={1}>
+                            <Text color={"text.500"} marginRight={"10px"} isTruncated style={{ marginLeft: "auto" }}>
+                                {filterByContact.join(", ")}
                             </Text>
-                        ))}
+                        </Box>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
                     </HStack>
                 </Pressable>
                 <Pressable
-                    marginTop="25px"
+                    marginTop="15px"
                     onPress={() =>
                         navigation.navigate("FilterTagScreen", {
                             filters: route.params.filters,
                             setFilters: route.params.setFilters,
-                            tagFilters: route.params.tagFilters,
-                            setTagFilters: route.params.setTagFilters,
+                            filterByTag,
+                            setFilterByTag,
+                            setIsFilterSaved,
                         })
                     }
-                    _pressed={{
-                        background: "text.200",
-                    }}
                 >
-                    <HStack height="50px" alignItems="center">
-                        <Text fontWeight={"semibold"} color={"text.500"} marginRight="15">
-                            Tags
-                        </Text>
-                        {filterByTag.map((tag) => (
-                            <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge} key={tag}>
-                                <HStack space={"10px"} alignItems={"center"}>
-                                    <Text size={"subheadline"} fontWeight={"semibold"}>
-                                        {tag}
-                                    </Text>
+                    {filterByTag.length === 0 ? (
+                        <HStack height={"44px"} marginBottom={"13px"} alignItems="center">
+                            <Text>Tags</Text>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    ) : (
+                        <HStack>
+                            <VStack space={"10px"} style={{ width: "100%", overflow: "hidden" }}>
+                                <Text>Tags</Text>
+                                <HStack flexWrap={"wrap"}>
+                                    {SortService.sortAlphabetically(filterByTag).map((tag) => (
+                                        <Badge
+                                            borderRadius={"8px"}
+                                            backgroundColor="gray.100"
+                                            px={"10px"}
+                                            py={"5px"}
+                                            key={tag}
+                                            style={styles.badge}
+                                            marginBottom={"13px"}
+                                        >
+                                            <Text size={"subheadline"} fontWeight={"semibold"} isTruncated>
+                                                {tag}
+                                            </Text>
+                                        </Badge>
+                                    ))}
                                 </HStack>
-                            </Pressable>
-                        ))}
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
-                </Pressable>
-                <Box marginTop="25px" />
-                {!(
-                    filterByTransaction === filtersByTransaction[0] &&
-                    filterByDate === filtersByDate[0] &&
-                    filterByContact.length === 0 &&
-                    filterByTag.length === 0
-                ) &&
-                    (!isFilterSaved ||
-                        !(
-                            filterByTransaction === route.params.filters[0] &&
-                            filterByDate === route.params.filters[1] &&
-                            filterByContact.length === 0 &&
-                            filterByTag.length === 0
-                        )) && (
-                        <SaveFilterActionSheet
-                            setIsUsingSavedFilter={route.params.setIsUsingSavedFilter}
-                            setIsFilterSaved={setIsFilterSaved}
-                            setFilters={route.params.setFilters}
-                            filterByTransaction={filterByTransaction}
-                            filterByDate={filterByDate}
-                            fromDate={fromDate}
-                            toDate={toDate}
-                            currencyType={route.params.wallet.currencyType}
-                        />
+                            </VStack>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
                     )}
-                <Box marginTop="25px" />
+                </Pressable>
+                <Box marginTop="12px" />
+                {/* If areFiltersDefault and isFilterSaved is false then display SaveFilterActionSheet*/}
+                {!areFiltersDefault() && !isFilterSaved && (
+                    <SaveFilterActionSheet
+                        setIsFilterSaved={setIsFilterSaved}
+                        setFilters={route.params.setFilters}
+                        filterByTransaction={filterByTransaction}
+                        filterByDate={filterByDate}
+                        filterByContact={filterByContact}
+                        filterByTag={filterByTag}
+                        currencyType={route.params.wallet.currencyType}
+                    />
+                )}
+            </ScrollView>
+            <Box style={styles.applyFiltersButtonContainer}>
                 <Button
-                    style={styles.applyButton}
                     isDisabled={
                         filterByTransaction === route.params.filters[0] &&
                         filterByDate === route.params.filters[1] &&
-                        filterByContact.length === 0 &&
-                        filterByTag.length === 0
+                        JSON.stringify(filterByContact) === JSON.stringify(route.params.contactFilters) &&
+                        JSON.stringify(filterByTag) === JSON.stringify(route.params.tagFilters)
                     }
                     onPress={() => {
                         const filters = [filterByTransaction];
 
-                        // this checks if the filter selected for the date is "custom date"
-                        // since we need to have special logic that would add the two dates selected
-                        if (filterByDate === "Custom Dates" && fromDate && toDate) {
-                            const dateFormate = new Intl.DateTimeFormat("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "2-digit",
-                            });
-
-                            filters.push(`${dateFormate.format(fromDate)} - ${dateFormate.format(toDate)}`);
+                        // If a custom date is selected, but at least one of the from or to dates are not selected,
+                        // then filterByDate value will be "Custom Dates" and not the date range. In this scenario,
+                        // use the default date filter value.
+                        if (filterByDate === "Custom Dates") {
+                            filters.push(filtersByDate[0]);
                         } else {
-                            if (filterByDate !== "Custom Dates") {
-                                filters.push(filterByDate);
-                            }
+                            filters.push(filterByDate);
                         }
+
                         route.params.setFilters(filters);
-                        route.params.setIsUsingSavedFilter(false);
-                        setIsFilterSaved(false);
+                        route.params.setContactFilters(filterByContact);
+                        route.params.setTagFilters(filterByTag);
+                        route.params.setIsUsingSavedFilter(isFilterSaved);
                         navigation.goBack();
                     }}
                     testID="applyFiltersSubmit"
                 >
                     Apply filters
                 </Button>
-            </ScrollView>
+            </Box>
         </View>
     );
 }
@@ -296,20 +281,22 @@ const styles = StyleSheet.create({
     RadioItem: {
         marginTop: 20,
     },
-    applyButton: {
-        marginTop: "auto",
-        marginBottom: 15,
-    },
     chevronRightIcon: {
         color: "#A3A3A3",
         marginLeft: "auto",
-        marginRight: 5,
     },
     badge: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        marginRight: 13,
-        marginBottom: 13,
+        marginRight: 10,
         justifyContent: "center",
+    },
+    applyFiltersButtonContainer: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingHorizontal: 15,
+        paddingBottom: 15,
+        paddingTop: 8,
+        backgroundColor: "white",
     },
 });

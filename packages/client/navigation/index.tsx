@@ -61,6 +61,7 @@ import AccountPasswordScreen from "../screens/account/AccountPasswordScreen";
 import SavedFiltersScreen from "../screens/filters/SavedFiltersScreen";
 import FilterContactScreen from "../screens/filters/FilterContactScreen";
 import FilterTagScreen from "../screens/filters/FilterTagScreen";
+import FilterDateScreen from "../screens/filters/FilterDateScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 import ResetPasswordEmailScreen from "../screens/reset-password/resetPasswordEmailScreen";
 import CreateNewPasswordScreen from "../screens/reset-password/createNewPasswordScreen";
@@ -253,6 +254,20 @@ function HomeStackScreen({ navigation, route }: { route: RouteProp<any, any>; na
                 component={SavedFiltersScreen}
                 options={{
                     title: "Saved Filters",
+                    headerTintColor: "#404040",
+                    headerTitleStyle: {
+                        fontSize: 17,
+                        fontWeight: "600",
+                    },
+                    headerShadowVisible: false,
+                    headerTitleAlign: "center",
+                }}
+            />
+            <HomeStack.Screen
+                name="FilterDateScreen"
+                component={FilterDateScreen}
+                options={{
+                    title: "Filter by Date",
                     headerTintColor: "#404040",
                     headerTitleStyle: {
                         fontSize: 17,

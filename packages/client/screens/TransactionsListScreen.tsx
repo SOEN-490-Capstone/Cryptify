@@ -103,6 +103,27 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                     </Pressable>
                 </HStack>
 
+                {filtersDisplayed.map((filter) => (
+                    <HStack key={filter} style={styles.badge}>
+                        <Text
+                            size={"footnote1"}
+                            fontWeight={"semibold"}
+                            color={"darkBlue.500"}
+                            style={styles.badgeText}
+                        >
+                            {filter}
+                        </Text>
+
+                        <Pressable
+                            onPress={() => {
+                                // This removes the current filter when the XMark is pressed.
+                                setFilters(filtersDisplayed.filter((f) => f !== filter));
+                            }}
+                        >
+                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
+                        </Pressable>
+                    </HStack>
+                ))}
                 {/*Since contacts use a different filter array, we need to have render the badge separately*/}
                 {contactFilters.map((filter) => (
                     <HStack key={filter} style={styles.badge}>
@@ -140,28 +161,6 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                             onPress={() => {
                                 // This removes the current filter when the XMark is pressed.
                                 setTagFilters(tagFilters.filter((f) => f !== filter));
-                            }}
-                        >
-                            <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />
-                        </Pressable>
-                    </HStack>
-                ))}
-
-                {filtersDisplayed.map((filter) => (
-                    <HStack key={filter} style={styles.badge}>
-                        <Text
-                            size={"footnote1"}
-                            fontWeight={"semibold"}
-                            color={"darkBlue.500"}
-                            style={styles.badgeText}
-                        >
-                            {filter}
-                        </Text>
-
-                        <Pressable
-                            onPress={() => {
-                                // This removes the current filter when the XMark is pressed.
-                                setFilters(filtersDisplayed.filter((f) => f !== filter));
                             }}
                         >
                             <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />

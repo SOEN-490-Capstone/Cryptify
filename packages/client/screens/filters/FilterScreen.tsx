@@ -216,7 +216,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                             <VStack space={"10px"} style={{ width: "100%", overflow: "hidden" }}>
                                 <Text>Tags</Text>
                                 <HStack flexWrap={"wrap"}>
-                                    {SortService.sortAlphabetically(filterByTag).map((tag, i) => (
+                                    {SortService.sortAlphabetically(filterByTag).map((tag) => (
                                         <Badge
                                             borderRadius={"8px"}
                                             backgroundColor="gray.100"

@@ -116,8 +116,11 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
 
                         <Pressable
                             onPress={() => {
-                                // This removes the current filter when the XMark is pressed.
-                                setFilters(filtersDisplayed.filter((f) => f !== filter));
+                                // Get the index of the filter that was pressed in the filters array and replace it with "All transactions"
+                                const index = filters.indexOf(filter);
+                                const newFilters = [...filters];
+                                newFilters[index] = "All transactions";
+                                setFilters(newFilters);
                             }}
                         >
                             <FontAwesomeIcon style={{ color: "#0077E6" }} icon={facCircleXMark} size={14} />

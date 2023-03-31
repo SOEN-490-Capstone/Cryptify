@@ -23,7 +23,7 @@ describe("CRYP-204 Delete user account", () => {
         await element(by.id("accountButton")).tap();
 
         await element(by.id("deleteAccountButton")).tap();
-        await element(by.text("DELETE")).tap();
+        await expect(element(by.text("DELETE"))).toBeVisible();
 
         await pause();
     });

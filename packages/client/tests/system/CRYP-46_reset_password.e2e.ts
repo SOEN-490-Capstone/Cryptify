@@ -21,8 +21,8 @@ describe("CRYP-46 Reset password", () => {
         // Nav to password screen
         await element(by.id("settingsTab")).tap();
         await element(by.id("accountButton")).tap();
-        await element(by.text("Password")).tap();
-        await element(by.text("Forgot Password?")).tap();
+        await element(by.text("Change Password")).tap();
+        await element(by.text("Forgot password?")).tap();
 
         // Assert forgot password screen
         await expect(element(by.text("Reset your password"))).toBeVisible();

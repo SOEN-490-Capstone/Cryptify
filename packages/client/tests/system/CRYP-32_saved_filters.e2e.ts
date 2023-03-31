@@ -32,7 +32,7 @@ describe("CRYP-32 Saved filters", () => {
         await element(by.text("Save filter")).tap();
 
         // Assert correct filter label
-        await expect(element(by.text("Filter"))).toBeVisible();
+        await expect(element(by.text("Reset"))).toBeVisible();
         await expect(element(by.text("Ethereum in"))).toBeVisible();
     });
 });

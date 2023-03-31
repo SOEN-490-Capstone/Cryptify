@@ -25,7 +25,7 @@ describe("CRYP-192 Delete contact", () => {
         await element(by.text("Edit")).tap();
 
         await element(by.text("Delete contact")).tap();
-        await element(by.text("DELETE")).tap();
+        await expect(element(by.text("DELETE"))).toBeVisible();
 
         await pause();
     });

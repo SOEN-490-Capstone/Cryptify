@@ -31,7 +31,7 @@ describe("CRYP-271 Add a contact's wallet by scanning a QR code", () => {
         await closeKeyboard("contactNameInput");
 
         // Expand the Bitcoin wallet section and add an input form field for a Bitcoin wallet
-        await element(by.id("walletCollapsibleButtonBITCOIN")).tap();
+        // await element(by.id("walletCollapsibleButtonBITCOIN")).tap();
         await element(by.id("addAnotherBITCOIN")).tap();
         await expect(element(by.id("walletAddressInputBITCOIN"))).toBeVisible();
 
@@ -63,7 +63,7 @@ describe("CRYP-271 Add a contact's wallet by scanning a QR code", () => {
         await closeKeyboard("contactNameInput");
 
         // Expand the Ethereum wallet section and add an input form field for an Ethereum wallet
-        await element(by.id("walletCollapsibleButtonETHEREUM")).tap();
+        // await element(by.id("walletCollapsibleButtonETHEREUM")).tap();
         await element(by.id("addAnotherETHEREUM")).tap();
         await expect(element(by.id("walletAddressInputETHEREUM"))).toBeVisible();
 

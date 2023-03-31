@@ -25,7 +25,7 @@ describe("CRYP-203 Update user account", () => {
         // Assert all account fields are present
         await expect(element(by.text("Name"))).toBeVisible();
         await expect(element(by.text("Email"))).toBeVisible();
-        await expect(element(by.text("Password"))).toBeVisible();
+        await expect(element(by.text("Change Password"))).toBeVisible();
 
         await pause();
     });

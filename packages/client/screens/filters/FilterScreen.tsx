@@ -92,21 +92,6 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         })();
     }, [filterByTransaction, filterByDate, isFilterSaved, filterByContact, filterByTag]);
 
-    function renderFilterByContact() {
-        let contacts = "";
-
-        // build a contact string with all the contacts separated by commas
-        for (let i = 0; i < filterByContact.length; i++) {
-            if (i === filterByContact.length - 1) {
-                contacts += filterByContact[i];
-            } else {
-                contacts += filterByContact[i] + ", ";
-            }
-        }
-
-        return contacts;
-    }
-
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
@@ -188,7 +173,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         </Text>
                         <Box flex={1}>
                             <Text color={"text.500"} marginRight={"10px"} isTruncated style={{ marginLeft: "auto" }}>
-                                {renderFilterByContact()}
+                                {filterByContact.join(", ")}
                             </Text>
                         </Box>
                         <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />

@@ -10,6 +10,7 @@ import SaveFilterActionSheet from "../../components/SaveFilterActionSheet";
 import { fasBookmark } from "../../components/icons/solid/fasBookmark";
 import { farChevronRight } from "../../components/icons/regular/farChevronRight";
 import { useIsFocused } from "@react-navigation/native";
+import SortService from "../../services/sort_service";
 
 export default function FilterScreen({ route, navigation }: HomeStackScreenProps<"FilterScreen">) {
     const isFocused = useIsFocused();
@@ -110,7 +111,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
                 <VStack alignItems="left" marginTop={"20px"} space={"10px"}>
-                    <Text color={"text.700"}>Transaction</Text>
+                    <Text>Transaction</Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <HStack>
                             {filtersByTransaction.map((option) => (
@@ -205,24 +206,38 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
                         })
                     }
                 >
-                    <HStack height="44px" alignItems="center">
-                        <Text color={"text.700"} marginRight="15">
-                            Tags
-                        </Text>
-                        <Box flex={1}></Box>
-                        {filterByTag.map((tag) => (
-                            <Pressable borderRadius={"8px"} backgroundColor="gray.100" style={styles.badge} key={tag}>
-                                <HStack space={"10px"} alignItems={"center"}>
-                                    <Text size={"subheadline"} fontWeight={"semibold"}>
-                                        {tag}
-                                    </Text>
+                    {filterByTag.length === 0 ? (
+                        <HStack height={"44px"} marginBottom={"13px"} alignItems="center">
+                            <Text>Tags</Text>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    ) : (
+                        <HStack>
+                            <VStack space={"10px"} style={{ width: "100%", overflow: "hidden" }}>
+                                <Text>Tags</Text>
+                                <HStack flexWrap={"wrap"}>
+                                    {SortService.sortAlphabetically(filterByTag).map((tag, i) => (
+                                        <Badge
+                                            borderRadius={"8px"}
+                                            backgroundColor="gray.100"
+                                            px={"10px"}
+                                            py={"5px"}
+                                            key={tag}
+                                            style={styles.badge}
+                                            marginBottom={"13px"}
+                                        >
+                                            <Text size={"subheadline"} fontWeight={"semibold"} isTruncated>
+                                                {tag}
+                                            </Text>
+                                        </Badge>
+                                    ))}
                                 </HStack>
-                            </Pressable>
-                        ))}
-                        <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
-                    </HStack>
+                            </VStack>
+                            <FontAwesomeIcon icon={farChevronRight} style={styles.chevronRightIcon} size={16} />
+                        </HStack>
+                    )}
                 </Pressable>
-                <Box marginTop="25px" />
+                <Box marginTop="12px" />
                 {/* If areFiltersDefault and isFilterSaved is false then display SaveFilterActionSheet*/}
                 {!areFiltersDefault() && !isFilterSaved && (
                     <SaveFilterActionSheet

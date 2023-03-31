@@ -80,7 +80,7 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
                     <VStack space={"40px"}>
                         {transactionTags.length != 0 && (
                             <TagsGallery
-                                title={"Selected Transaction"}
+                                title={"Selected Tags"}
                                 tags={SortService.sortTransactionTagsAlphabetically(transactionTags)}
                                 onTagPress={(tag) => removeTransactionTag(tag)}
                                 tagIcon={farXMark}
@@ -91,8 +91,10 @@ export default function FilterTagScreen({ route, navigation }: HomeStackScreenPr
                             <TagsGallery
                                 title={"All Tags"}
                                 tags={SortService.sortTransactionTagsAlphabetically(transactionTagsNotAdded)}
-                                onTagPress={(tag: Tag) => addTransactionTag(tag)}
-                                tagIcon={farPlus}
+                                onTagPress={(tag: Tag) => {
+                                    if (transactionTags.length < 10) addTransactionTag(tag);
+                                }}
+                                tagIcon={transactionTags.length < 10 ? farPlus : undefined}
                                 styles={styles.allTags}
                                 tagTestIDPrefix={"allTags"}
                             />

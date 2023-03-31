@@ -78,6 +78,10 @@ function sortTransactionTagsAlphabetically(transactionTags: Tag[]): Tag[] {
     return transactionTags.sort((a, b) => (a.tagName > b.tagName ? 1 : -1));
 }
 
+function sortAlphabetically(array: string[]): string[] {
+    return array.sort((a, b) => (a > b ? 1 : -1));
+}
+
 export default {
     sortDateNewest,
     sortDateOldest,
@@ -86,4 +90,5 @@ export default {
     sortTransactions,
     sortBadgeValues,
     sortTransactionTagsAlphabetically,
+    sortAlphabetically,
 };

@@ -4,14 +4,14 @@ import { Text, Box, Center, Pressable, HStack } from "native-base";
 import { HomeStackScreenProps } from "../../types";
 import React from "react";
 import { getFiltersByTransactionStrings } from "../../services/filter_service";
-import { farBookmark } from "../../components/icons/regular/farBookmark";
+import { falBookmark } from "../../components/icons/light/falBookmark";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useIsFocused } from "@react-navigation/native";
 import { AuthContext } from "../../components/contexts/AuthContext";
 import { FiltersGateway } from "../../gateways/filters_gateway";
 import { Filter } from "@cryptify/common/src/domain/entities/filter";
-import { titleCase } from "@cryptify/common/src/utils/string_utils";
 import { SwipeListView } from "react-native-swipe-list-view";
+import { getCurrencyTypeUILabel } from "@cryptify/common/src/utils/currency_utils";
 
 export default function SavedFiltersScreen({ route, navigation }: HomeStackScreenProps<"SavedFiltersScreen">) {
     const filtersGateway = new FiltersGateway();
@@ -71,11 +71,11 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
 
         filters[1] = filter.range;
 
-        route.params.setFilters(filters);
         route.params.setFilterByTransaction(filters[0]);
         route.params.setFilterByDate(filters[1]);
+        route.params.setFilterByContact(filter.contactNames);
+        route.params.setFilterByTag(filter.tagNames);
         route.params.setIsFilterSaved(true);
-        route.params.setIsUsingSavedFilter(true);
         navigation.goBack();
     }
 
@@ -153,9 +153,10 @@ export default function SavedFiltersScreen({ route, navigation }: HomeStackScree
             {filtersWithHeader.length === 0 ? (
                 <Center alignItems="center" marginY="auto">
                     <Box marginTop="-10px"></Box>
-                    <FontAwesomeIcon icon={farBookmark} style={styles.emptyIcon} size={56} color={"#404040"} />
+                    <FontAwesomeIcon icon={falBookmark} style={styles.emptyIcon} size={56} color={"#404040"} />
                     <Text style={styles.emptyText}>
-                        You do not have any saved filters{"\n"}for {titleCase(route.params.currencyType)} wallets.
+                        You do not have any saved filters for {getCurrencyTypeUILabel(route.params.currencyType)}{" "}
+                        wallets.
                     </Text>
                 </Center>
             ) : (

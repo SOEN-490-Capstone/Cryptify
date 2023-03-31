@@ -180,7 +180,7 @@ export default function TransactionsListScreen(props: HomeStackScreenProps<"Tran
                     contactFilters.length > 0 ||
                     tagFilters.length > 0) && <FiltersBadges />}
                 {transactions.length == 0 ? (
-                    <VStack style={styles.magnifyingGlass} margin="auto">
+                    <VStack mt={"190px"} style={styles.magnifyingGlass}>
                         <FontAwesomeIcon icon={falMagnifyingGlass} size={48} />
                         <Text style={styles.magnifyingGlassText}>
                             We could not find any transactions matching your filters.

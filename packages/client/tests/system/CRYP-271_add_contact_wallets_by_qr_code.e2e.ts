@@ -1,4 +1,4 @@
-import { by, device, expect, element } from "detox";
+import { by, expect, element } from "detox";
 import {
     assertQRCodeScannerScreenIsOpen,
     closeKeyboard,

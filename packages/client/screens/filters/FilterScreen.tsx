@@ -110,7 +110,7 @@ export default function FilterScreen({ route, navigation }: HomeStackScreenProps
     return (
         <View style={styles.view}>
             <ScrollView style={styles.scrollView}>
-                <VStack alignItems="left" marginTop={"20px"} space={"10px"}>
+                <VStack marginTop={"20px"} space={"10px"}>
                     <Text>Transaction</Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <HStack>

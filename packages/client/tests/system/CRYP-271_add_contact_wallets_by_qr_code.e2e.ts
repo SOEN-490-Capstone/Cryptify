@@ -1,4 +1,4 @@
-import { by, device, expect, element } from "detox";
+import { by, expect, element } from "detox";
 import {
     assertQRCodeScannerScreenIsOpen,
     closeKeyboard,
@@ -13,9 +13,19 @@ import {
 import { addContact, displayContactsScreen, editContact } from "./utils/test_contact_utils";
 
 describe("CRYP-271 Add a contact's wallet by scanning a QR code", () => {
-    // Dev Note: For all the following tests, scanning a QR code cannot be tested because the emulator's camera is not able to scan it.
+    // Dev Note:
+    // For all the following tests, scanning a QR code cannot be tested because the emulator's camera is not able to scan it.
     // This also means we cannot test the toast message that displays after scanning an incorrect QR code. This functionality could not
     // be successfully mocked either. As a result, whenever the QRCodeScannerScreen is displayed we are only asserting/testing that it is opened and closed.
+    //
+    // Additionally, currently it is not possible to properly test ungranted camera permissions for the following reasons:
+    // 1. Detox does not support ungranted camera permissions for Android emulators. Instead, camera permissions for Android emulator are always granted by default and there is no way to change them.
+    //      See the following links for more information:
+    //          - https://wix.github.io/Detox/docs/next/api/device/#2-permissionsset-runtime-permissions-ios-only
+    //          - https://github.com/wix/Detox/issues/477
+    // 2. No one in the team has a functioning iOS emulator to test this functionality on.
+    // Therefore, unfortunately, this test is not created at this time and will be skipped since it is not possible to properly test it,
+    // and all the following tests assume that the camera permissions are granted.
 
     it("Should be able to open the QR code scanner to add a Bitcoin wallet by scanning its QR code to a new contact", async () => {
         await launchApp({
@@ -136,47 +146,6 @@ describe("CRYP-271 Add a contact's wallet by scanning a QR code", () => {
         await expect(element(by.id("contactNameInput"))).toHaveText("Jason");
 
         await displaySettingsFromEditContact();
-        await signOut();
-
-        await pause();
-    });
-
-    // Dev Note: This test, when run on Android, will always pass because Detox only supports permission's for iOS emulators.
-    // As a result, all permissions are granted by default for Android emulators and cannot be changed.
-    //
-    // See the following links for more information:
-    // - https://wix.github.io/Detox/docs/next/api/device/#2-permissionsset-runtime-permissions-ios-only
-    // - https://github.com/wix/Detox/issues/477
-    it("Should not be able to open the QR code scanner with ungranted camera permissions (iOS only)", async () => {
-        if (device.getPlatform() === "android") {
-            return;
-        }
-
-        await launchApp({
-            newInstance: true,
-            permissions: {
-                camera: "NO",
-            },
-        });
-
-        await signIn();
-        await displayContactsScreen();
-
-        // Asserting the following code with the Add a Contact screen is equivalent to the
-        // Edit a Contact because both screens use the same components.
-        await addContact();
-        await closeKeyboard("contactNameInput");
-
-        // Expand the Bitcoin wallet section and add an input form field for a Bitcoin wallet
-        await element(by.id("walletCollapsibleButtonBITCOIN")).tap();
-        await element(by.id("addAnotherBITCOIN")).tap();
-        await expect(element(by.id("walletAddressInputBITCOIN"))).toBeVisible();
-
-        await openQRCodeScannerScreen();
-
-        // TODO: Assert camera permissions not granted alert displays
-
-        await displaySettingsFromAddContact();
         await signOut();
 
         await pause();
